@@ -1,14 +1,21 @@
 //
-// Created by Maximilian Franz on 07.01.18.
+// Created by David Culley on 07.01.18.
 //
 
-#ifndef HICS_NETINFO_H
-#define HICS_NETINFO_H
+#pragma once
 
+#include <string>
 
 class NetInfo {
+private:
+
+public:
+    NetInfo(std::string name, int imageDimension);
+
+    std::string getName();
+
+    int getImageDimension();
+
+    std::string getIdentifier();
 
 };
-
-
-#endif //HICS_NETINFO_H
