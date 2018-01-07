@@ -1,17 +1,14 @@
 //
-// Created by Maximilian Franz on 07.01.18.
+// Created by David Culley on 07.01.18.
 //
 
-#ifndef HICS_ALEXNETWEIGHTLOADER_H
-#define HICS_ALEXNETWEIGHTLOADER_H
+#pragma once
 
 #include "WeightLoader.h"
 
-class AlexNetWeightLoader : WeightLoader {
+class AlexNetWeightLoader : virtual public WeightLoader {
+private:
+
 public:
     AlexNetWeightLoader();
-
 };
-
-
-#endif //HICS_ALEXNETWEIGHTLOADER_H
