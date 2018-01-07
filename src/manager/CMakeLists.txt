@@ -1,0 +1,1 @@
+add_library(libmanager STATIC Manager.cpp Manager.h PreProcessor.cpp PreProcessor.h PerformanceCalculator.cpp PerformanceCalculator.h HostPlacer.cpp HostPlacer.h ClassificationRequest.cpp ClassificationRequest.h ClassificationResult.cpp ClassificationResult.h PerformanceData.cpp PerformanceData.h OperationMode.h)
