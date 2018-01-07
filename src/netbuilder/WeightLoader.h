@@ -1,16 +1,23 @@
 //
-// Created by Maximilian Franz on 07.01.18.
+// Created by David Culley on 07.01.18.
 //
 
-#ifndef HICS_WEIGHTLOADER_H
-#define HICS_WEIGHTLOADER_H
-
+#pragma once
 
 class WeightLoader {
-     // must have pure virtual functions
+    enum class LayerIdentifier {
+        CONV_1 = 0,
+        CONV_2 = 1,
+        CONV_3 = 2,
+        CONV_4 = 3,
+        CONV_5 = 4,
+        FULLY_CON_1 = 10000,
+        FULLY_CON_2 = 10001,
+        FULLY_CON_3 = 10002
+    };
+
+private:
+
 public:
-    WeightLoader();
+    virtual void getWeights(LayerIdentifier layerId); // TODO change return type
 };
-
-
-#endif //HICS_WEIGHTLOADER_H

@@ -1,9 +1,9 @@
 //
-// Created by Maximilian Franz on 07.01.18.
+// Created by David Culley on 07.01.18.
 //
 
 #include "WeightLoader.h"
 
-WeightLoader::WeightLoader() {
+void WeightLoader::getWeights(WeightLoader::LayerIdentifier layerId) {
 
 }
