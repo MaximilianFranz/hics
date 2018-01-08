@@ -9,6 +9,8 @@ set(CATCH_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/catch)
 add_library(Catch INTERFACE)
 target_include_directories(Catch INTERFACE ${CATCH_INCLUDE_DIR})
 
+find_package(Qt5 COMPONENTS Core Widgets)
+
 enable_testing()
 
 add_subdirectory(tests)
