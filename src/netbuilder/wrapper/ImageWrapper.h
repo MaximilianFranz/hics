@@ -15,4 +15,8 @@ public:
 //                 const std::string &filepath);
 
     const std::string &getFilepath() const;
+
+    int getNumDimensions() override;
+
+    int getDimensionSizes() override;
 };

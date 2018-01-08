@@ -12,14 +12,16 @@ protected:
     int dimensionSizes;
 //    std::vector data;
 public:
-    // must have pure virtual functions
+    // pure virtual functions to make Wrapper an abstract class
+    virtual int getNumDimensions() = 0;
 
-    virtual int getNumDimensions() const {
-        return numDimensions;
-    }
-
-    virtual int getDimensionSizes() const {
-        return dimensionSizes;
-    }
-
+    virtual int getDimensionSizes() = 0;
 };
+
+int Wrapper::getNumDimensions() {
+    return numDimensions;
+}
+
+int Wrapper::getDimensionSizes() {
+    return dimensionSizes;
+}
