@@ -11,8 +11,8 @@ class ImageWrapper : virtual public Wrapper {
 private:
     std::string filepath;
 public:
-    ImageWrapper(int numDimensions, int dimensionSizes, const std::vector &data,
-                 const std::string &filepath);
+//    ImageWrapper(int numDimensions, int dimensionSizes, const std::vector &data,
+//                 const std::string &filepath);
 
     const std::string &getFilepath() const;
 };

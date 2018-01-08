@@ -9,6 +9,6 @@
 class DataWrapper : virtual public Wrapper {
 private:
 public:
-    DataWrapper(int numDimensions, int dimensionSizes, const std::vector &data) : Wrapper(numDimensions, dimensionSizes,
-                                                                                          data) {}
+//    DataWrapper(int numDimensions, int dimensionSizes, const std::vector &data) : Wrapper(numDimensions, dimensionSizes,
+//                                                                                          data) {}
 };

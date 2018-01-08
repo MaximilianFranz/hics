@@ -11,7 +11,7 @@ private:
 
     float bias{};
 public:
-    WeightWrapper(int numDimensions, int dimensionSizes, const std::vector &data);
+//    WeightWrapper(int numDimensions, int dimensionSizes, const std::vector &data);
 
     float getBias() const;
 };

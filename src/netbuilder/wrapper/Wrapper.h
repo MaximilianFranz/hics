@@ -10,11 +10,11 @@ class Wrapper {
 private:
     int numDimensions;
     int dimensionSizes;
-    std::vector data{};
+//    std::vector data{};
 public:
     // must have pure virtual functions
-    Wrapper(int numDimensions, int dimensionSizes, const std::vector &data)
-            : data(data), dimensionSizes(dimensionSizes), numDimensions(numDimensions) {}
+//    Wrapper(int numDimensions, int dimensionSizes, const std::vector &data)
+//            : data(data), dimensionSizes(dimensionSizes), numDimensions(numDimensions) {}
 
     virtual int getNumDimensions() const {
         return numDimensions;
@@ -24,7 +24,7 @@ public:
         return dimensionSizes;
     }
 
-    virtual const std::vector &getData() const {
-        return data;
-    }
+//    virtual const std::vector &getData() const {
+//        return data;
+//    }
 };

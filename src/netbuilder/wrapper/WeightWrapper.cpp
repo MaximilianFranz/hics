@@ -4,9 +4,9 @@
 
 #include "WeightWrapper.h"
 
-WeightWrapper::WeightWrapper(int numDimensions, int dimensionSizes, const std::vector &data) : Wrapper(numDimensions,
-                                                                                                       dimensionSizes,
-                                                                                                       data) {}
+//WeightWrapper::WeightWrapper(int numDimensions, int dimensionSizes, const std::vector &data) : Wrapper(numDimensions,
+//                                                                                                       dimensionSizes,
+//                                                                                                       data) {}
 
 float WeightWrapper::getBias() const {
     return bias;
