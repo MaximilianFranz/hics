@@ -2,13 +2,11 @@
 // Created by Maximilian Franz on 07.01.18.
 //
 
-#ifndef HICS_NORMALIZATIONLAYER_H
-#define HICS_NORMALIZATIONLAYER_H
+#pragma once
 
+#include "Layer.h"
 
-class NormalizationLayer {
+class NormalizationLayer : Layer {
 
 };
 
-
-#endif //HICS_NORMALIZATIONLAYER_H

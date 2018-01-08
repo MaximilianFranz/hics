@@ -2,13 +2,12 @@
 // Created by Maximilian Franz on 07.01.18.
 //
 
-#ifndef HICS_POOLINGLAYER_H
-#define HICS_POOLINGLAYER_H
+#pragma once
 
+#include "Layer.h"
 
-class PoolingLayer {
-
+class PoolingLayer : Layer{
+    //must have all virtual methods - no override!!
 };
 
 
-#endif //HICS_POOLINGLAYER_H

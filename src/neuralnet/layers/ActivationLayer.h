@@ -2,13 +2,12 @@
 // Created by Maximilian Franz on 07.01.18.
 //
 
-#ifndef HICS_ACTIVATIONLAYER_H
-#define HICS_ACTIVATIONLAYER_H
+#pragma once
 
+#include "Layer.h"
 
-class ActivationLayer {
+class ActivationLayer : Layer {
 
 };
 
 
-#endif //HICS_ACTIVATIONLAYER_H
