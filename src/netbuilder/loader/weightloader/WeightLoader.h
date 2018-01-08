@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "WeightWrapper.h"
+#include "../../wrapper/WeightWrapper.h"
 
 class WeightLoader {
 private:
