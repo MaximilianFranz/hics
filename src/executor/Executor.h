@@ -5,10 +5,9 @@
 #pragma once
 
 #include <vector>
+#include <NeuralNet.h>
 
 #include "ComputationHost.h"
-#include "../netbuilder/wrapper/ImageWrapper.h"
-#include "../neuralnet/NeuralNet.h"
 
 class Executor : ComputationHost{
 private:

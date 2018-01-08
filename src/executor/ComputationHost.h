@@ -6,12 +6,10 @@
 #define HICS_COMPUTATIONHOST_H
 
 //Use long relative path versions for now
-//TODO: Update to direct includes!
-#include "../netbuilder/wrapper/ImageWrapper.h"
+#include <PlatformInfo.h>
+#include <NetInfo.h>
+#include <OperationMode.h>
 #include "ImageResult.h"
-#include "../netbuilder/NetInfo.h"
-#include "../manager/OperationMode.h"
-#include "../platform/PlatformInfo.h"
 
 /**
  * Defines the ComputationHost interface
@@ -19,9 +17,27 @@
 class ComputationHost {
 public:
     // Must have pure virtual methods
+    //TODO: Documentation for ComputationHost
+    /**
+     *
+     * @param images
+     * @param net
+     * @param mode
+     * @param selectedPlatforms
+     * @return
+     */
     virtual std::vector<ImageResult> classify(std::vector<ImageWrapper> images, NetInfo net, OperationMode mode,
-                                                std::vector<PlatformInfo> selectedPlatforms) = 0;
+                                              std::vector<PlatformInfo> selectedPlatforms) = 0;
+    /**
+     *
+     * @return
+     */
     virtual std::vector<PlatformInfo> queryPlatform() = 0;
+
+    /**
+     *
+     * @return
+     */
     virtual std::vector<NetInfo> queryNets() = 0;
 
 

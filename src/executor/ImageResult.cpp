@@ -3,3 +3,7 @@
 //
 
 #include "ImageResult.h"
+
+ImageResult::ImageResult(const std::map<float, std::string> &results, ImageWrapper image) {
+
+}
