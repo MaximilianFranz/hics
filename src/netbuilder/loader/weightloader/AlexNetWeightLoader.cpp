@@ -5,3 +5,7 @@
 #include "AlexNetWeightLoader.h"
 
 AlexNetWeightLoader::AlexNetWeightLoader() {}
+
+WeightWrapper AlexNetWeightLoader::getWeights(WeightLoader::LayerIdentifier layerId) {
+    return WeightWrapper();
+}

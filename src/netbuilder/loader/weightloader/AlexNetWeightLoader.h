@@ -11,4 +11,6 @@ private:
 
 public:
     AlexNetWeightLoader();
+
+    WeightWrapper getWeights(LayerIdentifier layerId) override;
 };

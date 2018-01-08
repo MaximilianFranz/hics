@@ -3,7 +3,3 @@
 //
 
 #include "WeightLoader.h"
-
-WeightWrapper WeightLoader::getWeights(WeightLoader::LayerIdentifier layerId) {
-
-}

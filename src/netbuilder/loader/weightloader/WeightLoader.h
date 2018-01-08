@@ -21,5 +21,6 @@ public:
         FULLY_CON_3 = 10002
     };
 
-    virtual WeightWrapper getWeights(LayerIdentifier layerId);
+    // pure virtual function to make WeightLoader an abstract class
+    virtual WeightWrapper getWeights(LayerIdentifier layerId) = 0;
 };
