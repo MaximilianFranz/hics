@@ -8,8 +8,8 @@
 
 class WeightWrapper : public Wrapper {
 private:
-
     float bias{};
+
 public:
 //    WeightWrapper(int numDimensions, int dimensionSizes, const std::vector &data);
 
