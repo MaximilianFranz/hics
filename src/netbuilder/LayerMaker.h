@@ -1,14 +1,14 @@
 //
-// Created by Maximilian Franz on 07.01.18.
+// Created by David Culley on 07.01.18.
 //
 
-#ifndef HICS_LAYERMAKER_H
-#define HICS_LAYERMAKER_H
-
+#pragma once
 
 class LayerMaker {
+private:
 
+public:
+    void createInputLayer(int inputDimension);
+
+    void createConvLayer(int inputDimension);
 };
-
-
-#endif //HICS_LAYERMAKER_H

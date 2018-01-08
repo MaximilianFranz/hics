@@ -4,6 +4,6 @@
 
 #include "WeightLoader.h"
 
-void WeightLoader::getWeights(WeightLoader::LayerIdentifier layerId) {
+WeightWrapper WeightLoader::getWeights(WeightLoader::LayerIdentifier layerId) {
 
 }

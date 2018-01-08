@@ -2,13 +2,13 @@
 // Created by Maximilian Franz on 07.01.18.
 //
 
-#ifndef HICS_DATAWRAPPER_H
-#define HICS_DATAWRAPPER_H
+#pragma once
 
+#include "Wrapper.h"
 
-class DataWrapper {
-
+class DataWrapper : virtual public Wrapper {
+private:
+public:
+    DataWrapper(int numDimensions, int dimensionSizes, const std::vector &data) : Wrapper(numDimensions, dimensionSizes,
+                                                                                          data) {}
 };
-
-
-#endif //HICS_DATAWRAPPER_H
