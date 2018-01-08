@@ -37,7 +37,7 @@ public:
      *
      * @return PlatformInfo of all Platforms the PlatformManager currently maintains
      */
-    std::vector queryPlatforms();
+    std::vector<PlatformInfo> queryPlatforms();
 
 };
 
