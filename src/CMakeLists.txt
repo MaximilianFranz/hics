@@ -1,3 +1,11 @@
+include_directories(communicator)
+include_directories(executor)
+include_directories(gui)
+include_directories(manager)
+include_directories(netbuilder)
+include_directories(neuralnet)
+include_directories(platform)
+
 add_subdirectory(communicator)
 add_subdirectory(executor)
 add_subdirectory(gui)
@@ -7,3 +15,11 @@ add_subdirectory(neuralnet)
 add_subdirectory(platform)
 
 add_executable(hics main.cpp)
+
+#target_link_libraries(hics libcommunicator)
+#target_link_libraries(hics libexecutor)
+#target_link_libraries(hics libgui)
+#target_link_libraries(hics libmanager)
+#target_link_libraries(hics libnetbuilder)
+#target_link_libraries(hics libneuralnet)
+#target_link_libraries(hics libplatform)
