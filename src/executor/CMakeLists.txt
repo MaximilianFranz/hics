@@ -1,0 +1,1 @@
+add_library(libexecutor STATIC Executor.cpp Executor.h ComputationHost.h PlatformPlacer.cpp PlatformPlacer.h Interpreter.cpp Interpreter.h ImageResult.cpp ImageResult.h)
