@@ -12,8 +12,8 @@
 class Layer {
 private:
     LayerInfo info;
-    Layer previous;
-    Layer next;
+    //Layer previous;
+    //Layer next;
     LayerFunction function; //TODO: changed from design
     WeightWrapper weights;
     //TODO: changed from design: no input and output Wrappers are held;
@@ -22,16 +22,11 @@ private:
 public:
     virtual void forward(DataWrapper input, DataWrapper output) = 0;
 
-    virtual LayerInfo getInfo() {
-        return info;
-    }
-
-    virtual bool isComputed() {
-        return isComputed;
-    }
-
+    virtual LayerInfo getInfo();
+    virtual bool isComputed();
     virtual bool isPlatformSet() = 0;
 
     virtual bool isBiased() = 0; //TODO: Do we need this?
+
 };
 
