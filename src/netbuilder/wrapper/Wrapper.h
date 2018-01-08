@@ -7,7 +7,7 @@
 #include <vector>
 
 class Wrapper {
-private:
+protected:
     int numDimensions;
     int dimensionSizes;
 //    std::vector data{};
