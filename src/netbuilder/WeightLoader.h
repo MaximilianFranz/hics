@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "WeightWrapper.h"
+
 class WeightLoader {
     enum class LayerIdentifier {
         CONV_1 = 0,
@@ -19,5 +21,5 @@ class WeightLoader {
 private:
 
 public:
-    virtual void getWeights(LayerIdentifier layerId); // TODO change return type
+    virtual WeightWrapper getWeights(LayerIdentifier layerId);
 };
