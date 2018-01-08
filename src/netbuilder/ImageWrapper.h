@@ -2,14 +2,17 @@
 // Created by Maximilian Franz on 07.01.18.
 //
 
-#ifndef HICS_IMAGEWRAPPER_H
-#define HICS_IMAGEWRAPPER_H
+#pragma once
 
+#include <string>
 #include "Wrapper.h"
 
-class ImageWrapper : Wrapper {
+class ImageWrapper : virtual public Wrapper {
+private:
+    std::string filepath;
+public:
+    ImageWrapper(int numDimensions, int dimensionSizes, const std::vector &data,
+                 const std::string &filepath);
 
+    const std::string &getFilepath() const;
 };
-
-
-#endif //HICS_IMAGEWRAPPER_H
