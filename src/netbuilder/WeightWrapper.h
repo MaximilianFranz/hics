@@ -2,14 +2,16 @@
 // Created by Maximilian Franz on 07.01.18.
 //
 
-#ifndef HICS_WEIGHTWRAPPER_H
-#define HICS_WEIGHTWRAPPER_H
+#pragma once
 
 #include "Wrapper.h"
 
-class WeightWrapper : Wrapper {
+class WeightWrapper : virtual public Wrapper {
+private:
 
+    float bias{};
+public:
+    WeightWrapper(int numDimensions, int dimensionSizes, const std::vector &data);
+
+    float getBias() const;
 };
-
-
-#endif //HICS_WEIGHTWRAPPER_H
