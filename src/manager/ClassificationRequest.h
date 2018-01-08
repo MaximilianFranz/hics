@@ -25,7 +25,7 @@ public:
 
     void addUserImage();
     void removeUserImage();
-    std::map<void, void> getUserImages();
+    //std::map<void, void> getUserImages();
     void addPlatform(PlatformInfo platform);
     std::vector<PlatformInfo> getSelectedPlatforms();
     void setSelectedOperationMode(OperationMode mode);

@@ -21,9 +21,9 @@ void ClassificationRequest::removeUserImage() {
 
 }
 
-std::map<void, void> ClassificationRequest::getUserImages() {
-    return std::map<void, void>();
-}
+//std::map<void, void> ClassificationRequest::getUserImages() {
+//    return std::map<void, void>();
+//}
 
 void ClassificationRequest::addPlatform(PlatformInfo platform) {
     platforms.push_back(platform);
