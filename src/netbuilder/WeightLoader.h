@@ -7,6 +7,9 @@
 #include "WeightWrapper.h"
 
 class WeightLoader {
+private:
+
+public:
     enum class LayerIdentifier {
         CONV_1 = 0,
         CONV_2 = 1,
@@ -18,8 +21,5 @@ class WeightLoader {
         FULLY_CON_3 = 10002
     };
 
-private:
-
-public:
     virtual WeightWrapper getWeights(LayerIdentifier layerId);
 };
