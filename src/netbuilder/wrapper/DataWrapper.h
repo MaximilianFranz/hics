@@ -6,7 +6,7 @@
 
 #include "Wrapper.h"
 
-class DataWrapper : virtual public Wrapper {
+class DataWrapper : public Wrapper {
 private:
 public:
 //    DataWrapper(int numDimensions, int dimensionSizes, const std::vector &data) : Wrapper(numDimensions, dimensionSizes,

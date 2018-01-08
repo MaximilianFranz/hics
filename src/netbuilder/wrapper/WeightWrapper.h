@@ -6,7 +6,7 @@
 
 #include "Wrapper.h"
 
-class WeightWrapper : virtual public Wrapper {
+class WeightWrapper : public Wrapper {
 private:
 
     float bias{};

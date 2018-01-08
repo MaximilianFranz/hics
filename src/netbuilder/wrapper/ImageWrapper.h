@@ -7,7 +7,7 @@
 #include <string>
 #include "Wrapper.h"
 
-class ImageWrapper : virtual public Wrapper {
+class ImageWrapper : public Wrapper {
 private:
     std::string filepath;
 public:
