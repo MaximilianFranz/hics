@@ -6,9 +6,11 @@
 
 #include "WeightLoader.h"
 
-class AlexNetWeightLoader : virtual public WeightLoader {
+class AlexNetWeightLoader : public WeightLoader {
 private:
 
 public:
     AlexNetWeightLoader();
+
+    WeightWrapper getWeights(LayerIdentifier layerId) override;
 };

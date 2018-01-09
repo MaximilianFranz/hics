@@ -7,7 +7,7 @@
 #include <string>
 #include "Wrapper.h"
 
-class ImageWrapper : virtual public Wrapper {
+class ImageWrapper : public Wrapper {
 private:
     std::string filepath;
 public:
@@ -15,4 +15,8 @@ public:
 //                 const std::string &filepath);
 
     const std::string &getFilepath() const;
+
+    int getNumDimensions() override;
+
+    int getDimensionSizes() override;
 };
