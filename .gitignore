@@ -1,5 +1,6 @@
 cmake-build-release
 .idea
+build/
 
 # Created by https://www.gitignore.io/api/c++,linux,macos,clion,windows
 
