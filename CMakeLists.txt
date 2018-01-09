@@ -10,6 +10,7 @@ add_library(Catch INTERFACE)
 target_include_directories(Catch INTERFACE ${CATCH_INCLUDE_DIR})
 
 find_package(Qt5 COMPONENTS Core Widgets)
+find_package(HDF5)
 
 enable_testing()
 
