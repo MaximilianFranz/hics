@@ -13,7 +13,7 @@ class SimpleNetIterator : NetIterator {
 
     bool hasNext() override;
 
-    Layer getElement() override;
+    Layer* getElement() override;
 
 };
 

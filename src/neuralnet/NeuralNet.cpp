@@ -4,10 +4,10 @@
 
 #include "NeuralNet.h"
 
-void NeuralNet::addLayer(Layer layer) {
+void NeuralNet::addLayer(Layer* layer) {
 
 }
 
-NetIterator NeuralNet::createIterator() {
-    return nullptr; // TODO
+NetIterator* NeuralNet::createIterator() {
+    return nullptr;
 }

@@ -16,6 +16,6 @@ bool SimpleNetIterator::hasNext() {
     return false;
 }
 
-Layer SimpleNetIterator::getElement() {
+Layer* SimpleNetIterator::getElement() {
     return nullptr;
 }
