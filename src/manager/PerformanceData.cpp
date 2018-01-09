@@ -4,6 +4,10 @@
 
 #include "PerformanceData.h"
 
+PerformanceData::PerformanceData(int PowerConsumption, int ComputationTime,
+                                 const std::map<PlatformInfo, float> &platformUsage) : PowerConsumption(
+        PowerConsumption), ComputationTime(ComputationTime), platformUsage(platformUsage) {}
+
 int PerformanceData::getPowerConsumption() const {
     return PowerConsumption;
 }

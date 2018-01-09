@@ -16,6 +16,8 @@ private:
     std::map<PlatformInfo, float> platformUsage;    //maps each platform to a percentage of usage
 
 public:
+    PerformanceData(int PowerConsumption, int ComputationTime, const std::map<PlatformInfo, float> &platformUsage);
+
     int getPowerConsumption() const;
 
     int getComputationTime() const;
