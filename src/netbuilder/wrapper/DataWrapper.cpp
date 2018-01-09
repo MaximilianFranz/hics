@@ -3,3 +3,13 @@
 //
 
 #include "DataWrapper.h"
+
+int DataWrapper::getNumDimensions() {
+    return Wrapper::getNumDimensions();
+}
+
+int DataWrapper::getDimensionSizes() {
+    return Wrapper::getDimensionSizes();
+}
+
+DataWrapper::DataWrapper() {}

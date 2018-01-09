@@ -14,7 +14,7 @@ private:
     bool computationCompleted;
     bool placementCompleted;
 public:
-    void addLayer(Layer layer);
+    void addLayer(Layer* layer);
 
     NetInfo getInfo() {
         return info;
@@ -28,7 +28,7 @@ public:
         return placementCompleted;
     }
 
-    NetIterator createIterator();
+    NetIterator* createIterator();
 
 
 };

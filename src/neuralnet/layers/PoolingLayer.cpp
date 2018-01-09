@@ -3,3 +3,15 @@
 //
 
 #include "PoolingLayer.h"
+
+void PoolingLayer::forward(DataWrapper input, DataWrapper output) {
+
+}
+
+bool PoolingLayer::isPlatformSet() {
+    return false;
+}
+
+bool PoolingLayer::isBiased() {
+    return false;
+}

@@ -6,8 +6,15 @@
 #define HICS_SOFTMAXLOSSLAYER_H
 
 
-class SoftMaxLossLayer {
+#include "Layer.h"
 
+class SoftMaxLossLayer : public Layer {
+public:
+    void forward(DataWrapper input, DataWrapper output) override;
+
+    bool isPlatformSet() override;
+
+    bool isBiased() override;
 };
 
 

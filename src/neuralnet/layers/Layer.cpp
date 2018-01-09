@@ -3,3 +3,11 @@
 //
 
 #include "Layer.h"
+
+LayerInfo Layer::getInfo() {
+    return LayerInfo();
+}
+
+bool Layer::isComputed() {
+    return false;
+}

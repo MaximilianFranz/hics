@@ -5,13 +5,16 @@
 #pragma once
 
 #include <vector>
+#include <list>
 
 class Wrapper {
 protected:
     int numDimensions;
     int dimensionSizes;
-//    std::vector data;
+    // std::vector<float> data;
+    // std::list<float> data;
 public:
+
     // pure virtual functions to make Wrapper an abstract class
     virtual int getNumDimensions() = 0;
 

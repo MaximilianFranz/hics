@@ -3,3 +3,11 @@
 //
 
 #include "LayerInfo.h"
+
+std::string LayerInfo::getInfoString() {
+    return "";
+}
+
+std::string LayerInfo::getInfoJSON() {
+    return "";
+}
