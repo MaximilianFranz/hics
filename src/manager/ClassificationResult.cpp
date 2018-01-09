@@ -12,7 +12,7 @@ const std::vector<ImageResult> &ClassificationResult::getResults() const {
     return results;
 }
 
-const NetInfo &ClassificationResult::getUsedNet() const {
+const NetInfo &ClassificationResult::getUsedNeuralNet() const {
     return usedNet;
 }
 
