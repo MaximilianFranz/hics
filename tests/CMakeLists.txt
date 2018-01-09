@@ -5,6 +5,6 @@ add_executable(tests ${TEST_SOURCES})
 include_directories(../src)
 
 #TODO: @Michael hier brauche ich libhics, oder nicht?
-target_link_libraries(tests Catch libhics)
+target_link_libraries(tests Catch libhics libnetbuilder)
 #
 add_test(NAME testname COMMAND tests)

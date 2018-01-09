@@ -18,11 +18,3 @@ public:
 
     virtual int getDimensionSizes() = 0;
 };
-
-int Wrapper::getNumDimensions() {
-    return numDimensions;
-}
-
-int Wrapper::getDimensionSizes() {
-    return dimensionSizes;
-}
