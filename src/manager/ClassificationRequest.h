@@ -23,20 +23,24 @@ private:
     bool aggregate;
 
 public:
-    //All needed Methods, Datatypes and parameters still TODO
+
     ClassificationRequest(NetInfo neuralNet, std::vector<PlatformInfo> platforms, OperationMode m, bool aggregate,
         std::map<QString, QImage> userImgs);
 
-    void addUserImage(QString, QImage);
-    void removeUserImage(QString);
-    std::map<QString, QImage> getUserImages();
+    void addUserImage(QString str, QImage img);
     void addPlatform(PlatformInfo platform);
-    std::vector<PlatformInfo> getSelectedPlatforms();
-    void setSelectedOperationMode(OperationMode mode);
-    OperationMode getSelectedOperationMode();
-    void setSelectedNeuralNet(NetInfo net);
-    NetInfo getSelectedNeuralNet();
+    void removeUserImage(QString str);
+
+    //Setter
     void setAggregateResults(bool aggregate);
+    void setSelectedOperationMode(OperationMode mode);
+    void setSelectedNeuralNet(NetInfo net);
+
+    //Getter
+    std::map<QString, QImage> getUserImages();
+    std::vector<PlatformInfo> getSelectedPlatforms();
+    OperationMode getSelectedOperationMode();
+    NetInfo getSelectedNeuralNet();
     bool getAggregateResults();
 };
 

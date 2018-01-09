@@ -5,7 +5,6 @@
 #include "ClassificationRequest.h"
 
 
-//TODO: functionalities
 
 ClassificationRequest::ClassificationRequest(NetInfo neuralNet, std::vector<PlatformInfo> platforms, OperationMode m,
                                              bool aggregate, std::map<QString, QImage> userImgs) :
@@ -13,45 +12,45 @@ ClassificationRequest::ClassificationRequest(NetInfo neuralNet, std::vector<Plat
 
 }
 
-void ClassificationRequest::addUserImage(QString, QImage) {
-
-}
-
-void ClassificationRequest::removeUserImage(QString) {
-
-}
-
-
-std::map<QString, QImage> ClassificationRequest::getUserImages() {
-    return userImages;
+void ClassificationRequest::addUserImage(QString str, QImage img) {
+    std::pair newUserImg = std::pair(str, img);
+    userImages.insert(newUserImg);
 }
 
 void ClassificationRequest::addPlatform(PlatformInfo platform) {
     platforms.push_back(platform);
 }
 
-std::vector<PlatformInfo> ClassificationRequest::getSelectedPlatforms() {
-    return platforms;
+void ClassificationRequest::removeUserImage(QString str) {
+    userImages.erase(str);
 }
 
-void ClassificationRequest::setSelectedOperationMode(OperationMode m) {
-    opMode = m;
+void ClassificationRequest::setAggregateResults(bool aggregate) {
+    this->aggregate = aggregate;
 }
 
-OperationMode ClassificationRequest::getSelectedOperationMode() {
-    return opMode;
+void ClassificationRequest::setSelectedOperationMode(OperationMode mode) {
+    opMode = mode;
 }
 
 void ClassificationRequest::setSelectedNeuralNet(NetInfo net) {
     neuralNet = net;
 }
 
-NetInfo ClassificationRequest::getSelectedNeuralNet() {
-    return neuralNet;
+std::map<QString, QImage> ClassificationRequest::getUserImages() {
+    return userImages;
 }
 
-void ClassificationRequest::setAggregateResults(bool agg) {
-    aggregate = agg;
+std::vector<PlatformInfo> ClassificationRequest::getSelectedPlatforms() {
+    return platforms;
+}
+
+OperationMode ClassificationRequest::getSelectedOperationMode() {
+    return opMode;
+}
+
+NetInfo ClassificationRequest::getSelectedNeuralNet() {
+    return neuralNet;
 }
 
 bool ClassificationRequest::getAggregateResults() {
