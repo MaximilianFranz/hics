@@ -1,4 +1,4 @@
-#include "ResultWidget.h"
+#include "handler/ui/ResultWidget.h"
 #include "ui_ResultWidget.h"
 
 ResultWidget::ResultWidget(QWidget *parent) :

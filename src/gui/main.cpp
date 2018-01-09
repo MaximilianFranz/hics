@@ -3,7 +3,7 @@
 //
 
 #include <QApplication>
-#include "MainWindow.h"
+#include "handler/ui/MainWindow.h"
 
 int main(int argc, char *argv[])
 {

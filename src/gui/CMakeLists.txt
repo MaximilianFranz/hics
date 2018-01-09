@@ -7,28 +7,28 @@ add_executable(gui main.cpp)
 
 set(SOURCE_FILES
     main.cpp
-    MainWindow.cpp
-    MainWindow.h
-    MainWindow.ui
-    StartWidget.cpp
-    StartWidget.h
-    StartWidget.ui
-    ResultWidget.cpp
-    ResultWidget.h
-    ResultWidget.ui
-    DetailDialog.cpp
-    DetailDialog.h
-    DetailDialog.ui
+        handler/ui/MainWindow.cpp
+        handler/ui/MainWindow.h
+        handler/ui/MainWindow.ui
+        handler/ui/StartWidget.cpp
+        handler/ui/StartWidget.h
+        handler/ui/StartWidget.ui
+        handler/ui/ResultWidget.cpp
+        handler/ui/ResultWidget.h
+        handler/ui/ResultWidget.ui
+        handler/ui/DetailDialog.cpp
+        handler/ui/DetailDialog.h
+        handler/ui/DetailDialog.ui
     MainWindowSubject.cpp
     MainWindowSubject.h
-    MainWindowHandler.cpp
-    MainWindowHandler.h
-    StartWidgetHandler.cpp
-    StartWidgetHandler.h
-    ResultWidgetHandler.cpp
-    ResultWidgetHandler.h
-    DetailDialogHandler.cpp
-    DetailDialogHandler.h)
+        handler/MainWindowHandler.cpp
+        handler/MainWindowHandler.h
+        handler/StartWidgetHandler.cpp
+        handler/StartWidgetHandler.h
+        handler/ResultWidgetHandler.cpp
+        handler/ResultWidgetHandler.h
+        handler/DetailDialogHandler.cpp
+        handler/DetailDialogHandler.h)
 
 add_library(libgui STATIC ${SOURCE_FILES})
 
