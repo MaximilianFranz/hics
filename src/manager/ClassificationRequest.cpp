@@ -5,25 +5,26 @@
 #include "ClassificationRequest.h"
 
 
+//TODO: functionalities
 
 ClassificationRequest::ClassificationRequest(NetInfo neuralNet, std::vector<PlatformInfo> platforms, OperationMode m,
-                                             bool aggregate) : neuralNet(neuralNet), platforms(platforms), opMode(m),
-                                                               aggregate(aggregate) {
+                                             bool aggregate, std::map<QString, QImage> userImgs) :
+        neuralNet(neuralNet), platforms(platforms), opMode(m), aggregate(aggregate), userImages(userImgs) {
+
+}
+
+void ClassificationRequest::addUserImage(QString, QImage) {
+
+}
+
+void ClassificationRequest::removeUserImage(QString) {
 
 }
 
 
-void ClassificationRequest::addUserImage() {
-
+std::map<QString, QImage> ClassificationRequest::getUserImages() {
+    return userImages;
 }
-
-void ClassificationRequest::removeUserImage() {
-
-}
-
-//std::map<void, void> ClassificationRequest::getUserImages() {
-//    return std::map<void, void>();
-//}
 
 void ClassificationRequest::addPlatform(PlatformInfo platform) {
     platforms.push_back(platform);

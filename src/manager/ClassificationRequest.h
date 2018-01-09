@@ -8,12 +8,15 @@
 
 #include <map>
 #include <vector>
-#include "../platform/PlatformInfo.h"
+#include <QtGui/QImage>
+#include <QtCore/QString>
+#include "PlatformInfo.h"
 #include "OperationMode.h"
-#include "../netbuilder/NetInfo.h"
+#include "NetInfo.h"
 
 class ClassificationRequest {
 private:
+    std::map<QString, QImage> userImages;
     NetInfo neuralNet;
     std::vector<PlatformInfo> platforms;
     OperationMode opMode;
@@ -21,11 +24,12 @@ private:
 
 public:
     //All needed Methods, Datatypes and parameters still TODO
-    ClassificationRequest(NetInfo neuralNet, std::vector<PlatformInfo> platforms, OperationMode m, bool aggregate);
+    ClassificationRequest(NetInfo neuralNet, std::vector<PlatformInfo> platforms, OperationMode m, bool aggregate,
+        std::map<QString, QImage> userImgs);
 
-    void addUserImage();
-    void removeUserImage();
-    //std::map<void, void> getUserImages();
+    void addUserImage(QString, QImage);
+    void removeUserImage(QString);
+    std::map<QString, QImage> getUserImages();
     void addPlatform(PlatformInfo platform);
     std::vector<PlatformInfo> getSelectedPlatforms();
     void setSelectedOperationMode(OperationMode mode);
