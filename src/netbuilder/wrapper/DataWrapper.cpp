@@ -6,8 +6,9 @@
 #include "../../NotImplementedException.h"
 
 int DataWrapper::getNumDimensions() {
-    return Wrapper::getNumDimensions();
+    return 5; //TODO: replace with proper method!
 }
+
 
 int DataWrapper::getDimensionSizes() {
     return Wrapper::getDimensionSizes();

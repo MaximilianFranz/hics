@@ -20,6 +20,7 @@ set(SOURCE_FILES main.cpp NotImplementedException.cpp NotImplementedException.h)
 add_executable(hics ${SOURCE_FILES})
 #TODO: @Michael ist das ok so, damit ich die tests hiergegen linken kann?
 add_library(libhics STATIC ${SOURCE_FILES})
+target_link_libraries(hics libhics)
 
 target_link_libraries(hics libcommunicator)
 target_link_libraries(hics libexecutor)
