@@ -16,7 +16,10 @@ add_subdirectory(netbuilder)
 add_subdirectory(neuralnet)
 add_subdirectory(platform)
 
-add_executable(hics main.cpp NotImplementedException.cpp NotImplementedException.h)
+set(SOURCE_FILES main.cpp NotImplementedException.cpp NotImplementedException.h)
+add_executable(hics ${SOURCE_FILES})
+#TODO: @Michael ist das ok so, damit ich die tests hiergegen linken kann?
+add_library(libhics STATIC ${SOURCE_FILES})
 
 target_link_libraries(hics libcommunicator)
 target_link_libraries(hics libexecutor)
