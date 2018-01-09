@@ -16,7 +16,7 @@ add_subdirectory(netbuilder)
 add_subdirectory(neuralnet)
 add_subdirectory(platform)
 
-add_executable(hics main.cpp)
+add_executable(hics main.cpp NotImplementedException.cpp NotImplementedException.h)
 
 #target_link_libraries(hics libcommunicator)
 #target_link_libraries(hics libexecutor)
