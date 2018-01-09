@@ -3,7 +3,7 @@
 //
 
 #include "WrapperTest.h"
-#include "../src/netbuilder/wrapper/DataWrapper.h"
+#include "wrapper/DataWrapper.h"
 
 TEST_CASE("Test 1", "[sometag]") {
     DataWrapper d;

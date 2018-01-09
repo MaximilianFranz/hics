@@ -1,11 +1,3 @@
-include_directories(communicator)
-include_directories(executor)
-include_directories(gui)
-include_directories(manager)
-include_directories(netbuilder)
-include_directories(neuralnet)
-include_directories(platform)
-
 add_subdirectory(communicator)
 add_subdirectory(executor)
 if(Qt5Core_FOUND AND Qt5Widgets_FOUND)
