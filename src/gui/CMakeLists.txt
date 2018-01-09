@@ -1,5 +1,5 @@
 add_executable(gui main.cpp)
 
-target_link_libraries(gui Qt5::Core)
+add_library(libgui STATIC main.cpp MainWindow.cpp MainWindow.h MainWindow.ui)
 
-add_library(libgui STATIC  MainWindow.cpp MainWindow.h)
+target_link_libraries(libgui Qt5::Core Qt5::Gui Qt5::Widgets)

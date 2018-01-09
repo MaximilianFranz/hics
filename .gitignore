@@ -170,3 +170,4 @@ $RECYCLE.BIN/
 #QtCreator
 .idea/
 hics.**
+CMakeLists.txt.user
