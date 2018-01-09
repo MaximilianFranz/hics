@@ -8,6 +8,7 @@
 
 class NetBuilder {
 
+public:
     void buildNeuralNet(NetInfo net);
 
     void queryAvailableNets(); // TODO change return type
