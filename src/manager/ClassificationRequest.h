@@ -8,8 +8,8 @@
 
 #include <map>
 #include <vector>
-#include <QtGui/QImage>
-#include <QtCore/QString>
+#include <QImage>
+#include <QString>
 #include "PlatformInfo.h"
 #include "OperationMode.h"
 #include "NetInfo.h"
