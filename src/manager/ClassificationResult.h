@@ -24,7 +24,7 @@ public:
 
     //Getter
     const std::vector<ImageResult> &getResults() const;
-    const NetInfo &getUsedNet() const;
+    const NetInfo &getUsedNeuralNet() const;
     const PerformanceData &getPerformance() const;
     const std::map<std::string, float> &getAggregatedResults() const;
 
