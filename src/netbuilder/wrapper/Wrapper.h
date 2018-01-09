@@ -11,10 +11,8 @@ class Wrapper {
 protected:
     int numDimensions;
     int dimensionSizes;
-    // std::vector<float> data;
-    // std::list<float> data;
-public:
 
+public:
     // pure virtual functions to make Wrapper an abstract class
     virtual int getNumDimensions() = 0;
 

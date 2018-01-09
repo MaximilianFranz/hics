@@ -10,10 +10,8 @@
 class ImageWrapper : public Wrapper {
 private:
     std::string filepath;
-public:
-//    ImageWrapper(int numDimensions, int dimensionSizes, const std::vector &data,
-//                 const std::string &filepath);
 
+public:
     const std::string &getFilepath() const;
 
     int getNumDimensions() override;
