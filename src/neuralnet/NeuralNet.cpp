@@ -3,3 +3,11 @@
 //
 
 #include "NeuralNet.h"
+
+void NeuralNet::addLayer(Layer layer) {
+
+}
+
+NetIterator NeuralNet::createIterator() {
+    return nullptr; // TODO
+}

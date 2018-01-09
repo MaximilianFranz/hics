@@ -3,3 +3,15 @@
 //
 
 #include "SoftMaxLossLayer.h"
+
+void SoftMaxLossLayer::forward(DataWrapper input, DataWrapper output) {
+
+}
+
+bool SoftMaxLossLayer::isPlatformSet() {
+    return false;
+}
+
+bool SoftMaxLossLayer::isBiased() {
+    return false;
+}

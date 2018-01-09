@@ -6,7 +6,14 @@
 
 #include "NetIterator.h"
 
-class SimpleNetIterator : NetIterator{
+class SimpleNetIterator : NetIterator {
+    void first() override;
+
+    void next() override;
+
+    bool hasNext() override;
+
+    Layer getElement() override;
 
 };
 

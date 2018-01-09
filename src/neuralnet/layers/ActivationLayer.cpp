@@ -3,3 +3,16 @@
 //
 
 #include "ActivationLayer.h"
+
+
+void ActivationLayer::forward(DataWrapper input, DataWrapper output) {
+
+}
+
+bool ActivationLayer::isPlatformSet() {
+    return false;
+}
+
+bool ActivationLayer::isBiased() {
+    return false;
+}
