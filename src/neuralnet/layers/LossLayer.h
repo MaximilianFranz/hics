@@ -2,13 +2,11 @@
 // Created by Maximilian Franz on 07.01.18.
 //
 
-#ifndef HICS_LOSSLAYER_H
-#define HICS_LOSSLAYER_H
+#pragma once
 
+#include "Layer.h"
 
-class LossLayer {
+class LossLayer : Layer{
 
 };
 
-
-#endif //HICS_LOSSLAYER_H

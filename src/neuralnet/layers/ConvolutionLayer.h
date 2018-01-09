@@ -2,13 +2,12 @@
 // Created by Maximilian Franz on 07.01.18.
 //
 
-#ifndef HICS_CONVOLUTIONLAYER_H
-#define HICS_CONVOLUTIONLAYER_H
+#pragma once
 
+#include "Layer.h"
 
-class ConvolutionLayer {
+class ConvolutionLayer : Layer {
 
 };
 
 
-#endif //HICS_CONVOLUTIONLAYER_H

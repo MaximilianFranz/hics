@@ -2,13 +2,11 @@
 // Created by Maximilian Franz on 07.01.18.
 //
 
-#ifndef HICS_RELUACTIVATIONLAYER_H
-#define HICS_RELUACTIVATIONLAYER_H
+#pragma once
 
+#include "ActivationLayer.h"
 
-class ReLUActivationLayer {
-
+class ReLUActivationLayer : ActivationLayer{
 };
 
 
-#endif //HICS_RELUACTIVATIONLAYER_H

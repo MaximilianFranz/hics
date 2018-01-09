@@ -11,3 +11,11 @@
 const std::string &ImageWrapper::getFilepath() const {
     return filepath;
 }
+
+int ImageWrapper::getNumDimensions() {
+    return Wrapper::getNumDimensions();
+}
+
+int ImageWrapper::getDimensionSizes() {
+    return Wrapper::getDimensionSizes();
+}

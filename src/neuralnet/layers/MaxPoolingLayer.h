@@ -2,13 +2,12 @@
 // Created by Maximilian Franz on 07.01.18.
 //
 
-#ifndef HICS_MAXPOOLINGLAYER_H
-#define HICS_MAXPOOLINGLAYER_H
+#pragma once
 
+#include "PoolingLayer.h"
 
-class MaxPoolingLayer {
+class MaxPoolingLayer : PoolingLayer{
 
 };
 
 
-#endif //HICS_MAXPOOLINGLAYER_H

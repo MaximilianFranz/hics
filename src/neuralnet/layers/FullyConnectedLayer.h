@@ -2,13 +2,13 @@
 // Created by Maximilian Franz on 07.01.18.
 //
 
-#ifndef HICS_FULLYCONNECTEDLAYER_H
-#define HICS_FULLYCONNECTEDLAYER_H
+#pragma once
 
+#include "Layer.h"
 
-class FullyConnectedLayer {
+class FullyConnectedLayer : Layer {
+    void forward(DataWrapper input, DataWrapper output) override;
 
 };
 
 
-#endif //HICS_FULLYCONNECTEDLAYER_H

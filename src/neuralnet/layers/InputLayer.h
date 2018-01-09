@@ -2,13 +2,11 @@
 // Created by Maximilian Franz on 07.01.18.
 //
 
-#ifndef HICS_INPUTLAYER_H
-#define HICS_INPUTLAYER_H
+#pragma once
 
+#include "Layer.h"
 
-class InputLayer {
+class InputLayer : Layer{
 
 };
 
-
-#endif //HICS_INPUTLAYER_H
