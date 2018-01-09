@@ -3,3 +3,15 @@
 //
 
 #include "LossLayer.h"
+
+void LossLayer::forward(DataWrapper input, DataWrapper output) {
+
+}
+
+bool LossLayer::isPlatformSet() {
+    return false; // TODO
+}
+
+bool LossLayer::isBiased() {
+    return false; // TODO
+}

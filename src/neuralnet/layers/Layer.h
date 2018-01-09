@@ -17,13 +17,15 @@ private:
     LayerFunction function; //TODO: changed from design
     WeightWrapper weights;
     //TODO: changed from design: no input and output Wrappers are held;
-
     bool computed;
+
 public:
     virtual void forward(DataWrapper input, DataWrapper output) = 0;
 
     virtual LayerInfo getInfo();
+
     virtual bool isComputed();
+
     virtual bool isPlatformSet() = 0;
 
     virtual bool isBiased() = 0; //TODO: Do we need this?

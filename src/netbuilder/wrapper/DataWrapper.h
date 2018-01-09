@@ -9,6 +9,12 @@
 class DataWrapper : public Wrapper {
 private:
 public:
+    int getNumDimensions() override;
+
+    int getDimensionSizes() override;
+
+    DataWrapper();
+
 //    DataWrapper(int numDimensions, int dimensionSizes, const std::vector &data) : Wrapper(numDimensions, dimensionSizes,
 //                                                                                          data) {}
 };

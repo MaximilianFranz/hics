@@ -3,3 +3,15 @@
 //
 
 #include "LocalResponseNormLayer.h"
+
+void LocalResponseNormLayer::forward(DataWrapper input, DataWrapper output) {
+
+}
+
+bool LocalResponseNormLayer::isPlatformSet() {
+    return false;
+}
+
+bool LocalResponseNormLayer::isBiased() {
+    return false;
+}

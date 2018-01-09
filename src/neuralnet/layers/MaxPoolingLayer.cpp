@@ -3,3 +3,15 @@
 //
 
 #include "MaxPoolingLayer.h"
+
+void MaxPoolingLayer::forward(DataWrapper input, DataWrapper output) {
+
+}
+
+bool MaxPoolingLayer::isPlatformSet() {
+    return false;
+}
+
+bool MaxPoolingLayer::isBiased() {
+    return false;
+}
