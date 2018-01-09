@@ -13,8 +13,8 @@ ClassificationRequest::ClassificationRequest(NetInfo neuralNet, std::vector<Plat
 }
 
 void ClassificationRequest::addUserImage(QString str, QImage img) {
-    std::pair newUserImg = std::pair(str, img);
-    userImages.insert(newUserImg);
+    std::pair <QString, QImage> newImg(str, img);
+    userImages.insert(newImg);
 }
 
 void ClassificationRequest::addPlatform(PlatformInfo platform) {
