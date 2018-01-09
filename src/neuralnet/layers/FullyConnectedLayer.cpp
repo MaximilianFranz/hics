@@ -3,30 +3,31 @@
 //
 
 #include "FullyConnectedLayer.h"
+#include "../../NotImplementedException.h"
 
 void FullyConnectedLayer::forward(DataWrapper input, DataWrapper output) {
-
+    throw NotImplementedException();
 }
 
 bool FullyConnectedLayer::isPlatformSet() {
-    return false;
+    throw NotImplementedException();
 }
 
 bool FullyConnectedLayer::isBiased() {
-    return false;
+    throw NotImplementedException();
 }
 //LayerInfo FullyConnectedLayer::getInfo() {
-//    return nullptr;
+//    throw NotImplementedException();
 //}
 //
 //bool FullyConnectedLayer::isComputed() {
-//    return false;
+//    throw NotImplementedException();
 //}
 //
 //bool FullyConnectedLayer::isPlatformSet() {
-//    return false;
+//    throw NotImplementedException();
 //}
 //
 //bool FullyConnectedLayer::isBiased() {
-//    return false;
+//    throw NotImplementedException();
 //}

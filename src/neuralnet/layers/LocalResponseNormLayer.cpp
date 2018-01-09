@@ -3,15 +3,16 @@
 //
 
 #include "LocalResponseNormLayer.h"
+#include "../../NotImplementedException.h"
 
 void LocalResponseNormLayer::forward(DataWrapper input, DataWrapper output) {
-
+    throw NotImplementedException();
 }
 
 bool LocalResponseNormLayer::isPlatformSet() {
-    return false;
+    throw NotImplementedException();
 }
 
 bool LocalResponseNormLayer::isBiased() {
-    return false;
+    throw NotImplementedException();
 }

@@ -3,11 +3,12 @@
 //
 
 #include "NeuralNet.h"
+#include "../NotImplementedException.h"
 
-void NeuralNet::addLayer(Layer* layer) {
-
+void NeuralNet::addLayer(Layer *layer) {
+    throw NotImplementedException();
 }
 
-NetIterator* NeuralNet::createIterator() {
-    return nullptr;
+NetIterator *NeuralNet::createIterator() {
+    throw NotImplementedException();
 }

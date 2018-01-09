@@ -3,19 +3,20 @@
 //
 
 #include "NetInfo.h"
+#include "../NotImplementedException.h"
 
 NetInfo::NetInfo(std::string name, int imageDimension) {
-
+    throw NotImplementedException();
 }
 
 std::string NetInfo::getName() {
-    return std::string();
+    throw NotImplementedException();
 }
 
 int NetInfo::getImageDimension() {
-    return 0;
+    throw NotImplementedException();
 }
 
 std::string NetInfo::getIdentifier() {
-    return std::string();
+    throw NotImplementedException();
 }

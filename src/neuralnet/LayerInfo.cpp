@@ -3,11 +3,12 @@
 //
 
 #include "LayerInfo.h"
+#include "../NotImplementedException.h"
 
 std::string LayerInfo::getInfoString() {
-    return "";
+    throw NotImplementedException();
 }
 
 std::string LayerInfo::getInfoJSON() {
-    return "";
+    throw NotImplementedException();
 }

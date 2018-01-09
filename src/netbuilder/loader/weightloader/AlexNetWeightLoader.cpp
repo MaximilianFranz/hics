@@ -3,9 +3,10 @@
 //
 
 #include "AlexNetWeightLoader.h"
+#include "../../../NotImplementedException.h"
 
-AlexNetWeightLoader::AlexNetWeightLoader() {}
+AlexNetWeightLoader::AlexNetWeightLoader() { throw NotImplementedException(); }
 
 WeightWrapper AlexNetWeightLoader::getWeights(WeightLoader::LayerIdentifier layerId) {
-    return WeightWrapper();
+    throw NotImplementedException();
 }

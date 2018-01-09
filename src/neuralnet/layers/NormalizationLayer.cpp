@@ -3,15 +3,16 @@
 //
 
 #include "NormalizationLayer.h"
+#include "../../NotImplementedException.h"
 
 bool NormalizationLayer::isPlatformSet() {
-    return false;
+    throw NotImplementedException();
 }
 
 void NormalizationLayer::forward(DataWrapper input, DataWrapper output) {
-
+    throw NotImplementedException();
 }
 
 bool NormalizationLayer::isBiased() {
-    return false;
+    throw NotImplementedException();
 }

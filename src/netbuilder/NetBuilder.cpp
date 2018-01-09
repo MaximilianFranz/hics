@@ -3,11 +3,12 @@
 //
 
 #include "NetBuilder.h"
+#include "../NotImplementedException.h"
 
 void NetBuilder::buildNeuralNet(NetInfo net) {
-
+    throw NotImplementedException();
 }
 
 void NetBuilder::queryAvailableNets() {
-
+    throw NotImplementedException();
 }

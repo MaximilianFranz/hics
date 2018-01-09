@@ -3,11 +3,12 @@
 //
 
 #include "LayerMaker.h"
+#include "../NotImplementedException.h"
 
 void LayerMaker::createInputLayer(int inputDimension) {
-
+    throw NotImplementedException();
 }
 
 void LayerMaker::createConvLayer(int inputDimension) {
-
+    throw NotImplementedException();
 }

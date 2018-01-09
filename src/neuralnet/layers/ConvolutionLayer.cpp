@@ -3,15 +3,16 @@
 //
 
 #include "ConvolutionLayer.h"
+#include "../../NotImplementedException.h"
 
 void ConvolutionLayer::forward(DataWrapper input, DataWrapper output) {
-
+    throw NotImplementedException();
 }
 
 bool ConvolutionLayer::isPlatformSet() {
-    return false;
+    throw NotImplementedException();
 }
 
 bool ConvolutionLayer::isBiased() {
-    return false;
+    throw NotImplementedException();
 }

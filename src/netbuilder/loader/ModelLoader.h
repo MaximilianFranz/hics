@@ -4,6 +4,9 @@
 
 #pragma once
 
-class ModelLoader {
+#include "../../NotImplementedException.h"
 
+class ModelLoader {
+public:
+    ModelLoader() { throw NotImplementedException(); }
 };

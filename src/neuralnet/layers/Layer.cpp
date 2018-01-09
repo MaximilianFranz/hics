@@ -3,11 +3,12 @@
 //
 
 #include "Layer.h"
+#include "../../NotImplementedException.h"
 
 LayerInfo Layer::getInfo() {
-    return LayerInfo();
+    throw NotImplementedException();
 }
 
 bool Layer::isComputed() {
-    return false;
+    throw NotImplementedException();
 }

@@ -3,15 +3,16 @@
 //
 
 #include "MaxPoolingLayer.h"
+#include "../../NotImplementedException.h"
 
 void MaxPoolingLayer::forward(DataWrapper input, DataWrapper output) {
-
+    throw NotImplementedException();
 }
 
 bool MaxPoolingLayer::isPlatformSet() {
-    return false;
+    throw NotImplementedException();
 }
 
 bool MaxPoolingLayer::isBiased() {
-    return false;
+    throw NotImplementedException();
 }

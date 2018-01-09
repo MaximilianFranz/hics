@@ -3,19 +3,20 @@
 //
 
 #include "SimpleNetIterator.h"
+#include "../NotImplementedException.h"
 
 void SimpleNetIterator::first() {
-
+    throw NotImplementedException();
 }
 
 void SimpleNetIterator::next() {
-
+    throw NotImplementedException();
 }
 
 bool SimpleNetIterator::hasNext() {
-    return false;
+    throw NotImplementedException();
 }
 
-Layer* SimpleNetIterator::getElement() {
-    return nullptr;
+Layer *SimpleNetIterator::getElement() {
+    throw NotImplementedException();
 }

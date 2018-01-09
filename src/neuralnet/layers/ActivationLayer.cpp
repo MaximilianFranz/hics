@@ -3,16 +3,17 @@
 //
 
 #include "ActivationLayer.h"
+#include "../../NotImplementedException.h"
 
 
 void ActivationLayer::forward(DataWrapper input, DataWrapper output) {
-
+    throw NotImplementedException();
 }
 
 bool ActivationLayer::isPlatformSet() {
-    return false;
+    throw NotImplementedException();
 }
 
 bool ActivationLayer::isBiased() {
-    return false;
+    throw NotImplementedException();
 }

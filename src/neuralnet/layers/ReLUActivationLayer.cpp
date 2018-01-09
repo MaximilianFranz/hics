@@ -3,15 +3,16 @@
 //
 
 #include "ReLUActivationLayer.h"
+#include "../../NotImplementedException.h"
 
 void ReLUActivationLayer::forward(DataWrapper input, DataWrapper output) {
-
+    throw NotImplementedException();
 }
 
 bool ReLUActivationLayer::isPlatformSet() {
-    return false;
+    throw NotImplementedException();
 }
 
 bool ReLUActivationLayer::isBiased() {
-    return false;
+    throw NotImplementedException();
 }

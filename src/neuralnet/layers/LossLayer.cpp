@@ -3,15 +3,16 @@
 //
 
 #include "LossLayer.h"
+#include "../../NotImplementedException.h"
 
 void LossLayer::forward(DataWrapper input, DataWrapper output) {
-
+    throw NotImplementedException();
 }
 
 bool LossLayer::isPlatformSet() {
-    return false; // TODO
+    throw NotImplementedException();
 }
 
 bool LossLayer::isBiased() {
-    return false; // TODO
+    throw NotImplementedException();
 }

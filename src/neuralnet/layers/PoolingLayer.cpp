@@ -3,15 +3,16 @@
 //
 
 #include "PoolingLayer.h"
+#include "../../NotImplementedException.h"
 
 void PoolingLayer::forward(DataWrapper input, DataWrapper output) {
-
+    throw NotImplementedException();
 }
 
 bool PoolingLayer::isPlatformSet() {
-    return false;
+    throw NotImplementedException();
 }
 
 bool PoolingLayer::isBiased() {
-    return false;
+    throw NotImplementedException();
 }
