@@ -6,8 +6,13 @@
 #define HICS_MANAGER_H
 
 
-class Manager {
+#include "ManagerObserver.h"
 
+class Manager : public ManagerObserver {
+    /**
+     * called by GUI to update the Manager when the classify is pressed
+     */
+    void update();
 };
 
 
