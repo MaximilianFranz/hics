@@ -3,7 +3,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-add_executable(gui main.cpp)
+add_executable(gui-exec main.cpp)
 
 set(SOURCE_FILES
     main.cpp
@@ -30,7 +30,7 @@ set(SOURCE_FILES
         handler/DetailDialogHandler.cpp
         handler/DetailDialogHandler.h)
 
-add_library(libgui STATIC ${SOURCE_FILES})
+add_library(gui STATIC ${SOURCE_FILES})
 
-target_link_libraries(libgui Qt5::Core Qt5::Gui Qt5::Widgets)
-target_link_libraries(gui libgui)
+target_link_libraries(gui Qt5::Core Qt5::Gui Qt5::Widgets)
+target_link_libraries(gui-exec gui)
