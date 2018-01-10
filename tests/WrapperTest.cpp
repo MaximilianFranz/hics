@@ -5,8 +5,12 @@
 #include "WrapperTest.h"
 #include "wrapper/DataWrapper.h"
 
-TEST_CASE("Test 1", "[sometag]") {
-    DataWrapper d;
-    REQUIRE(d.getNumDimensions() == 5);
-    REQUIRE(11 == 11);
+TEST_CASE("Return functions of Wrapper", "[sometag]") {
+    std::vector<float> data(5,1.0);
+    std::vector<int> s(1,5);
+    DataWrapper d(1, s, data);
+    REQUIRE(d.getNumDimensions() == 1);
+    std::vector<int> sizes = d.getDimensionSizes();
+    REQUIRE(sizes[0] == 5);
+    REQUIRE(d.getSizeOfDimension(1) == 5);
 }

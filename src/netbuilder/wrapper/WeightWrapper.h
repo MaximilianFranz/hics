@@ -8,12 +8,53 @@
 
 class WeightWrapper : public Wrapper {
 private:
-    float bias{};
+    std::vector<float> bias;
+    int biasNumDimensions;
+    std::vector<int> biasDimensionSizes;
 
 public:
-    float getBias() const;
 
-    int getNumDimensions() override;
+    /** Create WeightWrapper by passing weight and bias data vectors
+     *
+     * @param numDimensions
+     * @param dimensionSizes
+     * @param weights
+     * @param bias
+     * @param biasNumDimensions
+     * @param biasDimensionSizes
+     */
+    WeightWrapper(int numDimensions,
+                    std::vector<int> &dimensionSizes,
+                    std::vector<float> &weights,
+                    std::vector<float> &bias,
+                    int biasNumDimensions,
+                    std::vector<int> &biasDimensionSizes)
+            : Wrapper(numDimensions, dimensionSizes, weights),
+              bias(bias),
+              biasNumDimensions(biasNumDimensions),
+              biasDimensionSizes(biasDimensionSizes) {
 
-    int getDimensionSizes() override;
+    }
+
+
+
+    /** Cover method for readability
+     *
+     * @return
+     */
+    std::vector<float> getWeights() {
+        return data;
+    }
+
+    float* getWeightArray() {
+        return &data[0];
+    }
+
+    float* getBiasArray() {
+
+    }
+
+    std::vector<float> getBias() {
+        return bias;
+    }
 };
