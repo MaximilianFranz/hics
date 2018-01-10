@@ -1,7 +1,14 @@
-# Make test executable
-set(TEST_SOURCES MainTest.cpp WrapperTest.cpp)
-add_executable(tests ${TEST_SOURCES})
+set(TEST_SOURCES MainTest.cpp)
 
-target_link_libraries(tests Catch libhics libnetbuilder)
+# Create a test library which makes Catch available to all tests by linking
+# against it.
+add_library(libtest ${TEST_SOURCES})
+target_link_libraries(libtest Catch)
 
-add_test(NAME testname COMMAND tests)
+add_subdirectory(communicator)
+add_subdirectory(executor)
+add_subdirectory(gui)
+add_subdirectory(manager)
+add_subdirectory(netbuilder)
+add_subdirectory(neuralnet)
+add_subdirectory(platform)
