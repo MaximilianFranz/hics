@@ -12,9 +12,37 @@ private:
     std::string filepath;
 
 public:
-    const std::string &getFilepath() const;
+    /**
+     * Create empty ImageWrapper
+     *
+     * @param numDimensions
+     * @param dimensions
+     * @param filepath
+     * @see Wrapper
+     */
+    ImageWrapper(std::vector<int> &dimensions, std::string filepath)
+            : Wrapper(dimensions), filepath(filepath){
+    }
 
-    int getNumDimensions() override;
+    /**
+     * Create ImageWrapper from existing data vector
+     *
+     * @param numDimensions
+     * @param dimensions
+     * @param data
+     * @param filepath
+     */
+    ImageWrapper(std::vector<int> dimensions, std::vector<float> &data, std::string filepath)
+            : Wrapper(dimensions, data), filepath(filepath){
+    }
 
-    int getDimensionSizes() override;
+    /**
+     * Get path to the original image this wrapper represents
+     *
+     * @return path to the image on the hard drive
+     */
+    std::string getFilepath() {
+        return filepath;
+    }
+
 };

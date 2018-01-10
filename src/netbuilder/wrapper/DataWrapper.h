@@ -9,12 +9,20 @@
 class DataWrapper : public Wrapper {
 private:
 public:
-    int getNumDimensions() override;
 
-    int getDimensionSizes() override;
 
-    DataWrapper();
+    /**
+     * Construct DataWrapper by passing already existing data.
+     *
+     * @param numDimensions
+     * @param dimensions
+     * @param data
+     */
+    DataWrapper(std::vector<int> dimensions, std::vector<float> &data)
+            : Wrapper(dimensions, data) {
 
-//    DataWrapper(int numDimensions, int dimensionSizes, const std::vector &data) : Wrapper(numDimensions, dimensionSizes,
+    }
+
+//    DataWrapper(int numDimensions, int dimensions, const std::vector &data) : Wrapper(numDimensions, dimensions,
 //                                                                                          data) {}
 };

@@ -5,14 +5,5 @@
 #include "DataWrapper.h"
 #include "../../NotImplementedException.h"
 
-int DataWrapper::getNumDimensions() {
-    return Wrapper::getNumDimensions();
-}
 
-int DataWrapper::getDimensionSizes() {
-    return Wrapper::getDimensionSizes();
-}
 
-DataWrapper::DataWrapper() {
-    throw NotImplementedException();
-}

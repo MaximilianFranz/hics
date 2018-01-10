@@ -1,11 +1,3 @@
-include_directories(communicator)
-include_directories(executor)
-include_directories(gui)
-include_directories(manager)
-include_directories(netbuilder)
-include_directories(neuralnet)
-include_directories(platform)
-
 add_subdirectory(communicator)
 add_subdirectory(executor)
 if(Qt5Core_FOUND AND Qt5Widgets_FOUND)
@@ -16,7 +8,11 @@ add_subdirectory(netbuilder)
 add_subdirectory(neuralnet)
 add_subdirectory(platform)
 
-add_executable(hics main.cpp NotImplementedException.cpp NotImplementedException.h)
+set(SOURCE_FILES NotImplementedException.cpp NotImplementedException.h)
+add_library(libhics STATIC ${SOURCE_FILES})
+
+add_executable(hics main.cpp)
+target_link_libraries(hics libhics)
 
 target_link_libraries(hics libcommunicator)
 target_link_libraries(hics libexecutor)

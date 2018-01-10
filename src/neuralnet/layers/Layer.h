@@ -11,6 +11,7 @@
 
 class Layer {
 private:
+
     LayerInfo info;
     //Layer previous;
     //Layer next;
