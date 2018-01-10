@@ -10,16 +10,18 @@
 #include <QImage>
 #include <QString>
 
-#include "PlatformInfo.h"
+#include <NetInfo.h>
+#include <PlatformInfo.h>
+
 #include "OperationMode.h"
-#include "NetInfo.h"
+
 
 class ClassificationRequest {
 private:
-    std::map<QString, QImage> userImages;
-    NetInfo neuralNet;
-    std::vector<PlatformInfo> platforms;
-    OperationMode opMode;
+    std::map<QString, QImage> userImages;   /*!< images to classify mapped with their path as unique key*/
+    NetInfo neuralNet;                      /*!< neural net that is used for the classification*/
+    std::vector<PlatformInfo> platforms;    /*!< platforms that are used for the computations*/
+    OperationMode opMode;                   /*!< specifies if the results should be aggregated*/
     bool aggregate;
 
 public:
@@ -102,7 +104,7 @@ public:
     NetInfo getSelectedNeuralNet();
 
     /**
-     * Returns if the results shall be aggregated.
+     * Returns if the results should be aggregated.
      * @return      bool if aggregated
      */
     bool getAggregateResults();
