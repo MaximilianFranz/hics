@@ -1,1 +1,1 @@
-add_library(libcommunicator STATIC Client.cpp Client.h Server.cpp Server.h)
+add_library(communicator STATIC Client.cpp Client.h Server.cpp Server.h)
