@@ -1,5 +1,4 @@
-#ifndef RESULTWIDGETHANDLER_H
-#define RESULTWIDGETHANDLER_H
+#pragma once
 
 
 class ResultWidgetHandler
@@ -7,5 +6,3 @@ class ResultWidgetHandler
 public:
     ResultWidgetHandler();
 };
-
-#endif // RESULTWIDGETHANDLER_H

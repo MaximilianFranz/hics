@@ -1,5 +1,4 @@
-#ifndef RESULTWIDGET_H
-#define RESULTWIDGET_H
+#pragma once
 
 #include <QWidget>
 
@@ -18,5 +17,3 @@ public:
 private:
     Ui::ResultWidget *ui;
 };
-
-#endif // RESULTWIDGET_H

@@ -1,5 +1,4 @@
-#ifndef MAINWINDOWSUBJECT_H
-#define MAINWINDOWSUBJECT_H
+#pragma once
 
 
 class MainWindowSubject
@@ -7,5 +6,3 @@ class MainWindowSubject
 public:
     MainWindowSubject();
 };
-
-#endif // MAINWINDOWSUBJECT_H

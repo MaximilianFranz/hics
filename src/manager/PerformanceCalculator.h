@@ -2,8 +2,7 @@
 // Created by jallmenroeder on 07/01/18.
 //
 
-#ifndef HICS_PERFORMANCECALCULATOR_H
-#define HICS_PERFORMANCECALCULATOR_H
+#pragma once
 
 
 #include "PerformanceData.h"
@@ -19,6 +18,3 @@ public:
      */
     static PerformanceData calculatePerformance(std::map<PlatformInfo, int> ptime, int totalTime);
 };
-
-
-#endif //HICS_PERFORMANCECALCULATOR_H

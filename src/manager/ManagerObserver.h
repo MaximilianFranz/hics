@@ -2,8 +2,7 @@
 // Created by jallmenroeder on 09/01/18.
 //
 
-#ifndef HICS_MANAGEROBSERVER_H
-#define HICS_MANAGEROBSERVER_H
+#pragma once
 
 
 class ManagerObserver {
@@ -12,6 +11,3 @@ class ManagerObserver {
      */
     virtual void update();
 };
-
-
-#endif //HICS_MANAGEROBSERVER_H

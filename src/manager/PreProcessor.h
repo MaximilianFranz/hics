@@ -2,8 +2,7 @@
 // Created by jallmenroeder on 07/01/18.
 //
 
-#ifndef HICS_PREPROCESSOR_H
-#define HICS_PREPROCESSOR_H
+#pragma once
 
 
 #include <wrapper/ImageWrapper.h>
@@ -32,6 +31,3 @@ public:
      */
     std::vector<ImageWrapper> processImages(std::map<QImage, QString> imgMap);
 };
-
-
-#endif //HICS_PREPROCESSOR_H

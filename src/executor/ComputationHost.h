@@ -2,8 +2,7 @@
 // Created by Maximilian Franz on 08.01.18.
 //
 
-#ifndef HICS_COMPUTATIONHOST_H
-#define HICS_COMPUTATIONHOST_H
+#pragma once
 
 //Use long relative path versions for now
 #include <PlatformInfo.h>
@@ -42,6 +41,3 @@ public:
 
 
 };
-
-
-#endif //HICS_COMPUTATIONHOST_H

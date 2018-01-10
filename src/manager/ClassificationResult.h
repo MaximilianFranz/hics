@@ -2,8 +2,7 @@
 // Created by jallmenroeder on 07/01/18.
 //
 
-#ifndef HICS_CLASSIFICATIONRESULT_H
-#define HICS_CLASSIFICATIONRESULT_H
+#pragma once
 
 #include "ImageResult.h"
 #include "NetInfo.h"
@@ -30,6 +29,3 @@ public:
 
     void aggregateResults();
 };
-
-
-#endif //HICS_CLASSIFICATIONRESULT_H

@@ -1,5 +1,4 @@
-#ifndef DETAILDIALOGHANDLER_H
-#define DETAILDIALOGHANDLER_H
+#pragma once
 
 
 class DetailDialogHandler
@@ -7,5 +6,3 @@ class DetailDialogHandler
 public:
     DetailDialogHandler();
 };
-
-#endif // DETAILDIALOGHANDLER_H
