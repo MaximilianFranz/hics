@@ -1,5 +1,6 @@
 cmake-build-*/
 build/
+hics.**
 
 # Created by https://www.gitignore.io/api/c++,linux,macos,clion,windows
 
@@ -167,6 +168,41 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/c++,linux,macos,clion,windows
 
-#QtCreator
-hics.**
-CMakeLists.txt.user
+# Created by https://github.com/github/gitignore/blob/master/Qt.gitignore
+
+# Qt-es
+
+object_script.*.Release
+object_script.*.Debug
+*_plugin_import.cpp
+/.qmake.cache
+/.qmake.stash
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qmlc
+*.jsc
+Makefile*
+*build-*
+
+# Qt unit tests
+target_wrapper.*
+
+# QtCreator
+
+*.autosave
+
+# QtCtreator Qml
+*.qmlproject.user
+*.qmlproject.user.*
+
+# QtCtreator CMake
+CMakeLists.txt.user*
+
+# End of https://github.com/github/gitignore/blob/master/Qt.gitignore
