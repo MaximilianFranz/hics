@@ -3,7 +3,8 @@
 //
 
 #pragma once
+#include "ModelLoader.h"
 
-class JSONModelLoader {
+class JSONModelLoader: public ModelLoader {
 
 };
