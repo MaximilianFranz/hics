@@ -2,8 +2,7 @@
 // Created by Maximilian Franz on 07.01.18.
 //
 
-#ifndef HICS_SOFTMAXLOSSLAYER_H
-#define HICS_SOFTMAXLOSSLAYER_H
+#pragma once
 
 
 #include "Layer.h"
@@ -16,6 +15,3 @@ public:
 
     bool isBiased() override;
 };
-
-
-#endif //HICS_SOFTMAXLOSSLAYER_H
