@@ -20,7 +20,7 @@ public:
      *
      * @param results
      */
-    ImageResult(const std::map<float, std::string> &results, ImageWrapper image);
+    ImageResult(const std::map<float, std::string> &results, ImageWrapper &image);
 
     /**
      *
