@@ -10,18 +10,27 @@ float Wrapper::getElement(std::vector<int> location) {
     return 0;
 }
 
-Wrapper::Wrapper(int numDimensions, std::vector<int> &dimensionSizes, std::vector<float> &data)
-        : numDimensions(numDimensions),
-          dimensionSizes(dimensionSizes),
+Wrapper::Wrapper(std::vector<int> &dimensions, std::vector<float> &data)
+        :
+          dimensions(dimensions),
           data(data)
 {
+    // Calculate total number of elements once
+    numElements = calcTotalNumElements();
 }
 
-Wrapper::Wrapper(int numDimensions, std::vector<int> dimensionSizes) {
+Wrapper::Wrapper(std::vector<int> dimensionSizes) {
 }
 
 int Wrapper::getSizeOfDimension(int dim) {
-    return this->dimensionSizes[dim-1];
+    return this->dimensions[dim-1];
+}
+
+int Wrapper::calcTotalNumElements() {
+    numElements = 1;
+    for (int dimSize : dimensions) {
+        numElements *= dimSize;
+    }
 }
 
 

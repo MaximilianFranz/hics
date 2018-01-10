@@ -17,28 +17,24 @@ public:
     /** Create WeightWrapper by passing weight and bias data vectors
      *
      * @param numDimensions
-     * @param dimensionSizes
+     * @param dimensions
      * @param weights
      * @param bias
      * @param biasNumDimensions
-     * @param biasDimensionSizes
+     * @param biasDimensions
      */
-    WeightWrapper(int numDimensions,
-                    std::vector<int> &dimensionSizes,
-                    std::vector<float> &weights,
-                    std::vector<float> &bias,
-                    int biasNumDimensions,
-                    std::vector<int> &biasDimensionSizes)
-            : Wrapper(numDimensions, dimensionSizes, weights),
+    WeightWrapper(std::vector<int> &dimensions, std::vector<float> &weights, std::vector<float> &bias,
+                  std::vector<int> &biasDimensions)
+            : Wrapper(dimensions, weights),
               bias(bias),
               biasNumDimensions(biasNumDimensions),
-              biasDimensionSizes(biasDimensionSizes) {
+              biasDimensionSizes(biasDimensions) {
 
     }
 
 
 
-    /** Cover method for readability
+    /** Cover method for readability and semantics.
      *
      * @return
      */
@@ -46,14 +42,33 @@ public:
         return data;
     }
 
+    /**
+     * \brief Cover method for readability and semantics. Calls the getDataArray().
+     *
+     * This is passed by reference from the vector and is mutable.
+     *
+     * @return pointer to the raw weight array of this WeightWrapper.
+     */
     float* getWeightArray() {
-        return &data[0];
+        return getDataArray();
     }
 
+    /**
+     *\brief Get a pointer to the raw float array containing the bias of this wrapper.
+     *
+     * This is passed by reference from the vector and is mutable.
+     *
+     * @return pointer to the raw bias array of this WeightWrapper.
+     */
     float* getBiasArray() {
-
+        return &bias[];
     }
 
+    /**
+     * \brief returns the vector containing the bias of this WeightWrapper.
+     *
+     * @return the vector with the bias of this WeightWrapper.
+     */
     std::vector<float> getBias() {
         return bias;
     }
