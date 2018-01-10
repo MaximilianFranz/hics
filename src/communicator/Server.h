@@ -2,8 +2,7 @@
 // Created by jallmenroeder on 07/01/18.
 //
 
-#ifndef HICS_SERVER_H
-#define HICS_SERVER_H
+#pragma once
 
 
 #include <ImageResult.h>
@@ -18,6 +17,3 @@ public:
     std::vector<PlatformInfo> queryPlatformsRequest();
     std::vector<NetInfo> queryNetsRequest();
 };
-
-
-#endif //HICS_SERVER_H

@@ -2,8 +2,7 @@
 // Created by jallmenroeder on 07/01/18.
 //
 
-#ifndef HICS_CLIENT_H
-#define HICS_CLIENT_H
+#pragma once
 
 
 #include <ComputationHost.h>
@@ -19,6 +18,3 @@ class Client : ComputationHost {
     std::vector<NetInfo> queryNets() override;
 
 };
-
-
-#endif //HICS_CLIENT_H
