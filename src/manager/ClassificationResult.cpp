@@ -21,7 +21,7 @@ const PerformanceData &ClassificationResult::getPerformance() const {
 }
 
 const std::map<std::string, float> &ClassificationResult::getAggregatedResults() const {
-    return aggregatedResults;
+    return aggregatedResult;
 }
 
 void ClassificationResult::aggregateResults() {
