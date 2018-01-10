@@ -6,10 +6,10 @@
 
 #include "Wrapper.h"
 
+
 class DataWrapper : public Wrapper {
 private:
 public:
-
 
     /**
      * Construct DataWrapper by passing already existing data.
@@ -18,11 +18,6 @@ public:
      * @param dimensions
      * @param data
      */
-    DataWrapper(std::vector<int> dimensions, std::vector<float> &data)
-            : Wrapper(dimensions, data) {
+    DataWrapper(std::vector<int> dimensions, std::vector<float> &data);
 
-    }
-
-//    DataWrapper(int numDimensions, int dimensions, const std::vector &data) : Wrapper(numDimensions, dimensions,
-//                                                                                          data) {}
 };

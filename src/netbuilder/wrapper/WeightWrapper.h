@@ -24,13 +24,7 @@ public:
      * @param biasDimensions
      */
     WeightWrapper(std::vector<int> &dimensions, std::vector<float> &weights, std::vector<float> &bias,
-                  std::vector<int> &biasDimensions)
-            : Wrapper(dimensions, weights),
-              bias(bias),
-              biasNumDimensions(biasNumDimensions),
-              biasDimensionSizes(biasDimensions) {
-
-    }
+                  std::vector<int> &biasDimensions);
 
 
 
@@ -38,10 +32,7 @@ public:
      *
      * @return
      */
-    std::vector<float> getWeights() {
-        return data;
-    }
-
+    std::vector<float> getWeights();
     /**
      * \brief Cover method for readability and semantics. Calls the getDataArray().
      *
@@ -49,9 +40,7 @@ public:
      *
      * @return pointer to the raw weight array of this WeightWrapper.
      */
-    float* getWeightArray() {
-        return getDataArray();
-    }
+    float* getWeightArray();
 
     /**
      *\brief Get a pointer to the raw float array containing the bias of this wrapper.
@@ -60,16 +49,12 @@ public:
      *
      * @return pointer to the raw bias array of this WeightWrapper.
      */
-    float* getBiasArray() {
-        return &bias[0];
-    }
+    float* getBiasArray();
 
     /**
      * \brief returns the vector containing the bias of this WeightWrapper.
      *
      * @return the vector with the bias of this WeightWrapper.
      */
-    std::vector<float> getBias() {
-        return bias;
-    }
+    std::vector<float> getBias();
 };

@@ -7,6 +7,8 @@
 #include <vector>
 #include <list>
 
+//TODO: Add Class description to documentation.
+
 class Wrapper {
 
 private:
@@ -18,6 +20,7 @@ protected:
     int numElements;
 
 public:
+
     /**
      * Create Wrapper from given Data vector
      *
@@ -36,17 +39,12 @@ public:
      */
     explicit Wrapper(std::vector<int> dimensionSizes);
 
-    // pure virtual functions to make Wrapper an abstract class
-    // TODO: easier if Wrapper implements basic functions
-
     /**
      * Get number of dimensions the data in this Wrapper has.
      *
      * @return number of dimensions.
      */
-    virtual int getNumDimensions() {
-        return (int)dimensions.size(); // cast is ok, since we won't be dealing with arbitrary dimension
-    }
+    virtual int getNumDimensions();
 
     /**
      * Get a vector with the size of each of the n dimensions.
@@ -55,18 +53,14 @@ public:
      *
      * @return vector with the sizes of each dimension
      */
-    virtual std::vector<int> getDimensionSizes() {
-        return dimensions;
-    }
+    virtual std::vector<int> getDimensions();
 
     /**
      * Get total number of elements in the data vector
      *
      * @return total number of elements
      */
-    virtual int getNumElements() {
-        return numElements;
-    }
+    virtual int getNumElements();
 
     /**
      * Returns the data as a pointer to the raw array.
@@ -75,19 +69,14 @@ public:
      *
      * @return pointer to the raw array
      */
-    virtual float* getDataArray() {
-        return &data[0];
-    }
+    virtual float* getDataArray();
 
     /**
      * Get the vector object this Wrapper holds
      *
      * @return the vector object of the data.
      */
-    virtual std::vector<float> getData() {
-        return data;
-    }
-
+    virtual std::vector<float> getData();
     /**
      * Returns the element at the specified location.
      *

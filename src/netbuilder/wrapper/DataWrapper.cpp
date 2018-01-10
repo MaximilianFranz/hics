@@ -6,4 +6,7 @@
 #include "../../NotImplementedException.h"
 
 
+DataWrapper::DataWrapper(std::vector<int> dimensions, std::vector<float> &data)
+    : Wrapper(dimensions, data) {
 
+}

@@ -33,5 +33,25 @@ int Wrapper::calcTotalNumElements() {
     }
 }
 
+int Wrapper::getNumDimensions() {
+    return (int)dimensions.size(); // cast is okay, because we don't deal with arbitrary dimensions.
+}
+
+std::vector<int> Wrapper::getDimensions() {
+    return dimensions;
+}
+
+int Wrapper::getNumElements() {
+    return numElements;
+}
+
+float *Wrapper::getDataArray() {
+    return &data[0];
+}
+
+std::vector<float> Wrapper::getData() {
+    return data;
+}
+
 
 

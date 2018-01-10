@@ -12,6 +12,6 @@ TEST_CASE("Return functions of Wrapper", "[sometag]") {
     std::string examplepath = "src/test/somefile.jpg";
 
     REQUIRE(d.getNumDimensions() == 1);
-    REQUIRE(d.getDimensionSizes()[0] == 5);
+    REQUIRE(d.getDimensions()[0] == 5);
     REQUIRE(d.getSizeOfDimension(1) == 5);
 }

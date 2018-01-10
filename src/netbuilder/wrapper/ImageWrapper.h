@@ -20,10 +20,7 @@ public:
      * @param filepath
      * @see Wrapper
      */
-    ImageWrapper(std::vector<int> &dimensions, std::string filepath)
-            : Wrapper(dimensions), filepath(filepath){
-    }
-
+    ImageWrapper(std::vector<int> &dimensions, std::string filepath);
     /**
      * Create ImageWrapper from existing data vector
      *
@@ -32,17 +29,12 @@ public:
      * @param data
      * @param filepath
      */
-    ImageWrapper(std::vector<int> dimensions, std::vector<float> &data, std::string filepath)
-            : Wrapper(dimensions, data), filepath(filepath){
-    }
+    ImageWrapper(std::vector<int> dimensions, std::vector<float> &data, std::string filepath);
 
     /**
      * Get path to the original image this wrapper represents
      *
      * @return path to the image on the hard drive
      */
-    std::string getFilepath() {
-        return filepath;
-    }
-
+    std::string getFilepath();
 };
