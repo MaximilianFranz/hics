@@ -2,6 +2,12 @@ cmake-build-*/
 build/
 hics.**
 
+.idea/vcs.xml
+.idea/modules.xml
+.idea/codeStyles/
+.idea/HICS.iml
+.idea/misc.xml
+
 # Created by https://www.gitignore.io/api/c++,linux,macos,clion,windows
 
 ### C++ ###
