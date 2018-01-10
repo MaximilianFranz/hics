@@ -1,5 +1,4 @@
-#ifndef DETAILDIALOG_H
-#define DETAILDIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -18,5 +17,3 @@ public:
 private:
     Ui::DetailDialog *ui;
 };
-
-#endif // DETAILDIALOG_H

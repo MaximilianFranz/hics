@@ -1,5 +1,4 @@
-#ifndef STARTWIDGETHANDLER_H
-#define STARTWIDGETHANDLER_H
+#pragma once
 
 
 class StartWidgetHandler
@@ -7,5 +6,3 @@ class StartWidgetHandler
 public:
     StartWidgetHandler();
 };
-
-#endif // STARTWIDGETHANDLER_H
