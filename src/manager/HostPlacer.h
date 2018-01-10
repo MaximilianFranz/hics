@@ -6,8 +6,16 @@
 #define HICS_HOSTPLACER_H
 
 
-class HostPlacer {
+#include <ComputationHost.h>
+#include <NetInfo.h>
+#include <map>
+#include <vector>
 
+
+class HostPlacer {
+public:
+    static std::map<ComputationHost, int> place(std::vector<ComputationHost> hosts, NetInfo net, int numOfImg,
+    OperationMode opMode);
 };
 
 
