@@ -4,25 +4,25 @@
 
 #pragma once
 
-#include "WeightLoader.h"
 #include "hdf_wrapper.h"
+#include "loader/weightloader/WeightLoader.h"
 #include <string>
 #include <map>
 
+
 class AlexNetWeightLoader : public WeightLoader {
+
 private:
 
-    std::string filePath;
+    const std::string filePath;
     h5cpp::File weightFile;
     std::map<LayerIdentifier, WeightWrapper> weightsMap;
 
     WeightWrapper createWeightWrapper(const std::string &groupName);
-
-//    h5cpp::Group openGroup(const std::string &groupName);
-//    h5cpp::Dataset openDataset(const std::string &datasetName);
-//    h5cpp::Dataspace openDataspace(const std::string &dataspaceName);
+    void populateWeightsMap();
 
 public:
+
     /**
     * @brief Initializes the AlexNetWeightLoader with the given weight file.
     *
@@ -31,8 +31,11 @@ public:
     *
     * @param filePath The weight file for the AlexNet in HDF5 format.
     */
-    AlexNetWeightLoader(std::string filePath);
+    explicit AlexNetWeightLoader(const std::string &filePath);
 
-    WeightWrapper getWeights(LayerIdentifier layerId) override;
+    virtual WeightWrapper getWeights(WeightLoader::LayerIdentifier layerId);
+
+    virtual ~AlexNetWeightLoader();
+
 
 };

@@ -3,19 +3,16 @@
 //
 
 #include "AlexNetWeightLoader.h"
-#include "../../../NotImplementedException.h"
 
-
-using namespace h5cpp;
 
 WeightWrapper AlexNetWeightLoader::createWeightWrapper(const std::string &groupName){
     std::string datasetWeightName = groupName + "_W";
     std::string datasetBiasName = groupName + "_b";
 
-    Group group = weightFile.root().open_group(groupName);
+    h5cpp::Group group = weightFile.root().open_group(groupName);
 
-    Dataset dataset = group.open_dataset(datasetWeightName);
-    Dataspace dataspace = dataset.get_dataspace();
+    h5cpp::Dataset dataset = group.open_dataset(datasetWeightName);
+    h5cpp::Dataspace dataspace = dataset.get_dataspace();
 
     hsize_t weightDimensionArray[H5S_MAX_RANK];
     int weightDimensionCount = dataspace.get_dims(weightDimensionArray);
@@ -49,49 +46,45 @@ WeightWrapper AlexNetWeightLoader::createWeightWrapper(const std::string &groupN
 
 }
 
-AlexNetWeightLoader::AlexNetWeightLoader(std::string filePath)
-: filePath(filePath) {
-  weightFile = File(filePath, "r");
+void AlexNetWeightLoader::populateWeightsMap(){
+    std::vector<WeightWrapper> layers;
+
+    layers.push_back(createWeightWrapper("conv_1"));
+    weightsMap.insert(std::pair<LayerIdentifier, WeightWrapper>(LayerIdentifier::CONV_1, layers.at(0)));
+
+
+    layers.push_back(createWeightWrapper("conv_2_1"));
+    layers.push_back(createWeightWrapper("conv_2_2"));
+
+    layers.push_back(createWeightWrapper("conv_3"));
+    weightsMap.insert(std::pair<LayerIdentifier, WeightWrapper>(LayerIdentifier::CONV_3, layers.at(3)));
+
+    layers.push_back(createWeightWrapper("conv_4_1"));
+    layers.push_back(createWeightWrapper("conv_4_2"));
+    layers.push_back(createWeightWrapper("conv_5_1"));
+    layers.push_back(createWeightWrapper("conv_5_2"));
+    layers.push_back(createWeightWrapper("dense_1"));
+    weightsMap.insert(std::pair<LayerIdentifier, WeightWrapper>(LayerIdentifier::FULLY_CON_1, layers.at(8)));
+
+    layers.push_back(createWeightWrapper("dense_2"));
+    weightsMap.insert(std::pair<LayerIdentifier, WeightWrapper>(LayerIdentifier::FULLY_CON_2, layers.at(9)));
+
+    layers.push_back(createWeightWrapper("dense_3"));
+    weightsMap.insert(std::pair<LayerIdentifier, WeightWrapper>(LayerIdentifier::FULLY_CON_3, layers.at(10)));
+
+}
+
+WeightWrapper AlexNetWeightLoader::getWeights(LayerIdentifier layerId) {
+    return weightsMap.at(layerId);
 }
 
 
+AlexNetWeightLoader::AlexNetWeightLoader(const std::string &filePath)
+        : filePath(filePath) {
+    weightFile = h5cpp::File(filePath, "r");
 
+    populateWeightsMap();
 
-WeightWrapper AlexNetWeightLoader::getWeights(WeightLoader::LayerIdentifier layerId) {
-    throw NotImplementedException();
 }
 
-
-
-File file("/home/pselab/Dokumente/repo/hics/src/netbuilder/loader/weightloader/alexnet_weights.h5", "r");
-Group root = file.root();
-
-Group conv1 = root.open_group("conv_1");
-
-Dataset conv1W = conv1.open_dataset("conv_1_W");
-Dataset conv1b = conv1.open_dataset("conv_1_b");
-
-Dataspace ds = conv1W.get_dataspace();
-Dataspace ds2 = conv1b.get_dataspace();
-
-hsize_t dims[H5S_MAX_RANK];
-int rank = ds.get_dims(dims);
-
-hsize_t dims2[H5S_MAX_RANK];
-int rank2 = ds2.get_dims(dims2);
-
-std::setprecision(20);
-
-std::vector<float> data(ds2.get_npoints());
-
-conv1b.read<float>(&data[0]);
-
-std::cout << "dataset = ";
-int i = 0;
-for (auto it = data.begin(); it != data.end(); ++it)
-{
-std::cout << *it << std::endl;
-std::cout << "--" << i << "--" << std::endl;
-i++;
-}
-std::cout << std::endl;
+AlexNetWeightLoader::~AlexNetWeightLoader() = default;
