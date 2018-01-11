@@ -8,6 +8,7 @@
 #include <NetInfo.h>
 
 #include "NetIterator.h"
+#include "SimpleNetIterator.h"
 
 class NeuralNet {
 private:
@@ -15,25 +16,23 @@ private:
     std::vector<Layer*> layers;
     bool computationCompleted;
     bool placementCompleted;
-public:
-    friend class SimpleNetIterator; // Grants NetIterator access to private members
 
+public:
+    friend class SimpleNetIterator;
     void addLayer(Layer* layer);
 
-    NetInfo getInfo() {
-        return info;
-    }
+    NetInfo getInfo();
 
-    bool isComputationComplete() {
-        return computationCompleted;
-    }
+    bool isComputationComplete();
 
-    bool isPlacementComplete() {
-        return placementCompleted;
-    }
+    bool isPlacementComplete();
 
-    NetIterator* createIterator();
-
+    /**
+     * TODO: Replace with NetIterator and get proper inheritance to work!
+     *
+     * @return
+     */
+    SimpleNetIterator* createIterator() const;
 
 };
 

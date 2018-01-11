@@ -24,3 +24,4 @@ Layer *SimpleNetIterator::getElement() {
 SimpleNetIterator::SimpleNetIterator(const NeuralNet *net) : net(net) {
     this->index = 0;
 }
+

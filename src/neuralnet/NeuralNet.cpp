@@ -9,6 +9,18 @@ void NeuralNet::addLayer(Layer *layer) {
     layers.push_back(layer);
 }
 
-NetIterator *NeuralNet::createIterator() {
+SimpleNetIterator *NeuralNet::createIterator() const {
+    return new SimpleNetIterator(this);
+}
 
+NetInfo NeuralNet::getInfo() {
+    return info;
+}
+
+bool NeuralNet::isComputationComplete() {
+    return computationCompleted;
+}
+
+bool NeuralNet::isPlacementComplete() {
+    return computationCompleted;
 }

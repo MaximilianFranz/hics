@@ -5,11 +5,12 @@
 #pragma once
 
 #include "NetIterator.h"
+#include "NeuralNet.h"
 
 class SimpleNetIterator : NetIterator {
-    const NeuralNet *net; // Declare here for now, since in NetIterator.h it results in build-error for some reason..
+    const NeuralNet *net; // Why does this not recognize NeuralNet????
 public:
-    SimpleNetIterator(const NeuralNet* net);
+    SimpleNetIterator(const NeuralNet *net);
 
     void first() override;
 
@@ -20,4 +21,7 @@ public:
     Layer* getElement() override;
 
 };
+
+
+
 
