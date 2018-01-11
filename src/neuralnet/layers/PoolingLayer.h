@@ -7,7 +7,6 @@
 #include "Layer.h"
 
 class PoolingLayer : Layer{
-    //must have all virtual methods - no override!!
     void forward(DataWrapper &input, DataWrapper &output);
 };
 

@@ -15,7 +15,7 @@ protected:
     LayerInfo info;
     Layer *previous;
     Layer *next;
-    LayerFunction function = nullptr; //TODO: changed from design to LayerFunction
+    LayerFunction function; //TODO: changed from design to LayerFunction
     //TODO: changed from design: no input and output Wrappers are held;
     bool computed;
     bool functionSet;

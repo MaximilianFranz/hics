@@ -8,9 +8,5 @@
 
 class InputLayer : Layer{
     void forward(DataWrapper &input, DataWrapper &output) override;
-
-    bool isPlatformSet() override;
-
-    bool isBiased() override;
 };
 

@@ -10,10 +10,3 @@ void ActivationLayer::forward(DataWrapper &input, DataWrapper &output) {
     throw NotImplementedException();
 }
 
-bool ActivationLayer::isPlatformSet() {
-    throw NotImplementedException();
-}
-
-bool ActivationLayer::isBiased() {
-    throw NotImplementedException();
-}

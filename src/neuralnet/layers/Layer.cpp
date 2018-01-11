@@ -28,7 +28,6 @@ void Layer::setLayerFunction(LayerFunction &function) {
 
 void Layer::reset() {
     this->functionSet = false;
-    this->function = nullptr;
     this->computed = false;
 
 }

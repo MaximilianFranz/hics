@@ -7,10 +7,6 @@
 #include "Layer.h"
 
 class NormalizationLayer : Layer {
-    bool isPlatformSet() override;
-
-    bool isBiased() override;
-
     void forward(DataWrapper &input, DataWrapper &output) override;
 };
 

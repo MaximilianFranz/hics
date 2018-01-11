@@ -9,10 +9,3 @@ void ConvolutionLayer::forward(DataWrapper &input, DataWrapper &output) {
     throw NotImplementedException();
 }
 
-bool ConvolutionLayer::isPlatformSet() {
-    throw NotImplementedException();
-}
-
-bool ConvolutionLayer::isBiased() {
-    throw NotImplementedException();
-}

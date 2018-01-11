@@ -12,7 +12,9 @@
 class ConcatLayer : Layer {
 protected:
     std::vector<Layer> previousLayerList;
-
+public:
+private:
+    void forward(DataWrapper &input, DataWrapper &output) override;
 };
 
 

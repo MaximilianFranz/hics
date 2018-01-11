@@ -9,10 +9,4 @@ void LossLayer::forward(DataWrapper &input, DataWrapper &output) {
     throw NotImplementedException();
 }
 
-bool LossLayer::isPlatformSet() {
-    throw NotImplementedException();
-}
 
-bool LossLayer::isBiased() {
-    throw NotImplementedException();
-}

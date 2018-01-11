@@ -5,14 +5,4 @@
 #include "SoftMaxLossLayer.h"
 #include "../../NotImplementedException.h"
 
-void SoftMaxLossLayer::forward(DataWrapper &input, DataWrapper &output) {
-    throw NotImplementedException();
-}
 
-bool SoftMaxLossLayer::isPlatformSet() {
-    throw NotImplementedException();
-}
-
-bool SoftMaxLossLayer::isBiased() {
-    throw NotImplementedException();
-}
