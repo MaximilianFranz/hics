@@ -5,13 +5,22 @@
 #pragma once
 
 #include "WeightLoader.h"
+#include "hdf_wrapper.h"
 #include <string>
+#include <map>
 
 class AlexNetWeightLoader : public WeightLoader {
 private:
 
     std::string filePath;
-    std::string name;
+    h5cpp::File weightFile;
+    std::map<LayerIdentifier, WeightWrapper> weightsMap;
+
+    WeightWrapper createWeightWrapper(const std::string &groupName);
+
+//    h5cpp::Group openGroup(const std::string &groupName);
+//    h5cpp::Dataset openDataset(const std::string &datasetName);
+//    h5cpp::Dataspace openDataspace(const std::string &dataspaceName);
 
 public:
     /**
@@ -26,7 +35,4 @@ public:
 
     WeightWrapper getWeights(LayerIdentifier layerId) override;
 
-    std::string getName(){
-        return name;
-    }
 };
