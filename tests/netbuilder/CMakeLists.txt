@@ -1,5 +1,7 @@
-add_executable(tests WrapperTest.cpp WrapperTest.h)
+add_executable(netbuildertests WrapperTest.cpp WrapperTest.h)
 
-target_link_libraries(tests catchtest hics netbuilder)
+#Link against netbuilder lib to get access to symbols
+#Link against catchtest to use the Catch-main function.
+target_link_libraries(netbuildertests catchtest hics netbuilder)
 
-add_test(NAME testname COMMAND tests)
+add_test(NAME netbuildertest COMMAND tests)

@@ -3,3 +3,7 @@
 //
 
 #include "NeuralNetTest.h"
+
+TEST_CASE("Basic test") {
+    REQUIRE(11 == 11);
+}
