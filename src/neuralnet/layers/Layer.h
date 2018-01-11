@@ -12,15 +12,16 @@
 class Layer {
 protected:
 
-    LayerInfo info;
-    Layer *previous;
-    Layer *next;
-    LayerFunction function; //TODO: changed from design to LayerFunction
-    //TODO: changed from design: no input and output Wrappers are held;
+    std::vector<Layer*> previousLayers;
+    std::vector<Layer*> nextLayers;
+    LayerFunction function;
     bool computed;
     bool functionSet;
 
 public:
+
+    LayerInfo info;
+
     virtual void forward(DataWrapper &input, DataWrapper &output) = 0;
 
     virtual LayerInfo getInfo();
@@ -35,11 +36,18 @@ public:
      */
     virtual bool setComputed(bool status);
 
+    virtual bool readyToCompute();
+
     virtual bool isLayerFunctionSet();
 
     virtual void setLayerFunction(LayerFunction &function);
 
     virtual void reset();
+
+    const std::vector<Layer *> &getPreviousLayers() const;
+
+    const std::vector<Layer *> &getNextLayers() const;
+
 
 };
 

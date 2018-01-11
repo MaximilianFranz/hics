@@ -7,9 +7,13 @@
 #include "Layer.h"
 
 class ActivationLayer : Layer {
+public:
+    ActivationLayer(std::vector<int> inputDimensions);
+
     void forward(DataWrapper &input, DataWrapper &output) override;
 
 
+protected:
 };
 
 

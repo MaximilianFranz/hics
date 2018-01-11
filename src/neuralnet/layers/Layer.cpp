@@ -33,6 +33,24 @@ void Layer::reset() {
 }
 
 
+bool Layer::readyToCompute() {
+    for (auto layer : previousLayers) {
+        if (!layer->isComputed())
+            return false;
+    }
+    return true;
+}
+
+const std::vector<Layer *> &Layer::getPreviousLayers() const {
+    return previousLayers;
+}
+
+const std::vector<Layer *> &Layer::getNextLayers() const {
+    return nextLayers;
+}
+
+
+
 
 
 
