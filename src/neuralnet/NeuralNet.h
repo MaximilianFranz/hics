@@ -7,8 +7,10 @@
 #include <layers/Layer.h>
 #include <NetInfo.h>
 
-#include "NetIterator.h"
-#include "SimpleNetIterator.h"
+/**
+ * forward declaration to avoid cyclic includes.
+ */
+class SimpleNetIterator;
 
 class NeuralNet {
 private:
@@ -33,6 +35,5 @@ public:
      * @return
      */
     SimpleNetIterator* createIterator() const;
-
 };
 

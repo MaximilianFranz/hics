@@ -5,9 +5,14 @@
 #pragma once
 
 #include "NetIterator.h"
-#include "NeuralNet.h"
+
+/**
+ * forward declaration to avoid cyclic includes
+ */
+class NeuralNet;
 
 class SimpleNetIterator : NetIterator {
+private:
     const NeuralNet *net; // Why does this not recognize NeuralNet????
 public:
     SimpleNetIterator(const NeuralNet *net);

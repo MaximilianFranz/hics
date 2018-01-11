@@ -3,7 +3,9 @@
 //
 
 #include "NeuralNet.h"
-#include "../NotImplementedException.h"
+
+// Include SimpleIterator only here in cpp to avoid build errors due to cyclic dependencies
+#include "SimpleNetIterator.h"
 
 void NeuralNet::addLayer(Layer *layer) {
     layers.push_back(layer);
