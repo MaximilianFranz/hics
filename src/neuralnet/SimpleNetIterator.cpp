@@ -6,17 +6,21 @@
 #include "../NotImplementedException.h"
 
 void SimpleNetIterator::first() {
-    throw NotImplementedException();
+    index = 0;
 }
 
 void SimpleNetIterator::next() {
-    throw NotImplementedException();
+    index++;
 }
 
 bool SimpleNetIterator::hasNext() {
-    throw NotImplementedException();
+    return (index != net->layers.size() - 1);
 }
 
 Layer *SimpleNetIterator::getElement() {
-    throw NotImplementedException();
+    return net->layers[index];
+}
+
+SimpleNetIterator::SimpleNetIterator(const NeuralNet *net) : net(net) {
+    this->index = 0;
 }

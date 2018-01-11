@@ -6,9 +6,9 @@
 #include "../NotImplementedException.h"
 
 void NeuralNet::addLayer(Layer *layer) {
-    throw NotImplementedException();
+    layers.push_back(layer);
 }
 
 NetIterator *NeuralNet::createIterator() {
-    throw NotImplementedException();
+
 }

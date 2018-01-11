@@ -5,10 +5,15 @@
 #pragma once
 
 #include <layers/Layer.h>
+#include "NeuralNet.h"
 
-//TODO: Implement Iterator by overriding ++, () and * operations (optional for now)
+/**
+ * Provides an iterator interface that
+ */
 class NetIterator {
-//Must have virtual methods
+protected:
+    int index;
+
 public:
     virtual void first() = 0;
     virtual void next() = 0;

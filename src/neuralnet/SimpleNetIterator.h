@@ -7,6 +7,10 @@
 #include "NetIterator.h"
 
 class SimpleNetIterator : NetIterator {
+    const NeuralNet *net; // Declare here for now, since in NetIterator.h it results in build-error for some reason..
+public:
+    SimpleNetIterator(const NeuralNet* net);
+
     void first() override;
 
     void next() override;
