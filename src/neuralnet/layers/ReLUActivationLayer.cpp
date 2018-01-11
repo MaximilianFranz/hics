@@ -6,7 +6,7 @@
 #include "../../NotImplementedException.h"
 
 
-ReLUActivationLayer::ReLUActivationLayer(std::vector<int> inputDimensions) : ActivationLayer(inputDimensions){
+//ReLUActivationLayer::ReLUActivationLayer(std::vector<int> inputDimensions) : ActivationLayer(inputDimensions){
     //using default parameters
 
-}
+//}

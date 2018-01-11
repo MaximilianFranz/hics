@@ -16,7 +16,7 @@ private:
     float bias;
 public:
 
-    ReLUActivationLayer(std::vector<int> inputDimensions, std::vector<float> params);
+//    ReLUActivationLayer(std::vector<int> inputDimensions, std::vector<float> params);
 };
 
 

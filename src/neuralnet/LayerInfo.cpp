@@ -34,7 +34,7 @@ LayerInfo::LayerInfo(std::string type, std::vector<int> &inputDimensions, std::v
           inputDimensions(inputDimensions),
           outputDimensions(outputDimensions),
           filterDimensions(filterDimensions),
-          zeroPadding(zeroPadding),
+          zeroPadding(zeroPadding)
 {
 
 }
