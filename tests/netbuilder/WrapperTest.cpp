@@ -42,15 +42,18 @@ SCENARIO("Writing data in empty wrapper", "[wrapper]") {
 
 
 SCENARIO("multidimensional positioning test") {
-    std::vector<int> dim = {10, 10, 5};
+    std::vector<int> dim = {5, 10, 10};
     std::vector<float> data(500);
     for(int i = 0; i < 500; i++) {
         data[i] = i;
     }
     DataWrapper md(dim, data);
-    REQUIRE(md.getNumElements() == 500);
-    REQUIRE(md.getNumDimensions() == 3);
-
-    std::vector<int> testlocation =  {5,2,3};
-    REQUIRE(md.getElement(testlocation) == 325);
+    SECTION("Number of elements calculated correctly") {
+        REQUIRE(md.getNumElements() == 500);
+        REQUIRE(md.getNumDimensions() == 3);
+    }
+    SECTION("Element located correctly in 3-dimensions"){
+        std::vector<int> testlocation = {3, 2, 5};
+        REQUIRE(md.getElement(testlocation) == 325);
+    }
 }

@@ -17,7 +17,7 @@ private:
 protected:
 
     std::vector<float> data;
-    std::vector<int> dimensions;
+    std::vector<int> dimensions; /**! Order by convention: {channel, z, y, x} e.g. {96,3,11,11} for layer 1 */
     unsigned long numElements;
 
 public:

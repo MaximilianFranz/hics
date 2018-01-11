@@ -5,20 +5,20 @@
 #include <NotImplementedException.h>
 #include "Wrapper.h"
 
-//TODO: @Max: Refactor and explain!
+//TODO: @Max: Redesign for new convention {channel, z, y, x}
 float Wrapper::getElement(std::vector<int> location) {
     unsigned long pos = 0;
-    int i = getNumDimensions() - 1;
-    for (i; 1 <= i; i--) {
+    int i = 0;
+    for (i; i <= getNumDimensions() - 2; i++) {
         pos += location[i]*(facultyOfDim(i));
     }
-    pos += location[0];
+    pos += location[getNumDimensions() - 1];
     return data[pos];
 }
 
 unsigned long Wrapper::facultyOfDim(int dim) {
     unsigned long fac = 1;
-    for (int i = 0; i < dim; i++) {
+    for (int i = getNumDimensions() - 1; i > dim; i--) {
         fac *= dimensions[i];
     }
     return fac;
