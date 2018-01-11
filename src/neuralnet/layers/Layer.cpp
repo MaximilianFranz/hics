@@ -6,9 +6,34 @@
 #include "../../NotImplementedException.h"
 
 LayerInfo Layer::getInfo() {
-    throw NotImplementedException();
+    return info;
 }
 
 bool Layer::isComputed() {
-    throw NotImplementedException();
+    return computed;
 }
+
+bool Layer::setComputed(bool status) {
+    computed = status;
+}
+
+bool Layer::isLayerFunctionSet() {
+    return functionSet;
+}
+
+void Layer::setLayerFunction(LayerFunction &function) {
+    this->function = function;
+    functionSet = true;
+}
+
+void Layer::reset() {
+    this->functionSet = false;
+    this->function = nullptr;
+    this->computed = false;
+
+}
+
+
+
+
+

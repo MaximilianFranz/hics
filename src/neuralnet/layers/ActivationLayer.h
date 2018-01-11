@@ -7,11 +7,8 @@
 #include "Layer.h"
 
 class ActivationLayer : Layer {
-    void forward(DataWrapper input, DataWrapper output) override;
+    void forward(DataWrapper &input, DataWrapper &output) override;
 
-    bool isPlatformSet() override;
-
-    bool isBiased() override;
 
 };
 

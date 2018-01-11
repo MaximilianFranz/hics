@@ -6,7 +6,7 @@
 #include "../../NotImplementedException.h"
 
 
-void ActivationLayer::forward(DataWrapper input, DataWrapper output) {
+void ActivationLayer::forward(DataWrapper &input, DataWrapper &output) {
     throw NotImplementedException();
 }
 

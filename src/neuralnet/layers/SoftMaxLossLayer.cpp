@@ -5,7 +5,7 @@
 #include "SoftMaxLossLayer.h"
 #include "../../NotImplementedException.h"
 
-void SoftMaxLossLayer::forward(DataWrapper input, DataWrapper output) {
+void SoftMaxLossLayer::forward(DataWrapper &input, DataWrapper &output) {
     throw NotImplementedException();
 }
 

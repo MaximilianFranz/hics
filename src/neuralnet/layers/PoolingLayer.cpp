@@ -5,14 +5,7 @@
 #include "PoolingLayer.h"
 #include "../../NotImplementedException.h"
 
-void PoolingLayer::forward(DataWrapper input, DataWrapper output) {
-    throw NotImplementedException();
+void PoolingLayer::forward(DataWrapper &input, DataWrapper &output) {
+    this->function.execute(); //TODO: Pass input and output Wrappers, when signature is updated.
 }
 
-bool PoolingLayer::isPlatformSet() {
-    throw NotImplementedException();
-}
-
-bool PoolingLayer::isBiased() {
-    throw NotImplementedException();
-}

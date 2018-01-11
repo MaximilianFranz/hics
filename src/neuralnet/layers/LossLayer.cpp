@@ -5,7 +5,7 @@
 #include "LossLayer.h"
 #include "../../NotImplementedException.h"
 
-void LossLayer::forward(DataWrapper input, DataWrapper output) {
+void LossLayer::forward(DataWrapper &input, DataWrapper &output) {
     throw NotImplementedException();
 }
 

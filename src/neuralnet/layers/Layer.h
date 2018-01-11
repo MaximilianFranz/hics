@@ -10,26 +10,36 @@
 #include <wrapper/WeightWrapper.h>
 
 class Layer {
-private:
+protected:
 
     LayerInfo info;
-    //Layer previous;
-    //Layer next;
-    LayerFunction *function; //TODO: changed from design
-    WeightWrapper weights;
+    Layer *previous;
+    Layer *next;
+    LayerFunction function = nullptr; //TODO: changed from design to LayerFunction
     //TODO: changed from design: no input and output Wrappers are held;
     bool computed;
+    bool functionSet;
 
 public:
-    virtual void forward(DataWrapper input, DataWrapper output) = 0;
+    virtual void forward(DataWrapper &input, DataWrapper &output) = 0;
 
     virtual LayerInfo getInfo();
 
     virtual bool isComputed();
 
-    virtual bool isPlatformSet() = 0;
+    /**
+     * TODO: Called from inside forward()?
+     *
+     * @param status
+     * @return
+     */
+    virtual bool setComputed(bool status);
 
-    virtual bool isBiased() = 0; //TODO: Do we need this?
+    virtual bool isLayerFunctionSet();
+
+    virtual void setLayerFunction(LayerFunction &function);
+
+    virtual void reset();
 
 };
 

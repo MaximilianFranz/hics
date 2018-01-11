@@ -9,7 +9,7 @@ bool NormalizationLayer::isPlatformSet() {
     throw NotImplementedException();
 }
 
-void NormalizationLayer::forward(DataWrapper input, DataWrapper output) {
+void NormalizationLayer::forward(DataWrapper &input, DataWrapper &output) {
     throw NotImplementedException();
 }
 

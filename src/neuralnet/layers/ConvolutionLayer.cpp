@@ -5,7 +5,7 @@
 #include "ConvolutionLayer.h"
 #include "../../NotImplementedException.h"
 
-void ConvolutionLayer::forward(DataWrapper input, DataWrapper output) {
+void ConvolutionLayer::forward(DataWrapper &input, DataWrapper &output) {
     throw NotImplementedException();
 }
 

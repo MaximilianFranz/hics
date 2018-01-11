@@ -11,6 +11,6 @@ class NormalizationLayer : Layer {
 
     bool isBiased() override;
 
-    void forward(DataWrapper input, DataWrapper output) override;
+    void forward(DataWrapper &input, DataWrapper &output) override;
 };
 

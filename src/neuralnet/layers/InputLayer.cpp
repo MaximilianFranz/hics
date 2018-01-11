@@ -5,7 +5,7 @@
 #include "InputLayer.h"
 #include "../../NotImplementedException.h"
 
-void InputLayer::forward(DataWrapper input, DataWrapper output) {
+void InputLayer::forward(DataWrapper &input, DataWrapper &output) {
     throw NotImplementedException();
 }
 

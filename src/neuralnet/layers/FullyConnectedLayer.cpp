@@ -5,7 +5,7 @@
 #include "FullyConnectedLayer.h"
 #include "../../NotImplementedException.h"
 
-void FullyConnectedLayer::forward(DataWrapper input, DataWrapper output) {
+void FullyConnectedLayer::forward(DataWrapper &input, DataWrapper &output) {
     throw NotImplementedException();
 }
 

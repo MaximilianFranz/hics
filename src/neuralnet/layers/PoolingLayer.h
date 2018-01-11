@@ -8,11 +8,7 @@
 
 class PoolingLayer : Layer{
     //must have all virtual methods - no override!!
-    void forward(DataWrapper input, DataWrapper output) override;
-
-    bool isPlatformSet() override;
-
-    bool isBiased() override;
+    void forward(DataWrapper &input, DataWrapper &output);
 };
 
 

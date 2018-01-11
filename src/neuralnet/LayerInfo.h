@@ -12,18 +12,20 @@
  */
 class LayerInfo {
 private:
+
+public:
     std::string type;
-    std::vector<int> inputDimensions;
-    std::vector<int> outputDimensions;
+    std::vector<int> inputDimensions; /**! @see Wrapper for convention of order**/
+    std::vector<int> outputDimensions; /**! @see Wrapper for conventions of order**/
     int numFilters;
     std::vector<int> filterDimensions;
     int zeroPadding; //TODO: changed from design doc
     bool bias;
-    int stride;
-public:
+
     std::string getInfoString();
     std::string getInfoJSON();
 
+    LayerInfo();
 
 
 
