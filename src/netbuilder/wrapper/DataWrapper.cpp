@@ -10,3 +10,8 @@ DataWrapper::DataWrapper(std::vector<int> dimensions, std::vector<float> &data)
     : Wrapper(dimensions, data) {
 
 }
+
+DataWrapper::DataWrapper(std::vector<int> dimensions)
+        : Wrapper(dimensions) {
+
+}

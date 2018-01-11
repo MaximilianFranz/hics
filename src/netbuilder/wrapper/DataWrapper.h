@@ -20,4 +20,7 @@ public:
      */
     DataWrapper(std::vector<int> dimensions, std::vector<float> &data);
 
+
+    DataWrapper(std::vector<int> dimensions);
+
 };

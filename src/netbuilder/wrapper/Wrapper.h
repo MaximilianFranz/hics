@@ -12,12 +12,13 @@
 class Wrapper {
 
 private:
-    int calcTotalNumElements();
+    unsigned long calcTotalNumElements();
+    unsigned long facultyOfDim(int dim);
 protected:
 
     std::vector<float> data;
     std::vector<int> dimensions;
-    int numElements;
+    unsigned long numElements;
 
 public:
 
@@ -30,7 +31,7 @@ public:
      */
     Wrapper(std::vector<int> &dimensions, std::vector<float> &data);
 
-    /**\brief Create empty Wrapper to store data in
+    /**\brief Create empty Wrapper to store data in. Reserves required size for dimensions.
      *
      * e.g. as output of a LayerFunction
      *
@@ -60,12 +61,13 @@ public:
      *
      * @return total number of elements
      */
-    virtual int getNumElements();
+    virtual unsigned long getNumElements();
 
     /**
      * Returns the data as a pointer to the raw array.
      *
      * This can be passed to OpenCL kernels and can be manipulated. It is passed by reference.
+     * This can be used when writing data to the vector, after instantiating it.
      *
      * @return pointer to the raw array
      */

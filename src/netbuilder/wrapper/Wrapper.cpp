@@ -5,9 +5,23 @@
 #include <NotImplementedException.h>
 #include "Wrapper.h"
 
-//TODO: Implement this considering convention for order of dimensions
+//TODO: @Max: Refactor and explain!
 float Wrapper::getElement(std::vector<int> location) {
-    return 0;
+    unsigned long pos = 0;
+    int i = getNumDimensions() - 1;
+    for (i; 1 <= i; i--) {
+        pos += location[i]*(facultyOfDim(i));
+    }
+    pos += location[0];
+    return data[pos];
+}
+
+unsigned long Wrapper::facultyOfDim(int dim) {
+    unsigned long fac = 1;
+    for (int i = 0; i < dim; i++) {
+        fac *= dimensions[i];
+    }
+    return fac;
 }
 
 Wrapper::Wrapper(std::vector<int> &dimensions, std::vector<float> &data)
@@ -19,18 +33,25 @@ Wrapper::Wrapper(std::vector<int> &dimensions, std::vector<float> &data)
     numElements = calcTotalNumElements();
 }
 
-Wrapper::Wrapper(std::vector<int> dimensionSizes) {
+Wrapper::Wrapper(std::vector<int> dimensions)
+        : dimensions(dimensions),
+          data(0)
+{
+    numElements = calcTotalNumElements();
+    // data.reserve(numElements); //TODO: @Michael, this doesn't suffice (use this instead of line below an run test-case)
+    data = std::vector<float>(numElements,0); //initialize 0-vector of required size - is in linear time
 }
 
 int Wrapper::getSizeOfDimension(int dim) {
     return this->dimensions[dim-1];
 }
 
-int Wrapper::calcTotalNumElements() {
+unsigned long Wrapper::calcTotalNumElements() {
     numElements = 1;
     for (int dimSize : dimensions) {
         numElements *= dimSize;
     }
+    return numElements;
 }
 
 int Wrapper::getNumDimensions() {
@@ -41,7 +62,7 @@ std::vector<int> Wrapper::getDimensions() {
     return dimensions;
 }
 
-int Wrapper::getNumElements() {
+unsigned long Wrapper::getNumElements() {
     return numElements;
 }
 
