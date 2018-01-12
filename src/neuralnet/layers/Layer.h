@@ -15,7 +15,7 @@ private:
     LayerInfo info;
     //Layer previous;
     //Layer next;
-    LayerFunction function; //TODO: changed from design
+    LayerFunction *function; //TODO: changed from design
     WeightWrapper weights;
     //TODO: changed from design: no input and output Wrappers are held;
     bool computed;
