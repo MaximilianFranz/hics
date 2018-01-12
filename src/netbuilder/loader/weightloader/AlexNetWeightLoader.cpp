@@ -6,26 +6,33 @@
 
 
 WeightWrapper AlexNetWeightLoader::createWeightWrapper(const std::string &groupName){
+
     std::string datasetWeightName = groupName + "_W";
     std::string datasetBiasName = groupName + "_b";
 
     h5cpp::Group group = weightFile.root().open_group(groupName);
 
+    //Open the weight dataset and dataspace.
     h5cpp::Dataset dataset = group.open_dataset(datasetWeightName);
     h5cpp::Dataspace dataspace = dataset.get_dataspace();
 
+    //Save HDF5 dimensions in an array.
     hsize_t weightDimensionArray[H5S_MAX_RANK];
+    //Save the dimension rank which represents the real count of dimensions used.
     int weightDimensionCount = dataspace.get_dims(weightDimensionArray);
 
+    //weightDimensions will contain only the used dimensions. HDF5 saves more unused ones.
     std::vector<int> weightDimensions;
     for(int i = 0; i<weightDimensionCount; i++){
         weightDimensions.push_back(weightDimensionArray[i]);
     }
 
     std::vector<float> weightData(dataspace.get_npoints());
+
+    //Read and store the weightData in the float vector.
     dataset.read(&weightData[0]);
 
-    //Bias
+    //Open the bias dataset and dataspace.
     dataset = group.open_dataset(datasetBiasName);
     dataspace = dataset.get_dataspace();
 
@@ -105,6 +112,7 @@ void AlexNetWeightLoader::populateWeightsMap(){
     layers.push_back(appendLayers(&temp1, &temp2));
     weightsMap.insert(std::pair<LayerIdentifier, WeightWrapper>(LayerIdentifier::CONV_5, layers.at(4)));
 
+
     layers.push_back(createWeightWrapper("dense_1"));
     weightsMap.insert(std::pair<LayerIdentifier, WeightWrapper>(LayerIdentifier::FULLY_CON_1, layers.at(5)));
 
@@ -128,5 +136,3 @@ AlexNetWeightLoader::AlexNetWeightLoader(const std::string &filePath)
     populateWeightsMap();
 
 }
-
-AlexNetWeightLoader::~AlexNetWeightLoader() = default;

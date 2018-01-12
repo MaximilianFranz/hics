@@ -18,8 +18,20 @@ private:
     h5cpp::File weightFile;
     std::map<LayerIdentifier, WeightWrapper> weightsMap;
 
+    /**
+     * @brief Creates a WeightWrapper out of a given groupName from the internally stored weightFile.
+     *
+     * The method tries to access the group by using the groupName string. It will then load the weight and bias dataset
+     * out of it and stores the data in one-dimensional std::vector objects. Furthermore it gets the dataset's
+     * dimensions and stores everything in a WeightWrapper which will be returned.
+     *
+     * @param groupName A string representing the group name for which the WeightWrapper shall be created.
+     * @return The created WeightWrapper.
+     */
     WeightWrapper createWeightWrapper(const std::string &groupName);
+
     WeightWrapper appendLayers(WeightWrapper* first, WeightWrapper* second);
+
     void populateWeightsMap();
 
 public:
@@ -34,9 +46,13 @@ public:
     */
     explicit AlexNetWeightLoader(const std::string &filePath);
 
-    virtual WeightWrapper getWeights(WeightLoader::LayerIdentifier layerId);
-
-    virtual ~AlexNetWeightLoader();
-
-
+    /**
+     * @brief Returns the WeightWrapper corresponding to the LayerIdentifier parameter.
+     *
+     * The method looks up in the weightsMap which WeightWrapper is mapped to the layerId key and returns it.
+     *
+     * @param layerId The identification for the wanted WeightWrapper in the weightsMap.
+     * @return The wanted WeightWrapper.
+     */
+    WeightWrapper getWeights(LayerIdentifier layerId) override;
 };
