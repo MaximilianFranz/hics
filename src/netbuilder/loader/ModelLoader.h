@@ -30,13 +30,16 @@ using namespace std;
  */
 struct LayerConstructionParams {
     string type;
+    int inputSize = 0;
+    int outputSize = 0;
+    int inputChannels= 0;
     int filterSize = 0;
     int numFilters = 0;
     int stride = 0;
     int paddingSize = 0;
     string actFctType = "none"; // eg. relu, tanh, sigmoid, ...
     string normFctType = "none";
-    vector<float> normParams = {0}; //Store default values somewhere -> take the AlexNet values!
+    nlohmann::basic_json<> normParams = {{"radius", 0}, {"alpha", 0}, {"beta", 0}, {"bias", 0}};
 };
 
 class ModelLoader {
