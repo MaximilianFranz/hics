@@ -6,7 +6,7 @@
 
 #include <wrapper/DataWrapper.h>
 #include <LayerInfo.h>
-#include <LayerFunction.h>
+#include <layerfunctions/LayerFunction.h>
 #include <wrapper/WeightWrapper.h>
 
 class Layer {
