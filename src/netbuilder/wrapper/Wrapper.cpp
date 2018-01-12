@@ -31,6 +31,7 @@ int Wrapper::calcTotalNumElements() {
     for (int dimSize : dimensions) {
         numElements *= dimSize;
     }
+    return numElements;
 }
 
 int Wrapper::getNumDimensions() {

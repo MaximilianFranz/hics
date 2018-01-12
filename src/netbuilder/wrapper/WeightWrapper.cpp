@@ -25,7 +25,6 @@ WeightWrapper::WeightWrapper(std::vector<int> &dimensions, std::vector<float> &w
                              std::vector<int> &biasDimensions)
         : Wrapper(dimensions, weights),
           bias(bias),
-          biasNumDimensions(biasNumDimensions),
           biasDimensionSizes(biasDimensions) {
 
 }
