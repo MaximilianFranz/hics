@@ -6,7 +6,7 @@
 
 #include <wrapper/DataWrapper.h>
 #include <LayerInfo.h>
-#include <LayerFunction.h>
+#include <layerfunctions/LayerFunction.h>
 #include <wrapper/WeightWrapper.h>
 
 class Layer {
@@ -15,7 +15,7 @@ private:
     LayerInfo info;
     //Layer previous;
     //Layer next;
-    LayerFunction function; //TODO: changed from design
+    LayerFunction *function; //TODO: changed from design
     WeightWrapper weights;
     //TODO: changed from design: no input and output Wrappers are held;
     bool computed;
