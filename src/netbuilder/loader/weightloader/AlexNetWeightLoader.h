@@ -19,6 +19,7 @@ private:
     std::map<LayerIdentifier, WeightWrapper> weightsMap;
 
     WeightWrapper createWeightWrapper(const std::string &groupName);
+    WeightWrapper appendLayers(WeightWrapper* first, WeightWrapper* second);
     void populateWeightsMap();
 
 public:

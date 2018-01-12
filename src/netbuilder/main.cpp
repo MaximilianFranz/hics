@@ -7,14 +7,8 @@ int main(void){
 
     AlexNetWeightLoader alex(FILE_PATH);
 
-    WeightWrapper test = alex.getWeights(AlexNetWeightLoader::LayerIdentifier::FULLY_CON_1);
+    WeightWrapper test = alex.getWeights(AlexNetWeightLoader::LayerIdentifier::CONV_2);
 
-    for(int i = 0; i<4096; i++){
-
-        std::cout << "Bias index " << i << " has value : ";
-        std::cout << test.getBias().at(i) << std::endl;
-
-    }
 
     return 0;
 }
