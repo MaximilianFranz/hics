@@ -5,7 +5,9 @@ project(HICS)
 set(CMAKE_CXX_STANDARD 11)
 
 find_package(Qt5 COMPONENTS Core Widgets Gui)
-find_package(HDF5)
+find_package(HDF5 COMPONENTS C CXX HL)
+
+
 
 #this allows us to use direct includes instead of using relative paths
 include_directories(src/communicator)

@@ -9,7 +9,6 @@
 class WeightWrapper : public Wrapper {
 private:
     std::vector<float> bias;
-    int biasNumDimensions;
     std::vector<int> biasDimensionSizes;
 
 public:
