@@ -20,14 +20,10 @@ set(SOURCE_FILES
         loader/weightloader/WeightLoader.h
         loader/weightloader/AlexNetWeightLoader.cpp
         loader/weightloader/AlexNetWeightLoader.h
-        loader/weightloader/hdf_wrapper.h
-        main.cpp)
+        loader/weightloader/hdf_wrapper.h)
 
 add_library(netbuilder STATIC ${SOURCE_FILES})
 
-
-link_directories( ${HDF5_LIBRARY_DIRS} )
-include_directories( ${HDF5_INCLUDE_DIRS} )
 add_executable(netbuilder-exec main.cpp)
 target_link_libraries( netbuilder-exec ${HDF5_CXX_LIBRARIES} )
 
