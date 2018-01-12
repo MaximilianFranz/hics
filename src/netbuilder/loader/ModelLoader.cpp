@@ -37,6 +37,7 @@ string ModelLoader::getLayerTypeByIndex(int index) {
 }
 /**
  * Checks if parameter, that must be an integer, exactly is an integer and if its value is valid (greater than 0).
+ *
  * @param currentLayer the layer the parameter of what needs to be checked
  * @param param the parameter that needs to be checked
  * @return true if parameter is valid
@@ -52,6 +53,7 @@ bool checkIntParam(json currentLayer, string param) {
 /**
  * Creates the LayerConstructionParams struct with the parameters, that are retrieved from a json neural net
  * description file.
+ *
  * @param index the index of the layer the LayerConstructionParams struct is to be created for
  * @return the LayerConstructionParams struct which contains all the needed information for layer creation
  */
@@ -63,25 +65,25 @@ LayerConstructionParams ModelLoader::getLayerConstructionParamsByIndex(int index
         lp.actFctType = currentLayer["activationFct"];
 
     if (currentLayer.count("inputSize") != 0 && checkIntParam(currentLayer, "inputSize"))
-        lp.filterSize = currentLayer["inputSize"];
+        lp.inputSize = currentLayer["inputSize"];
 
     if (currentLayer.count("inputChannels") != 0 && checkIntParam(currentLayer, "inputChannels"))
-        lp.filterSize = currentLayer["inputChannels"];
+        lp.inputChannels = currentLayer["inputChannels"];
 
     if (currentLayer.count("filterSize") != 0 && checkIntParam(currentLayer, "filterSize"))
         lp.filterSize = currentLayer["filterSize"];
 
     if (currentLayer.count("numFilters") != 0 && checkIntParam(currentLayer, "numFilters"))
-        lp.filterSize = currentLayer["kernels"];
+        lp.numFilters = currentLayer["kernels"];
 
     if (currentLayer.count("stride") != 0 && checkIntParam(currentLayer, "stride"))
-        lp.filterSize = currentLayer["stride"];
+        lp.stride = currentLayer["stride"];
 
     if (currentLayer.count("padding") != 0 && checkIntParam(currentLayer, "padding"))
-        lp.filterSize = currentLayer["padding"];
+        lp.paddingSize = currentLayer["padding"];
 
     if (currentLayer.count("outputSize") != 0 && checkIntParam(currentLayer, "outputSize"))
-        lp.filterSize = currentLayer["outputSize"];
+        lp.outputSize = currentLayer["outputSize"];
 
     if (currentLayer.count("params") != 0)
         lp.normParams = currentLayer["params"];

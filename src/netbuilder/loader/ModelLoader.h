@@ -61,7 +61,7 @@ public:
     ModelLoader(string path);
 
     //Methods for NetInfo construction
-    string getNetWorkName();
+    virtual string getNetWorkName() = 0;
 
     string getNetWorkID();
 
