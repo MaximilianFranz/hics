@@ -30,7 +30,9 @@ private:
      */
     WeightWrapper createWeightWrapper(const std::string &groupName);
 
-    WeightWrapper appendLayers(WeightWrapper* first, WeightWrapper* second);
+    WeightWrapper appendLayers(const std::string &groupNameFirst, const std::string &groupNameSecond);
+
+    void insertWeightWrapper(LayerIdentifier layerId, WeightWrapper weightWrapper);
 
     void populateWeightsMap();
 
