@@ -13,7 +13,7 @@
 class ConcatLayer : NaiveLayer {
 protected:
     //TODO: This needs to implement the previous layer functions differently!
-    std::vector<Layer> previousLayerList;
+    //    std::vector<Layer*> previousLayerList;
 public:
 private:
     void forward(DataWrapper &input, DataWrapper &output) override;

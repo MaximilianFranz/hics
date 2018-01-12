@@ -6,7 +6,6 @@
 
 #include <string>
 #include <wrapper/DataWrapper.h>
-#include <LayerFunction.h>
 #include <wrapper/WeightWrapper.h>
 
 
@@ -18,7 +17,6 @@ protected:
 
     Layer* previousLayer;
     Layer* nextLayer;
-    LayerFunction* function;
     bool computed;
     bool functionSet;
 
@@ -38,8 +36,6 @@ public:
     virtual bool readyToCompute() = 0;
 
     virtual bool isLayerFunctionSet() = 0;
-
-    virtual void setLayerFunction(LayerFunction &function) = 0;
 
     virtual void reset() = 0;
 

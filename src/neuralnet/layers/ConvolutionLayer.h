@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <layerfunctions/LayerFunction.h>
 #include "Layer.h"
 
 class ConvolutionLayer : Layer {

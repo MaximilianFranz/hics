@@ -4,11 +4,12 @@
 
 #pragma once
 
+#include <layerfunctions/LayerFunction.h>
 #include "Layer.h"
 
 class NormalizationLayer : Layer {
 protected:
-    LayerFunction function;
+    LayerFunction* function;
 public:
 
     void forward(DataWrapper &input, DataWrapper &output) override;

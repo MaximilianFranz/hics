@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <layerfunctions/LayerFunction.h>
 #include "Layer.h"
 
 class PoolingLayer : Layer{
@@ -14,7 +15,7 @@ protected:
     int zeroPadding;
     int stride;
 public:
-    void forward(DataWrapper &input, DataWrapper &output);
+    void forward(DataWrapper &input, DataWrapper &output) override;
 };
 
 

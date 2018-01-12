@@ -17,11 +17,6 @@ bool Layer::isLayerFunctionSet() {
     return functionSet;
 }
 
-void Layer::setLayerFunction(LayerFunction &function) {
-    this->function = function;
-    functionSet = true;
-}
-
 void Layer::reset() {
     this->functionSet = false;
     this->computed = false;
