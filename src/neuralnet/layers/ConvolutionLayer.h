@@ -7,6 +7,15 @@
 #include "Layer.h"
 
 class ConvolutionLayer : Layer {
+protected:
+    LayerFunction* function;
+
+    int numFilters;
+    std::vector<int> filterDimensions;
+    int zeroPadding;
+    int stride;
+    bool biased;
+public:
     void forward(DataWrapper &input, DataWrapper &output) override;
 };
 

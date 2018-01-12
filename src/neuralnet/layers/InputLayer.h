@@ -5,8 +5,9 @@
 #pragma once
 
 #include "Layer.h"
+#include "NaiveLayer.h"
 
-class InputLayer : Layer{
+class InputLayer : NaiveLayer {
     void forward(DataWrapper &input, DataWrapper &output) override;
 };
 

@@ -7,6 +7,8 @@
 #include "Layer.h"
 
 class ActivationLayer : Layer {
+protected:
+    LayerFunction* function;
 public:
 //    ActivationLayer(std::vector<int> inputDimensions);
 

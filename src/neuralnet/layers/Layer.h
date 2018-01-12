@@ -4,49 +4,44 @@
 
 #pragma once
 
+#include <string>
 #include <wrapper/DataWrapper.h>
-#include <LayerInfo.h>
-#include <layerfunctions/LayerFunction.h>
+#include <LayerFunction.h>
 #include <wrapper/WeightWrapper.h>
 
+
+/**
+ * Abstract class Layer
+ */
 class Layer {
 protected:
 
-    std::vector<Layer*> previousLayers;
-    std::vector<Layer*> nextLayers;
-    LayerFunction function;
+    Layer* previousLayer;
+    Layer* nextLayer;
+    LayerFunction* function;
     bool computed;
     bool functionSet;
 
-public:
+    std::string type;
+    std::vector<int> inputDimensions;
+    std::vector<int> outputDimensions;
 
-    LayerInfo info;
+
+public:
 
     virtual void forward(DataWrapper &input, DataWrapper &output) = 0;
 
-    virtual LayerInfo getInfo();
+    virtual bool isComputed() = 0;
 
-    virtual bool isComputed();
+    virtual bool setComputed(bool status) = 0;
 
-    /**
-     * TODO: Called from inside forward()?
-     *
-     * @param status
-     * @return
-     */
-    virtual bool setComputed(bool status);
+    virtual bool readyToCompute() = 0;
 
-    virtual bool readyToCompute();
+    virtual bool isLayerFunctionSet() = 0;
 
-    virtual bool isLayerFunctionSet();
+    virtual void setLayerFunction(LayerFunction &function) = 0;
 
-    virtual void setLayerFunction(LayerFunction &function);
-
-    virtual void reset();
-
-    const std::vector<Layer *> &getPreviousLayers() const;
-
-    const std::vector<Layer *> &getNextLayers() const;
+    virtual void reset() = 0;
 
 
 };

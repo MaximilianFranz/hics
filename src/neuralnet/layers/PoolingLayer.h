@@ -7,6 +7,13 @@
 #include "Layer.h"
 
 class PoolingLayer : Layer{
+protected:
+    LayerFunction* function;
+
+    std::vector<int> filterDimensions;
+    int zeroPadding;
+    int stride;
+public:
     void forward(DataWrapper &input, DataWrapper &output);
 };
 

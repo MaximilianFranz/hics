@@ -7,6 +7,10 @@
 #include "Layer.h"
 
 class FullyConnectedLayer : Layer {
+protected:
+    bool biased;
+    LayerFunction* function;
+public:
     void forward(DataWrapper &input, DataWrapper &output) override;
 };
 

@@ -4,7 +4,6 @@ add_library(neuralnet STATIC
         NetIterator.h
         SimpleNetIterator.cpp SimpleNetIterator.h
         NeuralNet.cpp NeuralNet.h
-        LayerInfo.cpp LayerInfo.h
         layers/PoolingLayer.cpp layers/PoolingLayer.h
         layers/MaxPoolingLayer.cpp layers/MaxPoolingLayer.h
         layers/ActivationLayer.cpp layers/ActivationLayer.h
@@ -16,4 +15,4 @@ add_library(neuralnet STATIC
         layers/SoftMaxLossLayer.cpp layers/SoftMaxLossLayer.h
         layers/InputLayer.cpp layers/InputLayer.h
         layers/FullyConnectedLayer.cpp layers/FullyConnectedLayer.h
-        layers/ConcatLayer.cpp layers/ConcatLayer.h)
+        layers/ConcatLayer.cpp layers/ConcatLayer.h layers/NaiveLayer.cpp layers/NaiveLayer.h)

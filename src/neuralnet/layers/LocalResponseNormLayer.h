@@ -7,6 +7,11 @@
 #include "NormalizationLayer.h"
 
 class LocalResponseNormLayer : NormalizationLayer {
+protected:
+    float radius;
+    float alpha;
+    float beta;
+    float bias;
 
 };
 
