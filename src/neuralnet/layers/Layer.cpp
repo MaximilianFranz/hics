@@ -9,7 +9,7 @@ bool Layer::isComputed() {
     return computed;
 }
 
-bool Layer::setComputed(bool status) {
+void Layer::setComputed(bool status) {
     computed = status;
 }
 
