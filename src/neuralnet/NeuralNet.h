@@ -16,8 +16,7 @@ class NeuralNet {
 private:
     NetInfo info;
     std::vector<Layer*> layers;
-    bool computationCompleted;
-    bool placementCompleted;
+
 
 public:
     friend class SimpleNetIterator;
@@ -35,5 +34,15 @@ public:
      * @return
      */
     SimpleNetIterator* createIterator() const;
+
+    /**
+     * Iterates over the network and verifies that input and output dimensions of connected layers match.
+     *
+     * The network may not be computed, if this returns false.
+     *
+     * @return true if the dimensions match, false otherwise.
+     */
+    bool verifyConsistency();
 };
+
 

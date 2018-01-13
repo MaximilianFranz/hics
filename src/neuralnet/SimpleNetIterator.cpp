@@ -15,7 +15,7 @@ void SimpleNetIterator::next() {
 }
 
 bool SimpleNetIterator::hasNext() {
-    return (index != net->layers.size() - 1);
+    return (index != net->layers.size() - 1); //index not yet at last element!
 }
 
 Layer *SimpleNetIterator::getElement() {

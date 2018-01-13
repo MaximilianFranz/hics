@@ -20,9 +20,28 @@ NetInfo NeuralNet::getInfo() {
 }
 
 bool NeuralNet::isComputationComplete() {
-    return computationCompleted;
+    for (Layer* l : layers) {
+        if (!l->isComputed())
+            return false;
+    }
+    return true;
+    // Alternatively: return (layers[last].isComputed())
+    // Can we guarantee consistency?
 }
 
 bool NeuralNet::isPlacementComplete() {
-    return computationCompleted;
+    for (Layer* l : layers) {
+        if (!l->isLayerFunctionSet()) {
+            return false;
+        }
+    }
+}
+
+bool NeuralNet::verifyConsistency() {
+    SimpleNetIterator it(this);
+    while (it.hasNext()) {
+        if (it.getElement()->getOutputDimensions() != it.getElement()->getNextLayer()->getInputDimensions())
+            return false;
+    }
+    return true;
 }
