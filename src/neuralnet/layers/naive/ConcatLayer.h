@@ -10,13 +10,26 @@
 /**
  * Allows to concatenate multiple outputs from more than one previous layer into one.
  */
-class ConcatLayer : NaiveLayer {
+class ConcatLayer : public NaiveLayer {
 protected:
     //TODO: This needs to implement the previous layer functions differently!
-    //    std::vector<Layer*> previousLayerList;
+    std::vector<std::vector<int>> inputLayersDimensions;
+    std::vector<Layer*> previousLayerList;
 public:
 
+    /**
+     * Constructor for a ConcatLayer given the dimensions of all input layers.
+     *
+     * @param inputLayersDimensions dimensions of all layers that are concatenated by this layer.
+     */
+    ConcatLayer(std::vector<std::vector<int>> inputLayersDimensions);
+
     void forward(DataWrapper &input, DataWrapper &output) override;
+
+    void setPreviousLayer(Layer *previousLayer) override;
+
+    Layer *getPreviousLayer() const override;
+
 };
 
 

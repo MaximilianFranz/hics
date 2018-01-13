@@ -54,5 +54,13 @@ const std::vector<int> &Layer::getInputDimensions() const {
     return inputDimensions;
 }
 
+void Layer::setPreviousLayer(Layer *previousLayer) {
+    Layer::previousLayer = previousLayer;
+}
+
+void Layer::setNextLayer(Layer *nextLayer) {
+    Layer::nextLayer = nextLayer;
+}
+
 
 

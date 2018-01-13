@@ -91,6 +91,20 @@ public:
     virtual void init() = 0;
 
     /**
+     * Set previous layer by giving a pointer
+     *
+     * @param previousLayer which to set as preceeding layer.
+     */
+    virtual void setPreviousLayer(Layer *previousLayer) = 0;
+
+     /**
+     * Set next layer by providing a pointer
+     *
+     * @param nextLayer which to append to this one.
+     */
+    virtual void setNextLayer(Layer *nextLayer) = 0;
+
+    /**
      * Calculates the output dimensions of the layer given the inputDimensions of this instance and it's parameters.
      *
      * Different implementation for each layer type.
@@ -106,7 +120,7 @@ public:
      */
     virtual std::vector<int> getOutputDimensions() = 0;
 
-    /**
+    virtual /**
      * Returns a pointer to the previous layer
      * @return a pointer to the previous layer.
      */

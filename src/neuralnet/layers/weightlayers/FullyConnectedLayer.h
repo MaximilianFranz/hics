@@ -15,8 +15,22 @@ protected:
     WeightWrapper* bias;
 public:
 
+    /**
+     * Constructor for a FullyConnectedLayer without weights.
+     *
+     * Weights can be set afterwards.
+     *
+     * @param inputDimensions inputDimensions to this
+     */
     FullyConnectedLayer(std::vector<int> inputDimensions);
 
+    /**
+     * Constructor for a FullyConnectedLayer with weights
+     *
+     * @param inputDimensions
+     * @param weights
+     * @param bias
+     */
     FullyConnectedLayer(std::vector<int> inputDimensions, WeightWrapper *weights, WeightWrapper *bias);
 
     void forward(DataWrapper &input, DataWrapper &output) override;

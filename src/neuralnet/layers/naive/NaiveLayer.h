@@ -9,11 +9,10 @@
 #include "layers/Layer.h"
 
 /**
- * Naive Layers do not have a layerfunction, because they don't perfom logic,
+ * Naive Layers do not have a Layerfunction, because they don't perform logic,
  * they are simple forms of control-flow layers
  */
-class NaiveLayer : Layer{
-
+class NaiveLayer : public Layer{
 
 };
 
