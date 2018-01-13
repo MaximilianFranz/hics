@@ -42,6 +42,8 @@ bool NeuralNet::verifyConsistency() {
     while (it.hasNext()) {
         if (it.getElement()->getOutputDimensions() != it.getElement()->getNextLayer()->getInputDimensions())
             return false;
+
+        it.next();
     }
     return true;
 }
