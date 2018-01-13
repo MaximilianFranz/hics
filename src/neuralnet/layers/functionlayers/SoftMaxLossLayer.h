@@ -4,14 +4,12 @@
 
 #pragma once
 
-#include <layerfunctions/LayerFunction.h>
-#include "Layer.h"
 
-class NormalizationLayer : Layer {
-protected:
-    LayerFunction* function;
+#include "LossLayer.h"
+
+class SoftMaxLossLayer : public LossLayer {
 public:
+    SoftMaxLossLayer(std::vector<int> &inputDimensions);
 
     void forward(DataWrapper &input, DataWrapper &output) override;
 };
-

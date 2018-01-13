@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Layer.h"
+#include "layers/Layer.h"
 #include "NaiveLayer.h"
 
 class InputLayer : NaiveLayer {

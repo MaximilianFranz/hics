@@ -5,17 +5,22 @@
 #pragma once
 
 #include <layerfunctions/LayerFunction.h>
-#include "Layer.h"
+#include "layers/Layer.h"
 
-class PoolingLayer : Layer{
+class PoolingLayer : public Layer{
 protected:
     LayerFunction* function;
 
-    std::vector<int> filterDimensions;
+    int filterSize;
     int zeroPadding;
     int stride;
 public:
+
     void forward(DataWrapper &input, DataWrapper &output) override;
+
+    void setFunction(LayerFunction* function);
+
+    std::vector<int> calcOutputDimensions() override;
 };
 
 

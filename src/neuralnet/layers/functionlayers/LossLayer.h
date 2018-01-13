@@ -5,13 +5,14 @@
 #pragma once
 
 #include <layerfunctions/LayerFunction.h>
-#include "Layer.h"
+#include "layers/Layer.h"
 
-class LossLayer : Layer{
+class LossLayer : public Layer {
 protected:
     LayerFunction* function;
 public:
-    void forward(DataWrapper &input, DataWrapper &output) override;
+    void setFunction(LayerFunction* function);
 
+    std::vector<int> calcOutputDimensions() override;
 };
 

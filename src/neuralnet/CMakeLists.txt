@@ -4,15 +4,15 @@ add_library(neuralnet STATIC
         NetIterator.h
         SimpleNetIterator.cpp SimpleNetIterator.h
         NeuralNet.cpp NeuralNet.h
-        layers/PoolingLayer.cpp layers/PoolingLayer.h
-        layers/MaxPoolingLayer.cpp layers/MaxPoolingLayer.h
-        layers/ActivationLayer.cpp layers/ActivationLayer.h
-        layers/ReLUActivationLayer.cpp layers/ReLUActivationLayer.h
-        layers/ConvolutionLayer.cpp layers/ConvolutionLayer.h
-        layers/NormalizationLayer.cpp layers/NormalizationLayer.h
-        layers/LocalResponseNormLayer.cpp layers/LocalResponseNormLayer.h
-        layers/LossLayer.cpp layers/LossLayer.h
-        layers/SoftMaxLossLayer.cpp layers/SoftMaxLossLayer.h
-        layers/InputLayer.cpp layers/InputLayer.h
-        layers/FullyConnectedLayer.cpp layers/FullyConnectedLayer.h
-        layers/ConcatLayer.cpp layers/ConcatLayer.h layers/NaiveLayer.cpp layers/NaiveLayer.h)
+        layers/functionlayers/PoolingLayer.cpp layers/functionlayers/PoolingLayer.h
+        layers/functionlayers/MaxPoolingLayer.cpp layers/functionlayers/MaxPoolingLayer.h
+        layers/functionlayers/ActivationLayer.cpp layers/functionlayers/ActivationLayer.h
+        layers/functionlayers/ReLUActivationLayer.cpp layers/functionlayers/ReLUActivationLayer.h
+        layers/weightlayers/ConvolutionLayer.cpp layers/weightlayers/ConvolutionLayer.h
+        layers/functionlayers/NormalizationLayer.cpp layers/functionlayers/NormalizationLayer.h
+        layers/functionlayers/LocalResponseNormLayer.cpp layers/functionlayers/LocalResponseNormLayer.h
+        layers/functionlayers/LossLayer.cpp layers/functionlayers/LossLayer.h
+        layers/functionlayers/SoftMaxLossLayer.cpp layers/functionlayers/SoftMaxLossLayer.h
+        layers/naive/InputLayer.cpp layers/naive/InputLayer.h
+        layers/weightlayers/FullyConnectedLayer.cpp layers/weightlayers/FullyConnectedLayer.h
+        layers/naive/ConcatLayer.cpp layers/naive/ConcatLayer.h layers/naive/NaiveLayer.cpp layers/naive/NaiveLayer.h)

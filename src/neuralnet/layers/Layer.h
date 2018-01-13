@@ -26,6 +26,13 @@ protected:
 
 
 public:
+    /**
+     * Dimension positions in the dimension vectors according to convention in 3D
+     */
+    const int D3_X_DIM = 2;
+    const int D3_Y_DIM = 1;
+    const int D3_Z_DIM = 0;
+
 
     virtual void forward(DataWrapper &input, DataWrapper &output) = 0;
 
@@ -39,6 +46,19 @@ public:
 
     virtual void reset() = 0;
 
+    virtual void init() = 0;
+
+    virtual std::vector<int> calcOutputDimensions() = 0;
+
+    virtual std::vector<int> getOutputDimensions() = 0;
+
+    Layer *getPreviousLayer() const;
+
+    Layer *getNextLayer() const;
+
+    const std::string &getType() const;
+
+    const std::vector<int> &getInputDimensions() const;
 
 };
 

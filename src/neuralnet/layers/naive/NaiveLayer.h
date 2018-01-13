@@ -6,7 +6,7 @@
 #define HICS_NAIVELAYER_H
 
 
-#include "Layer.h"
+#include "layers/Layer.h"
 
 /**
  * Naive Layers do not have a layerfunction, because they don't perfom logic,

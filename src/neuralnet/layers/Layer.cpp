@@ -28,8 +28,31 @@ bool Layer::readyToCompute() {
     previousLayer->isComputed();
 }
 
+void Layer::init() {
+    computed = false;
+    functionSet = false;
+}
+
+std::vector<int> Layer::getOutputDimensions() {
+    return outputDimensions;
+}
+
+Layer *Layer::getPreviousLayer() const {
+    return previousLayer;
+}
+
+Layer *Layer::getNextLayer() const {
+    return nextLayer;
+}
 
 
+const std::string &Layer::getType() const {
+    return type;
+}
+
+const std::vector<int> &Layer::getInputDimensions() const {
+    return inputDimensions;
+}
 
 
 

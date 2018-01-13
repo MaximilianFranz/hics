@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Layer.h"
+#include "layers/Layer.h"
 #include "NaiveLayer.h"
 
 /**
@@ -15,7 +15,7 @@ protected:
     //TODO: This needs to implement the previous layer functions differently!
     //    std::vector<Layer*> previousLayerList;
 public:
-private:
+
     void forward(DataWrapper &input, DataWrapper &output) override;
 };
 
