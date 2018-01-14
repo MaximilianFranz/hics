@@ -1,0 +1,25 @@
+language: cpp
+compiler:
+  - gcc
+  - clang
+os: linux
+dist: trusty
+sudo: required
+env:
+  global:
+    - NUM_THREADS=4
+before_install:
+  - true
+install:
+  - if [ $TRAVIS_OS_NAME == linux ]; then sudo -E ./scripts/travis/install-dependencies.sh; fi
+before_script:
+  - ./scripts/travis/configure-cmake.sh
+script:
+  - if [ $TRAVIS_OS_NAME == linux ]; then ./scripts/travis/build.sh; fi
+  - if [ $TRAVIS_OS_NAME == linux ]; then ./scripts/travis/test.sh; fi
+after_success:
+  - if [ $TRAVIS_OS_NAME == linux ]; then ./scripts/travis/after-success.sh; fi
+notifications:
+  email:
+    on_success: change
+    on_failure: always
