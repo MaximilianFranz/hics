@@ -8,5 +8,19 @@
 
 class FpgaPlatform : public Platform {
 public:
-    LayerFunction &createFunction(std::string layerType) override;
+    ActivationFunction &createActivationFunction() override;
+
+    ConvolutionFunction &createConvolutionFunction() override;
+
+    LossFunction &createLossFunction() override;
+
+    PoolingFunction &createPoolingFunction() override;
+
+    ResponseNormalizationFunction &createResponseNormalizationFunction() override;
+
+    FullyConnectedFunction &createFullyConnectedFunction() override;
+
+    PlatformInfo &getPlatformInfo() override;
+
+    PlatformType getPlatformType() override;
 };

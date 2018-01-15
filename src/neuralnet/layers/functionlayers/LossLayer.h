@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <layerfunctions/LayerFunction.h>
 #include <layerfunctions/loss/LossFunction.h>
 #include "layers/Layer.h"
 

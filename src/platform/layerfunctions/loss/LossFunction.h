@@ -4,10 +4,11 @@
 
 #pragma once
 
+#include <wrapper/DataWrapper.h>
 
 class LossFunction {
 public:
-    virtual void execute() = 0;
+    virtual void execute(const DataWrapper &input, DataWrapper &output) = 0;
 };
 
 

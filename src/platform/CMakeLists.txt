@@ -6,13 +6,15 @@ set(SOURCE_FILES
         platforms/FpgaPlatform.cpp platforms/FpgaPlatform.h
         layerfunctions/CLFunction.cpp layerfunctions/CLFunction.h
         layerfunctions/activation/ActivationFunction.h
+        layerfunctions/activation/CpuReLUFunction.cpp layerfunctions/activation/CpuReLUFunction.h
         layerfunctions/convolution/ConvolutionFunction.h
         layerfunctions/convolution/CpuConvolutionFunction.cpp layerfunctions/convolution/CpuConvolutionFunction.h
         layerfunctions/pooling/PoolingFunction.h
+        layerfunctions/pooling/CpuMaxPoolingFunction.cpp layerfunctions/pooling/CpuMaxPoolingFunction.h
         layerfunctions/loss/LossFunction.h
-        layerfunctions/normalization/ResponseNormalizationFunction.cpp layerfunctions/normalization/ResponseNormalizationFunction.h
-        layerfunctions/loss/SoftMaxLossFunction.cpp layerfunctions/loss/SoftMaxLossFunction.h
-        layerfunctions/activation/ReLUFunction.cpp layerfunctions/activation/ReLUFunction.h
-        layerfunctions/pooling/MaxPoolingFunction.cpp layerfunctions/pooling/MaxPoolingFunction.h
-        layerfunctions/FullyConnectedFunction.cpp layerfunctions/FullyConnectedFunction.h)
+        layerfunctions/loss/CpuSoftMaxLossFunction.cpp layerfunctions/loss/CpuSoftMaxLossFunction.h
+        layerfunctions/normalization/ResponseNormalizationFunction.h
+        layerfunctions/normalization/CpuResponseNormalizationFunction.cpp layerfunctions/normalization/CpuResponseNormalizationFunction.h
+        layerfunctions/FullyConnectedFunction.h
+        layerfunctions/CpuFullyConnectedFunction.h layerfunctions/CpuFullyConnectedFunction.cpp)
 add_library(platform STATIC ${SOURCE_FILES})

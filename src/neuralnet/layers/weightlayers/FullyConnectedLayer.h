@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <layerfunctions/LayerFunction.h>
+#include <layerfunctions/FullyConnectedFunction.h>
 #include "layers/Layer.h"
 
 class FullyConnectedLayer : public Layer {

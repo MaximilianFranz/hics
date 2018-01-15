@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <layerfunctions/LayerFunction.h>
 #include <layerfunctions/pooling/PoolingFunction.h>
 #include "layers/Layer.h"
 

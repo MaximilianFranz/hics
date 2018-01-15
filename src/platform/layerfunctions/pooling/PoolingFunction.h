@@ -5,9 +5,15 @@
 #pragma once
 
 
+#include <wrapper/DataWrapper.h>
+
 class PoolingFunction {
 public:
-    virtual void execute() = 0;
+    virtual void execute(const DataWrapper &input,
+                         DataWrapper &output,
+                         int stride,
+                         int filterSize,
+                         int zeroPadding) = 0;
 };
 
 
