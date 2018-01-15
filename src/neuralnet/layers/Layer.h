@@ -9,6 +9,17 @@
 #include <wrapper/WeightWrapper.h>
 
 
+enum LayerType {
+    ACTIVATION_RELU,
+    NORMALIZATION_LOCALRESPONSE,
+    LOSS_SOFTMAX,
+    POOLING_MAX,
+    CONVOLUTION,
+    FULLYCONNECTED,
+    INPUT,
+    CONCAT
+};
+
 /**
  * Abstract class Layer
  */
