@@ -4,6 +4,3 @@
 
 #include "Platform.h"
 
-const PlatformInfo &Platform::getPlatformInfo() const {
-    return platformInfo;
-}

@@ -7,11 +7,12 @@ set(SOURCE_FILES
         layerfunctions/LayerFunction.h
         layerfunctions/CLFunction.cpp layerfunctions/CLFunction.h
         layerfunctions/activation/ActivationFunction.cpp layerfunctions/activation/ActivationFunction.h
-        layerfunctions/activation/CpuActivationFunction.cpp layerfunctions/activation/CpuActivationFunction.h
         layerfunctions/convolution/ConvolutionFunction.cpp layerfunctions/convolution/ConvolutionFunction.h
         layerfunctions/convolution/CpuConvolutionFunction.cpp layerfunctions/convolution/CpuConvolutionFunction.h
         layerfunctions/pooling/PoolingFunction.cpp layerfunctions/pooling/PoolingFunction.h
-        layerfunctions/pooling/CpuPoolingFunction.cpp layerfunctions/pooling/CpuPoolingFunction.h
         layerfunctions/loss/LossFunction.cpp layerfunctions/loss/LossFunction.h
-        layerfunctions/loss/CpuLossFunction.cpp layerfunctions/loss/CpuLossFunction.h)
+        layerfunctions/normalization/ResponseNormalizationFunction.cpp layerfunctions/normalization/ResponseNormalizationFunction.h
+        layerfunctions/loss/SoftMaxLossFunction.cpp layerfunctions/loss/SoftMaxLossFunction.h
+        layerfunctions/activation/ReLUFunction.cpp layerfunctions/activation/ReLUFunction.h
+        layerfunctions/pooling/MaxPoolingFunction.cpp layerfunctions/pooling/MaxPoolingFunction.h)
 add_library(platform STATIC ${SOURCE_FILES})

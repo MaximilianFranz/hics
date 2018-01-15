@@ -9,6 +9,12 @@
 #include <string>
 #include <PlatformInfo.h>
 
+enum PlatformType {
+    CPU,
+    FPGA,
+    GPU,
+};
+
 class Platform {
 protected:
     PlatformInfo platformInfo;
@@ -16,5 +22,7 @@ protected:
 public:
     virtual LayerFunction &createFunction(std::string layerType) = 0;
 
-    const PlatformInfo &getPlatformInfo() const;
+    virtual const PlatformInfo &getPlatformInfo() const = 0;
+
+    virtual PlatformType getPlatformType() = 0;
 };
