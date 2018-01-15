@@ -4,10 +4,19 @@
 
 #pragma once
 
+#include <wrapper/DataWrapper.h>
+#include <wrapper/WeightWrapper.h>
 
 class ConvolutionFunction  {
 public:
-    virtual void execute() = 0;
+    virtual void execute(const DataWrapper &input,
+                         DataWrapper &output,
+                         const WeightWrapper &weights,
+                         const WeightWrapper &bias,
+                         int stride,
+                         int filterSize,
+                         int numFilters,
+                         int zeroPadding) = 0;
 };
 
 
