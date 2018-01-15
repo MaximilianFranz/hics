@@ -26,8 +26,10 @@ set(SOURCE_FILES
         loader/StringLoader.h)
 
 add_library(netbuilder STATIC ${SOURCE_FILES})
+target_link_libraries(netbuilder ${HDF5_LIBRARIES})
+
+include_directories(${HDF5_INCLUDE_DIRS})
 
 add_executable(netbuilder-exec main.cpp)
-target_link_libraries( netbuilder-exec ${HDF5_CXX_LIBRARIES} )
-
 target_link_libraries(netbuilder-exec netbuilder)
+

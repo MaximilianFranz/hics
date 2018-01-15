@@ -52,7 +52,7 @@ For an overview, take a look at the namespace page @ref h5cpp.
   #include <stdio.h>
 #endif
 
-#include "hdf5/serial/hdf5.h"
+#include <hdf5.h>
 
 #ifdef HDF_WRAPPER_HAS_BOOST
   #include <boost/optional.hpp>

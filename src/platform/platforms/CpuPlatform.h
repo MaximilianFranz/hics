@@ -4,7 +4,9 @@
 
 #pragma once
 
+#include "Platform.h"
 
-class CpuPlatform {
-
+class CpuPlatform : public Platform {
+public:
+    LayerFunction &createFunction(std::string layerType) override;
 };
