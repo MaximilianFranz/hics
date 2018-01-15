@@ -13,7 +13,9 @@
 
 #include "PerformanceData.h"
 
-
+/**
+ * Wraps up the data resulting from a classification.
+ */
 class ClassificationResult {
 private:
     std::vector<ImageResult> results;               /*!< results of the classification*/

@@ -11,7 +11,9 @@
 #include <ComputationHost.h>
 #include <NetInfo.h>
 
-
+/**
+ * Provides a static method to distribute the images to different ComputationHosts. Can not be instantiated.
+ */
 class HostPlacer {
 public:
     /**
