@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <layerfunctions/LayerFunction.h>
+#include <layerfunctions/convolution/ConvolutionFunction.h>
 #include "layers/Layer.h"
 
 
@@ -13,7 +13,7 @@
  */
 class ConvolutionLayer : public Layer {
 protected:
-    LayerFunction* function;
+    ConvolutionFunction* function;
 
     WeightWrapper* weights;
     WeightWrapper* bias;
@@ -22,7 +22,6 @@ protected:
     int filterSize;
     int zeroPadding;
     int stride;
-    bool biased;
 public:
 
     /**
@@ -68,7 +67,7 @@ public:
 
     void setBias(WeightWrapper* bias);
 
-    void setFunction(LayerFunction* function);
+    void setFunction(ConvolutionFunction* function);
 
     bool verifyWeights();
 

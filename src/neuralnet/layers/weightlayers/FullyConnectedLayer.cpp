@@ -36,9 +36,6 @@ void FullyConnectedLayer::setBias(WeightWrapper *bias) {
     this->bias = bias;
 }
 
-void FullyConnectedLayer::setFunction(LayerFunction *function) {
-    this->function = function;
-}
 
 //TODO: Implement checks if the weights fit the layer!
 bool FullyConnectedLayer::verifyWeights() {

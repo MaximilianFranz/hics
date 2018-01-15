@@ -4,12 +4,12 @@
 
 #pragma once
 
-#include <layerfunctions/LayerFunction.h>
+#include <layerfunctions/activation/ActivationFunction.h>
 #include "layers/Layer.h"
 
 class ActivationLayer : public Layer {
 protected:
-    LayerFunction* function;
+    ActivationFunction* function;
 public:
     // TODO: This is not technically correct, because ActivationsLayer should not be instantiated.
     ActivationLayer(std::vector<int> &inputDimensions);
@@ -18,7 +18,7 @@ public:
 
     std::vector<int> calcOutputDimensions() override;
 
-    void setFunction(LayerFunction* function);
+    void setFunction(ActivationFunction* function);
 };
 
 

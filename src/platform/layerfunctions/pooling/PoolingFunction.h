@@ -5,11 +5,15 @@
 #pragma once
 
 
-#include <layerfunctions/LayerFunction.h>
+#include <wrapper/DataWrapper.h>
 
-class PoolingFunction : public LayerFunction {
+class PoolingFunction {
 public:
-    void execute() override;
+    virtual void execute(const DataWrapper &input,
+                         DataWrapper &output,
+                         int stride,
+                         int filterSize,
+                         int zeroPadding) = 0;
 };
 
 

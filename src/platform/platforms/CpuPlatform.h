@@ -8,5 +8,19 @@
 
 class CpuPlatform : public Platform {
 public:
-    LayerFunction &createFunction(std::string layerType) override;
+    ConvolutionFunction &createConvolutionFunction() override;
+
+    LossFunction &createLossFunction() override;
+
+    PoolingFunction &createPoolingFunction() override;
+
+    ResponseNormalizationFunction &createResponseNormalizationFunction() override;
+
+    FullyConnectedFunction &createFullyConnectedFunction() override;
+
+    PlatformInfo &getPlatformInfo() override;
+
+    PlatformType getPlatformType() override;
+
+    ActivationFunction &createActivationFunction() override;
 };

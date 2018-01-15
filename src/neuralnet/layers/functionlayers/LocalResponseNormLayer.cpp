@@ -41,3 +41,8 @@ float LocalResponseNormLayer::getBeta() const {
 float LocalResponseNormLayer::getBias() const {
     return bias;
 }
+
+void LocalResponseNormLayer::setFunction(ResponseNormalizationFunction *function) {
+    this->function = function;
+    functionSet = true;
+}

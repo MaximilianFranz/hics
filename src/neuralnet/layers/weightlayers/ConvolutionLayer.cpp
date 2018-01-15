@@ -26,15 +26,11 @@ std::vector<int> ConvolutionLayer::calcOutputDimensions() {
 
 
 void ConvolutionLayer::setWeights(WeightWrapper* weights) {
-
+    this->weights = weights;
 }
 
 void ConvolutionLayer::setBias(WeightWrapper* bias) {
-
-}
-
-void ConvolutionLayer::setFunction(LayerFunction *function) {
-
+    this->bias = bias;
 }
 
 bool ConvolutionLayer::verifyWeights() {
@@ -82,6 +78,11 @@ int ConvolutionLayer::getZeroPadding() const {
 
 int ConvolutionLayer::getStride() const {
     return stride;
+}
+
+void ConvolutionLayer::setFunction(ConvolutionFunction *function) {
+    this->function = function;
+    this->functionSet =true;
 }
 
 

@@ -4,12 +4,19 @@
 
 #pragma once
 
+#include <wrapper/DataWrapper.h>
+#include <wrapper/WeightWrapper.h>
 
-#include <layerfunctions/LayerFunction.h>
-
-class ConvolutionFunction : public LayerFunction {
+class ConvolutionFunction  {
 public:
-    void execute() override;
+    virtual void execute(const DataWrapper &input,
+                         DataWrapper &output,
+                         const WeightWrapper &weights,
+                         const WeightWrapper &bias,
+                         int stride,
+                         int filterSize,
+                         int numFilters,
+                         int zeroPadding) = 0;
 };
 
 

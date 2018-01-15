@@ -4,12 +4,11 @@
 
 #pragma once
 
+#include <wrapper/DataWrapper.h>
 
-#include <layerfunctions/LayerFunction.h>
-
-class LossFunction : public LayerFunction {
+class LossFunction {
 public:
-    void execute();
+    virtual void execute(const DataWrapper &input, DataWrapper &output) = 0;
 };
 
 

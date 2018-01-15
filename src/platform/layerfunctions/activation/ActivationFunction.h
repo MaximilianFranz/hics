@@ -5,11 +5,11 @@
 #pragma once
 
 
-#include <layerfunctions/LayerFunction.h>
+#include <wrapper/DataWrapper.h>
 
-class ActivationFunction : public LayerFunction {
+class ActivationFunction  {
 public:
-    void execute() override;
+    virtual void execute(const DataWrapper &input, DataWrapper &output) = 0;
 };
 
 

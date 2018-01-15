@@ -16,10 +16,12 @@ std::vector<int> ActivationLayer::calcOutputDimensions() {
 
 ActivationLayer::ActivationLayer(std::vector<int> &inputDimensions) {
     this->inputDimensions = inputDimensions;
+    this->outputDimensions = calcOutputDimensions();
 }
 
-void ActivationLayer::setFunction(LayerFunction *function) {
+void ActivationLayer::setFunction(ActivationFunction *function) {
     this->function = function;
+    functionSet = true;
 }
 
 

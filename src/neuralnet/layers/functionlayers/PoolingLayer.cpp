@@ -6,10 +6,6 @@
 #include "NotImplementedException.h"
 
 
-void PoolingLayer::setFunction(LayerFunction *function) {
-    this->function = function;
-}
-
 std::vector<int> PoolingLayer::calcOutputDimensions() {
     std::vector<int> outDim(3);
     outDim[D3_Z_DIM] = inputDimensions[0]; //number of channels remain the same!
@@ -21,5 +17,11 @@ std::vector<int> PoolingLayer::calcOutputDimensions() {
 
 void PoolingLayer::forward(DataWrapper &input, DataWrapper &output) {
     throw NotImplementedException();
+
+}
+
+void PoolingLayer::setFunction(PoolingFunction *function) {
+    this->function = function;
+    this->functionSet = true;
 
 }
