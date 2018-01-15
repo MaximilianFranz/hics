@@ -4,19 +4,25 @@
 
 #pragma once
 
-#include "NormalizationLayer.h"
+#include <layerfunctions/normalization/ResponseNormalizationFunction.h>
+#include <layers/Layer.h>
 
-class LocalResponseNormLayer : public NormalizationLayer {
+class LocalResponseNormLayer : public Layer{
 protected:
     float radius;
     float alpha;
     float beta;
     float bias;
 
+    ResponseNormalizationFunction* function;
+
 public:
     LocalResponseNormLayer(std::vector<int> inputDimensions, float radius, float alpha, float beta, float bias);
 
     void forward(DataWrapper &input, DataWrapper &output) override;
+
+    void setFunction(ResponseNormalizationFunction *function);
+
 
     //GETTER
 

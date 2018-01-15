@@ -10,7 +10,7 @@
 class FullyConnectedLayer : public Layer {
 protected:
     bool biased;
-    LayerFunction* function;
+    FullyConnectedFunction* function;
     WeightWrapper* weights;
     WeightWrapper* bias;
 public:
@@ -39,7 +39,7 @@ public:
 
     void setBias(WeightWrapper* bias);
 
-    void setFunction(LayerFunction* function);
+    void setFunction(FullyConnectedFunction* function);
 
     bool verifyWeights();
 

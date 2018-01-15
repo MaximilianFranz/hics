@@ -6,10 +6,11 @@
 #include "NotImplementedException.h"
 
 
-void LossLayer::setFunction(LayerFunction *function) {
-    this->function = function;
-}
-
 std::vector<int> LossLayer::calcOutputDimensions() {
     return inputDimensions; // LossLayer don't change output size.
+}
+
+void LossLayer::setFunction(LossFunction *function) {
+    this->function = function;
+    this->functionSet = true;
 }

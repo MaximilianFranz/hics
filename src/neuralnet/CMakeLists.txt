@@ -9,7 +9,6 @@ add_library(neuralnet STATIC
         layers/functionlayers/ActivationLayer.cpp layers/functionlayers/ActivationLayer.h
         layers/functionlayers/ReLUActivationLayer.cpp layers/functionlayers/ReLUActivationLayer.h
         layers/weightlayers/ConvolutionLayer.cpp layers/weightlayers/ConvolutionLayer.h
-        layers/functionlayers/NormalizationLayer.cpp layers/functionlayers/NormalizationLayer.h
         layers/functionlayers/LocalResponseNormLayer.cpp layers/functionlayers/LocalResponseNormLayer.h
         layers/functionlayers/LossLayer.cpp layers/functionlayers/LossLayer.h
         layers/functionlayers/SoftMaxLossLayer.cpp layers/functionlayers/SoftMaxLossLayer.h
