@@ -3,7 +3,6 @@ set(SOURCE_FILES
         PlatformInfo.cpp PlatformInfo.h
         platforms/Platform.h
         platforms/CpuPlatform.cpp platforms/CpuPlatform.h
-        platforms/FpgaPlatform.cpp platforms/FpgaPlatform.h
         layerfunctions/CLFunction.cpp layerfunctions/CLFunction.h
         layerfunctions/activation/ActivationFunction.h
         layerfunctions/activation/CpuReLUFunction.cpp layerfunctions/activation/CpuReLUFunction.h
