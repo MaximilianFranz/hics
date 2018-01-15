@@ -5,11 +5,9 @@
 #pragma once
 
 
-#include <layerfunctions/LayerFunction.h>
-
-class LossFunction : public LayerFunction {
+class LossFunction {
 public:
-    void execute();
+    virtual void execute() = 0;
 };
 
 

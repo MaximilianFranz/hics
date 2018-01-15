@@ -5,11 +5,9 @@
 #pragma once
 
 
-#include <layerfunctions/LayerFunction.h>
-
-class PoolingFunction : public LayerFunction {
+class PoolingFunction {
 public:
-    void execute() override;
+    virtual void execute() = 0;
 };
 
 

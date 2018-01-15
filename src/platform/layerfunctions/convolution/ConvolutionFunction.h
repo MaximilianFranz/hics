@@ -5,11 +5,9 @@
 #pragma once
 
 
-#include <layerfunctions/LayerFunction.h>
-
-class ConvolutionFunction : public LayerFunction {
+class ConvolutionFunction  {
 public:
-    void execute() override;
+    virtual void execute() = 0;
 };
 
 

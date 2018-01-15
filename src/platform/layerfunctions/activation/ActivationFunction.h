@@ -5,11 +5,9 @@
 #pragma once
 
 
-#include <layerfunctions/LayerFunction.h>
-
-class ActivationFunction : public LayerFunction {
+class ActivationFunction  {
 public:
-    void execute() override;
+    virtual void execute() = 0;
 };
 
 
