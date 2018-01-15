@@ -46,10 +46,6 @@ Layer *Layer::getNextLayer() const {
 }
 
 
-const std::string &Layer::getType() const {
-    return type;
-}
-
 const std::vector<int> &Layer::getInputDimensions() const {
     return inputDimensions;
 }
@@ -60,6 +56,10 @@ void Layer::setPreviousLayer(Layer *previousLayer) {
 
 void Layer::setNextLayer(Layer *nextLayer) {
     Layer::nextLayer = nextLayer;
+}
+
+LayerType Layer::getType() const {
+    return type;
 }
 
 

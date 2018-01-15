@@ -24,6 +24,8 @@ public:
      */
     ConcatLayer(std::vector<std::vector<int>> inputLayersDimensions);
 
+    std::vector<int> calcOutputDimensions() override;
+
     void forward(DataWrapper &input, DataWrapper &output) override;
 
     void setPreviousLayer(Layer *previousLayer) override;

@@ -6,12 +6,12 @@
 #include "NotImplementedException.h"
 
 void InputLayer::forward(DataWrapper &input, DataWrapper &output) {
-    throw NotImplementedException();
+    output = input; // Naive implementation. Input layer is for semantics only as of now
 }
 
 InputLayer::InputLayer(std::vector<int> inputDimensions) {
     this->functionSet = true; // Naive Layers don't have functions
-    this->type = "input";
+    this->type = INPUT;
     this->outputDimensions = calcOutputDimensions();
 
 }

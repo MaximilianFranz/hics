@@ -7,8 +7,7 @@
 
 
 void LocalResponseNormLayer::forward(DataWrapper &input, DataWrapper &output) {
-    throw NotImplementedException();
-
+    this->function->execute(input, output, radius, alpha, beta, bias);
 }
 
 LocalResponseNormLayer::LocalResponseNormLayer(std::vector<int> inputDimensions, float radius, float alpha, float beta,
@@ -22,7 +21,7 @@ LocalResponseNormLayer::LocalResponseNormLayer(std::vector<int> inputDimensions,
 {
     this->inputDimensions = inputDimensions;
     this->outputDimensions = calcOutputDimensions();
-    this->type = "localresponsenorm";
+    this->type = NORMALIZATION_LOCALRESPONSE;
     this->init();
 }
 

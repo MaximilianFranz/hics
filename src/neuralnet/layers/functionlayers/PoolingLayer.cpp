@@ -16,8 +16,7 @@ std::vector<int> PoolingLayer::calcOutputDimensions() {
 }
 
 void PoolingLayer::forward(DataWrapper &input, DataWrapper &output) {
-    throw NotImplementedException();
-
+    this->function->execute(input, output, stride, filterSize, zeroPadding);
 }
 
 void PoolingLayer::setFunction(PoolingFunction *function) {

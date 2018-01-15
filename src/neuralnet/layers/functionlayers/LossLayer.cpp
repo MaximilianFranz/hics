@@ -14,3 +14,7 @@ void LossLayer::setFunction(LossFunction *function) {
     this->function = function;
     this->functionSet = true;
 }
+
+void LossLayer::forward(DataWrapper &input, DataWrapper &output) {
+    this->function->execute(input, output);
+}
