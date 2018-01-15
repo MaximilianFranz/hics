@@ -22,7 +22,6 @@ protected:
     int filterSize;
     int zeroPadding;
     int stride;
-    bool biased;
 public:
 
     /**
