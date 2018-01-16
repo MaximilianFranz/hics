@@ -25,12 +25,16 @@ LocalResponseNormLayer* createLocalResponseNormLayer(LayerConstructionParams lcp
 
 ReLUActivationLayer* createReLuActivationLayer(LayerConstructionParams lcp) {
     vector inputDim {lcp.inputSize, lcp.inputSize};
-    return ReLUActivationLayer(inputDim)*;
+    ReLUActivationLayer* relu = (new ReLUActivationLayer(inputDim));
+    return relu;
 }
 
+// Always return pointers to large objects because otherwise they would be copied every time.
 SoftMaxLossLayer* createSoftmaxLossLayer(LayerConstructionParams lcp) {
-    vector inputDim {lcp.inputSize, lcp.inputSize};
-    return SoftMaxLossLayer::SoftMaxLossLayer(&inputDim)*;
+    std::vector<int> inputDim = {lcp.inputChannels, lcp.inputSize, lcp.inputSize}; //is always {z,y,x}
+    SoftMaxLossLayer* softmax = new SoftMaxLossLayer(inputDim); // Create Layer with "new", so that scope handling is manual
+    SoftMaxLossLayer s(inputDim);   // NOT like this, because 's' would be deleted once method ends and we would return a pointer to something
+    return &s;                      // that does not exist
 }
 
 FullyConnectedLayer* createFCLayer(LayerConstructionParams lcp, WeightWrapper weights) {

@@ -16,16 +16,17 @@
 #include "../neuralnet/layers/functionlayers/ReLUActivationLayer.h"
 #include "../neuralnet/layers/functionlayers/SoftMaxLossLayer.h"
 
+
 class LayerMaker {
 private:
 
 public:
-    InputLayer createInputLayer(LayerConstructionParams lcp);
-    ConvolutionLayer createConvLayer(LayerConstructionParams lcp, WeightWrapper weights);
-    MaxPoolingLayer createMaxPoolLayer(LayerConstructionParams lcp);
-    LocalResponseNormLayer createLocalResponseNormLayer(LayerConstructionParams lcp);
-    ReLUActivationLayer createReLuActivationLayer(LayerConstructionParams lcp);
-    SoftMaxLossLayer createSoftmaxLossLayer(LayerConstructionParams lcp);
-    FullyConnectedLayer createFCLayer(LayerConstructionParams lcp, WeightWrapper weights);
+    InputLayer* createInputLayer(LayerConstructionParams lcp);
+    ConvolutionLayer* createConvLayer(LayerConstructionParams lcp, WeightWrapper weights);
+    MaxPoolingLayer* createMaxPoolLayer(LayerConstructionParams lcp);
+    LocalResponseNormLayer* createLocalResponseNormLayer(LayerConstructionParams lcp);
+    ReLUActivationLayer* createReLuActivationLayer(LayerConstructionParams lcp);
+    SoftMaxLossLayer* createSoftmaxLossLayer(LayerConstructionParams lcp);
+    FullyConnectedLayer* createFCLayer(LayerConstructionParams lcp, WeightWrapper weights);
 
 };
