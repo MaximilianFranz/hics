@@ -25,10 +25,10 @@ AlexNetWeightLoader::createWeightWrapper(const std::string &groupName) {
     //weightDimensions will contain only the used dimensions. HDF5 saves more unused ones.
     std::vector<int> weightDimensions;
     for (int i = 0; i < weightDimensionCount; i++) {
-        weightDimensions.push_back(weightDimensionArray[i]);
+        weightDimensions.push_back((int)weightDimensionArray[i]);
     }
 
-    std::vector<float> weightData(dataspace.get_npoints());
+    std::vector<float> weightData((unsigned long)dataspace.get_npoints());
 
     //Read and store the weightData in the float vector.
     dataset.read(&weightData[0]);
@@ -42,10 +42,10 @@ AlexNetWeightLoader::createWeightWrapper(const std::string &groupName) {
 
     std::vector<int> biasDimensions;
     for (int i = 0; i < biasDimensionCount; i++) {
-        biasDimensions.push_back(biasDimensionArray[i]);
+        biasDimensions.push_back((int)biasDimensionArray[i]);
     }
 
-    std::vector<float> biasData(dataspace.get_npoints());
+    std::vector<float> biasData((unsigned long)dataspace.get_npoints());
     dataset.read(&biasData[0]);
 
     WeightWrapper output(weightDimensions, weightData, biasData, biasDimensions);
@@ -64,12 +64,12 @@ WeightWrapper AlexNetWeightLoader::appendLayers(const std::string &groupNameFirs
     std::vector<float> firstBias = first.getBias();
     const std::vector<float> secondBias = second.getBias();
 
-    for (long i = 0; i < secondWeights.size(); i++) {
-        firstWeights.push_back(secondWeights.at(i));
+    for (auto i : secondWeights){
+        firstWeights.push_back(secondWeights.at((unsigned long) i));
     }
 
-    for (long i = 0; i < secondBias.size(); i++) {
-        firstBias.push_back(secondBias.at(i));
+    for (auto i : secondBias) {
+        firstBias.push_back(secondBias.at((unsigned long) i));
     }
 
     //TODO watch out maybe other dimension attributes need to be changed aswell.
