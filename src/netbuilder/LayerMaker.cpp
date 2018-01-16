@@ -5,34 +5,34 @@
 #include "LayerMaker.h"
 #include "../NotImplementedException.h"
 
-InputLayer createInputLayer(LayerConstructionParams lcp){
+InputLayer* createInputLayer(LayerConstructionParams lcp){
     vector inputDim {lcp.inputSize, lcp.inputSize};
-    return InputLayer(inputDim);
+    return InputLayer(inputDim)*;
 }
 
-ConvolutionLayer createConvLayer(LayerConstructionParams lcp, WeightWrapper weights){
+ConvolutionLayer* createConvLayer(LayerConstructionParams lcp, WeightWrapper weights){
     throw NotImplementedException();
 }
 
-MaxPoolingLayer createMaxPoolLayer(LayerConstructionParams lcp) {
+MaxPoolingLayer* createMaxPoolLayer(LayerConstructionParams lcp) {
     vector inputDim {lcp.inputSize, lcp.inputSize};
-    return MaxPoolingLayer(inputDim, lcp.stride, lcp.filterSize, lcp.paddingSize);
+    return MaxPoolingLayer(inputDim, lcp.stride, lcp.filterSize, lcp.paddingSize)*;
 }
 
-LocalResponseNormLayer createLocalResponseNormLayer(LayerConstructionParams lcp) {
+LocalResponseNormLayer* createLocalResponseNormLayer(LayerConstructionParams lcp) {
     throw NotImplementedException();
 }
 
-ReLUActivationLayer createReLuActivationLayer(LayerConstructionParams lcp) {
+ReLUActivationLayer* createReLuActivationLayer(LayerConstructionParams lcp) {
     vector inputDim {lcp.inputSize, lcp.inputSize};
-    return ReLUActivationLayer(inputDim);
+    return ReLUActivationLayer(inputDim)*;
 }
 
-SoftMaxLossLayer createSoftmaxLossLayer(LayerConstructionParams lcp) {
+SoftMaxLossLayer* createSoftmaxLossLayer(LayerConstructionParams lcp) {
     vector inputDim {lcp.inputSize, lcp.inputSize};
-    return SoftMaxLossLayer(inputDim);
+    return SoftMaxLossLayer::SoftMaxLossLayer(&inputDim)*;
 }
 
-FullyConnectedLayer createFCLayer(LayerConstructionParams lcp, WeightWrapper weights) {
+FullyConnectedLayer* createFCLayer(LayerConstructionParams lcp, WeightWrapper weights) {
     throw NotImplementedException();
 }
