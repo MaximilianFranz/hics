@@ -5,11 +5,15 @@
 #include <iostream>
 #include <vector>
 
+#include "platforms/CpuPlatform.h"
 #include "platforms/Platform.h"
 #include "PlatformManager.h"
 
-std::vector<Platform> PlatformManager::getPlatforms() {
-    return std::vector<Platform>();
+std::vector<Platform*> PlatformManager::getPlatforms() {
+    // TODO: This needs to be more dynamic, e.g. OpenCL platforms need to be determined dynamically
+    platforms.push_back(new CpuPlatform());
+
+    return platforms;
 }
 
 PlatformManager& PlatformManager::getInstance() {

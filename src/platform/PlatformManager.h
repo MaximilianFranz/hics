@@ -13,6 +13,7 @@ class PlatformManager {
 private:
     // Private constructor
     PlatformManager() {};
+    std::vector<Platform*> platforms;
 
 public:
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
@@ -21,7 +22,7 @@ public:
 
     static PlatformManager& getInstance();
 
-    std::vector<Platform> getPlatforms();
+    std::vector<Platform*> getPlatforms();
 
     std::vector<PlatformInfo> getPlatformInfos();
 };
