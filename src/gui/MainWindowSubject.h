@@ -3,7 +3,6 @@
 #include <list>
 #include "ManagerObserver.h"
 
-
 /**
  * @class   MainWindowSubject
  *
@@ -53,7 +52,8 @@ public:
         std::list<ManagerObserver>::iterator it;
 
         for(it = observers.begin(); it != observers.end(); ++it){
-            it->update();
+            /*! it->update(); */
+            //TODO when update() is public remove comments
         }
     }
 

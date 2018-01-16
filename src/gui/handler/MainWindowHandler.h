@@ -5,6 +5,7 @@
 #include <PlatformInfo.h>
 #include <OperationMode.h>
 #include <ClassificationRequest.h>
+#include <ClassificationResult.h>
 
 #include "MainWindowSubject.h"
 #include "StartWidgetHandler.h"
