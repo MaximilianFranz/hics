@@ -42,7 +42,7 @@ public:
      * @param manager is the to be detached ManagerObserver
      */
     void detach(const ManagerObserver &manager){
-        observers.remove(manager); //TODO maybe check if manager is in the list.
+        observers.remove(manager); //TODO maybe check if manager is in the list at all
     }
 
     /**
