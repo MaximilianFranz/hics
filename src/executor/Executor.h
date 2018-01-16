@@ -9,10 +9,14 @@
 #include "ImageResult.h"
 
 #include "ComputationHost.h"
+#include "PlatformPlacer.h"
+
+class PlatformPlacer;
 
 class Executor : ComputationHost{
 private:
     NeuralNet *net;
+    PlatformPlacer* placer;
     OperationMode currentMode;
     std::vector<PlatformInfo*> currentPlatforms;
 
@@ -20,6 +24,9 @@ private:
     ImageResult classifyImage();
 
 public:
+    // TODO: Implement constructors and dependency relation to PlatformPlacer -> PlatformManager, etc...
+    //Executor();
+
     std::vector<ImageResult*> classify(std::vector<ImageWrapper*> images, NetInfo net, OperationMode mode,
                                       std::vector<PlatformInfo*> selectedPlatforms) override;
 
@@ -28,5 +35,3 @@ public:
     std::vector<NetInfo*> queryNets() override;
 
 };
-
-

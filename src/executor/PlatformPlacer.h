@@ -10,14 +10,17 @@
 #include "../manager/OperationMode.h"
 #include "../platform/PlatformInfo.h"
 #include "../platform/PlatformManager.h"
+#include "Executor.h"
 
 class PlatformPlacer {
 private:
     OperationMode currentMode;
     std::vector<PlatformInfo> currentPlatforms;
-    PlatformManager platformManager;
+    PlatformManager* platformManager;
     NeuralNet *net;
 public:
+
+    // PlatformPlacer(Executor *executor);
 
     /**
      * \brief Distributes computation in the NeuralNet to Platforms according to selected OperationMode.
