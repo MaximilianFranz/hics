@@ -12,7 +12,7 @@
 class PlatformManager {
 private:
     // Private constructor
-    PlatformManager() {};
+    PlatformManager();
     std::vector<Platform*> platforms;
 
 public:

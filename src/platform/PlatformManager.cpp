@@ -9,10 +9,12 @@
 #include "platforms/Platform.h"
 #include "PlatformManager.h"
 
-std::vector<Platform*> PlatformManager::getPlatforms() {
+PlatformManager::PlatformManager() {
     // TODO: This needs to be more dynamic, e.g. OpenCL platforms need to be determined dynamically
     platforms.push_back(new CpuPlatform());
+}
 
+std::vector<Platform*> PlatformManager::getPlatforms() {
     return platforms;
 }
 
