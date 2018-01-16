@@ -8,8 +8,10 @@ add_subdirectory(netbuilder)
 add_subdirectory(neuralnet)
 add_subdirectory(platform)
 
-set(SOURCE_FILES NotImplementedException.cpp NotImplementedException.h)
+# TODO: libhics should probably be dropped in its current form
+set(SOURCE_FILES NotImplementedException.h)
 add_library(hics STATIC ${SOURCE_FILES})
+set_target_properties(hics PROPERTIES LINKER_LANGUAGE CXX)
 
 add_executable(hics-exec main.cpp)
 target_link_libraries(hics-exec hics)
