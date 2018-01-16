@@ -27,6 +27,7 @@ public:
 
     void setFunction(ResponseNormalizationFunction *function);
 
+    std::vector<int> calcOutputDimensions() override;
 
     //GETTER
 

@@ -45,3 +45,7 @@ void LocalResponseNormLayer::setFunction(ResponseNormalizationFunction *function
     this->function = function;
     functionSet = true;
 }
+
+std::vector<int> LocalResponseNormLayer::calcOutputDimensions() {
+     return inputDimensions;
+}
