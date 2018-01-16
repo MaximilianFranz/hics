@@ -6,17 +6,15 @@
 
 #include "loader/ModelLoader.h"
 #include "wrapper/WeightWrapper.h"
-#include "../neuralnet/layers/ActivationLayer.h"
-#include "../neuralnet/layers/ConvolutionLayer.h"
-#include "../neuralnet/layers/FullyConnectedLayer.h"
-#include "../neuralnet/layers/InputLayer.h"
-#include "../neuralnet/layers/LocalResponseNormLayer.h"
-#include "../neuralnet/layers/LossLayer.h"
-#include "../neuralnet/layers/MaxPoolingLayer.h"
-#include "../neuralnet/layers/NormalizationLayer.h"
-#include "../neuralnet/layers/PoolingLayer.h"
-#include "../neuralnet/layers/ReLUActivationLayer.h"
-#include "../neuralnet/layers/SoftMaxLossLayer.h"
+#include "../neuralnet/layers/functionlayers/ActivationLayer.h"
+#include "../neuralnet/layers/weightlayers/ConvolutionLayer.h"
+#include "../neuralnet/layers/weightlayers/FullyConnectedLayer.h"
+#include "../neuralnet/layers/naive/InputLayer.h"
+#include "../neuralnet/layers/functionlayers/LocalResponseNormLayer.h"
+#include "../neuralnet/layers/functionlayers/LossLayer.h"
+#include "../neuralnet/layers/functionlayers/MaxPoolingLayer.h"
+#include "../neuralnet/layers/functionlayers/ReLUActivationLayer.h"
+#include "../neuralnet/layers/functionlayers/SoftMaxLossLayer.h"
 
 class LayerMaker {
 private:
@@ -31,4 +29,3 @@ public:
     FullyConnectedLayer createFCLayer(LayerConstructionParams lcp, WeightWrapper weights);
 
 };
-tu
