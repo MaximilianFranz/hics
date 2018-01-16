@@ -13,8 +13,10 @@ ImageWrapper::ImageWrapper(std::vector<int> dimensions, std::vector<float> &data
 
 }
 
-std::string ImageWrapper::getFilepath() {
+const std::string ImageWrapper::getFilepath() const {
     return filepath;
 }
+
+
 
 
