@@ -3,12 +3,18 @@
 //
 
 #include <NotImplementedException.h>
+#include <layerfunctions/activation/CpuReLUFunction.h>
+#include <IllegalArgumentException.h>
 
 #include "CpuPlatform.h"
 
 
 ActivationFunction* CpuPlatform::createActivationFunction(LayerType type) {
-    throw NotImplementedException();
+    if (type == LayerType::ACTIVATION_RELU) {
+        return new CpuReLUFunction();
+    } else {
+        throw IllegalArgumentException();
+    }
 }
 
 ConvolutionFunction* CpuPlatform::createConvolutionFunction() {
