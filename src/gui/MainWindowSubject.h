@@ -42,6 +42,7 @@ public:
      */
     void detach(const ManagerObserver &manager){
         observers.remove(manager); //TODO maybe check if manager is in the list at all
+        //TODO add ==operator since remove lacks custom object comparison.
     }
 
     /**
