@@ -12,7 +12,6 @@ public:
     void execute(const DataWrapper &input,
                  DataWrapper &output,
                  const WeightWrapper &weights,
-                 const WeightWrapper &bias,
                  int stride,
                  int filterSize,
                  int numFilters,

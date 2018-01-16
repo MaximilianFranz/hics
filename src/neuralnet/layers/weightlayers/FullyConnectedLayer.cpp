@@ -11,12 +11,10 @@ FullyConnectedLayer::FullyConnectedLayer(std::vector<int> inputDimensions) {
     this->inputDimensions = inputDimensions;
 }
 
-FullyConnectedLayer::FullyConnectedLayer(std::vector<int> inputDimensions, WeightWrapper *weights,
-                                         WeightWrapper *bias) {
+FullyConnectedLayer::FullyConnectedLayer(std::vector<int> inputDimensions, WeightWrapper *weights) {
     this->inputDimensions = inputDimensions;
     this->outputDimensions = calcOutputDimensions();
     this->weights = weights;
-    this->bias = bias;
     this->type = FULLYCONNECTED;
 }
 
@@ -33,14 +31,14 @@ void FullyConnectedLayer::setWeights(WeightWrapper *weights) {
     this->weights = weights;
 }
 
-void FullyConnectedLayer::setBias(WeightWrapper *bias) {
-    this->bias = bias;
-}
-
 
 //TODO: Implement checks if the weights fit the layer!
 bool FullyConnectedLayer::verifyWeights() {
     return false;
+}
+
+void FullyConnectedLayer::setFunction(FullyConnectedFunction *function) {
+    this->function = function;
 }
 
 

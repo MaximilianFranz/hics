@@ -15,7 +15,6 @@ class FullyConnectedLayer : public Layer {
 protected:
     FullyConnectedFunction* function;
     WeightWrapper* weights;
-    WeightWrapper* bias;
 public:
 
     /**
@@ -34,13 +33,12 @@ public:
      * @param weights
      * @param bias
      */
-    FullyConnectedLayer(std::vector<int> inputDimensions, WeightWrapper *weights, WeightWrapper *bias);
+    FullyConnectedLayer(std::vector<int> inputDimensions, WeightWrapper *weights);
 
     void forward(DataWrapper &input, DataWrapper &output) override;
 
     void setWeights(WeightWrapper* weights);
 
-    void setBias(WeightWrapper* bias);
 
     void setFunction(FullyConnectedFunction* function);
 
