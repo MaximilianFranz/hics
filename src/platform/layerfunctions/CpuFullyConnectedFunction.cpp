@@ -8,7 +8,6 @@
 
 void CpuFullyConnectedFunction::execute(const DataWrapper &input,
                                         DataWrapper &output,
-                                        const WeightWrapper &weights,
-                                        const WeightWrapper &bias) {
+                                        const WeightWrapper &weights) {
     throw NotImplementedException();
 }

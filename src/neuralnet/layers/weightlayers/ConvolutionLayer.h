@@ -10,14 +10,13 @@
 
 /**
  *  Layer representing a convolutional function in a neural net.
- *  This layer holds the weights, bias and all relevant parameters for this operation.
+ *  This layer holds the weights and bias in a WeightWrapper and all relevant parameters for this operation.
  */
 class ConvolutionLayer : public Layer {
 protected:
     ConvolutionFunction* function;
 
     WeightWrapper* weights;
-    WeightWrapper* bias;
 
     int numFilters;
     int filterSize;
@@ -57,16 +56,13 @@ public:
                      int zeroPadding,
                      int stride,
                      std::vector<int> &inputDimensions,
-                     WeightWrapper* weights,
-                     WeightWrapper* bias);
+                     WeightWrapper* weights);
 
     std::vector<int> calcOutputDimensions() override;
 
     void forward(DataWrapper &input, DataWrapper &output) override;
 
     void setWeights(WeightWrapper* weights);
-
-    void setBias(WeightWrapper* bias);
 
     void setFunction(ConvolutionFunction* function);
 

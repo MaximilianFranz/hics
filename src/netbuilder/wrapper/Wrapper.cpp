@@ -74,5 +74,9 @@ const std::vector<float> Wrapper::getData() {
     return data;
 }
 
+const float Wrapper::getElement(int x, int y, int rgb) {
+    return getElement(std::vector<int>{rgb, y, x});
+}
+
 
 

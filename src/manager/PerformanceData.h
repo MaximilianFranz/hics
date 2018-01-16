@@ -8,18 +8,40 @@
 #include <PlatformInfo.h>
 #include <map>
 
+/**
+ * Wraps up data about the performance of a classification. This includes the power needed, the computation time and
+ * the usage in percent each platform of a computation host took part in the computation.
+ */
 class PerformanceData {
 private:
-    int PowerConsumption;       //saved in ws (watt seconds)
-    int ComputationTime;        //saved in ms
-    std::map<PlatformInfo, float> platformUsage;    //maps each platform to a percentage of usage
+    int PowerConsumption;                           /*!< power consumption of the computation in ws */
+    int ComputationTime;                            /*!< computation time of the classification in ms*/
+    std::map<PlatformInfo, float> platformUsage;    /*!< maps each platform to its percentage of the computation*/
 
 public:
+    /**
+     * Creates a new PerformanceData object
+     * @param PowerConsumption
+     * @param ComputationTime
+     * @param platformUsage
+     */
     PerformanceData(int PowerConsumption, int ComputationTime, const std::map<PlatformInfo, float> &platformUsage);
 
+    /**
+     *
+     * @return
+     */
     int getPowerConsumption() const;
 
+    /**
+     *
+     * @return
+     */
     int getComputationTime() const;
 
+    /**
+     *
+     * @return
+     */
     const std::map<PlatformInfo, float> &getPlatformUsage() const;
 };

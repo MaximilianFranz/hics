@@ -11,8 +11,7 @@ class FullyConnectedFunction {
 public:
     virtual void execute(const DataWrapper &input,
                          DataWrapper &output,
-                         const WeightWrapper &weights,
-                         const WeightWrapper &bias) = 0;
+                         const WeightWrapper &weights) = 0;
 
 };
 

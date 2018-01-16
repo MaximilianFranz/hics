@@ -12,6 +12,8 @@ ClassificationRequest::ClassificationRequest(NetInfo neuralNet, std::vector<Plat
 
 }
 
+
+
 void ClassificationRequest::addUserImage(QString str, QImage img) {
     std::pair <QString, QImage> newImg(str, img);
     userImages.insert(newImg);
@@ -25,6 +27,10 @@ void ClassificationRequest::removeUserImage(QString str) {
     userImages.erase(str);
 }
 
+
+
+//-----------------SETTER-----------------------------
+
 void ClassificationRequest::setAggregateResults(bool aggregate) {
     this->aggregate = aggregate;
 }
@@ -36,6 +42,9 @@ void ClassificationRequest::setSelectedOperationMode(OperationMode mode) {
 void ClassificationRequest::setSelectedNeuralNet(NetInfo net) {
     neuralNet = net;
 }
+
+
+//-----------------GETTER----------------------------
 
 std::map<QString, QImage> ClassificationRequest::getUserImages() {
     return userImages;

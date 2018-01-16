@@ -11,6 +11,7 @@ find_package(HDF5 COMPONENTS C)
 
 #this allows us to use direct includes instead of using relative paths
 include_directories(src/communicator)
+include_directories(src/exceptions)
 include_directories(src/executor)
 include_directories(src/gui)
 include_directories(src/manager)

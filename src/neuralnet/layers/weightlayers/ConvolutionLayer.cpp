@@ -11,7 +11,7 @@ const int Z_DIM = 0;
 
 //TODO: Is it ok to
 void ConvolutionLayer::forward(DataWrapper &input, DataWrapper &output) {
-    this->function->execute(input, output, *weights, *bias, stride, filterSize, numFilters, zeroPadding);
+    this->function->execute(input, output, *weights, stride, filterSize, numFilters, zeroPadding);
 }
 
 
@@ -30,9 +30,6 @@ void ConvolutionLayer::setWeights(WeightWrapper* weights) {
     this->weights = weights;
 }
 
-void ConvolutionLayer::setBias(WeightWrapper* bias) {
-    this->bias = bias;
-}
 
 bool ConvolutionLayer::verifyWeights() {
     return false;
@@ -51,13 +48,12 @@ ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPaddi
 }
 
 ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPadding, int stride,
-                                   std::vector<int> &inputDimensions, WeightWrapper *weights, WeightWrapper *bias)
+                                   std::vector<int> &inputDimensions, WeightWrapper *weights)
         : numFilters(numFilters),
           filterSize(filterSize),
           zeroPadding(zeroPadding),
           stride(stride),
-          weights(weights),
-          bias(bias)
+          weights(weights)
 {
     this->inputDimensions = inputDimensions;
     this->type = CONVOLUTION;
