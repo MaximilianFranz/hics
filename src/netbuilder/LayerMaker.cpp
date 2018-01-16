@@ -15,7 +15,8 @@ ConvolutionLayer createConvLayer(LayerConstructionParams lcp, WeightWrapper weig
 }
 
 MaxPoolingLayer createMaxPoolLayer(LayerConstructionParams lcp) {
-    throw NotImplementedException();
+    vector inputDim {lcp.inputSize, lcp.inputSize};
+    return MaxPoolingLayer(inputDim, lcp.stride, lcp.filterSize, lcp.paddingSize);
 }
 
 LocalResponseNormLayer createLocalResponseNormLayer(LayerConstructionParams lcp) {
@@ -23,11 +24,13 @@ LocalResponseNormLayer createLocalResponseNormLayer(LayerConstructionParams lcp)
 }
 
 ReLUActivationLayer createReLuActivationLayer(LayerConstructionParams lcp) {
-    throw NotImplementedException();
+    vector inputDim {lcp.inputSize, lcp.inputSize};
+    return ReLUActivationLayer(inputDim);
 }
 
 SoftMaxLossLayer createSoftmaxLossLayer(LayerConstructionParams lcp) {
-    throw NotImplementedException();
+    vector inputDim {lcp.inputSize, lcp.inputSize};
+    return SoftMaxLossLayer(inputDim);
 }
 
 FullyConnectedLayer createFCLayer(LayerConstructionParams lcp, WeightWrapper weights) {
