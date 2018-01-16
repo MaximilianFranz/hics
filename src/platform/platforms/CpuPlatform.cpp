@@ -3,29 +3,31 @@
 //
 
 #include <NotImplementedException.h>
+
 #include "CpuPlatform.h"
 
-ActivationFunction &CpuPlatform::createActivationFunction() {
+
+ActivationFunction* CpuPlatform::createActivationFunction(LayerType type) {
     throw NotImplementedException();
 }
 
-ConvolutionFunction &CpuPlatform::createConvolutionFunction() {
+ConvolutionFunction* CpuPlatform::createConvolutionFunction() {
     throw NotImplementedException();
 }
 
-LossFunction &CpuPlatform::createLossFunction() {
+LossFunction* CpuPlatform::createLossFunction(LayerType type) {
     throw NotImplementedException();
 }
 
-PoolingFunction &CpuPlatform::createPoolingFunction() {
+PoolingFunction* CpuPlatform::createPoolingFunction(LayerType type) {
     throw NotImplementedException();
 }
 
-ResponseNormalizationFunction &CpuPlatform::createResponseNormalizationFunction() {
+ResponseNormalizationFunction* CpuPlatform::createResponseNormalizationFunction(LayerType type) {
     throw NotImplementedException();
 }
 
-FullyConnectedFunction &CpuPlatform::createFullyConnectedFunction() {
+FullyConnectedFunction* CpuPlatform::createFullyConnectedFunction() {
     throw NotImplementedException();
 }
 
@@ -34,5 +36,5 @@ PlatformInfo &CpuPlatform::getPlatformInfo() {
 }
 
 PlatformType CpuPlatform::getPlatformType() {
-    throw NotImplementedException();
+    return PlatformType::CPU;
 }
