@@ -3,10 +3,9 @@
 //
 
 #include "LayerMaker.h"
-#include "../NotImplementedException.h"
 
 InputLayer* createInputLayer(LayerConstructionParams lcp){
-    vector inputDim {lcp.inputChannels, lcp.inputSize, lcp.inputSize};
+    std::vector<int> inputDim = {lcp.inputChannels, lcp.inputSize, lcp.inputSize};
     InputLayer* input = new InputLayer(inputDim);
     return input;
 }
@@ -33,7 +32,7 @@ LocalResponseNormLayer* createLocalResponseNormLayer(LayerConstructionParams lcp
 }
 
 ReLUActivationLayer* createReLuActivationLayer(LayerConstructionParams lcp) {
-    vector inputDim {lcp.inputChannels, lcp.inputSize, lcp.inputSize};
+    std::vector<int> inputDim = {lcp.inputChannels, lcp.inputSize, lcp.inputSize};
     ReLUActivationLayer* relu = new ReLUActivationLayer(inputDim);
     return relu;
 }
