@@ -53,7 +53,7 @@ ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPaddi
           filterSize(filterSize),
           zeroPadding(zeroPadding),
           stride(stride),
-          weights(weights),
+          weights(weights)
 {
     this->inputDimensions = inputDimensions;
     this->type = CONVOLUTION;
