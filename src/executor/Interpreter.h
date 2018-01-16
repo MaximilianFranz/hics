@@ -14,7 +14,15 @@
 class Interpreter {
 private:
     std::map<int, std::string> labelMap;
+
+    int getIndexOf(float value, std::vector<float> output);
+
 public:
+
+    /**
+     * Use top-x results for prediction result.
+     */
+    const int TOP_X = 5; //By convention from the ILSRVC we use 5
 
     Interpreter(std::map<int, std::string> &labelMap);
 
@@ -34,4 +42,7 @@ public:
      * @see NetBuilder
      */
     void setLabels(std::map<int, std::string> &labelMap);
+
+    static const bool compareDesc(float a, float b);
+
 };
