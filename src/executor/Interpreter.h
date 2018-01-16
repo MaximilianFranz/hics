@@ -12,7 +12,12 @@
 #include "../netbuilder/wrapper/ImageWrapper.h"
 
 class Interpreter {
+private:
+    std::map<int, std::string> labelMap;
 public:
+
+    Interpreter(std::map<int, std::string> &labelMap);
+
     /**
      * \brief maps the output of the network to the labels and returns an ImageResult
      *
@@ -28,5 +33,5 @@ public:
      * @param labelMap Map of all labels the NeuralNet can classify
      * @see NetBuilder
      */
-    void setLabels(std::map<int, std::string> labelMap);
+    void setLabels(std::map<int, std::string> &labelMap);
 };
