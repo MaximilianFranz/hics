@@ -7,6 +7,9 @@
 
 #include "PerformanceData.h"
 
+/**
+ * Calculates the performance of a classification according to the time each platform took to calculate.
+ */
 class PerformanceCalculator {
 public:
 

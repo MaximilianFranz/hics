@@ -16,6 +16,9 @@
 #include "OperationMode.h"
 
 
+/**
+ * Wraps up the needed data the GUI gathers to run a classification.
+ */
 class ClassificationRequest {
 private:
     std::map<QString, QImage> userImages;   /*!< images to classify mapped with their path as unique key*/

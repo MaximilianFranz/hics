@@ -10,24 +10,27 @@
 #include <QString>
 #include <QImage>
 
+/**
+ * The PreProcessor converts the QImages from the GUI to ImageWrappers that can be used further down in the system.
+ */
 class PreProcessor {
 private:
     //Output dimensions needed by the NeuralNet
-    int width;
-    int height;
+    int width;      /*!< width of the images the neural net needs*/
+    int height;     /*!< height of images the neural net needs*/
 
 public:
     /**
      * Sets the output size
-     * @param w
-     * @param h
+     * @param w     width
+     * @param h     height
      */
     void setOutputSize(int w, int h);
 
     /**
      * Processes the input images from QImages to ImageWrappers that the System uses.
-     * @param imgMap
-     * @return
+     * @param imgMap    Map containing the images
+     * @return  vector with the images as ImageWrapper
      */
-    std::vector<ImageWrapper> processImages(std::map<QImage, QString> imgMap);
+    std::vector<ImageWrapper> processImages(std::map<QString, QImage> imgMap);
 };

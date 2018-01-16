@@ -7,6 +7,11 @@
 
 #include "ManagerObserver.h"
 
+
+/**
+ * The manager is the entry point to the system. It observes the GUI and creates all other modules needed for a
+ * Classification.
+ */
 class Manager : public ManagerObserver {
     /**
      * called by GUI to update the Manager when the classify is pressed
