@@ -9,7 +9,8 @@
 
 
 /**
- * Has Weights! -> Maybe one abstraction for Conv and Fully -> WeightLayer?
+ *  Layer representing a convolutional function in a neural net.
+ *  This layer holds the weights, bias and all relevant parameters for this operation.
  */
 class ConvolutionLayer : public Layer {
 protected:

@@ -7,6 +7,11 @@
 #include <layerfunctions/activation/ActivationFunction.h>
 #include "layers/Layer.h"
 
+/**
+ * A super class for activation layers implementing the forward() method and the logic for calculating
+ * output dimensions.
+ *
+ */
 class ActivationLayer : public Layer {
 protected:
     ActivationFunction* function;

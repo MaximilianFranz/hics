@@ -7,6 +7,9 @@
 #include "layers/Layer.h"
 #include "NaiveLayer.h"
 
+/**
+ * Is the first layer in a network and takes it's inputs.
+ */
 class InputLayer : public NaiveLayer {
 public:
     InputLayer(std::vector<int> inputDimensions);

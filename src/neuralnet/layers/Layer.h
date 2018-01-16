@@ -8,7 +8,9 @@
 #include <wrapper/DataWrapper.h>
 #include <wrapper/WeightWrapper.h>
 
-
+/**
+ * ENUM to identify layers by their type.
+ */
 enum LayerType {
     ACTIVATION_RELU,
     NORMALIZATION_LOCALRESPONSE,
@@ -21,7 +23,7 @@ enum LayerType {
 };
 
 /**
- * Abstract class Layer
+ * Abstract class Layer defines the public interface for all layers contained in a NeuralNet.
  */
 class Layer {
 protected:
@@ -31,7 +33,7 @@ protected:
     bool computed;
     bool functionSet;
 
-    std::string type;
+    LayerType type;
     std::vector<int> inputDimensions;
     std::vector<int> outputDimensions;
 
@@ -144,10 +146,10 @@ public:
     Layer *getNextLayer() const;
 
     /**
-     * Returns a string representation of the type of this layer.
-     * @return string representation of the type.
+     *
+     * @return type enum of this layer
      */
-    const std::string &getType() const;
+    LayerType getType() const;
 
     /**
      *  Getter

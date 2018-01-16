@@ -7,9 +7,12 @@
 #include <layerfunctions/FullyConnectedFunction.h>
 #include "layers/Layer.h"
 
+/**
+ * Layer representing a fully connected component of a neural net.
+ * Holds its weight and bias.
+ */
 class FullyConnectedLayer : public Layer {
 protected:
-    bool biased;
     FullyConnectedFunction* function;
     WeightWrapper* weights;
     WeightWrapper* bias;

@@ -7,7 +7,7 @@
 
 
 ReLUActivationLayer::ReLUActivationLayer(std::vector<int> &inputDimension) : ActivationLayer(inputDimension) {
-    this->type = "relu";
+    this->type = ACTIVATION_RELU;
     this->outputDimensions = calcOutputDimensions();
     init();
 

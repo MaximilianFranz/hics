@@ -9,16 +9,17 @@ const int X_DIM = 2;
 const int Y_DIM = 1;
 const int Z_DIM = 0;
 
+//TODO: Is it ok to
 void ConvolutionLayer::forward(DataWrapper &input, DataWrapper &output) {
-    throw NotImplementedException();
+    this->function->execute(input, output, *weights, *bias, stride, filterSize, numFilters, zeroPadding);
 }
 
 
 //TODO: Test this!
 std::vector<int> ConvolutionLayer::calcOutputDimensions() {
-    int outputWidth = (this->inputDimensions[D3_X_DIM] - filterSize) / stride + 1;
+    int outputWidth = ( (this->inputDimensions[D3_X_DIM] - filterSize) / stride) + 1;
     std::vector<int> outDim(3); // three dimensional output
-    outDim[X_DIM] = outputWidth; //X, Y are the same!
+    outDim[X_DIM] = outputWidth; // X, Y are the same!
     outDim[Y_DIM] = outputWidth;
     outDim[Z_DIM] = numFilters;
 
@@ -44,7 +45,7 @@ ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPaddi
           zeroPadding(zeroPadding),
           stride(stride) {
     this->inputDimensions = inputDimensions;
-    this->type = "convolution";
+    this->type = CONVOLUTION;
     this->outputDimensions = calcOutputDimensions();
     init();
 }
@@ -59,7 +60,7 @@ ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPaddi
           bias(bias)
 {
     this->inputDimensions = inputDimensions;
-    this->type = "convolution";
+    this->type = CONVOLUTION;
     this->outputDimensions = calcOutputDimensions();
     init();
 }

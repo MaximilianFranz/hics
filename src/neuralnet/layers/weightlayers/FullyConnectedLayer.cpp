@@ -17,6 +17,7 @@ FullyConnectedLayer::FullyConnectedLayer(std::vector<int> inputDimensions, Weigh
     this->outputDimensions = calcOutputDimensions();
     this->weights = weights;
     this->bias = bias;
+    this->type = FULLYCONNECTED;
 }
 
 void FullyConnectedLayer::forward(DataWrapper &input, DataWrapper &output) {

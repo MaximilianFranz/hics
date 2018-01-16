@@ -13,7 +13,7 @@ MaxPoolingLayer::MaxPoolingLayer(std::vector<int> inputDimensions, int stride, i
     this->filterSize = filterSize;
     this->zeroPadding = zeroPadding;
     this->outputDimensions = calcOutputDimensions(); //Implemented in PoolingLayer.cpp
-    type = "maxpooling";
+    type = POOLING_MAX;
     init();
 
 }

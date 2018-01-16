@@ -7,7 +7,7 @@
 
 
 void ActivationLayer::forward(DataWrapper &input, DataWrapper &output) {
-    throw NotImplementedException();
+    this->function->execute(input, output);
 }
 
 std::vector<int> ActivationLayer::calcOutputDimensions() {

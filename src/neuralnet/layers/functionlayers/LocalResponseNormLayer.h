@@ -7,6 +7,10 @@
 #include <layerfunctions/normalization/ResponseNormalizationFunction.h>
 #include <layers/Layer.h>
 
+/**
+ * Layer representing a ResponseNormalization operation.
+ * It holds it's specific parameters and passes the computation on to the corresponding LayerFunction.
+ */
 class LocalResponseNormLayer : public Layer{
 protected:
     float radius;

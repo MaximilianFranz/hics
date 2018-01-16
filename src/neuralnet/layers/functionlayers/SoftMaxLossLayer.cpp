@@ -6,14 +6,12 @@
 #include "NotImplementedException.h"
 
 
-void SoftMaxLossLayer::forward(DataWrapper &input, DataWrapper &output) {
-    throw NotImplementedException();
-}
+
 
 SoftMaxLossLayer::SoftMaxLossLayer(std::vector<int> &inputDimensions)
 {
     this->inputDimensions = inputDimensions;
-    this->type = "softmax";
+    this->type = LOSS_SOFTMAX;
     this->outputDimensions = inputDimensions;
     init();
 }

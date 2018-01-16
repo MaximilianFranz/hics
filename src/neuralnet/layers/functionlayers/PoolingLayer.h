@@ -7,6 +7,9 @@
 #include <layerfunctions/pooling/PoolingFunction.h>
 #include "layers/Layer.h"
 
+/**
+ * Super class for all pooling layers.
+ */
 class PoolingLayer : public Layer{
 protected:
     PoolingFunction* function;
