@@ -89,6 +89,16 @@ public:
      */
     const virtual float getElement(std::vector<int> location);
 
+
+    /**
+     * Helper method to hide pointer arithmetic
+     * @param x     x-coordinate
+     * @param y     y-coordinate
+     * @param rgb   rgb channel
+     * @return float value of the pixel
+     */
+    const float getElement(int x, int y, int rgb);
+
     /**
      * \brief returns the size of the specified dimension iff dim smaller or equal to dimensions.size().
      *
