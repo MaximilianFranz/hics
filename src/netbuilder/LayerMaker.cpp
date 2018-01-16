@@ -5,10 +5,11 @@
 #include "LayerMaker.h"
 #include "../NotImplementedException.h"
 
-void LayerMaker::createInputLayer(int inputDimension) {
+InputLayer LayerMaker::createInputLayer(int inputDimension) {
     throw NotImplementedException();
 }
 
-void LayerMaker::createConvLayer(int inputDimension) {
+ConvolutionLayer LayerMaker::createConvLayer(int inputDimension, int outputDimension,
+    int numFilters) {
     throw NotImplementedException();
 }
