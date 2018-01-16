@@ -4,4 +4,4 @@ add_executable(netbuildertests WrapperTest.cpp WrapperTest.h)
 #Link against catchtest to use the Catch-main function.
 target_link_libraries(netbuildertests catchtest hics netbuilder)
 
-add_test(NAME netbuildertest COMMAND tests)
+add_test(NAME netbuildertest COMMAND netbuildertests)
