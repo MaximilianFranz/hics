@@ -40,13 +40,16 @@ std::vector<ImageWrapper> PreProcessor::processImages(std::map<QString, QImage> 
                         //extract the right RGB channel
                         switch (rgb) {
                             case 0:
-                                currentPixel = currentImg.pixelColor(x, y).red();
+                                //currentPixel = currentImg.pixelColor(x, y).red();
+                                currentPixel = qRed(currentImg.pixel(x, y));
                                 break;
                             case 1:
-                                currentPixel = currentImg.pixelColor(x, y).green();
+                                //currentPixel = currentImg.pixelColor(x, y).green();
+                                currentPixel = qGreen(currentImg.pixel(x, y));
                                 break;
                             case 2:
-                                currentPixel = currentImg.pixelColor(x, y).blue();
+                                //currentPixel = currentImg.pixelColor(x, y).blue();
+                                currentPixel = qBlue(currentImg.pixel(x, y));
                                 break;
                             default:
                                 //TODO: specify exception
