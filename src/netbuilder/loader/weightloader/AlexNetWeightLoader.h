@@ -5,11 +5,23 @@
 #include "hdf_wrapper.h"
 #include "loader/weightloader/WeightLoader.h"
 
-/*
+/**
+ * @class AlexNetWeightLoader
  *
+ * @brief The AlexNetWeightLoader class loads the weights per layer for the AlexNet in a std::map.
  *
+ * The AlexNetWeightLoader takes a file path to a AlexNet HDF5-File which contains the weights for it, opens it and
+ * loads the weights for every layer in a WeightWrapper. Then the specific WeightWrapper gets mapped to the belonging
+ * LayerIdentifier enumerate which is a fixed representation of a layer in a neural net.
+ *
+ * @author Patrick Deubel
+ *
+ * @version 1.0
+ *
+ * @date 11.01.2018
  *
  */
+
 class AlexNetWeightLoader : public WeightLoader {
 
 private:
