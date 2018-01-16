@@ -1,12 +1,6 @@
-//
-// Created by David Culley on 07.01.18.
-//
-
 #include "AlexNetWeightLoader.h"
 
-
-WeightWrapper
-AlexNetWeightLoader::createWeightWrapper(const std::string &groupName) {
+WeightWrapper AlexNetWeightLoader::createWeightWrapper(const std::string &groupName) {
 
     std::string datasetWeightName = groupName + "_W";
     std::string datasetBiasName = groupName + "_b";
@@ -87,7 +81,7 @@ WeightWrapper AlexNetWeightLoader::appendLayers(const std::string &groupNameFirs
     return output;
 }
 
-void AlexNetWeightLoader::insertWeightWrapper(LayerIdentifier layerId, WeightWrapper weightWrapper){
+void AlexNetWeightLoader::insertWeightWrapper(const LayerIdentifier &layerId, const WeightWrapper &weightWrapper){
     weightsMap.insert(std::pair<LayerIdentifier, WeightWrapper>(layerId, weightWrapper));
 }
 
@@ -120,5 +114,4 @@ AlexNetWeightLoader::AlexNetWeightLoader(const std::string &filePath)
     weightFile = h5cpp::File(filePath, "r");
 
     populateWeightsMap();
-
 }

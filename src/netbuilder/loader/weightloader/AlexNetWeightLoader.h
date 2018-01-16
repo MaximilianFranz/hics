@@ -1,15 +1,15 @@
-//
-// Created by David Culley on 07.01.18.
-//
-
 #pragma once
 
-#include "hdf_wrapper.h"
-#include "loader/weightloader/WeightLoader.h"
 #include <string>
 #include <map>
+#include "hdf_wrapper.h"
+#include "loader/weightloader/WeightLoader.h"
 
-
+/*
+ *
+ *
+ *
+ */
 class AlexNetWeightLoader : public WeightLoader {
 
 private:
@@ -25,14 +25,14 @@ private:
      * out of it and stores the data in one-dimensional std::vector objects. Furthermore it gets the dataset's
      * dimensions and stores everything in a WeightWrapper which will be returned.
      *
-     * @param groupName A string representing the group name for which the WeightWrapper shall be created.
-     * @return The created WeightWrapper.
+     * @param groupName a string representing the group name for which the WeightWrapper shall be created
+     * @return the created WeightWrapper
      */
     WeightWrapper createWeightWrapper(const std::string &groupName);
 
     WeightWrapper appendLayers(const std::string &groupNameFirst, const std::string &groupNameSecond);
 
-    void insertWeightWrapper(LayerIdentifier layerId, WeightWrapper weightWrapper);
+    void insertWeightWrapper(const LayerIdentifier &layerId, const WeightWrapper &weightWrapper);
 
     void populateWeightsMap();
 
@@ -44,7 +44,7 @@ public:
     * The constructor will try to load the weights from the given filePath and will then save the weights in the
      * weightsMap. Each Layer will get a WeightWrapper and will be identified with the LayerIdentifier enumerate.
     *
-    * @param filePath The weight file for the AlexNet in HDF5 format.
+    * @param filePath is the weight file for the AlexNet in HDF5 format
     */
     explicit AlexNetWeightLoader(const std::string &filePath);
 
@@ -53,8 +53,8 @@ public:
      *
      * The method looks up in the weightsMap which WeightWrapper is mapped to the layerId key and returns it.
      *
-     * @param layerId The identification for the wanted WeightWrapper in the weightsMap.
-     * @return The wanted WeightWrapper.
+     * @param layerId is the identification for the wanted WeightWrapper in the weightsMap
+     * @return the wanted WeightWrapper
      */
-    WeightWrapper getWeights(LayerIdentifier layerId) override;
+    WeightWrapper getWeights(LayerIdentifier layerId) override; //TODO Maybe change return type to return by reference
 };
