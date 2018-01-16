@@ -6,7 +6,7 @@
 #include "Wrapper.h"
 
 //TODO: @Max: Redesign for new convention {channel, z, y, x}
-float Wrapper::getElement(std::vector<int> location) {
+const float Wrapper::getElement(std::vector<int> location) {
     unsigned long pos = 0;
     int i = 0;
     for (i; i <= getNumDimensions() - 2; i++) {
@@ -42,7 +42,7 @@ Wrapper::Wrapper(std::vector<int> dimensions)
     data = std::vector<float>(numElements,0); //initialize 0-vector of required size - is in linear time
 }
 
-int Wrapper::getSizeOfDimension(int dim) {
+const int Wrapper::getSizeOfDimension(int dim) {
     return this->dimensions[dim-1];
 }
 
@@ -54,15 +54,15 @@ unsigned long Wrapper::calcTotalNumElements() {
     return numElements;
 }
 
-int Wrapper::getNumDimensions() {
+const int Wrapper::getNumDimensions() {
     return (int)dimensions.size(); // cast is okay, because we don't deal with arbitrary dimensions.
 }
 
-std::vector<int> Wrapper::getDimensions() {
+const std::vector<int> Wrapper::getDimensions() {
     return dimensions;
 }
 
-unsigned long Wrapper::getNumElements() {
+const unsigned long Wrapper::getNumElements() {
     return numElements;
 }
 
@@ -70,7 +70,7 @@ float *Wrapper::getDataArray() {
     return &data[0];
 }
 
-std::vector<float> Wrapper::getData() {
+const std::vector<float> Wrapper::getData() {
     return data;
 }
 

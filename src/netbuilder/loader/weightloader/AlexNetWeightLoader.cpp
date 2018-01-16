@@ -59,10 +59,10 @@ WeightWrapper AlexNetWeightLoader::appendLayers(const std::string &groupNameFirs
     WeightWrapper second = createWeightWrapper(groupNameSecond);
 
     std::vector<float> firstWeights = first.getData();
-    std::vector<float> secondWeights = second.getData();
+    const std::vector<float> secondWeights = second.getData();
 
     std::vector<float> firstBias = first.getBias();
-    std::vector<float> secondBias = second.getBias();
+    const std::vector<float> secondBias = second.getBias();
 
     for (long i = 0; i < secondWeights.size(); i++) {
         firstWeights.push_back(secondWeights.at(i));
@@ -73,7 +73,8 @@ WeightWrapper AlexNetWeightLoader::appendLayers(const std::string &groupNameFirs
     }
 
     //TODO watch out maybe other dimension attributes need to be changed aswell.
-    int firstWeightDimension = first.getDimensions().at(0) *= 2;
+
+    int firstWeightDimension = first.getDimensions().at(0) * 2;
 
     std::vector<int> temp = first.getDimensions();
     temp.at(0) = firstWeightDimension;

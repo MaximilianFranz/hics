@@ -10,16 +10,14 @@
 //TODO: Add Class description to documentation.
 
 class Wrapper {
-
-private:
-    unsigned long calcTotalNumElements();
-    unsigned long facultyOfDim(int dim);
 protected:
-    
+
     std::vector<float> data;
     std::vector<int> dimensions; /**! Order by convention: {channel, z, y, x} e.g. {96,3,11,11} for layer 1 */
     unsigned long numElements;
 
+    unsigned long calcTotalNumElements();
+    unsigned long facultyOfDim(int dim);
 public:
 
     /**
@@ -45,7 +43,7 @@ public:
      *
      * @return number of dimensions.
      */
-    virtual int getNumDimensions();
+    const virtual int getNumDimensions();
 
     /**
      * Get a vector with the size of each of the n dimensions.
@@ -54,14 +52,14 @@ public:
      *
      * @return vector with the sizes of each dimension
      */
-    virtual std::vector<int> getDimensions();
+    const virtual std::vector<int> getDimensions();
 
     /**
      * Get total number of elements in the data vector
      *
      * @return total number of elements
      */
-    virtual unsigned long getNumElements();
+    const virtual unsigned long getNumElements();
 
     /**
      * Returns the data as a pointer to the raw array.
@@ -74,20 +72,22 @@ public:
     virtual float* getDataArray();
 
     /**
-     * Get the vector object this Wrapper holds
+     * Get the vector object this Wrapper holds.
+     * Only for reading since const.
      *
      * @return the vector object of the data.
      */
-    virtual std::vector<float> getData();
+    const virtual std::vector<float> getData();
     /**
      * Returns the element at the specified location.
      *
-     * Checks, whether location is a valid coordinate in the specified dimensions
+     * Checks, whether location is a valid coordinate in the specified dimensions.
+     * Is const, so it can't be manipulated.
      *
      * @param location of the element requested
      * @return the element at the specified location
      */
-    virtual float getElement(std::vector<int> location);
+    const virtual float getElement(std::vector<int> location);
 
     /**
      * \brief returns the size of the specified dimension iff dim smaller or equal to dimensions.size().
@@ -97,7 +97,7 @@ public:
      * @param dim for which we want the size
      * @return the size of the requested dimension.
      */
-    virtual int getSizeOfDimension(int dim);
+    const virtual int getSizeOfDimension(int dim);
 
 
 
