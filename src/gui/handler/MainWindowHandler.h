@@ -13,6 +13,7 @@
 #include "DetailDialogHandler.h"
 #include "ui/MainWindow.h"
 
+//TODO detailed comments when methods are implemented
 
 /**
  * @class   MainWindowHandler
@@ -38,11 +39,13 @@ class MainWindowHandler : public MainWindowSubject{
 private:
 
     MainWindow mainWindow;
+
     StartWidgetHandler startWidgetHandler;
     ResultWidgetHandler resultWidgetHandler;
     DetailDialogHandler detailDialogHandler;
 
-    ClassificationRequest classificationRequestState;
+    //ClassificationRequest classificationRequestState;
+    //TODO properly initialize this in the constructor.
 
 public:
 
