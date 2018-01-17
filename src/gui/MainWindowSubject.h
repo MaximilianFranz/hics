@@ -41,8 +41,7 @@ public:
      * @param manager is the to be detached ManagerObserver
      */
     void detach(const ManagerObserver &manager){
-        observers.remove(manager); //TODO maybe check if manager is in the list at all
-        //TODO add ==operator since remove lacks custom object comparison.
+        observers.remove(manager);
     }
 
     /**
@@ -53,8 +52,7 @@ public:
         std::list<ManagerObserver>::iterator it;
 
         for(it = observers.begin(); it != observers.end(); ++it){
-            /*! it->update(); */
-            //TODO when update() is public remove comments
+            it->update();
         }
     }
 
