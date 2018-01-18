@@ -47,9 +47,6 @@ protected:
     json layers;
     StringLoader s;
 
-    void init();
-
-    json getLayerJSON(int index);
 
 public:
     /**
