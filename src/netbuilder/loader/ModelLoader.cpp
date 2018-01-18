@@ -3,3 +3,8 @@
 //
 
 #include "ModelLoader.h"
+
+ModelLoader::ModelLoader(string path) {
+    this->pathToJSON = path;
+
+}
