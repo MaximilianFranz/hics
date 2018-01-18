@@ -49,7 +49,7 @@ private:
 
     MainWindow mainWindow;
 
-    //StartWidgetHandler startWidgetHandler;
+    StartWidgetHandler startWidgetHandler;
     //ResultWidgetHandler resultWidgetHandler;
     //DetailDialogHandler detailDialogHandler;
 
@@ -76,8 +76,8 @@ public:
      * @param platforms the available platforms in the software
      * @param operationModes the available operation modes in the software
      */
-    MainWindowHandler(const std::list<NetInfo> &neuralNets, const std::list<PlatformInfo> &platforms,
-                      const std::list<OperationMode> &operationModes);
+    MainWindowHandler(std::list<NetInfo> &neuralNets, std::list<PlatformInfo> &platforms,
+                      std::list<OperationMode> &operationModes);
 
     /**
      * @brief setClassificationRequestState will gather the needed data for a ClassificationRequest and overwrite

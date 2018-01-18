@@ -1,6 +1,8 @@
 #include "MainWindowHandler.h"
 
-MainWindowHandler::MainWindowHandler(const std::list<NetInfo> &neuralNets, const std::list<PlatformInfo> &platforms,
-                  const std::list<OperationMode> &operationModes) {
-
+MainWindowHandler::MainWindowHandler(std::list<NetInfo> &neuralNets, std::list<PlatformInfo> &platforms,
+                  std::list<OperationMode> &operationModes) :
+startWidgetHandler(neuralNets, platforms, operationModes){
+    mainWindow.addWidgetToStack(startWidgetHandler.getStartWidget());
+    mainWindow.setCurrentWidget(startWidgetHandler.getStartWidget());
 }
