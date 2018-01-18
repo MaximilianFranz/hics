@@ -5,8 +5,7 @@
 #include "JSONModelLoader.h"
 
 
-JSONModelLoader::JSONModelLoader(string path) {
-    this->pathToJSON = path;
+JSONModelLoader::JSONModelLoader(string path) : ModelLoader(path){
     this->init();
 }
 
