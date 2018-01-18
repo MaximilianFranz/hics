@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -23,35 +23,21 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QSplitter" name="imagesQSplitter">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="selectInputImagesQPushButton">
+      <property name="text">
+       <string>Select images</string>
       </property>
-      <widget class="QWidget" name="gridLayoutWidget">
-       <layout class="QGridLayout" name="inputImagesQGridLayout"/>
-      </widget>
-      <widget class="QWidget" name="">
-       <layout class="QHBoxLayout" name="deletionQHBoxLayout">
-        <item>
-         <widget class="QPushButton" name="confirmDeletionQPushButton">
-          <property name="text">
-           <string>Delete</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="abortDeletionQPushButton">
-          <property name="text">
-           <string>Do not delete</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
      </widget>
     </item>
-    <item row="0" column="1">
+    <item row="2" column="1">
+     <widget class="QPushButton" name="classificationQPushButton">
+      <property name="text">
+       <string>Classify</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1" rowspan="2">
      <widget class="QSplitter" name="optionsQSplitter">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
@@ -62,7 +48,7 @@
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="neuralNetsQVBoxLayout">
         <item>
          <widget class="QLabel" name="neuralNetsTitleQLabel">
@@ -85,7 +71,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="operationModesQVBoxLayout">
         <item>
          <widget class="QLabel" name="operationModesTitleQLabel">
@@ -132,34 +118,41 @@
      </widget>
     </item>
     <item row="1" column="0">
-     <widget class="QPushButton" name="selectInputImagesQPushButton">
-      <property name="text">
-       <string>Select images</string>
+     <widget class="QSplitter" name="imagesQSplitter">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="classificationQPushButton">
-      <property name="text">
-       <string>Classify</string>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
+      <widget class="QWidget" name="gridLayoutWidget">
+       <layout class="QGridLayout" name="inputImagesQGridLayout"/>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <layout class="QHBoxLayout" name="deletionQHBoxLayout">
+        <item>
+         <widget class="QPushButton" name="confirmDeletionQPushButton">
+          <property name="text">
+           <string>Delete</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="abortDeletionQPushButton">
+          <property name="text">
+           <string>Do not delete</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
   </widget>
-  <zorder>selectInputImagesQPushButton</zorder>
-  <zorder>classificationQPushButton</zorder>
-  <zorder>operationModesQComboBox</zorder>
-  <zorder>neuralNetsQComboBox</zorder>
-  <zorder>neuralNetsTitleQLabel</zorder>
-  <zorder>operationModesTitleQLabel</zorder>
-  <zorder>platformsTitleQLabel</zorder>
-  <zorder>verticalLayoutWidget</zorder>
-  <zorder>aggregateResultsQCheckBox</zorder>
-  <zorder>confirmDeletionQPushButton</zorder>
-  <zorder>abortDeletionQPushButton</zorder>
-  <zorder>gridLayoutWidget</zorder>
-  <zorder>platformsTitleQLabel</zorder>
  </widget>
  <resources/>
  <connections/>
