@@ -43,6 +43,13 @@ public:
      */
     void setLabels(std::map<int, std::string> &labelMap);
 
+    /**
+     * Custom comparator for std::sort
+     *
+     * @param a float
+     * @param b float
+     * @return whether a is bigger than b
+     */
     static const bool compareDesc(float a, float b);
 
 };

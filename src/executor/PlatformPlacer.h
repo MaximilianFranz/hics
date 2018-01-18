@@ -19,8 +19,7 @@ private:
     PlatformManager* platformManager;
     NeuralNet *net;
 public:
-
-    // PlatformPlacer(Executor *executor);
+    PlatformPlacer();
 
     /**
      * \brief Distributes computation in the NeuralNet to Platforms according to selected OperationMode.
@@ -41,6 +40,6 @@ public:
      *
      * @return PlatformInfo of all Platforms the PlatformManager currently maintains
      */
-    std::vector<PlatformInfo*> queryPlatforms();
+    std::vector<PlatformInfo* > queryPlatforms();
 
 };

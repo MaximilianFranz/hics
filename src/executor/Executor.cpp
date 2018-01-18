@@ -15,7 +15,7 @@ std::vector<PlatformInfo*> Executor::queryPlatform() {
 }
 
 std::vector<NetInfo*> Executor::queryNets() {
-    throw NotImplementedException();
+    return builder->queryAvailableNets();
 }
 
 void Executor::setup() {
@@ -27,9 +27,10 @@ ImageResult Executor::classifyImage() {
     throw NotImplementedException();
 }
 
-//Executor::Executor() {
-//    this->placer = (new PlatformPlacer(this));
-//
-//}
+Executor::Executor() {
+    this->placer = (new PlatformPlacer());
+    this->builder = (new NetBuilder());
+
+}
 
 
