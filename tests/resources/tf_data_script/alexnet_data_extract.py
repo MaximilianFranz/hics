@@ -40,7 +40,7 @@ ydim = train_y.shape[1]
 ################################################################################
 #Read Image, and change to BGR
 
-
+#LOAD IMAGE FILE HERE!
 im1 = (imread("laska.png")[:,:,:3]).astype(float32)
 im1 = im1 - mean(im1)
 im1[:, :, 0], im1[:, :, 2] = im1[:, :, 2], im1[:, :, 0]
@@ -90,7 +90,7 @@ def conv(input, kernel, biases, k_h, k_w, c_o, s_h, s_w,  padding="VALID", group
 
 
 
-
+# GENERATE IMAGE DATA for reference!
 img_data = "img_data in order \{rgb_channel, y, x\}: \n"
 print("imagetype", im1[0][0][0])
 print("z_shape", im1.shape[2])
@@ -104,7 +104,6 @@ for z in range(im1.shape[2] ):
             img_data += (str(im1[x][y][z]) + " ")
 
 
-
 x = tf.placeholder(tf.float32, (None,) + xdim)
 
 
@@ -116,20 +115,6 @@ conv1b = tf.Variable(net_data["conv1"][1])
 conv1_in = conv(x, conv1W, conv1b, k_h, k_w, c_o, s_h, s_w, padding="VALID", group=1)
 conv1 = tf.nn.relu(conv1_in)
 
-# print("y_shape", im1.shape[1])
-# print("x_shape", im1.shape[0])
-
-# for z in range(im1.shape[2] ):
-#     for y in range(im1.shape[1] ):
-#         for x in range(im1.shape[0] ):
-#             # print("done", x) for debug
-#             img_data += (str(im1[x][y][z]) + " ")
-
-
-
-# print (x.get_shape())
-# print('weight', conv1W.get_shape())
-# print(conv1.get_shape())
 
 
 
@@ -148,7 +133,6 @@ k_h = 3; k_w = 3; s_h = 2; s_w = 2; padding = 'VALID'
 maxpool1 = tf.nn.max_pool(lrn1, ksize=[1, k_h, k_w, 1], strides=[1, s_h, s_w, 1], padding=padding)
 
 
-# print(maxpool1.get_shape())
 
 #conv2
 #conv(5, 5, 256, 1, 1, group=2, name='conv2')
@@ -235,10 +219,11 @@ sess = tf.Session()
 init = tf.initialize_all_variables()
 sess.run(init)
 
-#change first param regarding which output you wont to print into file.
-# output = sess.run(prob, feed_dict = {x:[im1]})
-conv_out = sess.run(conv1, feed_dict = {x:[im1]})
+# USE CONV1_IN TO GET CONV OUTPUT WITHOUT RELU APPLIED.
+
+conv_out = sess.run(conv1_in, feed_dict = {x:[im1]})
 # evalR = sess.run(x, feed_dict = {x:[im1,im2]})
+# output = sess.run(prob, feed_dict = {x:[im1]}) #this is the original output of the net for classification
 ################################################################################
 
 #Output:
@@ -256,11 +241,11 @@ conv_out = sess.run(conv1, feed_dict = {x:[im1]})
 # print(time.time()-t)
 
 # WRITE OUTPUT FILES
-img_file = open("img_data.txt", "r+")
+img_file = open("../img_data.txt", "r+")
 img_file.write(img_data)
 img_file.close()
 
-#WRITE OUTPUT OF 1 CONV LAYER
+#WRITE OUTPUT OF 1 CONV LAYER BEFORE RELU
 conv1_data = "img_data in order \{rgb_channel, y, x\}: \n"
 # for z in range(output.shape[3])
 print("shape_z", conv_out.shape[3])
@@ -277,7 +262,7 @@ for z in range(z_shape):
             conv1_data += str(conv_out[0][x][y][z]) + " "
 
 
-conv1_file = open("conv1_data_alexnet.txt", "r+")
+conv1_file = open("../conv1_data_alexnet.txt", "r+")
 conv1_file.write(conv1_data)
 conv1_file.close()
 

@@ -8,7 +8,7 @@
 
 ClassificationRequest::ClassificationRequest(NetInfo neuralNet, std::vector<PlatformInfo> platforms, OperationMode m,
                                              bool aggregate, std::map<QString, QImage> userImgs) :
-        neuralNet(neuralNet), platforms(platforms), opMode(m), aggregate(aggregate), userImages(userImgs) {
+        neuralNet(neuralNet), platforms(std::move(platforms)), opMode(m), aggregate(aggregate), userImages(std::move(userImgs)) {
 
 }
 
