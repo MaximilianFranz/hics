@@ -22,11 +22,11 @@ private:
 
 public:
     InputLayer* createInputLayer(LayerConstructionParams lcp);
-    ConvolutionLayer* createConvLayer(LayerConstructionParams lcp, WeightWrapper weights);
+    ConvolutionLayer* createConvLayer(LayerConstructionParams lcp, WeightWrapper* weights);
     MaxPoolingLayer* createMaxPoolLayer(LayerConstructionParams lcp);
     LocalResponseNormLayer* createLocalResponseNormLayer(LayerConstructionParams lcp);
     ReLUActivationLayer* createReLuActivationLayer(LayerConstructionParams lcp);
     SoftMaxLossLayer* createSoftmaxLossLayer(LayerConstructionParams lcp);
-    FullyConnectedLayer* createFCLayer(LayerConstructionParams lcp, WeightWrapper weights);
+    FullyConnectedLayer* createFCLayer(LayerConstructionParams lcp, WeightWrapper* weights);
 
 };

@@ -56,7 +56,7 @@ public:
      * Constructor
      * @param path
      */
-//    ModelLoader(string path);
+     ModelLoader(string path);
 
     //Methods for NetInfo construction
     virtual string getNetWorkName() = 0;
