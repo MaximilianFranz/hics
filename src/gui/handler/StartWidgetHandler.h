@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <list>
+#include <map>
 #include <NetInfo.h>
 #include <PlatformInfo.h>
 #include <OperationMode.h>
@@ -55,6 +56,22 @@ public:
      */
     OperationMode getSelectedOperationMode();
 
+    /**
+     * @brief isAggregated
+     * @return
+     * This method looks up in startWidget if the user selected to aggregate the results.
+@return: true, if the results should be aggregated, false if not.
+     */
+    bool isAggregated();
+
+    /**
+     * @brief getUserImages
+     * @return
+     * This method returns all selected images by the user as QImage together with its file path.
+@return: A map of all images with their file paths.
+     */
+    std::map<QImage, string> getUserImages();
+
 public slots:
 
     /**
@@ -80,18 +97,4 @@ It will abort the deletion of user images by unchecking all deletion check boxes
 23
      */
     void processAbortDeletionButton();
-
 };
-
-/*
-
-
-◦
-
-
-◦ + isAggregated() : bool
-This method looks up in startWidget if the user selected to aggregate the results.
-@return: true, if the results should be aggregated, false if not.
-◦ + getUserImages() : map<QImage, String>
-This method returns all selected images by the user as Q
-*/
