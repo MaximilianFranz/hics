@@ -10,10 +10,10 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::setCurrentWidget(QWidget &widget){
-    int index = mainWindowQStackedWidget.indexOf(widget);
+    int index = mainWindowQStackedWidget.indexOf(&widget);
 
     if(index >= 0){
-        mainWindowQStackedWidget.setCurrentWidget(widget);
+        mainWindowQStackedWidget.setCurrentWidget(&widget);
     }
 }
 

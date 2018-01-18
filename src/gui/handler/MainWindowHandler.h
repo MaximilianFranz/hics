@@ -41,7 +41,7 @@ class MainWindowHandler : public QObject, MainWindowSubject{
 
 signals:
 
-    void emitSignal(); //TODO change
+    void emitSignal(QWidget &widget); //TODO change
 
 private:
 

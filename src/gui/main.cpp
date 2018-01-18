@@ -9,7 +9,20 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindowHandler h;
+
+//    NetInfo net("AlexNet", 224);
+//    PlatformInfo platform;
+//    OperationMode mode(HighPower);
+
+//    std::list<NetInfo> nets;
+//    nets.push_back(net);
+//    std::list<PlatformInfo> plats;
+//    plats.push_back(platform);
+//    std::list<OperationMode> modes;
+//    modes.push_back(mode);
+
+//    MainWindowHandler handler(nets, plats, modes);
+
 
     return a.exec();
 }
