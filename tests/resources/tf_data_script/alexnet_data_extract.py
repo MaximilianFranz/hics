@@ -237,7 +237,7 @@ sess.run(init)
 
 #change first param regarding which output you wont to print into file.
 # output = sess.run(prob, feed_dict = {x:[im1]})
-conv_out = sess.run(conv1, feed_dict = {x:[im1]})
+conv_out = sess.run(conv1_in, feed_dict = {x:[im1]})
 # evalR = sess.run(x, feed_dict = {x:[im1,im2]})
 ################################################################################
 

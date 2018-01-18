@@ -8,7 +8,8 @@ hics.**
 .idea/codeStyles/
 .idea/HICS.iml
 .idea/misc.xml
-
+#IGNORE alexnet Weights
+bvlc_alexnet.npy
 # Created by https://www.gitignore.io/api/c++,linux,macos,clion,windows
 
 ### C++ ###
