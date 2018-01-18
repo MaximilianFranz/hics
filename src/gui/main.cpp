@@ -4,12 +4,12 @@
 
 #include <QApplication>
 #include "handler/ui/MainWindow.h"
+#include "handler/MainWindowHandler.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow h;
-    h.show();
+    MainWindowHandler h;
 
     return a.exec();
 }

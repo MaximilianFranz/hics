@@ -16,6 +16,13 @@ public:
 
     ~MainWindow();
 
+public slots:
+
+    void createButton();
+
+signals:
+
+    void test();
 
 private:
     Ui::MainWindow *ui;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <QObject>
 #include <NetInfo.h>
 #include <PlatformInfo.h>
 #include <OperationMode.h>
@@ -34,7 +35,13 @@
  * @date    17.01.2018
  *
  */
-class MainWindowHandler : public MainWindowSubject{
+class MainWindowHandler : public QObject, MainWindowSubject{
+
+    Q_OBJECT
+
+signals:
+
+    void emitSignal();
 
 private:
 
@@ -49,7 +56,13 @@ private:
 
 public:
 
-    /**
+    MainWindowHandler(){
+
+        connect(this, SIGNAL(emitSignal()), &mainWindow, SLOT(createButton()));
+        emit emitSignal();
+    }
+
+     /**
      * @brief This constructor initializes the GUI with the needed information on available data.
      *
      * The constructor gets the available neural nets, platforms and operation modes which will be displayed after
