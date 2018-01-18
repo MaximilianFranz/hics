@@ -7,10 +7,15 @@
 #include <NetInfo.h>
 #include <PlatformInfo.h>
 #include <OperationMode.h>
+#include "ui/StartWidget.h"
 
 class StartWidgetHandler : public QObject {
 
     Q_OBJECT
+
+private:
+
+    StartWidget startWidget;
 
 public:
 
@@ -98,4 +103,8 @@ It will abort the deletion of user images by unchecking all deletion check boxes
 23
      */
     void processAbortDeletionButton();
+
+    StartWidget& getStartWidget(){
+        return startWidget;
+    }
 };

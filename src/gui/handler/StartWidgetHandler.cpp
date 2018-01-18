@@ -4,7 +4,7 @@
 StartWidgetHandler::StartWidgetHandler(std::list<NetInfo> &neuralNets, std::list<PlatformInfo> &platforms,
                    std::list<OperationMode> &operationModes){
 
-    throw NotImplementedException();
+    startWidget.addNeuralNets(neuralNets);
 }
 
 NetInfo StartWidgetHandler::getSelectedNeuralNet(){
