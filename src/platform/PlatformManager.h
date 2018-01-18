@@ -21,7 +21,7 @@ public:
 
     static PlatformManager& getInstance();
 
-    std::vector<Platform> getPlatforms();
+    std::vector<Platform*> getPlatforms();
 
-    std::vector<PlatformInfo> getPlatformInfos();
+    std::vector<PlatformInfo*> getPlatformInfos();
 };
