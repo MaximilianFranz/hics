@@ -4,6 +4,7 @@
 #include <list>
 #include <NetInfo.h>
 #include <PlatformInfo.h>
+#include <OperationMode.h>
 
 namespace Ui {
 class StartWidget;
@@ -21,6 +22,8 @@ public:
     void addNeuralNets(std::list<NetInfo> &neuralNets);
 
     void addPlatforms(std::list<PlatformInfo> &platforms);
+
+    void addOperationModes(std::list<OperationMode> &operationModes);
 
 private:
     Ui::StartWidget *ui;

@@ -38,5 +38,14 @@ void StartWidget::addPlatforms(std::list<PlatformInfo> &platforms){
         QCheckBox* checkbox = new QCheckBox("Platform", this);
         ui->platformsQVBoxLayout->addWidget(checkbox);
     }
+}
 
+void StartWidget::addOperationModes(std::list<OperationMode> &operationModes){
+    std::list<OperationMode>::iterator it;
+
+    for(it = operationModes.begin(); it != operationModes.end(); ++it){
+        //TODO add operation mode name when its implemented.
+        //QString name = QString::fromStdString(it->);
+        ui->operationModesQComboBox->addItem("Operation Mode");
+    }
 }

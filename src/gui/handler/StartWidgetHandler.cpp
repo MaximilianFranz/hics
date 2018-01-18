@@ -6,6 +6,7 @@ StartWidgetHandler::StartWidgetHandler(std::list<NetInfo> &neuralNets, std::list
 
     startWidget.addNeuralNets(neuralNets);
     startWidget.addPlatforms(platforms);
+    startWidget.addOperationModes(operationModes);
 }
 
 NetInfo StartWidgetHandler::getSelectedNeuralNet(){
