@@ -26,8 +26,6 @@ public:
 
     ~MainWindow();
 
-public slots:
-
     /**
      * @brief addWidgetToStack adds the given widget to mainWindowQStackedWidget.
      * @param widget is the to be added widget
