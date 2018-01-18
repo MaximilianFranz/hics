@@ -5,8 +5,8 @@
 #include "JSONModelLoader.h"
 
 
-JSONModelLoader::JSONModelLoader(string path) {
-    this->pathToJSON = path;
+JSONModelLoader::JSONModelLoader(string path) : ModelLoader(path){
+//    this->pathToJSON = path;
     this->init();
 }
 
@@ -71,4 +71,8 @@ LayerConstructionParams JSONModelLoader::getLayerConstructionParamsByIndex(int i
         lp.normParams = currentLayer["params"];
 
     return lp;
+}
+
+json JSONModelLoader::getLayerJSON(int index) {
+    return layers[index];
 }

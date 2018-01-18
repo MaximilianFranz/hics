@@ -8,3 +8,4 @@ ModelLoader::ModelLoader(string path) {
     this->pathToJSON = path;
 
 }
+

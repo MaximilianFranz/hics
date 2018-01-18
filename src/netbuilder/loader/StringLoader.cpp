@@ -6,7 +6,9 @@
 #include <fstream>
 
 std::string std::StringLoader::getStringFromFile(std::string path) {
-    std::ifstream file(path);
+    char resolved_path[1024];
+    realpath(path.c_str(), resolved_path);
+    std::ifstream file(resolved_path);
     std::string str;
 
     file.seekg(0, std::ios::end);

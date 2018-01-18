@@ -17,4 +17,5 @@ public:
     string getLayerTypeByIndex(int index) override;
     LayerConstructionParams getLayerConstructionParamsByIndex(int index) override;
 
+    json getLayerJSON(int index);
 };
