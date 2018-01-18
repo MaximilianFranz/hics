@@ -36,5 +36,5 @@ public:
      *
      * @return path to the image on the hard drive
      */
-    std::string getFilepath();
+    const std::string getFilepath() const;
 };
