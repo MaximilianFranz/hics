@@ -9,6 +9,9 @@
 class NetInfo {
 private:
 
+    std::string name = "";
+    int imageDimension;
+
 public:
     NetInfo(std::string name, int imageDimension);
 
