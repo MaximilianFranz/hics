@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->centralwidget(mainWindowQStackedWidget); //TODO check if this is enough to full screen mainWindowQStackedWidget
+    ui->centralwidget = &mainWindowQStackedWidget; //TODO check if this is enough to full screen mainWindowQStackedWidget
 }
 
 void MainWindow::addWidgetToStack(QWidget &widget){

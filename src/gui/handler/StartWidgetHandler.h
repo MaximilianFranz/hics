@@ -3,6 +3,7 @@
 #include <QObject>
 #include <list>
 #include <map>
+#include <string>
 #include <NetInfo.h>
 #include <PlatformInfo.h>
 #include <OperationMode.h>
@@ -70,7 +71,7 @@ public:
      * This method returns all selected images by the user as QImage together with its file path.
 @return: A map of all images with their file paths.
      */
-    std::map<QImage, string> getUserImages();
+    std::map<QImage, std::string> getUserImages();
 
 public slots:
 
