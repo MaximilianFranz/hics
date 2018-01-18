@@ -20,7 +20,7 @@ private:
 public:
 
     /**
-     * Use top-x results for prediction result.
+     * Use top-x results for prediction result. CHANGE THIS if more than the top 5 are wanted!
      */
     const int TOP_X = 5; //By convention from the ILSRVC we use 5
 

@@ -5,12 +5,13 @@
 #pragma once
 
 #include <vector>
+#include <NeuralNet.h>
 #include "NetInfo.h"
 
 class NetBuilder {
 
 public:
-    void buildNeuralNet(NetInfo net);
+    NeuralNet* buildNeuralNet(NetInfo net);
 
     std::vector<NetInfo*> queryAvailableNets(); // TODO change return type
 };

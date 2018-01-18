@@ -18,19 +18,19 @@ std::vector<NetInfo*> Executor::queryNets() {
     return builder->queryAvailableNets();
 }
 
-void Executor::setup() {
-    throw NotImplementedException();
-
-}
-
-ImageResult Executor::classifyImage() {
-    throw NotImplementedException();
-}
 
 Executor::Executor() {
     this->placer = (new PlatformPlacer());
     this->builder = (new NetBuilder());
 
+}
+
+ImageResult Executor::classifyImage(ImageWrapper *image) {
+    throw NotImplementedException();
+}
+
+void Executor::setupIfChanged(NeuralNet *net, OperationMode mode, std::vector<PlatformInfo *> selectedPlatforms) {
+    throw NotImplementedException();
 }
 
 
