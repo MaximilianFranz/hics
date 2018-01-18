@@ -6,6 +6,8 @@
 #include "../NotImplementedException.h"
 
 NetInfo::NetInfo(std::string name, int imageDimension) {
+    this->name = name;
+    this->imageDimension = imageDimension;
     throw NotImplementedException();
 }
 

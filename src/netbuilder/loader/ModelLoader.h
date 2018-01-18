@@ -6,8 +6,6 @@
 
 #include "../../NotImplementedException.h"
 
-#ifndef JSONLOADER_MODELLOADER_H
-#define JSONLOADER_MODELLOADER_H
 
 // INCLUDES
 #include <string>
@@ -78,6 +76,3 @@ public:
 
     virtual LayerConstructionParams getLayerConstructionParamsByIndex(int index) = 0;
 };
-
-#endif //JSONLOADER_MODELLOADER_H
-

@@ -5,7 +5,7 @@
 #include "StringLoader.h"
 #include <fstream>
 
-std::string std::StringLoader::getStringFromFile(std::string path) {
+std::string StringLoader::getStringFromFile(std::string path) {
     std::ifstream file(path);
     std::string str;
 

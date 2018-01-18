@@ -5,19 +5,9 @@
 #pragma once
 
 
-#ifndef JSONLOADER_STRINGLOADER_H
-#define JSONLOADER_STRINGLOADER_H
-
-
 #include <string>
-namespace std {
-    class StringLoader {
+class StringLoader {
 
-    public:
-        static string getStringFromFile(string path);
-    };
-
-}
-#endif //JSONLOADER_STRINGLOADER_H
-
-
+public:
+    static std::string getStringFromFile(std::string path);
+};

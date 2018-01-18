@@ -9,6 +9,6 @@ void NetBuilder::buildNeuralNet(NetInfo net) {
     throw NotImplementedException();
 }
 
-void NetBuilder::queryAvailableNets() {
+std::vector<NetInfo> NetBuilder::queryAvailableNets() {
     throw NotImplementedException();
 }
