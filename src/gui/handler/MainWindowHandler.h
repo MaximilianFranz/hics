@@ -41,7 +41,7 @@ class MainWindowHandler : public QObject, MainWindowSubject{
 
 signals:
 
-    void emitSignal();
+    void emitSignal(); //TODO change
 
 private:
 
@@ -56,11 +56,12 @@ private:
 
 public:
 
-    MainWindowHandler(){
+    //TODO delete when finished.
+//    MainWindowHandler(){
 
-        connect(this, SIGNAL(emitSignal()), &mainWindow, SLOT(createButton()));
-        emit emitSignal();
-    }
+//        connect(this, SIGNAL(emitSignal()), &mainWindow, SLOT(createButton()));
+//        emit emitSignal();
+//    }
 
      /**
      * @brief This constructor initializes the GUI with the needed information on available data.

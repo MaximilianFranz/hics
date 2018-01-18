@@ -18,7 +18,7 @@ public:
 
 public slots:
 
-    void createButton();
+    void setCurrentWidget(QWidget &widget);
 
 signals:
 

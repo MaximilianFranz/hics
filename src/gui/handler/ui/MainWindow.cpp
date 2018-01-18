@@ -9,9 +9,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
-void MainWindow::createButton(){
-    ui->pushButton->setText("It worked");
-    this->show();
+void MainWindow::setCurrentWidget(QWidget &widget){
+    int index = mainWindowQStackedWidget.indexOf(widget);
+
+    if(index >= 0){
+        mainWindowQStackedWidget.setCurrentWidget(widget);
+    }
 }
 
 MainWindow::~MainWindow(){
