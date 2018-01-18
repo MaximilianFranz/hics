@@ -1,21 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>StartWidget</class>
  <widget class="QWidget" name="StartWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>10</y>
+     <width>791</width>
+     <height>571</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QSplitter" name="imagesQSplitter">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <widget class="QWidget" name="gridLayoutWidget">
+       <layout class="QGridLayout" name="inputImagesQGridLayout"/>
+      </widget>
+      <widget class="QWidget" name="">
+       <layout class="QHBoxLayout" name="deletionQHBoxLayout">
+        <item>
+         <widget class="QPushButton" name="confirmDeletionQPushButton">
+          <property name="text">
+           <string>Delete</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="abortDeletionQPushButton">
+          <property name="text">
+           <string>Do not delete</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QSplitter" name="optionsQSplitter">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <widget class="QWidget" name="">
+       <layout class="QVBoxLayout" name="neuralNetsQVBoxLayout">
+        <item>
+         <widget class="QLabel" name="neuralNetsTitleQLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Neural nets</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="neuralNetsQComboBox"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="">
+       <layout class="QVBoxLayout" name="operationModesQVBoxLayout">
+        <item>
+         <widget class="QLabel" name="operationModesTitleQLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Operation modes</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="operationModesQComboBox"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QSplitter" name="platformsQSplitter">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <widget class="QLabel" name="platformsTitleQLabel">
+        <property name="text">
+         <string>Select platforms</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QWidget" name="verticalLayoutWidget">
+        <layout class="QVBoxLayout" name="platformsQVBoxLayout"/>
+       </widget>
+      </widget>
+      <widget class="QCheckBox" name="aggregateResultsQCheckBox">
+       <property name="text">
+        <string>Aggregate Results</string>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="selectInputImagesQPushButton">
+      <property name="text">
+       <string>Select images</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QPushButton" name="classificationQPushButton">
+      <property name="text">
+       <string>Classify</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <zorder>selectInputImagesQPushButton</zorder>
+  <zorder>classificationQPushButton</zorder>
+  <zorder>operationModesQComboBox</zorder>
+  <zorder>neuralNetsQComboBox</zorder>
+  <zorder>neuralNetsTitleQLabel</zorder>
+  <zorder>operationModesTitleQLabel</zorder>
+  <zorder>platformsTitleQLabel</zorder>
+  <zorder>verticalLayoutWidget</zorder>
+  <zorder>aggregateResultsQCheckBox</zorder>
+  <zorder>confirmDeletionQPushButton</zorder>
+  <zorder>abortDeletionQPushButton</zorder>
+  <zorder>gridLayoutWidget</zorder>
+  <zorder>platformsTitleQLabel</zorder>
  </widget>
- <pixmapfunction/>
+ <resources/>
  <connections/>
 </ui>
