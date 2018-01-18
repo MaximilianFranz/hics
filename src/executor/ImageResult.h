@@ -13,20 +13,27 @@
 class ImageResult {
 private:
     ImageWrapper image;
+    std::vector<std::pair<std::string, float>> results; // ordered list of labels and their probabilities
 public:
-    std::map<float, std::string> results; // ordered list of labels and their probabilities
 
     /**\brief Constructor
      *
-     * @param results
+     * @param results top X
+     * @param image
      */
-    ImageResult(const std::map<float, std::string> &results, ImageWrapper &image);
+    ImageResult(std::vector<std::pair<std::string, float>> results, ImageWrapper &image);
 
     /**
      *
      * @return path to the image that was classified
      */
-    std::string getImagePath();
+    const std::string getImagePath() const;
+
+    /***
+     * Return List of result pairs
+     * @return
+     */
+    const std::vector<std::pair<std::string, float>> &getResults() const;
 
 };
 

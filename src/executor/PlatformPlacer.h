@@ -10,14 +10,16 @@
 #include "../manager/OperationMode.h"
 #include "../platform/PlatformInfo.h"
 #include "../platform/PlatformManager.h"
+#include "Executor.h"
 
 class PlatformPlacer {
 private:
     OperationMode currentMode;
     std::vector<PlatformInfo> currentPlatforms;
-    PlatformManager platformManager;
+    PlatformManager* platformManager;
     NeuralNet *net;
 public:
+    PlatformPlacer();
 
     /**
      * \brief Distributes computation in the NeuralNet to Platforms according to selected OperationMode.
@@ -29,13 +31,15 @@ public:
      * @param mode chosen OperationMode to consider during placement
      * @param platforms chosen platforms to place computations on
      */
-    void placeComputations(NeuralNet net, OperationMode mode, std::vector<PlatformInfo> platforms);
+    void placeComputations(NeuralNet* net, OperationMode mode, std::vector<PlatformInfo*> platforms);
 
     /**
      * \brief returns PlatformInfo for all Platforms currently available
      *
+     * Is called from Executor to pass available Platforms
+     *
      * @return PlatformInfo of all Platforms the PlatformManager currently maintains
      */
-    std::vector<PlatformInfo> queryPlatforms();
+    std::vector<PlatformInfo* > queryPlatforms();
 
 };

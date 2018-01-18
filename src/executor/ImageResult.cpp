@@ -4,7 +4,19 @@
 
 #include "ImageResult.h"
 
-ImageResult::ImageResult(const std::map<float, std::string> &results, ImageWrapper &image)
-        : image(image){
 
+
+ImageResult::ImageResult(const std::vector<std::pair<std::string, float>> results, ImageWrapper &image)
+        : image(image),
+          results(results)
+{
+
+}
+
+const std::vector<std::pair<std::string, float>> &ImageResult::getResults() const {
+    return results;
+}
+
+const std::string ImageResult::getImagePath() const {
+    return image.getFilepath();
 }

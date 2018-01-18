@@ -8,8 +8,8 @@
 #include "platforms/Platform.h"
 #include "PlatformManager.h"
 
-std::vector<Platform> PlatformManager::getPlatforms() {
-    return std::vector<Platform>();
+std::vector<Platform*> PlatformManager::getPlatforms() {
+    return std::vector<Platform*>();
 }
 
 PlatformManager& PlatformManager::getInstance() {
@@ -18,7 +18,7 @@ PlatformManager& PlatformManager::getInstance() {
     return instance;
 }
 
-std::vector<PlatformInfo> PlatformManager::getPlatformInfos() {
-    return std::vector<PlatformInfo>();
+std::vector<PlatformInfo*> PlatformManager::getPlatformInfos() {
+    return std::vector<PlatformInfo*>();
 }
 
