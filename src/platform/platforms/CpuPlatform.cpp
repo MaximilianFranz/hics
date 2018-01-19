@@ -3,29 +3,37 @@
 //
 
 #include <NotImplementedException.h>
+#include <layerfunctions/activation/CpuReLUFunction.h>
+#include <IllegalArgumentException.h>
+
 #include "CpuPlatform.h"
 
-ActivationFunction &CpuPlatform::createActivationFunction() {
+
+ActivationFunction* CpuPlatform::createActivationFunction(LayerType type) {
+    if (type == LayerType::ACTIVATION_RELU) {
+        return new CpuReLUFunction();
+    } else {
+        throw IllegalArgumentException();
+    }
+}
+
+ConvolutionFunction* CpuPlatform::createConvolutionFunction() {
     throw NotImplementedException();
 }
 
-ConvolutionFunction &CpuPlatform::createConvolutionFunction() {
+LossFunction* CpuPlatform::createLossFunction(LayerType type) {
     throw NotImplementedException();
 }
 
-LossFunction &CpuPlatform::createLossFunction() {
+PoolingFunction* CpuPlatform::createPoolingFunction(LayerType type) {
     throw NotImplementedException();
 }
 
-PoolingFunction &CpuPlatform::createPoolingFunction() {
+ResponseNormalizationFunction* CpuPlatform::createResponseNormalizationFunction(LayerType type) {
     throw NotImplementedException();
 }
 
-ResponseNormalizationFunction &CpuPlatform::createResponseNormalizationFunction() {
-    throw NotImplementedException();
-}
-
-FullyConnectedFunction &CpuPlatform::createFullyConnectedFunction() {
+FullyConnectedFunction* CpuPlatform::createFullyConnectedFunction() {
     throw NotImplementedException();
 }
 
@@ -34,5 +42,5 @@ PlatformInfo &CpuPlatform::getPlatformInfo() {
 }
 
 PlatformType CpuPlatform::getPlatformType() {
-    throw NotImplementedException();
+    return PlatformType::CPU;
 }

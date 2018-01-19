@@ -6,6 +6,8 @@
 
 #include <string>
 
+#include <layers/Layer.h>
+
 #include <PlatformInfo.h>
 
 #include <layerfunctions/pooling/PoolingFunction.h>
@@ -26,12 +28,12 @@ protected:
     PlatformInfo platformInfo;
 
 public:
-    virtual ActivationFunction &createActivationFunction() = 0;
-    virtual ConvolutionFunction &createConvolutionFunction() = 0;
-    virtual LossFunction &createLossFunction() = 0;
-    virtual PoolingFunction &createPoolingFunction() = 0;
-    virtual ResponseNormalizationFunction &createResponseNormalizationFunction() = 0;
-    virtual FullyConnectedFunction &createFullyConnectedFunction() = 0;
+    virtual ActivationFunction* createActivationFunction(LayerType type) = 0;
+    virtual ConvolutionFunction* createConvolutionFunction() = 0;
+    virtual LossFunction* createLossFunction(LayerType type) = 0;
+    virtual PoolingFunction* createPoolingFunction(LayerType type) = 0;
+    virtual ResponseNormalizationFunction* createResponseNormalizationFunction(LayerType type) = 0;
+    virtual FullyConnectedFunction* createFullyConnectedFunction() = 0;
 
     virtual PlatformInfo &getPlatformInfo() = 0;
     virtual PlatformType getPlatformType() = 0;

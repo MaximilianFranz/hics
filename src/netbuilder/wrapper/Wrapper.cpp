@@ -62,7 +62,7 @@ const std::vector<int> Wrapper::getDimensions() {
     return dimensions;
 }
 
-const unsigned long Wrapper::getNumElements() {
+unsigned long Wrapper::getNumElements() const {
     return numElements;
 }
 
@@ -70,7 +70,11 @@ float *Wrapper::getDataArray() {
     return &data[0];
 }
 
-const std::vector<float> Wrapper::getData() {
+const float *Wrapper::getDataArray() const {
+    return &data[0];
+}
+
+std::vector<float> Wrapper::getData() const {
     return data;
 }
 
