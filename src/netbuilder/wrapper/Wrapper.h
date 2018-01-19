@@ -52,7 +52,7 @@ public:
      *
      * @return vector with the sizes of each dimension
      */
-    const virtual std::vector<int> getDimensions();
+    virtual std::vector<int> getDimensions() const;
 
     /**
      * Get total number of elements in the data vector

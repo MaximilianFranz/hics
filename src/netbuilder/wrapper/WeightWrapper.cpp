@@ -13,7 +13,7 @@ float *WeightWrapper::getWeightArray() {
     return getDataArray();
 }
 
-float *WeightWrapper::getBiasArray() {
+const float *WeightWrapper::getBiasArray() const {
     return &bias[0];
 }
 
