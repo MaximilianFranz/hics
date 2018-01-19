@@ -22,7 +22,7 @@ LocalResponseNormLayer::LocalResponseNormLayer(std::vector<int> inputDimensions,
     this->inputDimensions = inputDimensions;
     this->outputDimensions = calcOutputDimensions();
     this->type = NORMALIZATION_LOCALRESPONSE;
-    this->init();
+    this->init(); // TODO never call virtual functions in constructor
 }
 
 float LocalResponseNormLayer::getRadius() const {

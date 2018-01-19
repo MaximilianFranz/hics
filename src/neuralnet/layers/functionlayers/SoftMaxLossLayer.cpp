@@ -13,5 +13,5 @@ SoftMaxLossLayer::SoftMaxLossLayer(std::vector<int> &inputDimensions)
     this->inputDimensions = inputDimensions;
     this->type = LOSS_SOFTMAX;
     this->outputDimensions = inputDimensions;
-    init();
+    init(); // TODO never call virtual functions in constructor
 }
