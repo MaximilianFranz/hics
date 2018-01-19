@@ -14,6 +14,6 @@ MaxPoolingLayer::MaxPoolingLayer(std::vector<int> inputDimensions, int stride, i
     this->zeroPadding = zeroPadding;
     this->outputDimensions = calcOutputDimensions(); //Implemented in PoolingLayer.cpp
     type = POOLING_MAX;
-    init();
+    init(); // TODO never call virtual functions in constructor
 
 }

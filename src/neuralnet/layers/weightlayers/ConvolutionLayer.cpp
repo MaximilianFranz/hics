@@ -44,7 +44,7 @@ ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPaddi
     this->inputDimensions = inputDimensions;
     this->type = CONVOLUTION;
     this->outputDimensions = calcOutputDimensions();
-    init();
+    init(); // TODO never call virtual functions in constructor
 }
 
 ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPadding, int stride,
@@ -58,7 +58,7 @@ ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPaddi
     this->inputDimensions = inputDimensions;
     this->type = CONVOLUTION;
     this->outputDimensions = calcOutputDimensions();
-    init();
+    init(); // TODO never call virtual functions in constructor
 }
 
 int ConvolutionLayer::getNumFilters() const {
