@@ -26,7 +26,16 @@ Executor::Executor() {
 }
 
 ImageResult Executor::classifyImage(ImageWrapper *image) {
-    throw NotImplementedException();
+    SimpleNetIterator* it = net->createIterator();
+    std::vector<float> data = image->getData();
+    DataWrapper inputData(it->getElement()->getInputDimensions(), data);
+    DataWrapper outputData(it->getElement()->getOutputDimensions());
+    while (it->hasNext()) {
+        it->getElement()->forward(inputData, outputData);
+        DataWrapper inputData = &outputData;
+
+        it->next();
+    }
 }
 
 void Executor::setupIfChanged(NeuralNet *net, OperationMode mode, std::vector<PlatformInfo *> selectedPlatforms) {

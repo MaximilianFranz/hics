@@ -7,6 +7,7 @@
 #include <vector>
 #include <NeuralNet.h>
 #include <NetBuilder.h>
+#include <SimpleNetIterator.h>
 #include "ImageResult.h"
 
 #include "ComputationHost.h"
