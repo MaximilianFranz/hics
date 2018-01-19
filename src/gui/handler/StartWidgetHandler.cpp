@@ -5,8 +5,8 @@ StartWidgetHandler::StartWidgetHandler(std::list<NetInfo> &neuralNets, std::list
                    std::list<OperationMode> &operationModes){
 
     addNeuralNets(neuralNets);
-    startWidget.addPlatforms(platforms);
-    startWidget.addOperationModes(operationModes);
+    addPlatforms(platforms);
+    addOperationModes(operationModes);
 }
 
 void StartWidgetHandler::addNeuralNets(std::list<NetInfo> &neuralNets){
@@ -14,7 +14,27 @@ void StartWidgetHandler::addNeuralNets(std::list<NetInfo> &neuralNets){
 
     for(it = neuralNets.begin(); it != neuralNets.end(); ++it){
         QString name = QString::fromStdString(it->getName());
-        startWidget.addNeuralNets(name);
+        startWidget.addNeuralNet(name);
+    }
+}
+
+void StartWidgetHandler::addPlatforms(std::list<PlatformInfo> &platforms){
+    std::list<PlatformInfo>::iterator it;
+
+    for(it = platforms.begin(); it != platforms.end(); ++it){
+
+        //TODO add platform name when PlatformInfo is implemented.
+        startWidget.addPlatform("Platform");
+    }
+}
+
+void StartWidgetHandler::addOperationModes(std::list<OperationMode> &operationModes){
+    std::list<OperationMode>::iterator it;
+
+    for(it = operationModes.begin(); it != operationModes.end(); ++it){
+        //TODO add operation mode name when its implemented.
+        //QString name = QString::fromStdString(it->);
+        startWidget.addOperationMode("Operation mode");
     }
 }
 

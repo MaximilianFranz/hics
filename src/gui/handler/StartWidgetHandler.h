@@ -22,6 +22,11 @@ private:
 
     void addNeuralNets(std::list<NetInfo> &neuralNets);
 
+    void addPlatforms(std::list<PlatformInfo> &platforms);
+
+    void addOperationModes(std::list<OperationMode> &operationModes);
+
+
 public:
 
     /**

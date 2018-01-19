@@ -21,11 +21,13 @@ StartWidget::~StartWidget()
     }
 }
 
-void StartWidget::addNeuralNets(const QString &neuralNet){
-   ui->neuralNetsQComboBox->addItem(neuralNet);
+void StartWidget::addNeuralNet(const QString &neuralNet){
+
+    ui->neuralNetsQComboBox->addItem(neuralNet);
 }
 
-void StartWidget::addPlatforms(const QString &platform){
+void StartWidget::addPlatform(const QString &platform){
+
     QCheckBox* checkbox = new QCheckBox(platform, this);
     ui->platformsQVBoxLayout->addWidget(checkbox);
 }
