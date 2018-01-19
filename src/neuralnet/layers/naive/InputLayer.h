@@ -12,7 +12,7 @@
  */
 class InputLayer : public NaiveLayer {
 public:
-    InputLayer(std::vector<int> inputDimensions);
+    explicit InputLayer(std::vector<int> inputDimensions);
 
     void forward(DataWrapper &input, DataWrapper &output) override;
 

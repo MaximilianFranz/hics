@@ -26,7 +26,7 @@ set(SOURCE_FILES
         loader/StringLoader.h)
 
 add_library(netbuilder STATIC ${SOURCE_FILES})
-target_link_libraries(netbuilder ${HDF5_LIBRARIES})
+target_link_libraries(netbuilder ${HDF5_LIBRARIES} neuralnet)
 
 include_directories(${HDF5_INCLUDE_DIRS})
 

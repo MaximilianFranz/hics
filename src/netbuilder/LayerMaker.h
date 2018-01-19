@@ -4,17 +4,16 @@
 
 #pragma once
 
+#include <layers/naive/InputLayer.h>
+#include <layers/weightlayers/ConvolutionLayer.h>
+#include <layers/functionlayers/MaxPoolingLayer.h>
+#include <layers/functionlayers/LocalResponseNormLayer.h>
+#include <layers/functionlayers/ReLUActivationLayer.h>
+#include <layers/functionlayers/SoftMaxLossLayer.h>
+#include <layers/weightlayers/FullyConnectedLayer.h>
 #include "loader/ModelLoader.h"
 #include "wrapper/WeightWrapper.h"
-#include "../neuralnet/layers/functionlayers/ActivationLayer.h"
-#include "../neuralnet/layers/weightlayers/ConvolutionLayer.h"
-#include "../neuralnet/layers/weightlayers/FullyConnectedLayer.h"
-#include "../neuralnet/layers/naive/InputLayer.h"
-#include "../neuralnet/layers/functionlayers/LocalResponseNormLayer.h"
-#include "../neuralnet/layers/functionlayers/LossLayer.h"
-#include "../neuralnet/layers/functionlayers/MaxPoolingLayer.h"
-#include "../neuralnet/layers/functionlayers/ReLUActivationLayer.h"
-#include "../neuralnet/layers/functionlayers/SoftMaxLossLayer.h"
+
 
 
 class LayerMaker {

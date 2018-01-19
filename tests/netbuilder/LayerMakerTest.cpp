@@ -17,6 +17,7 @@ SCENARIO("Testing construction of Layers" , "[layermaker]") {
         LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(0);
         REQUIRE(lcp.type == "input");
         InputLayer* input = l.createInputLayer(lcp);
+        LocalResponseNormLayer* lrn = l.createLocalResponseNormLayer(lcp);
 //        std::vector<int> v{3, 227, 227};
 //        REQUIRE(input->getInputDimensions() == v);
     }
