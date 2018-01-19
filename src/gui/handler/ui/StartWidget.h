@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QPushButton>
 #include <list>
 #include <NetInfo.h>
 #include <PlatformInfo.h>
@@ -24,6 +25,8 @@ public:
     void addPlatform(const QString &platform);
 
     void addOperationMode(const QString &operationMode);
+
+    QPushButton* getSelectInputImagesQPushButton();
 
 private:
     Ui::StartWidget *ui;

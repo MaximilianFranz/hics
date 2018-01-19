@@ -7,6 +7,8 @@ StartWidgetHandler::StartWidgetHandler(std::list<NetInfo> &neuralNets, std::list
     addNeuralNets(neuralNets);
     addPlatforms(platforms);
     addOperationModes(operationModes);
+
+    connect(startWidget.getSelectInputImagesQPushButton(), SIGNAL(clicked()), this, SLOT(processInputImageButton()));
 }
 
 void StartWidgetHandler::addNeuralNets(std::list<NetInfo> &neuralNets){
@@ -59,7 +61,20 @@ std::map<QImage, std::string> StartWidgetHandler::getUserImages(){
 }
 
 void StartWidgetHandler::processInputImageButton(){
-    throw NotImplementedException();
+    QStringList fileNames = QFileDialog::getOpenFileNames(
+                            &startWidget,
+                            "Select one or more files to open",
+                            "/home",
+                            "Images (*.png *.xpm *.jpg)");
+
+    QVector<QImage> images;
+
+    for(int i = 0; i<fileNames.size(); ++i){
+        QImage image;
+        if(image.load(fileNames.at(i))){
+            images.push_back(image);
+        }
+    }
 }
 
 void StartWidgetHandler::processConfirmDeletionButton(){

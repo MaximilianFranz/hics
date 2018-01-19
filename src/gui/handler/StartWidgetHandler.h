@@ -2,6 +2,8 @@
 
 #include <QObject>
 #include <QString>
+#include <QFileDialog>
+#include <QVector>
 #include <list>
 #include <map>
 #include <string>
