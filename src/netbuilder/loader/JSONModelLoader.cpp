@@ -6,10 +6,6 @@
 
 
 JSONModelLoader::JSONModelLoader(string path) : ModelLoader(path){
-<<<<<<< HEAD
-=======
-//    this->pathToJSON = path;
->>>>>>> 749e4a1441905d3c72b506dda5913fb5ee829312
     this->init();
 }
 
