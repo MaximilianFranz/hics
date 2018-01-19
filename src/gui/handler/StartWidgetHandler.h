@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QString>
 #include <list>
 #include <map>
 #include <string>
@@ -16,6 +17,10 @@ class StartWidgetHandler : public QObject {
 private:
 
     StartWidget startWidget;
+
+    std::map<QString, NetInfo> netInfoMap;
+
+    void addNeuralNets(std::list<NetInfo> &neuralNets);
 
 public:
 

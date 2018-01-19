@@ -14,38 +14,22 @@ StartWidget::~StartWidget()
 {
     delete ui;
 
+    //TODO change this if there are more pointers to delete.
     int count = ui->platformsQVBoxLayout->count();
-
     for(int i = 0; i<count; i++){
         delete ui->platformsQVBoxLayout->itemAt(i);
     }
 }
 
-void StartWidget::addNeuralNets(std::list<NetInfo> &neuralNets){
-    std::list<NetInfo>::iterator it;
-
-    for(it = neuralNets.begin(); it != neuralNets.end(); ++it){
-        QString name = QString::fromStdString(it->getName());
-        ui->neuralNetsQComboBox->addItem(name);
-    }
+void StartWidget::addNeuralNets(const QString &neuralNet){
+   ui->neuralNetsQComboBox->addItem(neuralNet);
 }
 
-void StartWidget::addPlatforms(std::list<PlatformInfo> &platforms){
-    std::list<PlatformInfo>::iterator it;
-
-    for(it = platforms.begin(); it != platforms.end(); ++it){
-        //TODO add platform name when PlatformInfo is implemented.
-        QCheckBox* checkbox = new QCheckBox("Platform", this);
-        ui->platformsQVBoxLayout->addWidget(checkbox);
-    }
+void StartWidget::addPlatforms(const QString &platform){
+    QCheckBox* checkbox = new QCheckBox(platform, this);
+    ui->platformsQVBoxLayout->addWidget(checkbox);
 }
 
-void StartWidget::addOperationModes(std::list<OperationMode> &operationModes){
-    std::list<OperationMode>::iterator it;
-
-    for(it = operationModes.begin(); it != operationModes.end(); ++it){
-        //TODO add operation mode name when its implemented.
-        //QString name = QString::fromStdString(it->);
-        ui->operationModesQComboBox->addItem("Operation Mode");
-    }
+void StartWidget::addOperationMode(const QString &operationMode){
+    ui->operationModesQComboBox->addItem(operationMode);
 }

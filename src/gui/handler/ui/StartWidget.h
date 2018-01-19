@@ -19,11 +19,11 @@ public:
 
     ~StartWidget();
 
-    void addNeuralNets(std::list<NetInfo> &neuralNets);
+    void addNeuralNet(const QString &neuralNet);
 
-    void addPlatforms(std::list<PlatformInfo> &platforms);
+    void addPlatform(const QString &platform);
 
-    void addOperationModes(std::list<OperationMode> &operationModes);
+    void addOperationMode(const QString &operationMode);
 
 private:
     Ui::StartWidget *ui;
