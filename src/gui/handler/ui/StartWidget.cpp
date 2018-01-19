@@ -35,3 +35,7 @@ void StartWidget::addPlatform(const QString &platform){
 void StartWidget::addOperationMode(const QString &operationMode){
     ui->operationModesQComboBox->addItem(operationMode);
 }
+
+QPushButton* StartWidget::getSelectInputImagesQPushButton(){
+    return ui->selectInputImagesQPushButton;
+}

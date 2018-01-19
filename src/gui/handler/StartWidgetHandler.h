@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QFileDialog>
 #include <list>
 #include <map>
 #include <string>
