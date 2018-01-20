@@ -90,4 +90,18 @@ TEST_CASE("Convolution test") {
     f->execute(input, output, weights, stride, filterSize, numFilters, padding);
 
     REQUIRE(output.getData().at(0) == 234.5f);
+    REQUIRE(output.getData().at(10) == 450.5f);
+
+
+    // This time with padding
+    padding = 1;
+    outSize = (inSize - filterSize + 2 * padding) / stride + 1;
+    output = DataWrapper({numFilters, outSize, outSize});
+
+    f->execute(input, output, weights, stride, filterSize, numFilters, padding);
+
+    REQUIRE(output.getData().at(0) == 57.5f);
+    REQUIRE(output.getData().at(12) == 234.5f);
+    REQUIRE(output.getData().at(24) == 450.5f);
+
 }
