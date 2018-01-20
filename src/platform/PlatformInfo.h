@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "platforms/Platform.h"
-
+#include "string"
+#include <platforms/PlatformType.h>
 
 class PlatformInfo {
 private:
