@@ -25,7 +25,7 @@ enum class PlatformType {
 
 class Platform {
 protected:
-    PlatformInfo platformInfo;
+    PlatformInfo platformInfo; // TODO cant resolve type PlatformInfo
 
 public:
     virtual ActivationFunction *createActivationFunction(LayerType type) = 0;
@@ -40,7 +40,7 @@ public:
 
     virtual FullyConnectedFunction *createFullyConnectedFunction() = 0;
 
-    virtual PlatformInfo &getPlatformInfo() = 0;
+    virtual PlatformInfo &getPlatformInfo() = 0; // TODO cant resolve type PlatformInfo
 
     virtual PlatformType getPlatformType() = 0;
 };
