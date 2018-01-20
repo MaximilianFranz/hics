@@ -3,7 +3,7 @@
 #include <QObject>
 #include <QString>
 #include <QFileDialog>
-#include <QVector>
+#include <QMap>
 #include <QLabel>
 #include <list>
 #include <map>
@@ -23,13 +23,15 @@ private:
 
     std::map<QString, NetInfo> netInfoMap;
 
-    QVector<QImage*> images;
+    QMap<QImage*, QCheckBox*> images;
 
     void addNeuralNets(std::list<NetInfo> &neuralNets);
 
     void addPlatforms(std::list<PlatformInfo> &platforms);
 
     void addOperationModes(std::list<OperationMode> &operationModes);
+
+    void clearLayout(QLayout *layout);
 
     void recreateUserImagesLayout();
 

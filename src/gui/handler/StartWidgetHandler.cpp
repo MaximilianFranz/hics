@@ -41,9 +41,25 @@ void StartWidgetHandler::addOperationModes(std::list<OperationMode> &operationMo
     }
 }
 
+void StartWidgetHandler::clearLayout(QLayout *layout){
+    QLayoutItem* item;
+    while(item = layout->takeAt(0)){
+        if (item->layout()) {
+            clearLayout(item->layout());
+            delete item->layout();
+        }
+        if(item->widget()){
+            delete item->widget();
+        }
+        delete item;
+    }
+}
+
 void StartWidgetHandler::recreateUserImagesLayout(){
-    for(int i = 0; i<images.size(); ++i){
-        startWidget.addInputImage(images.value(i));
+    QMap<QImage*, QCheckBox*>::iterator it;
+
+    for(it = images.begin(); it != images.end(); ++it){
+        startWidget.addInputImage(it.key(), it.value());
     }
 }
 
@@ -77,28 +93,31 @@ void StartWidgetHandler::processInputImageButton(){
     for(int i = 0; i<fileNames.size(); ++i){
         QImage* image = new QImage();
         if(image->load(fileNames.at(i))){
-            images.push_back(image);
-            startWidget.addInputImage(image);
+            //TODO delete allocated images in destructor
+            QCheckBox* checkBox = startWidget.addInputImage(image);
+            images.insert(image, checkBox);
+        } else {
+            delete image;
         }
     }
 }
 
 void StartWidgetHandler::processConfirmDeletionButton(){
-    QGridLayout* layout = startWidget.getUserImagesQGridLayout();
-    int rowCount = layout->rowCount();
+    QMap<QImage*, QCheckBox*>::iterator it;
+    it = images.begin();
 
-    for(int i = 0; i<rowCount; ++i){
-        QCheckBox* checkBox = qobject_cast<QCheckBox*>(layout->itemAtPosition(i, 0)->widget());
-        if(checkBox && checkBox->isChecked()){
-//            QLabel* image = qobject_cast<QLabel*>(layout->itemAtPosition(i, 1)->widget());
-//            int index = images.indexOf(image);
-//            images.remove(index);
-            //TODO add mapping of label and image in startWidget
+    while(it != images.end()){
+        if(it.value()->isChecked()){
+            it.value()->setChecked(false);
+            it = images.erase(it);
+        } else {
+            ++it;
         }
     }
 
-    startWidget.initUserImagesQGridLayout();
-    recreateUserImagesLayout();
+    clearLayout(startWidget.getUserImagesQGridLayout());
+    //startWidget.resetLayout();
+    //recreateUserImagesLayout();
 }
 
 void StartWidgetHandler::processAbortDeletionButton(){

@@ -31,9 +31,7 @@ public:
 
     void addOperationMode(const QString &operationMode);
 
-    void addInputImage(QImage* image);
-
-    void initUserImagesQGridLayout();
+    QCheckBox* addInputImage(QImage* image, QCheckBox* checkBox = 0);
 
     QPushButton* getSelectInputImagesQPushButton();
 
