@@ -17,21 +17,17 @@
 #include <layerfunctions/loss/LossFunction.h>
 #include <layerfunctions/FullyConnectedFunction.h>
 
-enum class PlatformType {
-    CPU,
-    FPGA,
-    GPU
-};
-
 class Platform {
 protected:
     PlatformInfo platformInfo;
 
 public:
+
     virtual ActivationFunction *createActivationFunction(LayerType type) = 0;
 
     virtual ConvolutionFunction *createConvolutionFunction() = 0;
 
+    Platform::Platform();
     virtual LossFunction *createLossFunction(LayerType type) = 0;
 
     virtual PoolingFunction *createPoolingFunction(LayerType type) = 0;
