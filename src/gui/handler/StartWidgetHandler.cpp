@@ -9,6 +9,7 @@ StartWidgetHandler::StartWidgetHandler(std::list<NetInfo> &neuralNets, std::list
     addOperationModes(operationModes);
 
     connect(startWidget.getSelectInputImagesQPushButton(), SIGNAL(clicked()), this, SLOT(processInputImageButton()));
+    connect(startWidget.getConfirmDeletionQPushButton(), SIGNAL(clicked()), this, SLOT(processConfirmDeletionButton()));
 }
 
 void StartWidgetHandler::addNeuralNets(std::list<NetInfo> &neuralNets){
@@ -40,6 +41,12 @@ void StartWidgetHandler::addOperationModes(std::list<OperationMode> &operationMo
     }
 }
 
+void StartWidgetHandler::recreateUserImagesLayout(){
+    for(int i = 0; i<images.size(); ++i){
+        startWidget.addInputImage(images.value(i));
+    }
+}
+
 NetInfo StartWidgetHandler::getSelectedNeuralNet(){
     throw NotImplementedException();
 }
@@ -67,11 +74,9 @@ void StartWidgetHandler::processInputImageButton(){
                             "/home",
                             "Images (*.png *.xpm *.jpg)");
 
-    QVector<QImage> images;
-
     for(int i = 0; i<fileNames.size(); ++i){
-        QImage image;
-        if(image.load(fileNames.at(i))){
+        QImage* image = new QImage();
+        if(image->load(fileNames.at(i))){
             images.push_back(image);
             startWidget.addInputImage(image);
         }
@@ -79,7 +84,21 @@ void StartWidgetHandler::processInputImageButton(){
 }
 
 void StartWidgetHandler::processConfirmDeletionButton(){
-    throw NotImplementedException();
+    QGridLayout* layout = startWidget.getUserImagesQGridLayout();
+    int rowCount = layout->rowCount();
+
+    for(int i = 0; i<rowCount; ++i){
+        QCheckBox* checkBox = qobject_cast<QCheckBox*>(layout->itemAtPosition(i, 0)->widget());
+        if(checkBox && checkBox->isChecked()){
+//            QLabel* image = qobject_cast<QLabel*>(layout->itemAtPosition(i, 1)->widget());
+//            int index = images.indexOf(image);
+//            images.remove(index);
+            //TODO add mapping of label and image in startWidget
+        }
+    }
+
+    startWidget.initUserImagesQGridLayout();
+    recreateUserImagesLayout();
 }
 
 void StartWidgetHandler::processAbortDeletionButton(){

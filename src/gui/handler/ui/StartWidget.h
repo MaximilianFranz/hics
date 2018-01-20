@@ -31,9 +31,15 @@ public:
 
     void addOperationMode(const QString &operationMode);
 
-    void addInputImage(const QImage &image);
+    void addInputImage(QImage* image);
+
+    void initUserImagesQGridLayout();
 
     QPushButton* getSelectInputImagesQPushButton();
+
+    QPushButton* getConfirmDeletionQPushButton();
+
+    QGridLayout* getUserImagesQGridLayout();
 
 private:
     Ui::StartWidget *ui;

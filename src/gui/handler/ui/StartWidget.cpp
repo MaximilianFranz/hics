@@ -6,7 +6,7 @@ StartWidget::StartWidget(QWidget *parent) :
     ui(new Ui::StartWidget)
 {
     ui->setupUi(this);
-    ui->userImagesQWidgetContainer->setLayout(ui->userImagesQGridLayout);
+    initUserImagesQGridLayout();
 }
 
 StartWidget::~StartWidget()
@@ -35,17 +35,30 @@ void StartWidget::addOperationMode(const QString &operationMode){
     ui->operationModesQComboBox->addItem(operationMode);
 }
 
-void StartWidget::addInputImage(const QImage &image){
+void StartWidget::addInputImage(QImage *image){
     //TODO resize pictures, and add them to scroll area
     QCheckBox* checkBox = new QCheckBox("", this);
     QLabel* imageLabel = new QLabel();
-    imageLabel->setPixmap(QPixmap::fromImage(image));
+    imageLabel->setPixmap(QPixmap::fromImage(*image));
 
     int row = ui->userImagesQGridLayout->rowCount();
     ui->userImagesQGridLayout->addWidget(checkBox, row, 0);
     ui->userImagesQGridLayout->addWidget(imageLabel, row, 1);
 }
 
+void StartWidget::initUserImagesQGridLayout(){
+    ui->userImagesQGridLayout = new QGridLayout(this);
+    ui->userImagesQWidgetContainer->setLayout(ui->userImagesQGridLayout);
+}
+
 QPushButton* StartWidget::getSelectInputImagesQPushButton(){
     return ui->selectInputImagesQPushButton;
+}
+
+QPushButton* StartWidget::getConfirmDeletionQPushButton(){
+    return ui->confirmDeletionQPushButton;
+}
+
+QGridLayout* StartWidget::getUserImagesQGridLayout(){
+    return ui->userImagesQGridLayout;
 }

@@ -4,6 +4,7 @@
 #include <QString>
 #include <QFileDialog>
 #include <QVector>
+#include <QLabel>
 #include <list>
 #include <map>
 #include <string>
@@ -22,12 +23,15 @@ private:
 
     std::map<QString, NetInfo> netInfoMap;
 
+    QVector<QImage*> images;
+
     void addNeuralNets(std::list<NetInfo> &neuralNets);
 
     void addPlatforms(std::list<PlatformInfo> &platforms);
 
     void addOperationModes(std::list<OperationMode> &operationModes);
 
+    void recreateUserImagesLayout();
 
 public:
 
