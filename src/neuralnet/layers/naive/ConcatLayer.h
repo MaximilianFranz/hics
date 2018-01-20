@@ -26,7 +26,7 @@ public:
 
     std::vector<int> calcOutputDimensions() override;
 
-    void forward(DataWrapper &input, DataWrapper &output) override;
+    void forward() override;
 
     void setPreviousLayer(Layer *previousLayer) override;
 

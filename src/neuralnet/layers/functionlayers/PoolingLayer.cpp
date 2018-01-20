@@ -15,12 +15,13 @@ std::vector<int> PoolingLayer::calcOutputDimensions() {
     return outDim;
 }
 
-void PoolingLayer::forward(DataWrapper &input, DataWrapper &output) {
-    this->function->execute(input, output, stride, filterSize, zeroPadding);
-}
-
 void PoolingLayer::setFunction(PoolingFunction *function) {
     this->function = function;
     this->functionSet = true;
 
+}
+
+void PoolingLayer::forward() {
+    this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper, stride, filterSize, zeroPadding);
+    computed = true;
 }

@@ -18,8 +18,7 @@ protected:
     int zeroPadding;
     int stride;
 public:
-
-    void forward(DataWrapper &input, DataWrapper &output) override;
+    void forward() override;
 
     void setFunction(PoolingFunction* function);
 

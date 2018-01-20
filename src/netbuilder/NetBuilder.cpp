@@ -12,3 +12,7 @@ NeuralNet * NetBuilder::buildNeuralNet(NetInfo net) {
 std::vector<NetInfo *> NetBuilder::queryAvailableNets() {
     throw NotImplementedException();
 }
+
+std::map<int, std::string> NetBuilder::getLabelMap(NetInfo net) {
+    throw NotImplementedException();
+}

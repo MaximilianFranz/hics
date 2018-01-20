@@ -27,10 +27,10 @@ TEST_CASE("Testing Interpreter") {
     // Create facade ImageWrapper
     ImageWrapper i(dim,outputData, "testpath");
 
-    ImageResult r = t.getResult(output, i);
+    ImageResult *r = t.getResult(&output, &i); // Add & as a quickfix to get pointers.
 
-    auto mapresult = r.getResults().at(0);
+    auto mapresult = r->getResults().at(0);
     REQUIRE(mapresult.first == "label 3");
-    REQUIRE(r.getImagePath() == "testpath");
+    REQUIRE(r->getImagePath() == "testpath");
     //Expected label 3, label 1, label 5, label 2,
 }

@@ -9,10 +9,6 @@ const int X_DIM = 2;
 const int Y_DIM = 1;
 const int Z_DIM = 0;
 
-//TODO: Is it ok to
-void ConvolutionLayer::forward(DataWrapper &input, DataWrapper &output) {
-    this->function->execute(input, output, *weights, stride, filterSize, numFilters, zeroPadding);
-}
 
 
 //TODO: Test this!
@@ -80,6 +76,11 @@ int ConvolutionLayer::getStride() const {
 void ConvolutionLayer::setFunction(ConvolutionFunction *function) {
     this->function = function;
     this->functionSet =true;
+}
+
+void ConvolutionLayer::forward() {
+    this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper, *weights, stride, filterSize, numFilters, zeroPadding);
+    computed = true;
 }
 
 

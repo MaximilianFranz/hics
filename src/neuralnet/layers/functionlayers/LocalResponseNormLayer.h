@@ -23,7 +23,7 @@ protected:
 public:
     LocalResponseNormLayer(std::vector<int> inputDimensions, float radius, float alpha, float beta, float bias);
 
-    void forward(DataWrapper &input, DataWrapper &output) override;
+    void forward() override;
 
     void setFunction(ResponseNormalizationFunction *function);
 
