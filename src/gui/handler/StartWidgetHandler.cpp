@@ -73,6 +73,7 @@ void StartWidgetHandler::processInputImageButton(){
         QImage image;
         if(image.load(fileNames.at(i))){
             images.push_back(image);
+            startWidget.addInputImage(image);
         }
     }
 }

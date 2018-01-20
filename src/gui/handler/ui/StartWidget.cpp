@@ -1,5 +1,3 @@
-#include <QString>
-#include <QCheckBox>
 #include "handler/ui/StartWidget.h"
 #include "ui_StartWidget.h"
 
@@ -34,6 +32,17 @@ void StartWidget::addPlatform(const QString &platform){
 
 void StartWidget::addOperationMode(const QString &operationMode){
     ui->operationModesQComboBox->addItem(operationMode);
+}
+
+void StartWidget::addInputImage(const QImage &image){
+    //TODO resize pictures, and add them to scroll area
+    QCheckBox* checkBox = new QCheckBox("", this);
+    QLabel* imageLabel = new QLabel();
+    imageLabel->setPixmap(QPixmap::fromImage(image));
+
+    int row = ui->userImagesQGridLayout->rowCount();
+    ui->userImagesQGridLayout->addWidget(checkBox, row, 0);
+    ui->userImagesQGridLayout->addWidget(imageLabel, row, 1);
 }
 
 QPushButton* StartWidget::getSelectInputImagesQPushButton(){

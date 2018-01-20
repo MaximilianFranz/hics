@@ -2,6 +2,11 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include <QString>
+#include <QCheckBox>
+#include <QHBoxLayout>
+#include <QImage>
+#include <QPixmap>
 #include <list>
 #include <NetInfo.h>
 #include <PlatformInfo.h>
@@ -25,6 +30,8 @@ public:
     void addPlatform(const QString &platform);
 
     void addOperationMode(const QString &operationMode);
+
+    void addInputImage(const QImage &image);
 
     QPushButton* getSelectInputImagesQPushButton();
 
