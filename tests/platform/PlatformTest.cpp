@@ -12,7 +12,7 @@ TEST_CASE("Activation ReLU test") {
     PlatformManager& pm = PlatformManager::getInstance();
     REQUIRE(pm.getPlatforms().size() >= 1);
 
-    Platform* p = pm.getPlatforms().at(0);
+    Platform* p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
 
     ActivationFunction* f = p->createActivationFunction(LayerType::ACTIVATION_RELU);
@@ -24,13 +24,14 @@ TEST_CASE("Activation ReLU test") {
     DataWrapper out(s);
 
     f->execute(in, out);
-    REQUIRE(out.getData().at(0) == 0);
-    REQUIRE(out.getData().at(1) == 2.2f);
-    REQUIRE(out.getData().at(2) == 0);
-    REQUIRE(out.getData().at(3) == 4.4f);
-    REQUIRE(out.getData().at(4) == 0);
+    REQUIRE(out.getData()[0] == 0);
+    REQUIRE(out.getData()[1] == 2.2f);
+    REQUIRE(out.getData()[2] == 0);
+    REQUIRE(out.getData()[3] == 4.4f);
+    REQUIRE(out.getData()[4] == 0);
 
 }
+
 TEST_CASE("Convolution test") {
     int inSize = 11;
     int stride = 1;
@@ -81,7 +82,7 @@ TEST_CASE("Convolution test") {
     PlatformManager& pm = PlatformManager::getInstance();
     REQUIRE(pm.getPlatforms().size() >= 1);
 
-    Platform* p = pm.getPlatforms().at(0);
+    Platform* p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
 
     ConvolutionFunction* f = p->createConvolutionFunction();
@@ -89,8 +90,9 @@ TEST_CASE("Convolution test") {
 
     f->execute(input, output, weights, stride, filterSize, numFilters, padding);
 
-    REQUIRE(output.getData().at(0) == 234.5f);
-    REQUIRE(output.getData().at(10) == 450.5f);
+    REQUIRE(output.getData()[0] == 234.5f);
+    REQUIRE(output.getData()[10] == 450.5f);
+    REQUIRE(output.getSizeOfDimension(2) == 9);
 
 
     // This time with padding
@@ -100,8 +102,9 @@ TEST_CASE("Convolution test") {
 
     f->execute(input, output, weights, stride, filterSize, numFilters, padding);
 
-    REQUIRE(output.getData().at(0) == 57.5f);
-    REQUIRE(output.getData().at(12) == 234.5f);
-    REQUIRE(output.getData().at(24) == 450.5f);
+    REQUIRE(output.getData()[0] == 57.5f);
+    REQUIRE(output.getData()[12] == 234.5f);
+    REQUIRE(output.getData()[24] == 450.5f);
+    REQUIRE(output.getSizeOfDimension(2) == 11);
 
 }
