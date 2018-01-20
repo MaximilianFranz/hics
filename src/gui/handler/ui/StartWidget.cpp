@@ -6,6 +6,7 @@ StartWidget::StartWidget(QWidget *parent) :
     ui(new Ui::StartWidget)
 {
     ui->setupUi(this);
+    ui->userImagesQWidgetContainer->setLayout(ui->userImagesQGridLayout);
 }
 
 StartWidget::~StartWidget()
