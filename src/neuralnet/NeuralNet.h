@@ -60,6 +60,12 @@ public:
      * @return true if the dimensions match, false otherwise.
      */
     bool verifyConsistency();
+
+    /**
+     *
+     * @return last Layer of the network, which is the output.
+     */
+    const Layer *getLastLayer() const;
 };
 
 

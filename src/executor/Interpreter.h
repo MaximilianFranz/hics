@@ -22,7 +22,7 @@ public:
     /**
      * Use top-x results for prediction result. CHANGE THIS if more than the top 5 are wanted!
      */
-    const int TOP_X = 5; //By convention from the ILSRVC we use 5
+    static const int TOP_X = 5; //By convention from the ILSRVC we use 5
 
     Interpreter(std::map<int, std::string> &labelMap);
 
@@ -33,7 +33,7 @@ public:
      * @param originalImage original input which resulted in the output
      * @return ImageResult containing the top 5 labels and their probabilities.
      */
-    ImageResult getResult(DataWrapper output, ImageWrapper originalImage);
+    ImageResult* getResult(DataWrapper *output, ImageWrapper *originalImage);
 
     /**
      * \brief sets the labels to map the number of an output neuron to its corresponding label

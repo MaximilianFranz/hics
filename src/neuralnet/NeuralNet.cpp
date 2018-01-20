@@ -54,3 +54,7 @@ bool NeuralNet::verifyConsistency() {
 NeuralNet::NeuralNet(InputLayer *input, NetInfo info) : info(info) {
     layers[0] = input;
 }
+
+const Layer *NeuralNet::getLastLayer() const {
+    return layers[layers.size() - 1];
+}

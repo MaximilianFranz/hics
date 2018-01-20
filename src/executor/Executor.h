@@ -12,6 +12,7 @@
 
 #include "ComputationHost.h"
 #include "PlatformPlacer.h"
+#include "Interpreter.h"
 
 class PlatformPlacer;
 
@@ -23,6 +24,8 @@ private:
 
     NetBuilder *builder;
     PlatformPlacer *placer;
+    Interpreter *interpreter;
+
 
 
     /**
@@ -34,14 +37,21 @@ private:
      * @param mode
      * @param selectedPlatforms
      */
-    void setupIfChanged(NeuralNet *net, OperationMode mode, std::vector<PlatformInfo*> selectedPlatforms);
+    void setupIfChanged(NetInfo *net, OperationMode mode, std::vector<PlatformInfo*> &selectedPlatforms);
 
     /**
      * Classfies a single image with the settings currently set for this Executor.
      *
      * @return a single ImageResult
      */
-    ImageResult classifyImage(ImageWrapper* image);
+    ImageResult *classifyImage(ImageWrapper* image);
+
+    /**
+     * Propagates the given data through the network and handles garbage collection of unused DataWrapperss
+     *
+     * @param image
+     */
+    void runDataForward(DataWrapper *data);
 
 public:
 
@@ -80,4 +90,5 @@ public:
      */
     std::vector<NetInfo*> queryNets() override;
 
+    DataWrapper *getImageData(ImageWrapper *imageWrapper);
 };

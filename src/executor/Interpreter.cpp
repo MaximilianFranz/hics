@@ -14,18 +14,18 @@ Interpreter::Interpreter(std::map<int, std::string> &labelMap)
 }
 
 //TODO: Faster way to match the top 5 results back to their original positing in output
-ImageResult Interpreter::getResult(DataWrapper output, ImageWrapper originalImage) {
-    std::vector<float> sortOut = output.getData();
+ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *originalImage) {
+    std::vector<float> sortOut = output->getData();
     std::sort(sortOut.begin(), sortOut.end(), compareDesc); //sort output in descending order
     std::vector<std::pair<std::string, float>> results; // ordered list of labels and their probabilities
     for (int i = 0; i < TOP_X; i++) {
         // Add Top 5 probabilities and their labels to the list.
-        results.push_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output.getData())),
+        results.push_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output->getData())),
                                                         sortOut[i]));
 
     }
 
-    ImageResult i(results, originalImage);
+    ImageResult *i = new ImageResult(results, *originalImage);
     return i;
 }
 
@@ -46,3 +46,4 @@ int Interpreter::getIndexOf(float value, std::vector<float> output) {
 const bool Interpreter::compareDesc(float a, float b) {
     return b < a;
 }
+
