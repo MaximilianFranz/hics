@@ -27,7 +27,6 @@ public:
 
     virtual ConvolutionFunction *createConvolutionFunction() = 0;
 
-    Platform::Platform();
     virtual LossFunction *createLossFunction(LayerType type) = 0;
 
     virtual PoolingFunction *createPoolingFunction(LayerType type) = 0;
