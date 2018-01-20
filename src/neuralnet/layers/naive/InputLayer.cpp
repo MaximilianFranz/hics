@@ -10,6 +10,7 @@ void InputLayer::forward(DataWrapper &input, DataWrapper &output) {
 }
 
 InputLayer::InputLayer(std::vector<int> inputDimensions) {
+    this->inputDimensions = inputDimensions;
     this->functionSet = true; // Naive Layers don't have functions
     this->type = INPUT;
     this->outputDimensions = calcOutputDimensions();

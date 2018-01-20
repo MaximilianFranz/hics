@@ -21,11 +21,11 @@ private:
 
 public:
     InputLayer* createInputLayer(LayerConstructionParams lcp);
-    ConvolutionLayer* createConvLayer(LayerConstructionParams lcp, WeightWrapper* weights);
-    MaxPoolingLayer* createMaxPoolLayer(LayerConstructionParams lcp);
-    LocalResponseNormLayer* createLocalResponseNormLayer(LayerConstructionParams lcp);
-    ReLUActivationLayer* createReLuActivationLayer(LayerConstructionParams lcp);
-    SoftMaxLossLayer* createSoftmaxLossLayer(LayerConstructionParams lcp);
-    FullyConnectedLayer* createFCLayer(LayerConstructionParams lcp, WeightWrapper* weights);
+    ConvolutionLayer* createConvLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights);
+    MaxPoolingLayer* createMaxPoolLayer(LayerConstructionParams lcp, std::vector<int> inputDims);
+    LocalResponseNormLayer* createLocalResponseNormLayer(LayerConstructionParams lcp, std::vector<int> inputDims);
+    ReLUActivationLayer* createReLuActivationLayer(LayerConstructionParams lcp, std::vector<int> inputDims);
+    SoftMaxLossLayer* createSoftmaxLossLayer(LayerConstructionParams lcp, std::vector<int> inputDims);
+    FullyConnectedLayer* createFCLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights);
 
 };

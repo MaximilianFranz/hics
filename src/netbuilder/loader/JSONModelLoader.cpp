@@ -54,7 +54,7 @@ LayerConstructionParams JSONModelLoader::getLayerConstructionParamsByIndex(int i
     if (currentLayer.count("filterSize") != 0)
         lp.filterSize = currentLayer["filterSize"];
 
-    if (currentLayer.count("numFilters") != 0)
+    if (currentLayer.count("kernels") != 0)
         lp.numFilters = currentLayer["kernels"];
 
     if (currentLayer.count("stride") != 0)

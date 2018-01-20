@@ -10,10 +10,9 @@
  * Layer representing the max-pooling operation in a neural net
  * @inherit PoolingLayer
  */
-class MaxPoolingLayer : public PoolingLayer{
+class MaxPoolingLayer : public PoolingLayer {
 public:
     MaxPoolingLayer(std::vector<int> inputDimensions, int stride, int filterSize, int zeroPadding);
-
 
 };
 

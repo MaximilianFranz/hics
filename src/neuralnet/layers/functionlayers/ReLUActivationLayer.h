@@ -4,14 +4,14 @@
 
 #pragma once
 
-#include "layers/functionlayers/ActivationLayer.h"
+#include "ActivationLayer.h"
 
 /**
  * Layer representing the RELU activation function in a neural net.
  */
-class ReLUActivationLayer : ActivationLayer {
+class ReLUActivationLayer : public ActivationLayer {
 public:
-    ReLUActivationLayer(std::vector<int> &inputDimension);
+    explicit ReLUActivationLayer(std::vector<int> &inputDimension);
 
 };
 

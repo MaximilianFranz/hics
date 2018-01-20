@@ -6,14 +6,10 @@
 #include "NotImplementedException.h"
 
 
-MaxPoolingLayer::MaxPoolingLayer(std::vector<int> inputDimensions, int stride, int filterSize, int zeroPadding) {
-
-    this->inputDimensions = inputDimensions;
-    this->stride = stride;
-    this->filterSize = filterSize;
-    this->zeroPadding = zeroPadding;
-    this->outputDimensions = calcOutputDimensions(); //Implemented in PoolingLayer.cpp
-    type = POOLING_MAX;
+MaxPoolingLayer::MaxPoolingLayer(std::vector<int> inputDimensions, int stride, int filterSize, int zeroPadding)
+        : PoolingLayer(inputDimensions, stride, filterSize, zeroPadding) {
+    this->type = POOLING_MAX;
+    this->outputDimensions = calcOutputDimensions();
     init();
 
 }
