@@ -18,10 +18,6 @@ FullyConnectedLayer::FullyConnectedLayer(std::vector<int> inputDimensions, Weigh
     this->type = FULLYCONNECTED;
 }
 
-void FullyConnectedLayer::forward(DataWrapper &input, DataWrapper &output) {
-    throw NotImplementedException();
-}
-
 //TODO: Implement. Output size depends on the size of the weights
 std::vector<int> FullyConnectedLayer::calcOutputDimensions() {
     throw NotImplementedException();
@@ -39,6 +35,11 @@ bool FullyConnectedLayer::verifyWeights() {
 
 void FullyConnectedLayer::setFunction(FullyConnectedFunction *function) {
     this->function = function;
+}
+
+void FullyConnectedLayer::forward() {
+    this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper, *weights);
+    computed = true;
 }
 
 

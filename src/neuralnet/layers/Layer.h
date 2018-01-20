@@ -30,6 +30,9 @@ protected:
 
     Layer* previousLayer;
     Layer* nextLayer;
+    DataWrapper* inputWrapper; //! == previousLayer.getOutputWrapper()
+    DataWrapper* outputWrapper; //! == nextLayer.getInputWrapper()
+
     bool computed;
     bool functionSet;
 
@@ -48,14 +51,14 @@ public:
 
 
     /**
-     * Computes the forward propagation given the input and writes results to the output!
+     * //TODO: Use pointers for execute() signature? Because wrappers are held as pointers!
+     * Triggers the computation of the forward propagation. Takes input from inputWrapper and writes to
+     * outputWrapper
      *
      * The Executor knows the size the output Wrapper needs by querying getOutputDimensions()
      *
-     * @param input Wrapper holding the inputs to this layer
-     * @param output Wrapper defining where to write the output.
      */
-    virtual void forward(DataWrapper &input, DataWrapper &output) = 0;
+    virtual void forward() = 0;
 
     /**
      * Returns whether this Layer has been computed
@@ -68,7 +71,6 @@ public:
      * Sets the status of this Layer
      *
      * Is called from inside forward, when computation has worked succesfully.
-     * TODO: Can this be private
      * @param status to which to set the layer
      * @return
      */
@@ -156,6 +158,16 @@ public:
      * @return dimensions of the inputWrapper to this
      */
     const std::vector<int> &getInputDimensions() const;
+
+    DataWrapper *getInputWrapper() const;
+
+    void setInputWrapper(DataWrapper *inputWrapper);
+
+    DataWrapper *getOutputWrapper() const;
+
+    void setOutputWrapper(DataWrapper *outputWrapper);
+
+    void deleteGarbage();
 
 };
 

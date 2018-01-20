@@ -6,10 +6,6 @@
 #include "NotImplementedException.h"
 
 
-void LocalResponseNormLayer::forward(DataWrapper &input, DataWrapper &output) {
-    this->function->execute(input, output, radius, alpha, beta, bias);
-}
-
 LocalResponseNormLayer::LocalResponseNormLayer(std::vector<int> inputDimensions, float radius, float alpha, float beta,
                                                float bias)
 
@@ -44,4 +40,8 @@ float LocalResponseNormLayer::getBias() const {
 void LocalResponseNormLayer::setFunction(ResponseNormalizationFunction *function) {
     this->function = function;
     functionSet = true;
+}
+
+void LocalResponseNormLayer::forward() {
+    this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper, radius, alpha, beta, bias);
 }

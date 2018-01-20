@@ -5,11 +5,6 @@
 #include <NotImplementedException.h>
 #include "ConcatLayer.h"
 
-//TODO implement concatenation directly here!
-//TODO: Where do we get the outputs of previous layers!!!?
-void ConcatLayer::forward(DataWrapper &input, DataWrapper &output) {
-    throw NotImplementedException();
-}
 
 void ConcatLayer::setPreviousLayer(Layer *previousLayer) {
     previousLayerList.push_back(previousLayer);
@@ -39,6 +34,12 @@ std::vector<int> ConcatLayer::calcOutputDimensions() {
     outDim[D3_Y_DIM] = getPreviousLayer()->getOutputDimensions().at(D3_Y_DIM);
     outDim[D3_X_DIM] = getPreviousLayer()->getOutputDimensions().at(D3_Y_DIM);
     return outDim;
+}
+
+//TODO: Implement by iterating over previousLayerList an concatenating outputs.
+void ConcatLayer::forward() {
+    throw NotImplementedException();
+
 }
 
 

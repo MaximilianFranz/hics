@@ -6,9 +6,6 @@
 #include "NotImplementedException.h"
 
 
-void ActivationLayer::forward(DataWrapper &input, DataWrapper &output) {
-    this->function->execute(input, output);
-}
 
 std::vector<int> ActivationLayer::calcOutputDimensions() {
     return inputDimensions; //Activation does not change the dimensions of the input.
@@ -22,6 +19,12 @@ ActivationLayer::ActivationLayer(std::vector<int> &inputDimensions) {
 void ActivationLayer::setFunction(ActivationFunction *function) {
     this->function = function;
     functionSet = true;
+}
+
+//TODO: Use pointers instead of reference?
+void ActivationLayer::forward() {
+    this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper);
+    this->computed = true;
 }
 
 
