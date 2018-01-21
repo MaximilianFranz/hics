@@ -31,14 +31,16 @@ public:
 
     void addOperationMode(const QString &operationMode);
 
-    QCheckBox* addInputImage(QImage* image, QCheckBox* checkBox = 0);
+    QHBoxLayout* addInputImage(QImage* image);
 
     QPushButton* getSelectInputImagesQPushButton();
 
     QPushButton* getConfirmDeletionQPushButton();
 
-    QGridLayout* getUserImagesQGridLayout();
+    QVBoxLayout* getInputImagesQVBoxLayout();
 
 private:
     Ui::StartWidget *ui;
+
+    QList<QHBoxLayout*> inputImagesLayouts;
 };

@@ -6,7 +6,7 @@ StartWidget::StartWidget(QWidget *parent) :
     ui(new Ui::StartWidget)
 {
     ui->setupUi(this);
-    ui->userImagesQWidgetContainer->setLayout(ui->userImagesQGridLayout);
+    ui->userImagesQWidgetContainer->setLayout(ui->inputImagesQVBoxLayout);
 }
 
 StartWidget::~StartWidget()
@@ -17,11 +17,6 @@ StartWidget::~StartWidget()
     int count = ui->platformsQVBoxLayout->count();
     for(int i = 0; i<count; i++){
         delete ui->platformsQVBoxLayout->itemAt(i);
-    }
-
-    count = ui->userImagesQGridLayout->count();
-    for(int i = 0; i<count; i++){
-        delete ui->userImagesQGridLayout->itemAt(i);
     }
 }
 
@@ -40,22 +35,19 @@ void StartWidget::addOperationMode(const QString &operationMode){
     ui->operationModesQComboBox->addItem(operationMode);
 }
 
-QCheckBox* StartWidget::addInputImage(QImage *image, QCheckBox* checkBoxParam){
-    //TODO resize pictures, and add them to scroll area
-    QCheckBox* checkBox;
-    if(!checkBoxParam){
-        checkBox = new QCheckBox("", this);
-    } else {
-        checkBox = checkBoxParam;
-    }
+QHBoxLayout* StartWidget::addInputImage(QImage* image){
+    QHBoxLayout* layout = new QHBoxLayout();
+    QCheckBox* checkBox = new QCheckBox();
+
+    layout->addWidget(checkBox, 0);
     QLabel* imageLabel = new QLabel();
     imageLabel->setPixmap(QPixmap::fromImage(*image));
 
-    int row = ui->userImagesQGridLayout->rowCount();
-    ui->userImagesQGridLayout->addWidget(checkBox, row, 0);
-    ui->userImagesQGridLayout->addWidget(imageLabel, row, 1);
+    layout->addWidget(imageLabel, 1);
 
-    return checkBox;
+    ui->inputImagesQVBoxLayout->addLayout(layout);
+
+    return layout;
 }
 
 QPushButton* StartWidget::getSelectInputImagesQPushButton(){
@@ -66,6 +58,6 @@ QPushButton* StartWidget::getConfirmDeletionQPushButton(){
     return ui->confirmDeletionQPushButton;
 }
 
-QGridLayout* StartWidget::getUserImagesQGridLayout(){
-    return ui->userImagesQGridLayout;
+QVBoxLayout* StartWidget::getInputImagesQVBoxLayout(){
+    return ui->inputImagesQVBoxLayout;
 }

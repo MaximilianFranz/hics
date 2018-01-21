@@ -69,16 +69,16 @@
            <height>435</height>
           </rect>
          </property>
-         <widget class="QWidget" name="gridLayoutWidget">
+         <widget class="QWidget" name="verticalLayoutWidget">
           <property name="geometry">
            <rect>
             <x>-1</x>
             <y>-1</y>
-            <width>591</width>
+            <width>581</width>
             <height>431</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="userImagesQGridLayout"/>
+          <layout class="QVBoxLayout" name="inputImagesQVBoxLayout"/>
          </widget>
         </widget>
        </widget>

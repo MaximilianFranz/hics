@@ -23,7 +23,7 @@ private:
 
     std::map<QString, NetInfo> netInfoMap;
 
-    QMap<QImage*, QCheckBox*> images;
+    QMap<QImage*, QHBoxLayout*> images;
 
     void addNeuralNets(std::list<NetInfo> &neuralNets);
 
@@ -32,8 +32,6 @@ private:
     void addOperationModes(std::list<OperationMode> &operationModes);
 
     void clearLayout(QLayout *layout);
-
-    void recreateUserImagesLayout();
 
 public:
 

@@ -51,15 +51,6 @@ void StartWidgetHandler::clearLayout(QLayout *layout){
         if(item->widget()){
             delete item->widget();
         }
-        delete item;
-    }
-}
-
-void StartWidgetHandler::recreateUserImagesLayout(){
-    QMap<QImage*, QCheckBox*>::iterator it;
-
-    for(it = images.begin(); it != images.end(); ++it){
-        startWidget.addInputImage(it.key(), it.value());
     }
 }
 
@@ -94,8 +85,8 @@ void StartWidgetHandler::processInputImageButton(){
         QImage* image = new QImage();
         if(image->load(fileNames.at(i))){
             //TODO delete allocated images in destructor
-            QCheckBox* checkBox = startWidget.addInputImage(image);
-            images.insert(image, checkBox);
+            QHBoxLayout* layout = startWidget.addInputImage(image);
+            images.insert(image, layout);
         } else {
             delete image;
         }
@@ -103,21 +94,23 @@ void StartWidgetHandler::processInputImageButton(){
 }
 
 void StartWidgetHandler::processConfirmDeletionButton(){
-    QMap<QImage*, QCheckBox*>::iterator it;
-    it = images.begin();
 
-    while(it != images.end()){
-        if(it.value()->isChecked()){
-            it.value()->setChecked(false);
-            it = images.erase(it);
-        } else {
-            ++it;
+    QMapIterator<QImage*, QHBoxLayout*> it(images);
+    while (it.hasNext()) {
+        it.next();
+        QCheckBox* checkBox;
+        //TODO maybe check for it.value()->itemAt(0) if this is a valid pointer
+        if(checkBox = (QCheckBox*)(it.value()->itemAt(0)->widget())){
+                if(checkBox->isChecked()){
+                    clearLayout(it.value());
+                    QHBoxLayout* tempLayout = it.value();
+                    QImage* tempImage = it.key();
+                    images.remove(it.key());
+                    delete tempLayout;
+                    delete tempImage;
+                }
         }
     }
-
-    clearLayout(startWidget.getUserImagesQGridLayout());
-    //startWidget.resetLayout();
-    //recreateUserImagesLayout();
 }
 
 void StartWidgetHandler::processAbortDeletionButton(){
