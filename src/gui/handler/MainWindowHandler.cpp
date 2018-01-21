@@ -8,11 +8,13 @@ startWidget(neuralNets, platforms, operationModes){
     mainWindow.addWidgetToStack(startWidget);
     mainWindow.setCurrentWidget(startWidget);
 
-    //TODO initialze result and detail Handler and add them to the stack
+    //TODO initialze result and detail widget and add them to the stack
+    setClassificationRequestState();
 }
 
 void MainWindowHandler::setClassificationRequestState(){
-    throw NotImplementedException();
+    NetInfo* selectedNet = startWidget.getSelectedNeuralNet();
+    //TODO PlatformInfo, OperationMode, aggregateResults add them here, add the according functions to startWidget
 }
 
 ClassificationRequest MainWindowHandler::getClassificationRequestState(){

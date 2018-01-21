@@ -49,7 +49,7 @@ QHBoxLayout* StartWidget::addInputImage(QImage* image){
 
     layout->addWidget(checkBox, 0);
     QLabel* imageLabel = new QLabel();
-    imageLabel->setPixmap(QPixmap::fromImage(*image));
+    imageLabel->setPixmap(QPixmap::fromImage(*image).scaled(227, 227, Qt::KeepAspectRatio));
 
     layout->addWidget(imageLabel, 1);
 
@@ -114,6 +114,8 @@ void StartWidget::addNeuralNets(std::list<NetInfo> &neuralNets){
 
     for(it = neuralNets.begin(); it != neuralNets.end(); ++it){
         QString name = QString::fromStdString(it->getName());
+
+        neuralNetMap.insert(std::pair<QString, NetInfo>(name, *it));
         addNeuralNet(name);
     }
 }
@@ -148,6 +150,16 @@ void StartWidget::clearLayout(QLayout *layout){
         if(item->widget()){
             delete item->widget();
         }
+    }
+}
+
+NetInfo* StartWidget::getSelectedNeuralNet(){
+    QString name = ui->neuralNetsQComboBox->currentText();
+    try{
+        return &(neuralNetMap.at(name));
+
+    } catch (std::out_of_range e) {
+        e.what();
     }
 }
 
