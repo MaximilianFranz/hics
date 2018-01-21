@@ -189,7 +189,7 @@ TEST_CASE("Realdata Convolution Test") {
     ConvolutionFunction* f = p->createConvolutionFunction();
     REQUIRE(f != nullptr);
 
-    f->execute(in, out_expected, weightsWrapper, 4, 11, 96, 0);
+    f->execute(in, out_real, weightsWrapper, 4, 11, 96, 0);
     // out_real evaluates to 0 from i = 4 onwards
     for (int i = 0; i < 20; i++) {
         REQUIRE(out_real.getData()[i] == out_expected.getData()[i]);
