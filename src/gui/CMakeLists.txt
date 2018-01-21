@@ -19,8 +19,6 @@ set(SOURCE_FILES
     MainWindowSubject.h
         handler/MainWindowHandler.cpp
         handler/MainWindowHandler.h
-        handler/StartWidgetHandler.cpp
-        handler/StartWidgetHandler.h
         handler/ResultWidgetHandler.cpp
         handler/ResultWidgetHandler.h
         handler/DetailDialogHandler.cpp

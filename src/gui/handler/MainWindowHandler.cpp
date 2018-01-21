@@ -3,10 +3,10 @@
 
 MainWindowHandler::MainWindowHandler(std::list<NetInfo> &neuralNets, std::list<PlatformInfo> &platforms,
                   std::list<OperationMode> &operationModes) :
-startWidgetHandler(neuralNets, platforms, operationModes){
+startWidget(neuralNets, platforms, operationModes){
 
-    mainWindow.addWidgetToStack(startWidgetHandler.getStartWidget());
-    mainWindow.setCurrentWidget(startWidgetHandler.getStartWidget());
+    mainWindow.addWidgetToStack(startWidget);
+    mainWindow.setCurrentWidget(startWidget);
 
     //TODO initialze result and detail Handler and add them to the stack
 }

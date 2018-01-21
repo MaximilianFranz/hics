@@ -8,6 +8,7 @@
 #include <ClassificationRequest.h>
 #include <ClassificationResult.h>
 
+#include "ui/StartWidget.h"
 #include "MainWindowSubject.h"
 #include "StartWidgetHandler.h"
 #include "ResultWidgetHandler.h"
@@ -49,7 +50,9 @@ private:
 
     MainWindow mainWindow;
 
-    StartWidgetHandler startWidgetHandler;
+    StartWidget startWidget;
+
+    //StartWidgetHandler startWidgetHandler;
     //ResultWidgetHandler resultWidgetHandler;
     //DetailDialogHandler detailDialogHandler;
 

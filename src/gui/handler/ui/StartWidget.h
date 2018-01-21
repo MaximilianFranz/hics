@@ -7,6 +7,8 @@
 #include <QHBoxLayout>
 #include <QImage>
 #include <QPixmap>
+#include <QMap>
+#include <QFileDialog>
 #include <list>
 #include <NetInfo.h>
 #include <PlatformInfo.h>
@@ -21,7 +23,8 @@ class StartWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit StartWidget(QWidget *parent = 0);
+    explicit StartWidget(std::list<NetInfo> &neuralNets, std::list<PlatformInfo> &platforms,
+                                      std::list<OperationMode> &operationModes, QWidget *parent = 0);
 
     ~StartWidget();
 
@@ -39,8 +42,28 @@ public:
 
     QVBoxLayout* getInputImagesQVBoxLayout();
 
+public slots:
+
+    void processInputImageButton();
+
+    void processConfirmDeletionButton();
+
+
+
 private:
     Ui::StartWidget *ui;
 
     QList<QHBoxLayout*> inputImagesLayouts;
+
+    QMap<QImage*, QHBoxLayout*> images;
+
+    void addNeuralNets(std::list<NetInfo> &neuralNets);
+
+    void addPlatforms(std::list<PlatformInfo> &platforms);
+
+    void addOperationModes(std::list<OperationMode> &operationModes);
+
+    void clearLayout(QLayout *layout);
+
+
 };

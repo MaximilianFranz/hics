@@ -21,17 +21,15 @@ private:
 
     StartWidget startWidget;
 
-    std::map<QString, NetInfo> netInfoMap;
-
     QMap<QImage*, QHBoxLayout*> images;
 
-    void addNeuralNets(std::list<NetInfo> &neuralNets);
+    void addNeuralNets(std::list<NetInfo> &neuralNets);//Done
 
-    void addPlatforms(std::list<PlatformInfo> &platforms);
+    void addPlatforms(std::list<PlatformInfo> &platforms); //Done
 
-    void addOperationModes(std::list<OperationMode> &operationModes);
+    void addOperationModes(std::list<OperationMode> &operationModes); //Done
 
-    void clearLayout(QLayout *layout);
+    void clearLayout(QLayout *layout); //Done
 
 public:
 

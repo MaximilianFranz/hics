@@ -2,9 +2,10 @@
 #include <NotImplementedException.h>
 
 StartWidgetHandler::StartWidgetHandler(std::list<NetInfo> &neuralNets, std::list<PlatformInfo> &platforms,
-                   std::list<OperationMode> &operationModes){
+                   std::list<OperationMode> &operationModes):
+startWidget(neuralNets, platforms, operationModes){
 
-    addNeuralNets(neuralNets);
+    //addNeuralNets(neuralNets);
     addPlatforms(platforms);
     addOperationModes(operationModes);
 
