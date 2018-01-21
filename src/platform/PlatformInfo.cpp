@@ -28,3 +28,7 @@ int PlatformInfo::getPowerConsumption() const {
 int PlatformInfo::getFlops() const {
     return flops;
 }
+
+PlatformInfo::PlatformInfo() {
+  //empty
+}
