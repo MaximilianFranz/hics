@@ -46,10 +46,10 @@ void CpuConvolutionFunction::execute(const DataWrapper &input,
 
                             int c = fCol + halfFilterSize;
                             int r = fRow + halfFilterSize;
-                            int wIndex = r*filterSize + c + plane*filterSize*filterSize;
+                            int wIndex = c + r*filterSize + plane*filterSize*filterSize + f*numPlanes*filterSize*filterSize;
                             float weight = w[wIndex];
 
-                            int iIndex = (inRow + fRow) *inSize + inCol + fCol + plane*inSize*inSize;
+                            int iIndex = inCol + fCol + (inRow + fRow)*inSize +  + plane*inSize*inSize;
                             float data = i[iIndex];
 
                             sum += weight*data;
