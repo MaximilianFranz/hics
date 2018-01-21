@@ -24,7 +24,7 @@ public:
      *
      * @param inputDimensions inputDimensions to this
      */
-    FullyConnectedLayer(std::vector<int> inputDimensions);
+    explicit FullyConnectedLayer(std::vector<int> inputDimensions);
 
     /**
      * Constructor for a FullyConnectedLayer with weights
@@ -35,7 +35,7 @@ public:
      */
     FullyConnectedLayer(std::vector<int> inputDimensions, WeightWrapper *weights);
 
-    void forward(DataWrapper &input, DataWrapper &output) override;
+    void forward() override;
 
     void setWeights(WeightWrapper* weights);
 

@@ -1,4 +1,4 @@
-add_executable(netbuildertests WrapperTest.cpp WrapperTest.h)
+add_executable(netbuildertests WrapperTest.cpp WrapperTest.h LayerMakerTest.cpp LayerMakerTest.h)
 
 #Link against netbuilder lib to get access to symbols
 #Link against catchtest to use the Catch-main function.

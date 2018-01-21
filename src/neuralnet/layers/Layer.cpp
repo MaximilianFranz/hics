@@ -20,12 +20,12 @@ bool Layer::isLayerFunctionSet() {
 void Layer::reset() {
     this->functionSet = false;
     this->computed = false;
-
+    deleteGarbage(); //TODO: Does this fail if pointers already deleted?
 }
 
 
 bool Layer::readyToCompute() {
-    previousLayer->isComputed();
+    return previousLayer->isComputed();
 }
 
 void Layer::init() {
@@ -60,6 +60,26 @@ void Layer::setNextLayer(Layer *nextLayer) {
 
 LayerType Layer::getType() const {
     return type;
+}
+
+DataWrapper *Layer::getInputWrapper() const {
+    return inputWrapper;
+}
+
+void Layer::setInputWrapper(DataWrapper *inputWrapper) {
+    Layer::inputWrapper = inputWrapper;
+}
+
+DataWrapper *Layer::getOutputWrapper() const {
+    return outputWrapper;
+}
+
+void Layer::setOutputWrapper(DataWrapper *outputWrapper) {
+    Layer::outputWrapper = outputWrapper;
+}
+
+void Layer::deleteGarbage() {
+    delete inputWrapper; //TODO: does this delete the object?
 }
 
 

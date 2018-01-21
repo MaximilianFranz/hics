@@ -12,5 +12,5 @@
  */
 class SoftMaxLossLayer : public LossLayer {
 public:
-    SoftMaxLossLayer(std::vector<int> &inputDimensions);
+    explicit SoftMaxLossLayer(std::vector<int> &inputDimensions);
 };

@@ -5,9 +5,19 @@
 #include <NotImplementedException.h>
 #include "Executor.h"
 
-std::vector<ImageResult*> Executor::classify(std::vector<ImageWrapper*> images, NetInfo net, OperationMode mode,
+std::vector<ImageResult*> Executor::classify(std::vector<ImageWrapper*> images, NetInfo netinfo, OperationMode mode,
                                             std::vector<PlatformInfo*> selectedPlatforms) {
-    throw NotImplementedException();
+    setupIfChanged(&netinfo, mode, selectedPlatforms);
+    auto labelMap = builder->getLabelMap(netinfo);
+    interpreter = new Interpreter(labelMap);
+    std::vector<ImageResult*> results(Interpreter::TOP_X); //Number of Results from Interpreter settings
+
+    for (auto image : images) {
+        ImageResult *r = classifyImage(image);
+        results.push_back(r);
+    }
+
+    return results;
 }
 
 std::vector<PlatformInfo*> Executor::queryPlatform() {
@@ -25,12 +35,36 @@ Executor::Executor() {
 
 }
 
-ImageResult Executor::classifyImage(ImageWrapper *image) {
-    throw NotImplementedException();
+ImageResult *Executor::classifyImage(ImageWrapper *image) {
+    runDataForward(getImageData(image));
+    auto outputData = net->getLastLayer()->getOutputWrapper();
+    return interpreter->getResult(outputData, image);
+
 }
 
-void Executor::setupIfChanged(NeuralNet *net, OperationMode mode, std::vector<PlatformInfo *> selectedPlatforms) {
-    throw NotImplementedException();
+void Executor::setupIfChanged(NetInfo *netInfo, OperationMode mode, std::vector<PlatformInfo *> &selectedPlatforms) {
+    if(netInfo->getIdentifier() != this->net->getInfo().getIdentifier()) { //TODO: Overide == operator in NetInfo
+        net = builder->buildNeuralNet(*netInfo);
+    }
+    if (currentMode != mode || selectedPlatforms != currentPlatforms) {
+        placer->placeComputations(net, mode, selectedPlatforms);
+    }
+}
+
+DataWrapper *Executor::getImageData(ImageWrapper *imageWrapper) {
+    std::vector<float> imageData = imageWrapper->getData();
+    return new DataWrapper(imageWrapper->getDimensions(), imageData);
+}
+
+void Executor::runDataForward(DataWrapper *data) {
+    SimpleNetIterator* it = net->createIterator();
+    it->getElement()->setInputWrapper(data); // SET INPUT TO FIRST LAYER EXPLICITLY!
+    while (it->hasNext()) {
+        it->getElement()->forward();
+        it->getElement()->deleteGarbage();
+        it->next();
+    }
+
 }
 
 

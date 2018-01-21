@@ -17,9 +17,9 @@ protected:
     ActivationFunction* function;
 public:
     // TODO: This is not technically correct, because ActivationsLayer should not be instantiated.
-    ActivationLayer(std::vector<int> &inputDimensions);
+    explicit ActivationLayer(std::vector<int> &inputDimensions);
 
-    void forward(DataWrapper &input, DataWrapper &output) override;
+    void forward() override;
 
     std::vector<int> calcOutputDimensions() override;
 

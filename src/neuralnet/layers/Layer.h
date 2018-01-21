@@ -30,6 +30,9 @@ protected:
 
     Layer* previousLayer;
     Layer* nextLayer;
+    DataWrapper* inputWrapper; //! == previousLayer.getOutputWrapper()
+    DataWrapper* outputWrapper; //! == nextLayer.getInputWrapper()
+
     bool computed;
     bool functionSet;
 
@@ -48,31 +51,30 @@ public:
 
 
     /**
-     * Computes the forward propagation given the input and writes results to the output!
+     * //TODO: Use pointers for execute() signature? Because wrappers are held as pointers!
+     * Triggers the computation of the forward propagation. Takes input from inputWrapper and writes to
+     * outputWrapper
      *
      * The Executor knows the size the output Wrapper needs by querying getOutputDimensions()
      *
-     * @param input Wrapper holding the inputs to this layer
-     * @param output Wrapper defining where to write the output.
      */
-    virtual void forward(DataWrapper &input, DataWrapper &output) = 0;
+    virtual void forward() = 0;
 
     /**
      * Returns whether this Layer has been computed
      *
      * @return
      */
-    virtual bool isComputed() = 0;
+    virtual bool isComputed();
 
     /**
      * Sets the status of this Layer
      *
      * Is called from inside forward, when computation has worked succesfully.
-     * TODO: Can this be private
      * @param status to which to set the layer
      * @return
      */
-    virtual void setComputed(bool status) = 0;
+    virtual void setComputed(bool status);
 
     /**
      * Returns whether this Layer is ready to be computed.
@@ -81,18 +83,18 @@ public:
      *
      * @return
      */
-    virtual bool readyToCompute() = 0;
+    virtual bool readyToCompute();
 
     /**
      *
      * @return
      */
-    virtual bool isLayerFunctionSet() = 0;
+    virtual bool isLayerFunctionSet();
 
     /**
      * Resets the status of this layer, so that it can be reconfigured.
      */
-    virtual void reset() = 0;
+    virtual void reset();
 
     /**
      * Initializes the default values of this layer
@@ -101,21 +103,21 @@ public:
      *             computed is false
      *
      */
-    virtual void init() = 0;
+    virtual void init();
 
     /**
      * Set previous layer by giving a pointer
      *
      * @param previousLayer which to set as preceeding layer.
      */
-    virtual void setPreviousLayer(Layer *previousLayer) = 0;
+    virtual void setPreviousLayer(Layer *previousLayer);
 
      /**
      * Set next layer by providing a pointer
      *
      * @param nextLayer which to append to this one.
      */
-    virtual void setNextLayer(Layer *nextLayer) = 0;
+    virtual void setNextLayer(Layer *nextLayer);
 
     /**
      * Calculates the output dimensions of the layer given the inputDimensions of this instance and it's parameters.
@@ -131,7 +133,7 @@ public:
      *
      * @return dimensions of the output Wrapper.
      */
-    virtual std::vector<int> getOutputDimensions() = 0;
+    virtual std::vector<int> getOutputDimensions();
 
     virtual /**
      * Returns a pointer to the previous layer
@@ -156,6 +158,16 @@ public:
      * @return dimensions of the inputWrapper to this
      */
     const std::vector<int> &getInputDimensions() const;
+
+    DataWrapper *getInputWrapper() const;
+
+    void setInputWrapper(DataWrapper *inputWrapper);
+
+    DataWrapper *getOutputWrapper() const;
+
+    void setOutputWrapper(DataWrapper *outputWrapper);
+
+    void deleteGarbage();
 
 };
 

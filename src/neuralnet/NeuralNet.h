@@ -6,6 +6,7 @@
 
 #include <layers/Layer.h>
 #include <NetInfo.h>
+#include <layers/naive/InputLayer.h>
 
 /**
  * forward declaration to avoid cyclic includes.
@@ -19,8 +20,24 @@ private:
 
 
 public:
+
+    /**
+     * Ensure that NeuralNet has an inputlayer, so layers can be added.
+     *
+     * @param input
+     */
+    NeuralNet(InputLayer *input, NetInfo info);
+
     friend class SimpleNetIterator;
+
+    /**
+     * Currently naive implementation to link the added layer to last layer in the net
+     * TODO: To support multiple preceeding layers, this has to be changed and layer dependencies have
+     * to be defined in the model and set by an advances NetBuilder.
+     * @param layer
+     */
     void addLayer(Layer* layer);
+
 
     NetInfo getInfo();
 
@@ -31,7 +48,7 @@ public:
     /**
      * TODO: Replace with NetIterator and get proper inheritance to work!
      *
-     * @return
+     * @return an iterator
      */
     SimpleNetIterator* createIterator() const;
 
@@ -43,6 +60,12 @@ public:
      * @return true if the dimensions match, false otherwise.
      */
     bool verifyConsistency();
+
+    /**
+     *
+     * @return last Layer of the network, which is the output.
+     */
+    const Layer *getLastLayer() const;
 };
 
 

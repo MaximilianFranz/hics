@@ -2,6 +2,7 @@ set(SOURCE_FILES
         PlatformManager.cpp PlatformManager.h
         PlatformInfo.cpp PlatformInfo.h
         platforms/Platform.h
+        platforms/PlatformType.h
         platforms/CpuPlatform.cpp platforms/CpuPlatform.h
         layerfunctions/CLFunction.cpp layerfunctions/CLFunction.h
         layerfunctions/activation/ActivationFunction.h
@@ -15,5 +16,5 @@ set(SOURCE_FILES
         layerfunctions/normalization/ResponseNormalizationFunction.h
         layerfunctions/normalization/CpuResponseNormalizationFunction.cpp layerfunctions/normalization/CpuResponseNormalizationFunction.h
         layerfunctions/FullyConnectedFunction.h
-        layerfunctions/CpuFullyConnectedFunction.h layerfunctions/CpuFullyConnectedFunction.cpp)
+        layerfunctions/CpuFullyConnectedFunction.h layerfunctions/CpuFullyConnectedFunction.cpp platforms/PlatformType.h)
 add_library(platform STATIC ${SOURCE_FILES})

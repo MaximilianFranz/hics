@@ -9,6 +9,9 @@
 
 void NeuralNet::addLayer(Layer *layer) {
     layers.push_back(layer);
+    //Linking last layer currently in the net and newly added layer
+    layers.at(layers.size() - 2)->setNextLayer(layer);
+    layer->setPreviousLayer(layers.at(layers.size() - 2));
 }
 
 SimpleNetIterator *NeuralNet::createIterator() const {
@@ -46,4 +49,12 @@ bool NeuralNet::verifyConsistency() {
         it.next();
     }
     return true;
+}
+
+NeuralNet::NeuralNet(InputLayer *input, NetInfo info) : info(info) {
+    layers[0] = input;
+}
+
+const Layer *NeuralNet::getLastLayer() const {
+    return layers[layers.size() - 1];
 }

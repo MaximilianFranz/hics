@@ -8,19 +8,21 @@
 
 class CpuPlatform : public Platform {
 public:
-    ConvolutionFunction &createConvolutionFunction() override;
+    ActivationFunction *createActivationFunction(LayerType type) override;
 
-    LossFunction &createLossFunction() override;
+    ConvolutionFunction *createConvolutionFunction() override;
 
-    PoolingFunction &createPoolingFunction() override;
+    LossFunction *createLossFunction(LayerType type) override;
 
-    ResponseNormalizationFunction &createResponseNormalizationFunction() override;
+    PoolingFunction *createPoolingFunction(LayerType type) override;
 
-    FullyConnectedFunction &createFullyConnectedFunction() override;
+    ResponseNormalizationFunction *createResponseNormalizationFunction(LayerType type) override;
+
+    FullyConnectedFunction *createFullyConnectedFunction() override;
 
     PlatformInfo &getPlatformInfo() override;
 
     PlatformType getPlatformType() override;
 
-    ActivationFunction &createActivationFunction() override;
+    CpuPlatform();
 };

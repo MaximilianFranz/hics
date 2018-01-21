@@ -59,7 +59,7 @@ public:
      *
      * @return total number of elements
      */
-    const virtual unsigned long getNumElements();
+    virtual unsigned long getNumElements() const;
 
     /**
      * Returns the data as a pointer to the raw array.
@@ -71,13 +71,16 @@ public:
      */
     virtual float* getDataArray();
 
+    const virtual float* getDataArray() const;
+
+
     /**
      * Get the vector object this Wrapper holds.
      * Only for reading since const.
      *
      * @return the vector object of the data.
      */
-    const virtual std::vector<float> getData();
+    virtual std::vector<float> getData() const;
     /**
      * Returns the element at the specified location.
      *

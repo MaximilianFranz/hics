@@ -10,7 +10,7 @@
 /**
  * Super class for all pooling layers.
  */
-class PoolingLayer : public Layer{
+class PoolingLayer : public Layer {
 protected:
     PoolingFunction* function;
 
@@ -18,12 +18,20 @@ protected:
     int zeroPadding;
     int stride;
 public:
+    void forward() override;
 
-    void forward(DataWrapper &input, DataWrapper &output) override;
 
     void setFunction(PoolingFunction* function);
 
     std::vector<int> calcOutputDimensions() override;
+
+    // GETTER
+
+    int getFilterSize() const;
+
+    int getZeroPadding() const;
+
+    int getStride() const;
 };
 
 
