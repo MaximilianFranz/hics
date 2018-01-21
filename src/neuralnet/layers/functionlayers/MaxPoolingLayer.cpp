@@ -6,6 +6,7 @@
 #include "NotImplementedException.h"
 
 
+
 MaxPoolingLayer::MaxPoolingLayer(std::vector<int> inputDimensions, int stride, int filterSize, int zeroPadding) {
 
     this->inputDimensions = inputDimensions;
@@ -15,5 +16,4 @@ MaxPoolingLayer::MaxPoolingLayer(std::vector<int> inputDimensions, int stride, i
     this->outputDimensions = calcOutputDimensions(); //Implemented in PoolingLayer.cpp
     type = POOLING_MAX;
     init(); // TODO never call virtual functions in constructor
-
 }

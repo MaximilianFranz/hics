@@ -6,8 +6,6 @@
 
 #include "../../NotImplementedException.h"
 
-#ifndef JSONLOADER_MODELLOADER_H
-#define JSONLOADER_MODELLOADER_H
 
 // INCLUDES
 #include <string>
@@ -43,31 +41,28 @@ struct LayerConstructionParams {
 };
 
 class ModelLoader {
-private:
+protected:
     string pathToJSON;
     json model;
     json layers;
     StringLoader s;
 
-    void init();
-
-    json getLayerJSON(int index);
 
 public:
     /**
      * Constructor
      * @param path
      */
-    ModelLoader(string path);
+     ModelLoader(string path);
 
     //Methods for NetInfo construction
     virtual string getNetWorkName() = 0;
 
-    string getNetWorkID();
+    virtual string getNetWorkID() = 0;
 
-    int getRequiredDimension();
+    virtual int getRequiredDimension() = 0;
 
-    string getLayerTypeByIndex(int index);
+    virtual string getLayerTypeByIndex(int index) = 0;
 
     /**
      * Returns Construction information of a layer
@@ -76,8 +71,5 @@ public:
      * @return LayerConstructionParams struct with needed information
      */
 
-    LayerConstructionParams getLayerConstructionParamsByIndex(int index);
+    virtual LayerConstructionParams getLayerConstructionParamsByIndex(int index) = 0;
 };
-
-#endif //JSONLOADER_MODELLOADER_H
-

@@ -42,6 +42,12 @@ void LocalResponseNormLayer::setFunction(ResponseNormalizationFunction *function
     functionSet = true;
 }
 
+
 void LocalResponseNormLayer::forward() {
     this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper, radius, alpha, beta, bias);
 }
+
+std::vector<int> LocalResponseNormLayer::calcOutputDimensions() {
+    return inputDimensions;
+}
+

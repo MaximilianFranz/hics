@@ -18,6 +18,7 @@ std::vector<int> ConvolutionLayer::calcOutputDimensions() {
     outDim[X_DIM] = outputWidth; // X, Y are the same!
     outDim[Y_DIM] = outputWidth;
     outDim[Z_DIM] = numFilters;
+    return outDim;
 
 }
 

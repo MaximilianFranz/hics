@@ -1,0 +1,152 @@
+{
+  "name": "AlexNet - 8 Layer Convolutional Neural Net",
+  "identifier": "alexnet",
+  "numSemanticLayers": 8,
+  "requiredDimension" : 227,
+  "branched" : false,
+  "layers": [
+    {
+      "layerIndex": 0,
+      "layerType": "input",
+      "inputSize": 227,
+      "inputChannels": 3
+    },
+    {
+      "layerIndex": 1,
+      "layerType": "conv",
+      "filterSize": 11,
+      "kernels": 96,
+      "stride": 4,
+      "padding": 0
+    },
+    {
+      "layerIndex": 2,
+      "layerType": "activation",
+      "activationFct": "relu"
+    },
+    {
+      "layerIndex": 3,
+      "layerType": "LRN",
+      "params": {
+        "radius": 2,
+        "alpha": 2e-05,
+        "beta": 0.75,
+        "bias": 1.0
+      }
+    },
+    {
+      "layerIndex": 4,
+      "layerType": "maxpooling",
+      "filterSize": 3,
+      "stride": 2,
+      "padding": 0
+    },
+    {
+      "layerIndex": 5,
+      "layerType": "conv",
+      "filterSize": 5,
+      "kernels": 256,
+      "stride": 1,
+      "padding": 2
+    },
+    {
+      "layerIndex": 6,
+      "layerType": "activation",
+      "activationFct": "relu"
+    },
+    {
+      "layerIndex": 7,
+      "layerType": "LRN",
+      "params": {
+        "radius": 2,
+        "alpha": 2e-05,
+        "beta": 0.75,
+        "bias": 1.0
+      }
+    },
+    {
+      "layerIndex": 8,
+      "layerType": "maxpooling",
+      "filterSize": 3,
+      "stride": 2,
+      "padding": 0
+    },
+    {
+      "layerIndex": 9,
+      "layerType": "conv",
+      "filterSize": 3,
+      "kernels": 384,
+      "stride": 1,
+      "padding": 1
+    },
+    {
+      "layerIndex": 10,
+      "layerType": "activation",
+      "activationFct": "relu"
+    },
+    {
+      "layerIndex": 11,
+      "layerType": "conv",
+      "filterSize": 3,
+      "kernels": 384,
+      "stride": 1,
+      "padding": 1
+    },
+    {
+      "layerIndex": 12,
+      "layerType": "activation",
+      "activationFct": "relu"
+    },
+    {
+      "layerIndex": 13,
+      "layerType": "conv",
+      "filterSize": 3,
+      "kernels": 256,
+      "stride": 1,
+      "padding": 1
+    },
+    {
+      "layerIndex": 14,
+      "layerType": "activation",
+      "activationFct": "relu"
+    },
+    {
+      "layerIndex": 15,
+      "layerType": "pooling",
+      "method": "maxpooling",
+      "filterSize": 3,
+      "stride": 2,
+      "padding": 0
+    },
+    {
+      "layerIndex": 16,
+      "layerType": "fullyConnected",
+      "outputSize": 4096
+    },
+    {
+      "layerIndex": 17,
+      "layerType": "activation",
+      "activationFct": "relu"
+    },
+    {
+      "layerIndex": 18,
+      "layerType": "fullyConnected",
+      "outputSize": 4096
+    },
+    {
+      "layerIndex": 19,
+      "layerType": "activation",
+      "activationFct": "relu"
+    },
+    {
+      "layerIndex": 20,
+      "layerType": "fullyConnected",
+      "outputSize": 1000
+    },
+    {
+      "layerIndex": 21,
+      "layerType": "losslayer",
+      "activationFct": "softmax"
+    }
+  ]
+}

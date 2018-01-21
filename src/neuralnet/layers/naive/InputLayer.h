@@ -23,6 +23,7 @@ public:
      */
     InputLayer(std::vector<int> inputDimensions);
 
+
     std::vector<int> calcOutputDimensions() override;
 
     void forward() override;

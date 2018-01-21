@@ -14,5 +14,6 @@ std::vector<NetInfo *> NetBuilder::queryAvailableNets() {
 }
 
 std::map<int, std::string> NetBuilder::getLabelMap(NetInfo net) {
+
     throw NotImplementedException();
 }

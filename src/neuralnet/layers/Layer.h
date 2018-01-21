@@ -65,7 +65,7 @@ public:
      *
      * @return
      */
-    virtual bool isComputed() = 0;
+    virtual bool isComputed();
 
     /**
      * Sets the status of this Layer
@@ -74,7 +74,7 @@ public:
      * @param status to which to set the layer
      * @return
      */
-    virtual void setComputed(bool status) = 0;
+    virtual void setComputed(bool status);
 
     /**
      * Returns whether this Layer is ready to be computed.
@@ -83,18 +83,18 @@ public:
      *
      * @return
      */
-    virtual bool readyToCompute() = 0;
+    virtual bool readyToCompute();
 
     /**
      *
      * @return
      */
-    virtual bool isLayerFunctionSet() = 0;
+    virtual bool isLayerFunctionSet();
 
     /**
      * Resets the status of this layer, so that it can be reconfigured.
      */
-    virtual void reset() = 0;
+    virtual void reset();
 
     /**
      * Initializes the default values of this layer
@@ -103,21 +103,21 @@ public:
      *             computed is false
      *
      */
-    virtual void init() = 0;
+    virtual void init();
 
     /**
      * Set previous layer by giving a pointer
      *
      * @param previousLayer which to set as preceeding layer.
      */
-    virtual void setPreviousLayer(Layer *previousLayer) = 0;
+    virtual void setPreviousLayer(Layer *previousLayer);
 
      /**
      * Set next layer by providing a pointer
      *
      * @param nextLayer which to append to this one.
      */
-    virtual void setNextLayer(Layer *nextLayer) = 0;
+    virtual void setNextLayer(Layer *nextLayer);
 
     /**
      * Calculates the output dimensions of the layer given the inputDimensions of this instance and it's parameters.
@@ -133,7 +133,7 @@ public:
      *
      * @return dimensions of the output Wrapper.
      */
-    virtual std::vector<int> getOutputDimensions() = 0;
+    virtual std::vector<int> getOutputDimensions();
 
     virtual /**
      * Returns a pointer to the previous layer
