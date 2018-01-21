@@ -290,7 +290,7 @@ bias = net_data["conv1"][1]
 # bias_out = "Bias is one-dimensionsal with 96 entries: \n"
 bias_out = ""
 for i in range(bias.shape[0]):
-	bias_out += str(weights[x][y][z][kernel]) + " "
+	bias_out += str(bias[i]) + " "
 
 bias_file = open("../conv1_bias.txt", "r+")
 bias_file.write(bias_out)
