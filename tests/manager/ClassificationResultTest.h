@@ -5,3 +5,10 @@
 #pragma once
 
 #include "catch.hpp"
+
+#include <NetInfo.h>
+#include <PlatformInfo.h>
+#include <PerformanceData.h>
+#include <wrapper/ImageWrapper.h>
+#include <ImageResult.h>
+#include <ClassificationResult.h>
