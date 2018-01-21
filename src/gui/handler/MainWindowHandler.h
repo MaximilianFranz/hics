@@ -10,9 +10,6 @@
 
 #include "ui/StartWidget.h"
 #include "MainWindowSubject.h"
-#include "StartWidgetHandler.h"
-#include "ResultWidgetHandler.h"
-#include "DetailDialogHandler.h"
 #include "ui/MainWindow.h"
 
 //TODO detailed comments when methods are implemented
