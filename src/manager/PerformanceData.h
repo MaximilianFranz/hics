@@ -7,6 +7,7 @@
 
 #include <PlatformInfo.h>
 #include <map>
+#include <vector>
 
 /**
  * Wraps up data about the performance of a classification. This includes the power needed, the computation time and
@@ -14,9 +15,10 @@
  */
 class PerformanceData {
 private:
-    int PowerConsumption;                           /*!< power consumption of the computation in ws */
-    int ComputationTime;                            /*!< computation time of the classification in ms*/
-    std::map<PlatformInfo, float> platformUsage;    /*!< maps each platform to its percentage of the computation*/
+    int PowerConsumption;                                           /*!< power consumption of the computation in ws */
+    int ComputationTime;                                            /*!< computation time of the classification in ms*/
+    std::vector<std::pair<PlatformInfo, float>> platformUsage;      /*!< maps each platform to its percentage of the
+ *                                                                       computation*/
 
 public:
     /**
@@ -25,7 +27,8 @@ public:
      * @param ComputationTime
      * @param platformUsage
      */
-    PerformanceData(int PowerConsumption, int ComputationTime, const std::map<PlatformInfo, float> &platformUsage);
+    PerformanceData(int PowerConsumption, int ComputationTime,
+                    const std::vector<std::pair<PlatformInfo, float>> &platformUsage);
 
     /**
      *
@@ -43,5 +46,5 @@ public:
      *
      * @return
      */
-    const std::map<PlatformInfo, float> &getPlatformUsage() const;
+    const std::vector<std::pair<PlatformInfo, float>> &getPlatformUsage() const;
 };
