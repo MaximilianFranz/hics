@@ -18,11 +18,7 @@ set(SOURCE_FILES
         handler/ui/DetailDialog.ui
     MainWindowSubject.h
         handler/MainWindowHandler.cpp
-        handler/MainWindowHandler.h
-        handler/ResultWidgetHandler.cpp
-        handler/ResultWidgetHandler.h
-        handler/DetailDialogHandler.cpp
-        handler/DetailDialogHandler.h)
+        handler/MainWindowHandler.h)
 
 add_library(gui STATIC ${SOURCE_FILES})
 target_link_libraries(gui Qt5::Core Qt5::Gui Qt5::Widgets)
