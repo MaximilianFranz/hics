@@ -17,6 +17,7 @@ SCENARIO("Testing construction of Layers" , "[layermaker]") {
     std::vector<int> outputafter1stconv{96, 55, 55};
     std::vector<int> outputafter1stpool{96, 27, 27};
     std::vector<int> inputforFC{256, 6, 6};
+    std::vector<int> inputforSoftmax{1000, 1, 1};
 
     SECTION("InputLayer") {
         LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(0);
@@ -75,5 +76,14 @@ SCENARIO("Testing construction of Layers" , "[layermaker]") {
         REQUIRE(lcp.outputSize == 4096);
         //FullyConnectedLayer* fc = l.createFCLayer(lcp, inputforFC, NULL); can not be tested, cause calculateOutput() throws the
         //REQUIRE(fc->getInputDimensions() == inputforFC);                  notImplementedException
+    }
+
+    SECTION("LossLayer") {
+        LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(21);
+        REQUIRE(lcp.type == "losslayer");
+        REQUIRE(lcp.actFctType == "softmax");
+        SoftMaxLossLayer* softmax = l.createSoftmaxLossLayer(lcp, inputforSoftmax);
+        REQUIRE(softmax->getInputDimensions() == inputforSoftmax);
+        REQUIRE(softmax->getOutputDimensions() == inputforSoftmax);
     }
 }
