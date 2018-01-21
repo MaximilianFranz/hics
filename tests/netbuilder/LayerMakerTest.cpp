@@ -17,7 +17,7 @@ SCENARIO("Testing construction of Layers" , "[layermaker]") {
     std::vector<int> outputafter1stconv{96, 55, 55};
     std::vector<int> outputafter1stpool{96, 27, 27};
     std::vector<int> inputforFC{256, 6, 6};
-    std::vector<int> inputforSoftmax{1000, 1, 1};
+    std::vector<int> inputforSoftmax{1000};
 
     SECTION("InputLayer") {
         LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(0);
