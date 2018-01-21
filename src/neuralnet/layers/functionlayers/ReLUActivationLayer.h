@@ -9,7 +9,7 @@
 /**
  * Layer representing the RELU activation function in a neural net.
  */
-class ReLUActivationLayer : ActivationLayer {
+class ReLUActivationLayer : public ActivationLayer {
 public:
     ReLUActivationLayer(std::vector<int> &inputDimension);
 
