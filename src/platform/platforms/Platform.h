@@ -16,13 +16,15 @@
 #include <layerfunctions/convolution/ConvolutionFunction.h>
 #include <layerfunctions/loss/LossFunction.h>
 #include <layerfunctions/FullyConnectedFunction.h>
+#include "PlatformType.h"
 
 class Platform {
 protected:
+    Platform() {};
+
     PlatformInfo platformInfo;
 
 public:
-
     virtual ActivationFunction *createActivationFunction(LayerType type) = 0;
 
     virtual ConvolutionFunction *createConvolutionFunction() = 0;

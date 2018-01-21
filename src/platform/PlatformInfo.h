@@ -4,18 +4,29 @@
 
 #pragma once
 
-#include "string"
+#include <string>
 #include <platforms/PlatformType.h>
 
+/**
+ * @class PlatformInfo
+ *
+ * @brief PlatformInfo is a data structure for the Platform class.
+ *
+ * PlatformInfo provides information about the underlying platform. Its attributes are pulled from the Platform class,
+ * since this information needs to be transferred across hosts via RPC. This means the Communicator must be able to
+ * serialize and deserialize the data.
+ */
 class PlatformInfo {
 private:
     std::string description;    /*!< discription of the platform to show in the GUI */
     PlatformType type;          /*!< type of platform */
     std::string platformId;     /*!< unique identifier */
-    int powerConsumption;       /*!< power consumption in mW */
+    float powerConsumption;       /*!< power consumption in mW */
     int flops;                  /*!< flops of platform */
 
 public:
+    PlatformInfo();
+    
     /**
      * Creates a new PlatformInfo Object containing all relevant information about a platform.
      * @param description       discription of the platform to show in the GUI
@@ -24,11 +35,8 @@ public:
      * @param powerConsumption  power consumption in mW
      * @param flops             flops of platform
      */
-    PlatformInfo(const std::string &description, PlatformType type, const std::string &platformId, int powerConsumption,
+    PlatformInfo(const std::string &description, PlatformType type, const std::string &platformId, float powerConsumption,
                  int flops);
-
-    //Empty default constructor
-    PlatformInfo();
 
     /**
      * Returns the description.
@@ -52,7 +60,7 @@ public:
      * Returns power consumption in mW.
      * @return power consumption
      */
-    int getPowerConsumption() const;
+    float getPowerConsumption() const;
 
     /**
      * Returns the flops.
