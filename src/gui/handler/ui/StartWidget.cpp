@@ -14,6 +14,7 @@ StartWidget::StartWidget(std::list<NetInfo> &neuralNets, std::list<PlatformInfo>
 
     connect(ui->selectInputImagesQPushButton, SIGNAL(clicked()), this, SLOT(processInputImageButton()));
     connect(ui->confirmDeletionQPushButton, SIGNAL(clicked()), this, SLOT(processConfirmDeletionButton()));
+    connect(ui->abortDeletionQPushButton, SIGNAL(clicked()), this, SLOT(processAbortDeletionQPushButton()));
 }
 
 StartWidget::~StartWidget()
@@ -95,6 +96,18 @@ void StartWidget::processConfirmDeletionButton(){
         }
     }
 }
+
+void StartWidget::processAbortDeletionQPushButton(){
+    QMapIterator<QImage*, QHBoxLayout*> it(images);
+    while(it.hasNext()){
+        it.next();
+        QCheckBox* checkBox;
+        if(checkBox = (QCheckBox*)(it.value()->itemAt(0)->widget())){
+            checkBox->setChecked(false);
+        }
+    }
+}
+
 
 void StartWidget::addNeuralNets(std::list<NetInfo> &neuralNets){
     std::list<NetInfo>::iterator it;

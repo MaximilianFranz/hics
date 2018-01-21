@@ -48,7 +48,7 @@ public slots:
 
     void processConfirmDeletionButton();
 
-
+    void processAbortDeletionQPushButton();
 
 private:
     Ui::StartWidget *ui;
