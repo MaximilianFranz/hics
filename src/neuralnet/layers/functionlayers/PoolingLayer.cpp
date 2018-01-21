@@ -6,13 +6,6 @@
 #include "NotImplementedException.h"
 
 
-PoolingLayer::PoolingLayer(std::vector<int> inputDimensions, int stride, int filterSize, int zeroPadding) {
-    this->inputDimensions = inputDimensions;
-    this->stride = stride;
-    this->filterSize = filterSize;
-    this->zeroPadding = zeroPadding;
-}
-
 std::vector<int> PoolingLayer::calcOutputDimensions() {
     std::vector<int> outDim(3);
     outDim[D3_Z_DIM] = inputDimensions[0]; //number of channels remain the same!
