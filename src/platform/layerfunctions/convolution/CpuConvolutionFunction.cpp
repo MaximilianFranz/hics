@@ -53,9 +53,6 @@ void CpuConvolutionFunction::execute(const DataWrapper &input,
                             float data = i[iIndex];
 
                             sum += weight*data;
-
-
-
                         }
 
                     }

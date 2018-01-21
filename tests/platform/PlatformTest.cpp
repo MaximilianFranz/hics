@@ -12,10 +12,10 @@ TEST_CASE("Activation ReLU test") {
     PlatformManager& pm = PlatformManager::getInstance();
     REQUIRE(pm.getPlatforms().size() >= 1);
 
-    Platform* p = pm.getPlatforms()[0];
+    Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
 
-    ActivationFunction* f = p->createActivationFunction(LayerType::ACTIVATION_RELU);
+    ActivationFunction *f = p->createActivationFunction(LayerType::ACTIVATION_RELU);
     REQUIRE(f != nullptr);
 
     std::vector<float> data = {0, 2.2, -3.3f, 4.4, -5.5f};
@@ -79,13 +79,13 @@ TEST_CASE("Convolution test") {
 
     WeightWrapper weights(filterDim, filterData, biasData, biasDim);
 
-    PlatformManager& pm = PlatformManager::getInstance();
+    PlatformManager &pm = PlatformManager::getInstance();
     REQUIRE(pm.getPlatforms().size() >= 1);
 
-    Platform* p = pm.getPlatforms()[0];
+    Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
 
-    ConvolutionFunction* f = p->createConvolutionFunction();
+    ConvolutionFunction *f = p->createConvolutionFunction();
     REQUIRE(f != nullptr);
 
     f->execute(input, output, weights, stride, filterSize, numFilters, padding);
