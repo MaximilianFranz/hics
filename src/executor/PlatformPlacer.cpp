@@ -78,7 +78,7 @@ void PlatformPlacer::default_setLayerFunctionForLayer(Layer *pLayer) {
 Platform* PlatformPlacer::getDefaultPlatform() {
     for (auto pl : currentPlatforms) {
         if(pl->getPlatformType() == PlatformType::CPU) {
-            return pl;
+            return pl; //We assume for now that there always is a CPU platform!
         }
     }
 }

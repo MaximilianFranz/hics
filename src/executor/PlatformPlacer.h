@@ -15,17 +15,29 @@
 
 class PlatformPlacer {
 private:
-    OperationMode currentMode;
-    std::vector<PlatformInfo*> currentPlatformsInfos;
-    std::vector<Platform*> currentPlatforms;
+    OperationMode currentMode;          //! The OperationMode applied to the last configuration
+    std::vector<PlatformInfo*> currentPlatformsInfos; //! The selected platforms infos in the last configurations
+    std::vector<Platform*> currentPlatforms;  //! The corresponding platforms used in the last configuration
 
-    PlatformManager* platformManager;
-    NeuralNet *net;
+    PlatformManager* platformManager;   //! The platformManager is the access point to get available platforms
+    NeuralNet *net;                     //! the net that has been configured in the last excectuion
 
+    /**
+     * Configures all Layers in the NeuralNet with default functions from CpuPlatform
+     *
+     * @param pLayer
+     */
     void default_setLayerFunctionForLayer(Layer *pLayer);
 
+    /**
+     *
+     * @return the CPU Platform for testing purposes
+     */
     Platform * getDefaultPlatform();
 public:
+    /**
+     * Default constructor ensuring that required dependencies are initialized.
+     */
     PlatformPlacer();
 
     /**
