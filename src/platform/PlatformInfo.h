@@ -27,6 +27,9 @@ public:
     PlatformInfo(const std::string &description, PlatformType type, const std::string &platformId, int powerConsumption,
                  int flops);
 
+    //Empty default constructor
+    PlatformInfo();
+
     /**
      * Returns the description.
      * @return description
