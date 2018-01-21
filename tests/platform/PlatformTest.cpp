@@ -6,6 +6,9 @@
 
 #include <PlatformManager.h>
 #include <iostream>
+#include <sstream>
+#include <fstream>
+#include <iterator>
 #include "PlatformTest.h"
 
 TEST_CASE("Activation ReLU test") {
@@ -106,5 +109,90 @@ TEST_CASE("Convolution test") {
     REQUIRE(output.getData()[12] == 234.5f);
     REQUIRE(output.getData()[24] == 450.5f);
     REQUIRE(output.getSizeOfDimension(2) == 11);
+
+}
+
+template<typename T>
+std::vector<T> split(const std::string& line) {
+    std::istringstream is(line);
+    return std::vector<T>(std::istream_iterator<T>(is), std::istream_iterator<T>());
+}
+
+std::vector<float> getDataFromFile(std::string path) {
+    //const std::string path = "../../../tests/resources/";
+    char resolved_path[1024];
+    //Getting the real path from execution dir
+    realpath(path.c_str(), resolved_path);
+    // Open file
+    std::ifstream file(resolved_path);
+    std::string str;
+
+    file.seekg(0, std::ios::end);
+    str.reserve(static_cast<unsigned long>(file.tellg()));
+    file.seekg(0, std::ios::beg);
+
+    str.assign((std::istreambuf_iterator<char>(file)),
+               std::istreambuf_iterator<char>());
+
+    std::vector<float> data = split<float>(str);
+
+//    if (file.is_open()) {
+//        while (file >> in) {
+//            std::cout << "doing stuff";
+//            //data.push_back(std::stof(in));
+//        }
+//        file.close();
+//
+//    }
+//    else {
+//        std::cout << "Error reading file" ;
+//    }
+    return data;
+}
+
+TEST_CASE("Realdata Convolution Test") {
+    std::string img_data_path = "../../../tests/resources/img_data.txt";
+    std::string conv1_bias_path = "../../../tests/resources/conv1_bias.txt";
+    std::string conv1_weights_path = "../../../tests/resources/conv1_weight.txt";
+    std::string conv1_result_path = "../../../tests/resources/conv1_data_alexnet.txt";
+
+    std::vector<float> weights = getDataFromFile(conv1_weights_path);
+    std::vector<float> bias = getDataFromFile(conv1_bias_path);
+    std::vector<float> result = getDataFromFile(conv1_result_path);
+    std::vector<float> image = getDataFromFile(img_data_path);
+
+    //Testing that data has been read correctly
+    float exp = -0.0406498;
+    REQUIRE(bias[0] == exp);
+
+    //Testing that data has been read correctly
+    float weight0 = -0.0283153;
+    REQUIRE(weights[0] == weight0);
+    std::vector<int> weightDim = {96,3,11,11};
+    std::vector<int> biasDim = {96};
+    WeightWrapper weightsWrapper(weightDim, weights, bias, biasDim);
+
+    REQUIRE(weightsWrapper.getData()[0] == weight0);
+    std::vector<int> inDim = {3, 227, 227};
+    std::vector<int> outDim = {96, 55, 55};
+
+    DataWrapper in(inDim, image);
+    DataWrapper out_real(outDim);
+    DataWrapper out_expected(outDim, result);
+
+    PlatformManager& pm = PlatformManager::getInstance();
+    REQUIRE(pm.getPlatforms().size() >= 1);
+
+    Platform* p = pm.getPlatforms()[0];
+    REQUIRE(p != nullptr);
+
+    ConvolutionFunction* f = p->createConvolutionFunction();
+    REQUIRE(f != nullptr);
+
+    f->execute(in, out_expected, weightsWrapper, 4, 11, 96, 0);
+    // out_real evaluates to 0 from i = 4 onwards
+    for (int i = 0; i < 20; i++) {
+        REQUIRE(out_real.getData()[i] == out_expected.getData()[i]);
+    }
 
 }
