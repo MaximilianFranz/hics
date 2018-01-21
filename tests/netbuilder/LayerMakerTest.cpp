@@ -16,6 +16,7 @@ SCENARIO("Testing construction of Layers" , "[layermaker]") {
     std::vector<int> v{3, 227, 227};
     std::vector<int> outputafter1stconv{96, 55, 55};
     std::vector<int> outputafter1stpool{96, 27, 27};
+    std::vector<int> inputforFC{256, 6, 6};
 
     SECTION("InputLayer") {
         LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(0);
@@ -68,8 +69,11 @@ SCENARIO("Testing construction of Layers" , "[layermaker]") {
         REQUIRE(maxpool->getOutputDimensions() == outputafter1stpool);
     }
 
-    SECTION("ConvolutionLayer2") {
-        LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(5);
-        REQUIRE(lcp.type == "conv");
+    SECTION("FullyConnectedLayer") {
+        LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(16);
+        REQUIRE(lcp.type == "fullyConnected");
+        REQUIRE(lcp.outputSize == 4096);
+        //FullyConnectedLayer* fc = l.createFCLayer(lcp, inputforFC, NULL); can not be tested, cause calculateOutput() throws the
+        //REQUIRE(fc->getInputDimensions() == inputforFC);                  notImplementedException
     }
 }
