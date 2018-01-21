@@ -5,7 +5,7 @@
 #pragma once
 
 #include <string>
-#include <platforms/Platform.h>
+#include <platforms/PlatformType.h>
 
 /**
  * @class PlatformInfo
@@ -18,8 +18,8 @@
  */
 class PlatformInfo {
 private:
-    std::string string;
-    //PlatformType type; // TODO
+    std::string description;
+    PlatformType type;
     std::string platformId;
     float powerConsumption;
     int flops;
@@ -27,9 +27,12 @@ private:
 public:
     PlatformInfo();
 
-    PlatformInfo(const std::string &string, const std::string &platformId, float powerConsumption, int flops);
+    PlatformInfo(const std::string &description, PlatformType type, const std::string &platformId,
+                 float powerConsumption, int flops);
 
     const std::string &getString() const;
+
+    PlatformType getType() const;
 
     const std::string &getPlatformId() const;
 

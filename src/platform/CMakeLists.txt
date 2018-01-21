@@ -2,6 +2,7 @@ set(SOURCE_FILES
         PlatformManager.cpp PlatformManager.h
         PlatformInfo.cpp PlatformInfo.h
         platforms/Platform.h
+        platforms/PlatformType.h
         platforms/CpuPlatform.cpp platforms/CpuPlatform.h
         layerfunctions/CLFunction.cpp layerfunctions/CLFunction.h
         layerfunctions/activation/ActivationFunction.h

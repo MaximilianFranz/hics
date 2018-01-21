@@ -16,16 +16,13 @@
 #include <layerfunctions/convolution/ConvolutionFunction.h>
 #include <layerfunctions/loss/LossFunction.h>
 #include <layerfunctions/FullyConnectedFunction.h>
-
-enum class PlatformType {
-    CPU,
-    FPGA,
-    GPU
-};
+#include "PlatformType.h"
 
 class Platform {
 protected:
-    PlatformInfo platformInfo; // TODO cant resolve type PlatformInfo
+    Platform() {};
+
+    PlatformInfo platformInfo;
 
 public:
     virtual ActivationFunction *createActivationFunction(LayerType type) = 0;
@@ -40,7 +37,7 @@ public:
 
     virtual FullyConnectedFunction *createFullyConnectedFunction() = 0;
 
-    virtual PlatformInfo &getPlatformInfo() = 0; // TODO cant resolve type PlatformInfo
+    virtual PlatformInfo &getPlatformInfo() = 0;
 
     virtual PlatformType getPlatformType() = 0;
 };
