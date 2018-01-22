@@ -48,7 +48,7 @@ public:
      *
      * @return pointer to the raw bias array of this WeightWrapper.
      */
-    float* getBiasArray();
+    const float* getBiasArray() const;
 
     /**
      * \brief returns the vector containing the bias of this WeightWrapper.

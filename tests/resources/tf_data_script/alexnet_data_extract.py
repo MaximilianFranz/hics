@@ -274,8 +274,8 @@ print("shape y ", weights.shape[1])
 print("shape z ", weights.shape[2])
 print("shape kernel ", weights.shape[3])
 
-weights_out = "Weight data for conv1 in [Kernel, z, y, x] \n"
-
+# weights_out = "Weight data for conv1 in [Kernel, z, y, x] \n"
+weights_out = ""
 for kernel in range(weights.shape[3]):
 	for z in range(weights.shape[2]):
 		for y in range(weights.shape[1]):
@@ -287,10 +287,10 @@ weight_file.write(weights_out)
 weight_file.close()
 
 bias = net_data["conv1"][1]
-bias_out = "Bias is one-dimensionsal with 96 entries: \n"
-
+# bias_out = "Bias is one-dimensionsal with 96 entries: \n"
+bias_out = ""
 for i in range(bias.shape[0]):
-	bias_out += str(weights[x][y][z][kernel]) + " "
+	bias_out += str(bias[i]) + " "
 
 bias_file = open("../conv1_bias.txt", "r+")
 bias_file.write(bias_out)

@@ -3,13 +3,15 @@
 //
 
 #include <NotImplementedException.h>
-#include <layerfunctions/activation/CpuReLUFunction.h>
 #include <IllegalArgumentException.h>
 #include <layerfunctions/convolution/CpuConvolutionFunction.h>
 #include <layerfunctions/loss/CpuSoftMaxLossFunction.h>
 #include <layerfunctions/normalization/CpuResponseNormalizationFunction.h>
 #include <layerfunctions/CpuFullyConnectedFunction.h>
 #include <layerfunctions/pooling/CpuMaxPoolingFunction.h>
+
+#include <layerfunctions/activation/CpuReLUFunction.h>
+#include <layerfunctions/convolution/CpuConvolutionFunction.h>
 
 #include "CpuPlatform.h"
 
@@ -23,7 +25,7 @@ ActivationFunction* CpuPlatform::createActivationFunction(LayerType type) {
 }
 
 ConvolutionFunction* CpuPlatform::createConvolutionFunction() {
-    throw NotImplementedException();
+    return new CpuConvolutionFunction();
 }
 
 LossFunction *CpuPlatform::createLossFunction(LayerType type) {
