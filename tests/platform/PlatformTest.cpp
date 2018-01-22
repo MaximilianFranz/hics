@@ -2,13 +2,15 @@
 // Created by michael on 15.01.18.
 //
 
-#include <wrapper/DataWrapper.h>
-
-#include <PlatformManager.h>
 #include <iostream>
 #include <sstream>
 #include <fstream>
 #include <iterator>
+
+#include <wrapper/DataWrapper.h>
+
+#include <PlatformManager.h>
+
 #include "PlatformTest.h"
 
 TEST_CASE("Activation ReLU test") {
@@ -44,7 +46,7 @@ TEST_CASE("Convolution test") {
     int numFilters = 1;
     int numPlanes = 2;
 
-    /* input data */
+    // generate input data
     std::vector<float> data;
     for (int y = 0 ; y < inSize; y++) {
         for (int x = 0; x < inSize; x++) {
@@ -59,10 +61,10 @@ TEST_CASE("Convolution test") {
 
     DataWrapper input({numPlanes, inSize, inSize}, data);
 
-    /* output data */
+    // output data
     DataWrapper output({numFilters, outSize, outSize});
 
-    /* filter data and bias data */
+    // filter data and bias data
     std::vector<float> filterData = {
             1,1,1,
             2,2,2,
@@ -119,10 +121,10 @@ std::vector<T> split(const std::string& line) {
 }
 
 std::vector<float> getDataFromFile(std::string path) {
-    //const std::string path = "../../../tests/resources/";
-    char resolved_path[1024];
-    //Getting the real path from execution dir
-    realpath(path.c_str(), resolved_path);
+    char* resolved_path;
+    // Getting the real path from execution dir.
+    // We pass NULL and let realpath allocate the string which means we have to free() it later.
+    resolved_path = realpath(path.c_str(), NULL);
     // Open file
     std::ifstream file(resolved_path);
     std::string str;
@@ -136,17 +138,7 @@ std::vector<float> getDataFromFile(std::string path) {
 
     std::vector<float> data = split<float>(str);
 
-//    if (file.is_open()) {
-//        while (file >> in) {
-//            std::cout << "doing stuff";
-//            //data.push_back(std::stof(in));
-//        }
-//        file.close();
-//
-//    }
-//    else {
-//        std::cout << "Error reading file" ;
-//    }
+    free(resolved_path);
     return data;
 }
 
@@ -161,18 +153,10 @@ TEST_CASE("Realdata Convolution Test") {
     std::vector<float> result = getDataFromFile(conv1_result_path);
     std::vector<float> image = getDataFromFile(img_data_path);
 
-    //Testing that data has been read correctly
-//    float exp = -0.0406498;
-//    REQUIRE(bias[0] == exp);
-
-    //Testing that data has been read correctly
-//    float weight0 = -0.0283153;
-//    REQUIRE(weights[0] == weight0);
     std::vector<int> weightDim = {96,3,11,11};
     std::vector<int> biasDim = {96};
     WeightWrapper weightsWrapper(weightDim, weights, bias, biasDim);
 
-//    REQUIRE(weightsWrapper.getData()[0] == weight0);
     std::vector<int> inDim = {3, 227, 227};
     std::vector<int> outDim = {96, 55, 55};
 
@@ -180,18 +164,23 @@ TEST_CASE("Realdata Convolution Test") {
     DataWrapper out_real(outDim);
     DataWrapper out_expected(outDim, result);
 
-    PlatformManager& pm = PlatformManager::getInstance();
+    PlatformManager &pm = PlatformManager::getInstance();
     REQUIRE(pm.getPlatforms().size() >= 1);
 
-    Platform* p = pm.getPlatforms()[0];
+    Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
 
-    ConvolutionFunction* f = p->createConvolutionFunction();
+    ConvolutionFunction *f = p->createConvolutionFunction();
     REQUIRE(f != nullptr);
 
     f->execute(in, out_real, weightsWrapper, 4, 11, 96, 0);
     // out_real evaluates to 0 from i = 4 onwards
-    for (int i = 0; i < 6050; i++) { //Testing first two channels / filters
+
+    for (int i = 0; i < 55*55; i++) { // Test the first filter fully
+        REQUIRE(abs(out_real.getData()[i] - out_expected.getData()[i]) < 0.01);
+    }
+
+    for (int i = 0; i < 55*55*96; i += 2000) { // Pick one or two samples for each filter
         REQUIRE(abs(out_real.getData()[i] - out_expected.getData()[i]) < 0.01);
     }
 

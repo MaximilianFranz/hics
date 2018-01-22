@@ -31,17 +31,17 @@ void CpuConvolutionFunction::execute(const DataWrapper &input,
                 float sum = 0;
                 for (int plane = 0; plane < numPlanes; plane++) {
                     for (int fRow = -halfFilterSize; fRow <= halfFilterSize; fRow++) {
-                        int row = inRow + fRow;
+
                         if (inRow + fRow < 0 || inRow + fRow >= inSize) {
                             // Skip regions which are outside of the image, the values are 0 and don't change sum
                             continue;
                         }
+
                         for (int fCol = -halfFilterSize; fCol <= halfFilterSize; fCol++) {
 
                             if (inCol + fCol < 0 || inCol + fCol  >= inSize) {
                                 // Skip regions which are outside of the image, the values are 0 and don't change sum
                                 continue;
-
                             }
 
                             int c = fCol + halfFilterSize;
@@ -65,7 +65,6 @@ void CpuConvolutionFunction::execute(const DataWrapper &input,
                 o++;
 
             }
-
         }
     }
 }
