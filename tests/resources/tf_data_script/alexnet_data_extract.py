@@ -221,7 +221,7 @@ sess.run(init)
 
 # USE CONV1_IN TO GET CONV OUTPUT WITHOUT RELU APPLIED.
 
-conv_out = sess.run(conv1_in, feed_dict = {x:[im1]})
+conv_out = sess.run(maxpool1, feed_dict = {x:[im1]})
 # evalR = sess.run(x, feed_dict = {x:[im1,im2]})
 # output = sess.run(prob, feed_dict = {x:[im1]}) #this is the original output of the net for classification
 ################################################################################
@@ -247,55 +247,55 @@ conv_out = sess.run(conv1_in, feed_dict = {x:[im1]})
 
 # #WRITE OUTPUT OF 1 CONV LAYER BEFORE RELU
 # conv1_data = "img_data in order \{rgb_channel, y, x\}: \n"
-# # for z in range(output.shape[3])
-# print("shape_z", conv_out.shape[3])
-# print("shape_y", conv_out.shape[2])
-# print("shape_x", conv_out.shape[1])
+conv2_data = ""
 
-# z_shape = conv_out.shape[3]
-# y_shape = conv_out.shape[2]
-# x_shape = conv_out.shape[1]
+z_shape = conv_out.shape[3]
+y_shape = conv_out.shape[2]
+x_shape = conv_out.shape[1]
 
-# for z in range(z_shape):
-#     for y in range(y_shape):
-#         for x in range(x_shape):
-#             conv1_data += str(conv_out[0][x][y][z]) + " "
+for z in range(z_shape):
+    for y in range(y_shape):
+        for x in range(x_shape):
+            conv2_data += str(conv_out[0][x][y][z]) + " "
 
 
 # conv1_file = open("../conv1_data_alexnet.txt", "r+")
 # conv1_file.write(conv1_data)
 # conv1_file.close()
 
-
-weights = net_data["conv1"][0]
+"""
+weights = net_data["conv2"][0]
 
 print("shape x ", weights.shape[0])
 print("shape y ", weights.shape[1])
 print("shape z ", weights.shape[2])
 print("shape kernel ", weights.shape[3])
 
-# weights_out = "Weight data for conv1 in [Kernel, z, y, x] \n"
-weights_out = ""
+weights_out = "Weight data for conv1 in [Kernel, z, y, x] \n"
+
 for kernel in range(weights.shape[3]):
 	for z in range(weights.shape[2]):
 		for y in range(weights.shape[1]):
 			for x in range(weights.shape[0]):
 				weights_out += str(weights[x][y][z][kernel]) + " "
 
-weight_file = open("../conv1_weight.txt", "r+")
+weight_file = open("../conv2_weights.txt", "r+")
 weight_file.write(weights_out)
 weight_file.close()
 
-bias = net_data["conv1"][1]
-# bias_out = "Bias is one-dimensionsal with 96 entries: \n"
+bias = net_data["conv2"][1]
 bias_out = ""
+
 for i in range(bias.shape[0]):
 	bias_out += str(bias[i]) + " "
 
-bias_file = open("../conv1_bias.txt", "r+")
+bias_file = open("../conv2_bias.txt", "r+")
 bias_file.write(bias_out)
 bias_file.close()
+"""
+conv2_file = open("../maxpool_data_out.txt", "r+")
+conv2_file.write(conv2_data)
+conv2_file.close() 
 
 
 
-t = time.time()
