@@ -10,7 +10,7 @@ startWidget(neuralNets, platforms, operationModes){
 
     //TODO initialze result and detail widget and add them to the stack
 
-    connect(startWidget.getClassificationQPushButton, SIGNAL(clicked()), this, SLOT(setClassificationRequestState()));
+    connect(startWidget.getClassificationQPushButton(), SIGNAL(clicked()), this, SLOT(setClassificationRequestState()));
 }
 
 void MainWindowHandler::setClassificationRequestState(){

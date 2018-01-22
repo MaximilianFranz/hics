@@ -193,6 +193,10 @@ std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
     }
 }
 
+bool StartWidget::isAggregated(){
+    return ui->aggregateResultsQCheckBox->isChecked();
+}
+
 QPushButton* StartWidget::getClassificationQPushButton(){
     return ui->classificationQPushButton;
 }

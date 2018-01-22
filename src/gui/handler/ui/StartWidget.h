@@ -42,7 +42,9 @@ public:
 
     std::vector<PlatformInfo> getSelectedPlatforms();
 
-    QPushButton* getClassificationQPushButton;
+    bool isAggregated();
+
+    QPushButton* getClassificationQPushButton();
 public slots:
 
     void processInputImageButton();
