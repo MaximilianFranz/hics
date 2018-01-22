@@ -13,7 +13,8 @@ startWidget(neuralNets, platforms, operationModes){
 }
 
 void MainWindowHandler::setClassificationRequestState(){
-    NetInfo* selectedNet = startWidget.getSelectedNeuralNet();
+    NetInfo selectedNet = startWidget.getSelectedNeuralNet();
+    std::vector<PlatformInfo> selectedPlatforms = startWidget.getSelectedPlatforms();
     //TODO PlatformInfo, OperationMode, aggregateResults add them here, add the according functions to startWidget
 }
 

@@ -124,9 +124,10 @@ void StartWidget::addPlatforms(std::list<PlatformInfo> &platforms){
     std::list<PlatformInfo>::iterator it;
 
     for(it = platforms.begin(); it != platforms.end(); ++it){
+        QString name = QString::fromStdString(it->getDescription());
 
-        //TODO add platform name when PlatformInfo is implemented.
-        addPlatform("Platform");
+        platformMap.insert(std::pair<QString, PlatformInfo>(name, *it));
+        addPlatform(name);
     }
 }
 
@@ -153,13 +154,42 @@ void StartWidget::clearLayout(QLayout *layout){
     }
 }
 
-NetInfo* StartWidget::getSelectedNeuralNet(){
+NetInfo StartWidget::getSelectedNeuralNet(){
     QString name = ui->neuralNetsQComboBox->currentText();
     try{
-        return &(neuralNetMap.at(name));
+        return neuralNetMap.at(name);
 
     } catch (std::out_of_range e) {
         e.what();
+    }
+}
+
+std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
+    std::vector<PlatformInfo> selectedPlatforms;
+
+    QVBoxLayout* layout = ui->platformsQVBoxLayout;
+    if(layout){
+        for(int i = 0; i<layout->count(); ++i){
+            QCheckBox* checkBox;
+            if(layout->itemAt(i)->widget()){
+                checkBox = (QCheckBox*)(layout->itemAt(i)->widget());
+                if(checkBox->isChecked()){
+                    try{
+                        PlatformInfo platform = platformMap.at(checkBox->text());
+                        selectedPlatforms.push_back(platform);
+                    } catch (std::out_of_range e) {
+                        e.what();
+                    }
+                }
+            }
+        }
+    }
+
+    if(selectedPlatforms.empty()){
+        //TODO Error message -> you must selecte at least one platform
+        return selectedPlatforms;
+    } else {
+        return selectedPlatforms;
     }
 }
 

@@ -11,6 +11,7 @@
 #include <QFileDialog>
 #include <list>
 #include <map>
+#include <vector>
 #include <NetInfo.h>
 #include <PlatformInfo.h>
 #include <OperationMode.h>
@@ -37,7 +38,9 @@ public:
 
     QHBoxLayout* addInputImage(QImage* image);
 
-    NetInfo* getSelectedNeuralNet();
+    NetInfo getSelectedNeuralNet();
+
+    std::vector<PlatformInfo> getSelectedPlatforms();
 
     QPushButton* getSelectInputImagesQPushButton();
 
@@ -61,6 +64,7 @@ private:
     QMap<QImage*, QHBoxLayout*> images;
 
     std::map<QString, NetInfo> neuralNetMap;
+    std::map<QString, PlatformInfo> platformMap;
 
     void addNeuralNets(std::list<NetInfo> &neuralNets);
 
