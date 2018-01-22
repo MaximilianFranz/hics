@@ -30,7 +30,8 @@ ClassificationRequest* MainWindowHandler::getClassificationRequestState(){
     if(classificationRequestState){
         return classificationRequestState;
     } else {
-        return nullptr; //TODO or throw error?
+        setClassificationRequestState();
+        return classificationRequestState;
     }
 }
 
