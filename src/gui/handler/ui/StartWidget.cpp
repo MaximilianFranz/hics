@@ -7,11 +7,14 @@ StartWidget::StartWidget(std::list<NetInfo> &neuralNets, std::list<PlatformInfo>
     ui(new Ui::StartWidget)
 {
     ui->setupUi(this);
-    ui->userImagesQWidgetContainer->setLayout(ui->inputImagesQVBoxLayout);
+
+    ui->userImagesQWidgetContainer->setLayout(ui->inputImagesQVBoxLayout); //Make input images scrollable
+
     addNeuralNets(neuralNets);
     addPlatforms(platforms);
     addOperationModes(operationModes);
 
+    //Activates actions when buttons are clicked
     connect(ui->selectInputImagesQPushButton, SIGNAL(clicked()), this, SLOT(processInputImageButton()));
     connect(ui->confirmDeletionQPushButton, SIGNAL(clicked()), this, SLOT(processConfirmDeletionButton()));
     connect(ui->abortDeletionQPushButton, SIGNAL(clicked()), this, SLOT(processAbortDeletionQPushButton()));
@@ -20,8 +23,6 @@ StartWidget::StartWidget(std::list<NetInfo> &neuralNets, std::list<PlatformInfo>
 StartWidget::~StartWidget()
 {
     delete ui;
-
-    //TODO change this if there are more pointers to delete.
 
     //Delete all allocated objects inside the images layouts
     QMapIterator<QImage*, QHBoxLayout*> it(images);
@@ -45,13 +46,14 @@ QHBoxLayout* StartWidget::addInputImage(QImage* image, const QString &filePath){
     QLabel* label = new QLabel();
 
     layout->addWidget(checkBox, 0);
+
+    //Paint the QImage into a QLabel so that it can be displayed
     QLabel* imageLabel = new QLabel();
     imageLabel->setPixmap(QPixmap::fromImage(*image).scaled(227, 227, Qt::KeepAspectRatio));
-
     layout->addWidget(imageLabel, 1);
 
     label->setText(filePath);
-    layout->addWidget(label);
+    layout->addWidget(label, 1);
 
     ui->inputImagesQVBoxLayout->addLayout(layout);
 
@@ -65,9 +67,11 @@ void StartWidget::processInputImageButton(){
                             "/home",
                             "Images (*.png *.jpg)");
 
+    //Create a QImage to every selected file path
     for(int i = 0; i<fileNames.size(); ++i){
         QImage* image = new QImage();
         if(image->load(fileNames.at(i))){
+            //Display the image together with a check box and its file path
             QHBoxLayout* layout = addInputImage(image, fileNames.at(i));
             images.insert(image, layout);
         } else {
@@ -77,8 +81,9 @@ void StartWidget::processInputImageButton(){
 }
 
 void StartWidget::processConfirmDeletionButton(){
-
     QMapIterator<QImage*, QHBoxLayout*> it(images);
+
+    //Get every QImage's check box inside the layout and delete the image and layout if it is checked
     while (it.hasNext()) {
         it.next();
         QCheckBox* checkBox;
@@ -86,7 +91,7 @@ void StartWidget::processConfirmDeletionButton(){
         if(checkBox = (QCheckBox*)(it.value()->itemAt(0)->widget())){
             if(checkBox->isChecked()){
                 clearLayout(it.value());
-                QHBoxLayout* tempLayout = it.value();
+                QHBoxLayout* tempLayout = it.value(); //TODO maybe unecessary since it is deleted in clearLayout()
                 QImage* tempImage = it.key();
                 images.remove(it.key());
                 delete tempLayout;
@@ -98,6 +103,8 @@ void StartWidget::processConfirmDeletionButton(){
 
 void StartWidget::processAbortDeletionQPushButton(){
     QMapIterator<QImage*, QHBoxLayout*> it(images);
+
+    //Uncheck every image check box
     while(it.hasNext()){
         it.next();
         QCheckBox* checkBox;
@@ -113,7 +120,6 @@ void StartWidget::addNeuralNets(std::list<NetInfo> &neuralNets){
 
     for(it = neuralNets.begin(); it != neuralNets.end(); ++it){
         QString name = QString::fromStdString(it->getName());
-
         neuralNetMap.insert(std::pair<QString, NetInfo>(name, *it));
         ui->neuralNetsQComboBox->addItem(name);
     }
@@ -126,7 +132,7 @@ void StartWidget::addPlatforms(std::list<PlatformInfo> &platforms){
         QString name = QString::fromStdString(it->getDescription());
 
         platformMap.insert(std::pair<QString, PlatformInfo>(name, *it));
-        QCheckBox* checkbox = new QCheckBox(name, this);
+        QCheckBox* checkbox = new QCheckBox(name);
         ui->platformsQVBoxLayout->addWidget(checkbox);
     }
 }
@@ -143,6 +149,8 @@ void StartWidget::addOperationModes(std::list<OperationMode> &operationModes){
 
 void StartWidget::clearLayout(QLayout *layout){
     QLayoutItem* item;
+
+    //Removes every item inside the layout and delete it
     while(item = layout->takeAt(0)){
         if (item->layout()) {
             clearLayout(item->layout());
@@ -166,8 +174,9 @@ NetInfo StartWidget::getSelectedNeuralNet(){
 
 std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
     std::vector<PlatformInfo> selectedPlatforms;
-
     QVBoxLayout* layout = ui->platformsQVBoxLayout;
+
+    //Add only the selected platforms to the output vector
     if(layout){
         for(int i = 0; i<layout->count(); ++i){
             QCheckBox* checkBox;
