@@ -61,6 +61,11 @@ void ClassificationResult::aggregateResults() {
     }
 
     aggregatedResult.erase(aggregatedResult.begin() + 5, aggregatedResult.end());
+
+    std::sort(aggregatedResult.begin(), aggregatedResult.end(), [](const std::pair<std::string, float> &left,
+                                                                   const std::pair<std::string, float> &right) {
+        return left.second > right.second;
+    });
 }
 
 

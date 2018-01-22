@@ -77,11 +77,11 @@ SCENARIO("aggregateResult for trivial test case") {
         REQUIRE(labelIt.operator*().first == "house");
         REQUIRE(std::abs(labelIt.operator*().second - 0.07f) < eps);
         labelIt++;
-        REQUIRE(labelIt.operator*().first == "bird");
-        REQUIRE(std::abs(labelIt.operator*().second - 0.0125f) < eps);
-        labelIt++;
         REQUIRE(labelIt.operator*().first == "cat");
         REQUIRE(std::abs(labelIt.operator*().second - 0.015f) < eps);
+        labelIt++;
+        REQUIRE(labelIt.operator*().first == "bird");
+        REQUIRE(std::abs(labelIt.operator*().second - 0.0125f) < eps);
     }
     
 }
