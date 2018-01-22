@@ -42,12 +42,7 @@ public:
 
     std::vector<PlatformInfo> getSelectedPlatforms();
 
-    QPushButton* getSelectInputImagesQPushButton();
-
-    QPushButton* getConfirmDeletionQPushButton();
-
-    QVBoxLayout* getInputImagesQVBoxLayout();
-
+    QPushButton* getClassificationQPushButton;
 public slots:
 
     void processInputImageButton();

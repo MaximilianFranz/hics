@@ -193,14 +193,6 @@ std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
     }
 }
 
-QPushButton* StartWidget::getSelectInputImagesQPushButton(){
-    return ui->selectInputImagesQPushButton;
-}
-
-QPushButton* StartWidget::getConfirmDeletionQPushButton(){
-    return ui->confirmDeletionQPushButton;
-}
-
-QVBoxLayout* StartWidget::getInputImagesQVBoxLayout(){
-    return ui->inputImagesQVBoxLayout;
+QPushButton* StartWidget::getClassificationQPushButton(){
+    return ui->classificationQPushButton;
 }

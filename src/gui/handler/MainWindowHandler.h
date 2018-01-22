@@ -80,12 +80,6 @@ public:
                       std::list<OperationMode> &operationModes);
 
     /**
-     * @brief setClassificationRequestState will gather the needed data for a ClassificationRequest and overwrite
-     *        classificationRequestState with the latest data.
-     */
-    void setClassificationRequestState();
-
-    /**
      * @brief getClassificationRequestState returns the classificationRequest state attribute.
      * @return classificationRequestState
      */
@@ -98,6 +92,14 @@ public:
     void processClassificationResult(const ClassificationResult &classificationResult);
 
     //TODO here could be the displayErrorMessage(Exception e) method
+
+public slots:
+
+    /**
+     * @brief setClassificationRequestState will gather the needed data for a ClassificationRequest and overwrite
+     *        classificationRequestState with the latest data.
+     */
+    void setClassificationRequestState();
 
     /**
      * @brief processReturnQPushButton will display the startWidget with the same content as before the classification.
