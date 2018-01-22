@@ -16,5 +16,5 @@ set(SOURCE_FILES
         layerfunctions/normalization/ResponseNormalizationFunction.h
         layerfunctions/normalization/CpuResponseNormalizationFunction.cpp layerfunctions/normalization/CpuResponseNormalizationFunction.h
         layerfunctions/FullyConnectedFunction.h
-        layerfunctions/CpuFullyConnectedFunction.h layerfunctions/CpuFullyConnectedFunction.cpp platforms/PlatformType.h)
+        layerfunctions/CpuFullyConnectedFunction.h layerfunctions/CpuFullyConnectedFunction.cpp)
 add_library(platform STATIC ${SOURCE_FILES})
