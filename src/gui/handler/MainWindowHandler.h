@@ -53,7 +53,7 @@ private:
     //ResultWidgetHandler resultWidgetHandler;
     //DetailDialogHandler detailDialogHandler;
 
-    //ClassificationRequest classificationRequestState;
+    ClassificationRequest* classificationRequestState;
 
 
 public:
@@ -83,7 +83,7 @@ public:
      * @brief getClassificationRequestState returns the classificationRequest state attribute.
      * @return classificationRequestState
      */
-    ClassificationRequest getClassificationRequestState();
+    ClassificationRequest* getClassificationRequestState();
 
     /**
      * @brief processClassificationResult will display the provided data in the ClassificationResult in the GUI.

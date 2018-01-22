@@ -24,4 +24,4 @@ add_library(gui STATIC ${SOURCE_FILES})
 target_link_libraries(gui Qt5::Core Qt5::Gui Qt5::Widgets)
 
 add_executable(gui-exec main.cpp)
-target_link_libraries(gui-exec gui netbuilder platform)
+target_link_libraries(gui-exec gui netbuilder platform manager)

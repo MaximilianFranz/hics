@@ -43,15 +43,19 @@ void StartWidget::addOperationMode(const QString &operationMode){
     ui->operationModesQComboBox->addItem(operationMode);
 }
 
-QHBoxLayout* StartWidget::addInputImage(QImage* image){
+QHBoxLayout* StartWidget::addInputImage(QImage* image, const QString &filePath){
     QHBoxLayout* layout = new QHBoxLayout();
     QCheckBox* checkBox = new QCheckBox();
+    QLabel* label = new QLabel();
 
     layout->addWidget(checkBox, 0);
     QLabel* imageLabel = new QLabel();
     imageLabel->setPixmap(QPixmap::fromImage(*image).scaled(227, 227, Qt::KeepAspectRatio));
 
     layout->addWidget(imageLabel, 1);
+
+    label->setText(filePath);
+    layout->addWidget(label);
 
     ui->inputImagesQVBoxLayout->addLayout(layout);
 
@@ -69,7 +73,7 @@ void StartWidget::processInputImageButton(){
         QImage* image = new QImage();
         if(image->load(fileNames.at(i))){
             //TODO delete allocated images in destructor
-            QHBoxLayout* layout = addInputImage(image);
+            QHBoxLayout* layout = addInputImage(image, fileNames.at(i));
             images.insert(image, layout);
         } else {
             delete image;
@@ -196,6 +200,24 @@ std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
 bool StartWidget::isAggregated(){
     return ui->aggregateResultsQCheckBox->isChecked();
 }
+
+std::map<QString, QImage> StartWidget::getSelectedImages(){
+    std::map<QString, QImage> output;
+
+    QMapIterator<QImage*, QHBoxLayout*> it(images);
+    while(it.hasNext()){
+        it.next();
+
+        if(it.value()->itemAt(2)){
+            if(it.value()->itemAt(2)->widget()){
+                //TODO maybe check for cast to QLabel
+                QLabel* label = (QLabel*)(it.value()->itemAt(2)->widget());
+                output.insert(std::pair<QString, QImage>(label->text(), *(it.key())));
+            }
+        }
+    }
+}
+
 
 QPushButton* StartWidget::getClassificationQPushButton(){
     return ui->classificationQPushButton;

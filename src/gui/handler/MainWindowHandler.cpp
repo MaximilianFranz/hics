@@ -7,20 +7,27 @@ startWidget(neuralNets, platforms, operationModes){
 
     mainWindow.addWidgetToStack(startWidget);
     mainWindow.setCurrentWidget(startWidget);
-
     //TODO initialze result and detail widget and add them to the stack
 
     connect(startWidget.getClassificationQPushButton(), SIGNAL(clicked()), this, SLOT(setClassificationRequestState()));
 }
 
 void MainWindowHandler::setClassificationRequestState(){
-    NetInfo selectedNet = startWidget.getSelectedNeuralNet();
-    std::vector<PlatformInfo> selectedPlatforms = startWidget.getSelectedPlatforms();
-    //TODO PlatformInfo, OperationMode, aggregateResults add them here, add the according functions to startWidget
+    NetInfo neuralNet = startWidget.getSelectedNeuralNet();
+    std::vector<PlatformInfo> platforms = startWidget.getSelectedPlatforms();
+    OperationMode m = OperationMode::HighPower; /*!< TODO change this when string mapping is implemented*/
+    bool aggregate = startWidget.isAggregated();
+    std::map<QString, QImage> userImgs = startWidget.getSelectedImages();
+
+    *(this->classificationRequestState) = ClassificationRequest(neuralNet, platforms, m, aggregate, userImgs);
 }
 
-ClassificationRequest MainWindowHandler::getClassificationRequestState(){
-    throw NotImplementedException();
+ClassificationRequest* MainWindowHandler::getClassificationRequestState(){
+    if(classificationRequestState){
+        return classificationRequestState;
+    } else {
+        return nullptr; //TODO or throw error?
+    }
 }
 
 void MainWindowHandler::processClassificationResult(const ClassificationResult &classificationResult){

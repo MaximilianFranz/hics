@@ -36,13 +36,15 @@ public:
 
     void addOperationMode(const QString &operationMode);
 
-    QHBoxLayout* addInputImage(QImage* image);
+    QHBoxLayout* addInputImage(QImage* image, const QString &filePath);
 
     NetInfo getSelectedNeuralNet();
 
     std::vector<PlatformInfo> getSelectedPlatforms();
 
     bool isAggregated();
+
+    std::map<QString, QImage> getSelectedImages();
 
     QPushButton* getClassificationQPushButton();
 public slots:
