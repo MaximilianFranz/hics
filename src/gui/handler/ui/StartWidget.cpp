@@ -221,6 +221,8 @@ std::map<QString, QImage> StartWidget::getSelectedImages(){
             }
         }
     }
+
+    return output;
 }
 
 
