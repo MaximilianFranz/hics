@@ -6,6 +6,7 @@ MainWindowHandler::MainWindowHandler(std::list<NetInfo> &neuralNets, std::list<P
 startWidget(neuralNets, platforms, operationModes){
 
     mainWindow.addWidgetToStack(startWidget);
+    mainWindow.addWidgetToStack(resultWidget);
     mainWindow.setCurrentWidget(startWidget);
     //TODO initialze result and detail widget and add them to the stack
 
@@ -19,7 +20,10 @@ void MainWindowHandler::setClassificationRequestState(){
     bool aggregate = startWidget.isAggregated();
     std::map<QString, QImage> userImgs = startWidget.getSelectedImages();
 
-    *(this->classificationRequestState) = ClassificationRequest(neuralNet, platforms, m, aggregate, userImgs);
+    ClassificationRequest request(neuralNet, platforms, m, aggregate, userImgs);
+    this->classificationRequestState = &request;
+
+    notify();
 }
 
 ClassificationRequest* MainWindowHandler::getClassificationRequestState(){

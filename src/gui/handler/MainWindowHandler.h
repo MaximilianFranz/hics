@@ -9,6 +9,7 @@
 #include <ClassificationResult.h>
 
 #include "ui/StartWidget.h"
+#include "ui/ResultWidget.h"
 #include "MainWindowSubject.h"
 #include "ui/MainWindow.h"
 
@@ -46,11 +47,9 @@ private:
      //TODO properly initialize the commented out in the constructor.
 
     MainWindow mainWindow;
-
     StartWidget startWidget;
+    ResultWidget resultWidget;
 
-    //StartWidgetHandler startWidgetHandler;
-    //ResultWidgetHandler resultWidgetHandler;
     //DetailDialogHandler detailDialogHandler;
 
     ClassificationRequest* classificationRequestState;
