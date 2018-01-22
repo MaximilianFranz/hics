@@ -15,7 +15,7 @@ startWidget(neuralNets, platforms, operationModes){
 void MainWindowHandler::setClassificationRequestState(){
     NetInfo neuralNet = startWidget.getSelectedNeuralNet();
     std::vector<PlatformInfo> platforms = startWidget.getSelectedPlatforms();
-    OperationMode m = OperationMode::HighPower; /*!< TODO change this when string mapping is implemented*/
+    OperationMode m(OperationMode::HighPower); /*!< TODO change this when string mapping is implemented*/
     bool aggregate = startWidget.isAggregated();
     std::map<QString, QImage> userImgs = startWidget.getSelectedImages();
 

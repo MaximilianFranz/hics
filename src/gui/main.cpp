@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     NetInfo net("AlexNet", 224);
-    PlatformInfo platform;
+    PlatformInfo platform("CPU", PlatformType::CPU, "id", 100, 4);
     OperationMode mode(HighPower);
 
     std::list<NetInfo> nets;
