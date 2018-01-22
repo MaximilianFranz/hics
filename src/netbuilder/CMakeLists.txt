@@ -23,7 +23,9 @@ set(SOURCE_FILES
         loader/weightloader/AlexNetWeightLoader.h
         loader/weightloader/hdf_wrapper.h
         loader/StringLoader.cpp
-        loader/StringLoader.h)
+        loader/StringLoader.h
+        loader/LabelLoader.cpp
+        loader/LabelLoader.h)
 
 add_library(netbuilder STATIC ${SOURCE_FILES})
 target_link_libraries(netbuilder ${HDF5_LIBRARIES} neuralnet)
