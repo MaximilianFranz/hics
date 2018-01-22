@@ -28,21 +28,6 @@ StartWidget::~StartWidget()
     }
 }
 
-void StartWidget::addNeuralNet(const QString &neuralNet){
-
-    ui->neuralNetsQComboBox->addItem(neuralNet);
-}
-
-void StartWidget::addPlatform(const QString &platform){
-
-    QCheckBox* checkbox = new QCheckBox(platform, this);
-    ui->platformsQVBoxLayout->addWidget(checkbox);
-}
-
-void StartWidget::addOperationMode(const QString &operationMode){
-    ui->operationModesQComboBox->addItem(operationMode);
-}
-
 QHBoxLayout* StartWidget::addInputImage(QImage* image, const QString &filePath){
     QHBoxLayout* layout = new QHBoxLayout();
     QCheckBox* checkBox = new QCheckBox();
@@ -120,7 +105,7 @@ void StartWidget::addNeuralNets(std::list<NetInfo> &neuralNets){
         QString name = QString::fromStdString(it->getName());
 
         neuralNetMap.insert(std::pair<QString, NetInfo>(name, *it));
-        addNeuralNet(name);
+        ui->neuralNetsQComboBox->addItem(name);
     }
 }
 
@@ -131,7 +116,8 @@ void StartWidget::addPlatforms(std::list<PlatformInfo> &platforms){
         QString name = QString::fromStdString(it->getDescription());
 
         platformMap.insert(std::pair<QString, PlatformInfo>(name, *it));
-        addPlatform(name);
+        QCheckBox* checkbox = new QCheckBox(name, this);
+        ui->platformsQVBoxLayout->addWidget(checkbox);
     }
 }
 
@@ -141,7 +127,7 @@ void StartWidget::addOperationModes(std::list<OperationMode> &operationModes){
     for(it = operationModes.begin(); it != operationModes.end(); ++it){
         //TODO add operation mode name when its implemented.
         //QString name = QString::fromStdString(it->);
-        addOperationMode("Operation mode");
+        ui->operationModesQComboBox->addItem("operationMode");
     }
 }
 

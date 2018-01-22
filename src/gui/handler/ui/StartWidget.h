@@ -30,11 +30,7 @@ public:
 
     ~StartWidget();
 
-    void addNeuralNet(const QString &neuralNet);
 
-    void addPlatform(const QString &platform);
-
-    void addOperationMode(const QString &operationMode);
 
     QHBoxLayout* addInputImage(QImage* image, const QString &filePath);
 
