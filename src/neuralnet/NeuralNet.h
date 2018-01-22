@@ -7,6 +7,12 @@
 #include <layers/Layer.h>
 #include <NetInfo.h>
 #include <layers/naive/InputLayer.h>
+#include <layers/weightlayers/ConvolutionLayer.h>
+#include <layers/functionlayers/MaxPoolingLayer.h>
+#include <layers/functionlayers/LocalResponseNormLayer.h>
+#include <layers/functionlayers/ReLUActivationLayer.h>
+#include <layers/functionlayers/SoftMaxLossLayer.h>
+#include <layers/weightlayers/FullyConnectedLayer.h>
 
 /**
  * forward declaration to avoid cyclic includes.

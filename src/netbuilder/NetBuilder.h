@@ -6,9 +6,11 @@
 
 #include <vector>
 #include <NeuralNet.h>
+#include <LayerMaker.h>
 #include <map>
 #include "NetInfo.h"
 #include <vector>
+#include "loader/JSONModelLoader.h"
 
 class NetBuilder {
 
