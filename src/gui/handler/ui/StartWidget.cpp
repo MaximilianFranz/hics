@@ -22,10 +22,21 @@ StartWidget::~StartWidget()
     delete ui;
 
     //TODO change this if there are more pointers to delete.
-    int count = ui->platformsQVBoxLayout->count();
-    for(int i = 0; i<count; i++){
-        delete ui->platformsQVBoxLayout->itemAt(i);
+
+    //Delete all allocated objects inside the images layouts
+    QMapIterator<QImage*, QHBoxLayout*> it(images);
+    while (it.hasNext()) {
+        it.next();
+        clearLayout(it.value());
+        delete it.key();
     }
+
+    //Delete allocated objects in the platform layout
+    clearLayout(ui->platformsQVBoxLayout);
+
+
+
+
 }
 
 QHBoxLayout* StartWidget::addInputImage(QImage* image, const QString &filePath){
@@ -52,12 +63,11 @@ void StartWidget::processInputImageButton(){
                             this,
                             "Select one or more files to open",
                             "/home",
-                            "Images (*.png *.xpm *.jpg)");
+                            "Images (*.png *.jpg)");
 
     for(int i = 0; i<fileNames.size(); ++i){
         QImage* image = new QImage();
         if(image->load(fileNames.at(i))){
-            //TODO delete allocated images in destructor
             QHBoxLayout* layout = addInputImage(image, fileNames.at(i));
             images.insert(image, layout);
         } else {
@@ -74,14 +84,14 @@ void StartWidget::processConfirmDeletionButton(){
         QCheckBox* checkBox;
         //TODO maybe check for it.value()->itemAt(0) if this is a valid pointer
         if(checkBox = (QCheckBox*)(it.value()->itemAt(0)->widget())){
-                if(checkBox->isChecked()){
-                    clearLayout(it.value());
-                    QHBoxLayout* tempLayout = it.value();
-                    QImage* tempImage = it.key();
-                    images.remove(it.key());
-                    delete tempLayout;
-                    delete tempImage;
-                }
+            if(checkBox->isChecked()){
+                clearLayout(it.value());
+                QHBoxLayout* tempLayout = it.value();
+                QImage* tempImage = it.key();
+                images.remove(it.key());
+                delete tempLayout;
+                delete tempImage;
+            }
         }
     }
 }
