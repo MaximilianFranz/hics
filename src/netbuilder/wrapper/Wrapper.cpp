@@ -58,7 +58,7 @@ const int Wrapper::getNumDimensions() {
     return (int)dimensions.size(); // cast is okay, because we don't deal with arbitrary dimensions.
 }
 
-const std::vector<int> Wrapper::getDimensions() {
+std::vector<int> Wrapper::getDimensions() const {
     return dimensions;
 }
 
