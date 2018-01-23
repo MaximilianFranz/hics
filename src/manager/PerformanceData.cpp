@@ -5,7 +5,7 @@
 #include "PerformanceData.h"
 
 PerformanceData::PerformanceData(int PowerConsumption, int ComputationTime,
-                                 const std::map<PlatformInfo, float> &platformUsage) : PowerConsumption(
+                                 const std::vector<std::pair<PlatformInfo, float>> &platformUsage) : PowerConsumption(
         PowerConsumption), ComputationTime(ComputationTime), platformUsage(platformUsage) {}
 
 int PerformanceData::getPowerConsumption() const {
@@ -16,6 +16,6 @@ int PerformanceData::getComputationTime() const {
     return ComputationTime;
 }
 
-const std::map<PlatformInfo, float> &PerformanceData::getPlatformUsage() const {
+const std::vector<std::pair<PlatformInfo, float>> &PerformanceData::getPlatformUsage() const {
     return platformUsage;
 }

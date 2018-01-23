@@ -7,7 +7,7 @@
 PlatformInfo::PlatformInfo() {}
 
 PlatformInfo::PlatformInfo(const std::string &description, PlatformType type, const std::string &platformId,
-                           float powerConsumption, int flops) : description(description),
+                           int powerConsumption, int flops) : description(description),
                                                                 type(type), platformId(platformId),
                                                                 powerConsumption(powerConsumption), flops(flops) {}
 
@@ -23,7 +23,7 @@ const std::string &PlatformInfo::getPlatformId() const {
     return platformId;
 }
 
-float PlatformInfo::getPowerConsumption() const {
+int PlatformInfo::getPowerConsumption() const {
     return powerConsumption;
 }
 
