@@ -20,3 +20,6 @@ set(SOURCE_FILES
         util/im2col.cpp util/im2col.h util/Dtype.cpp util/Dtype.h)
 add_library(platform STATIC ${SOURCE_FILES})
 target_link_libraries(platform netbuilder)
+
+add_executable(platform-exec util/main.cpp)
+target_link_libraries(platform-exec platform)
