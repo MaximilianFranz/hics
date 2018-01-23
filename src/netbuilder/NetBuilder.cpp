@@ -53,6 +53,7 @@ NeuralNet* NetBuilder::buildNeuralNet(NetInfo netInfo) {
         alexNet->addLayer(layer);
     }
 
+    return alexNet;
 }
 
 std::vector<NetInfo *> NetBuilder::queryAvailableNets() {

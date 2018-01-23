@@ -1,4 +1,8 @@
 #include <loader/weightloader/AlexNetWeightLoader.h>
+#include "NetBuilder.h"
+#include "NetInfo.h"
+#include "NeuralNet.h"
+#include <iostream>
 
 int main(void){
 
@@ -10,5 +14,12 @@ int main(void){
     WeightWrapper test = alex.getWeights(AlexNetWeightLoader::LayerIdentifier::CONV_2);
 */
 
+    NetInfo netInfo("AlexNet", 227, "alexnet");
+    NetBuilder builder;
+    NeuralNet* net = builder.buildNeuralNet(netInfo);
+    bool a = net->verifyConsistency();
+
+    std::cout << a;
+    
     return 0;
 }
