@@ -20,22 +20,33 @@ void ResultWidget::displayResults(ClassificationResult &classificationResult){
         std::vector<ImageResult> results = classificationResult.getResults();
 
         for(int i = 0; i<results.size(); ++i){
-            ImageResult imageResult = results.at(i);
+            ImageResult imageResult = results[i];
             QVBoxLayout* imageLayout = new QVBoxLayout(this);
 
-            QLabel* imageLabel = new QLabel(this);
             QLabel* filePathLabel = new QLabel(this);
+
             QString filePath = QString::fromStdString(imageResult.getImagePath());
-            QImage image(filePath);
-
-            imageLabel->setPixmap(QPixmap::fromImage(image).scaled(227, 227, Qt::KeepAspectRatio));
             filePathLabel->setText(filePath);
-
             imageLayout->addWidget(filePathLabel);
+
+            QLabel* imageLabel = new QLabel(this);
+            QImage image(filePath);
+            imageLabel->setPixmap(QPixmap::fromImage(image).scaled(227, 227, Qt::KeepAspectRatio));
             imageLayout->addWidget(imageLabel);
 
+            std::vector<std::pair<std::string, float>> result = imageResult.getResults();
+            result = sortVector(result);
+
+
+            QVBoxLayout* resultLayout = createResultLayout(result);
+
+            QVBoxLayout* container = new QVBoxLayout();
+            container->addLayout(imageLayout);
+            container->addLayout(resultLayout);
+
+            ui->imagesQVBoxLayout->addLayout(container);
             //TODO change this when results are added (results layout and image layout inside another layout) then add this layout to the imagesQVBoxLayout
-            ui->imagesQVBoxLayout->addLayout(imageLayout);
+            //ui->imagesQVBoxLayout->addLayout(imageLayout);
 
             //TODO add display for the results (percentages etc.)
             //TODO check if the size of the displayed picture, text etc. is alright
@@ -51,6 +62,58 @@ void ResultWidget::displayResults(ClassificationResult &classificationResult){
 
         //TODO implement display of aggregated results
     }
+}
+
+QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result) {
+    QVBoxLayout* layout = new QVBoxLayout();
+
+    int size = result.size();
+
+    if(size > 5){
+        size = 5;
+    }
+
+    if(size != 0){
+        QLabel* topResult = new QLabel();
+        topResult->setText(QString::fromStdString(result.at(0).first));
+        layout->addWidget(topResult);
+    }
+
+    for(int i = 0; i<size; ++i){
+        std::pair<std::string, float> pair = result[i];
+
+        QHBoxLayout* labelLayout = new QHBoxLayout();
+
+        QLabel* name = new QLabel(this);
+        name->setText(QString::fromStdString(pair.first));
+        name->setAlignment(Qt::AlignLeft);
+        labelLayout->addWidget(name);
+
+        QLabel* percentage = new QLabel(this);
+        percentage->setText(QString::number(pair.second));
+        percentage->setAlignment(Qt::AlignRight);
+        labelLayout->addWidget(percentage);
+
+        layout->addLayout(labelLayout);
+
+    }
+}
+
+std::vector<std::pair<std::string, float>> ResultWidget::sortVector(std::vector<std::pair<std::string, float>> &vector){
+
+    for(int i = 0; i<vector.size(); ++i){
+        std::pair<std::string, float> pair_i = vector[i];
+
+        for (int j = 0; j<vector.size(); ++j){
+            std::pair<std::string, float> pair_j = vector[j];
+
+            if((i != j) && (pair_i.second < pair_j.second)){
+                std::swap(pair_i, pair_j);
+            }
+        }
+    }
+
+    return vector;
 }
 
 QPushButton* ResultWidget::getDetailsQPushButton(){

@@ -23,6 +23,8 @@ public:
 
     void displayResults(ClassificationResult &classificationResult);
 
+    std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
+
     QPushButton* getDetailsQPushButton();
 
     QPushButton* getReturnQPushButton();
@@ -30,4 +32,6 @@ public:
 private:
 
     Ui::ResultWidget *ui;
+
+    QVBoxLayout* createResultLayout(std::vector<std::pair<std::string, float>> &result);
 };
