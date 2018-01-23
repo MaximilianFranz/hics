@@ -8,6 +8,7 @@
 #include <layers/functionlayers/LocalResponseNormLayer.h>
 #include <layers/functionlayers/SoftMaxLossLayer.h>
 #include <layers/functionlayers/MaxPoolingLayer.h>
+#include <NotImplementedException.h>
 #include "PlatformPlacer.h"
 
 PlatformPlacer::PlatformPlacer() {

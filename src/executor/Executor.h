@@ -8,8 +8,8 @@
 #include <NeuralNet.h>
 #include <NetBuilder.h>
 #include <SimpleNetIterator.h>
-#include "ImageResult.h"
 
+#include "ImageResult.h"
 #include "ComputationHost.h"
 #include "PlatformPlacer.h"
 #include "Interpreter.h"
