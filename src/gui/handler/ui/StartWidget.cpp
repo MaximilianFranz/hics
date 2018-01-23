@@ -81,7 +81,7 @@ void StartWidget::processConfirmDeletionButton(){
         it.next();
         QCheckBox* checkBox;
         //TODO maybe check for it.value()->itemAt(0) if this is a valid pointer
-        if(checkBox = (QCheckBox*)(it.value()->itemAt(0)->widget())){
+        if((checkBox = (QCheckBox*)(it.value()->itemAt(0)->widget()))){
             if(checkBox->isChecked()){
                 clearLayout(it.value());
                 QHBoxLayout* tempLayout = it.value(); //TODO maybe unecessary since it is deleted in clearLayout()
@@ -101,7 +101,7 @@ void StartWidget::processAbortDeletionQPushButton(){
     while(it.hasNext()){
         it.next();
         QCheckBox* checkBox;
-        if(checkBox = (QCheckBox*)(it.value()->itemAt(0)->widget())){
+        if((checkBox = (QCheckBox*)(it.value()->itemAt(0)->widget()))){
             checkBox->setChecked(false);
         }
     }
@@ -144,7 +144,7 @@ void StartWidget::clearLayout(QLayout *layout){
     QLayoutItem* item;
 
     //Removes every item inside the layout and delete it
-    while(item = layout->takeAt(0)){
+    while((item = layout->takeAt(0))){
         if (item->layout()) {
             clearLayout(item->layout());
             delete item->layout();
@@ -157,12 +157,14 @@ void StartWidget::clearLayout(QLayout *layout){
 
 NetInfo StartWidget::getSelectedNeuralNet(){
     QString name = ui->neuralNetsQComboBox->currentText();
-    try{
-        return neuralNetMap.at(name);
+    std::map<QString, NetInfo>::iterator it = neuralNetMap.find(name);
 
-    } catch (std::out_of_range e) {
-        e.what();
+    if(it == neuralNetMap.end()){
+        //TODO throw exception here
+
     }
+
+    return it->second;
 }
 
 std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
