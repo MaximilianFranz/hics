@@ -21,7 +21,7 @@ private:
     std::string description;    /*!< discription of the platform to show in the GUI */
     PlatformType type;          /*!< type of platform */
     std::string platformId;     /*!< unique identifier */
-    float powerConsumption;       /*!< power consumption in mW */
+    int powerConsumption;       /*!< power consumption in mW */
     int flops;                  /*!< flops of platform */
 
 public:
@@ -35,7 +35,7 @@ public:
      * @param powerConsumption  power consumption in mW
      * @param flops             flops of platform
      */
-    PlatformInfo(const std::string &description, PlatformType type, const std::string &platformId, float powerConsumption,
+    PlatformInfo(const std::string &description, PlatformType type, const std::string &platformId, int powerConsumption,
                  int flops);
 
     /**
@@ -60,7 +60,7 @@ public:
      * Returns power consumption in mW.
      * @return power consumption
      */
-    float getPowerConsumption() const;
+    int getPowerConsumption() const;
 
     /**
      * Returns the flops.
