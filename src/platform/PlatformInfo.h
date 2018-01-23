@@ -21,7 +21,7 @@ private:
     std::string description;    /*!< discription of the platform to show in the GUI */
     PlatformType type;          /*!< type of platform */
     std::string platformId;     /*!< unique identifier */
-    float powerConsumption;       /*!< power consumption in mW */
+    int powerConsumption;       /*!< power consumption in mW */
     int flops;                  /*!< flops of platform */
 
 public:
