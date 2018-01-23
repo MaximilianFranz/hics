@@ -46,7 +46,7 @@ SCENARIO("Testing Netbuilder methods") {
         //Get first and only model
         NetInfo *netInfo = ModelCrawler::getValidNets(MODEL_DIR)[0];
         NeuralNet* net =  n.buildNeuralNet(*netInfo);
-
+        REQUIRE(net->getLastLayer()->getType() == LayerType::LOSS_SOFTMAX);
     }
 
 }
