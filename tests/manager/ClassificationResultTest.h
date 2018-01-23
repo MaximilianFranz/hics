@@ -5,6 +5,7 @@
 #pragma once
 
 #include <limits>
+#include <cmath>
 
 #include "catch.hpp"
 
