@@ -19,6 +19,10 @@ using json = nlohmann::json;
  * Provides a static method to distribute the images to different ComputationHosts. Can not be instantiated.
  */
 class HostPlacer {
+
+private:
+public:
+
     struct Performance {
         int powerConsumption;
         int timeConsumption;
@@ -26,14 +30,6 @@ class HostPlacer {
         Performance(int p, int t);
     };
 
-private:
-    /**
-     * Reads the estimated performance of a ComputationHost.
-     * @param c
-     * @return pair of integers, containing power and time consumption.
-     */
-    Performance readComputationHostInfo(ComputationHost c);
-public:
     /**
      * Computes a distribution of tasks for the given ComputationHosts.
      * @param hosts     available computation hosts
@@ -42,6 +38,14 @@ public:
      * @param opMode    operation mode for the classification
      * @return          distribution of images, maps computation hosts to a number of images to classify
      */
-    static std::map<ComputationHost, int> place(std::vector<ComputationHost> hosts, NetInfo net, int numOfImg,
+    static std::map<ComputationHost, int> place(std::vector<ComputationHost> &hosts, NetInfo net, int numOfImg,
     OperationMode opMode);
+
+
+    /**
+     * Reads the estimated performance of a ComputationHost.
+     * @param c
+     * @return pair of integers, containing power and time consumption.
+     */
+    Performance readComputationHostInfo(ComputationHost &c);
 };
