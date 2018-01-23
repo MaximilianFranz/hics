@@ -93,6 +93,7 @@ QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string,
         labelLayout->addWidget(name);
 
         QLabel* percentage = new QLabel(this);
+        //TODO when percentage too long round the number
         percentage->setText((QString::number(pair.second) + "%"));
         percentage->setAlignment(Qt::AlignRight);
         labelLayout->addWidget(percentage);
@@ -107,13 +108,13 @@ QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string,
 std::vector<std::pair<std::string, float>> ResultWidget::sortVector(std::vector<std::pair<std::string, float>> &vector){
 
     for(int i = 0; i<vector.size(); ++i){
-        std::pair<std::string, float> pair_i = vector[i];
+        std::pair<std::string, float>* pair_i = &vector[i];
 
         for (int j = 0; j<vector.size(); ++j){
-            std::pair<std::string, float> pair_j = vector[j];
+            std::pair<std::string, float>* pair_j = &vector[j];
 
-            if((i != j) && (pair_i.second < pair_j.second)){
-                std::swap(pair_i, pair_j);
+            if((i != j) && (pair_i->second > pair_j->second)){
+                std::swap(*pair_i, *pair_j);
             }
         }
     }
