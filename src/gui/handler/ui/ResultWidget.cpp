@@ -7,6 +7,7 @@ ResultWidget::ResultWidget(QWidget *parent) :
     ui(new Ui::ResultWidget)
 {
     ui->setupUi(this);
+    ui->imagesQWidgetContainer->setLayout(ui->imagesQVBoxLayout);
 }
 
 ResultWidget::~ResultWidget()
@@ -21,7 +22,7 @@ void ResultWidget::displayResults(ClassificationResult &classificationResult){
 
         for(int i = 0; i<results.size(); ++i){
             ImageResult imageResult = results[i];
-            QVBoxLayout* imageLayout = new QVBoxLayout(this);
+            QVBoxLayout* imageLayout = new QVBoxLayout();
 
             QLabel* filePathLabel = new QLabel(this);
 
@@ -40,7 +41,7 @@ void ResultWidget::displayResults(ClassificationResult &classificationResult){
 
             QVBoxLayout* resultLayout = createResultLayout(result);
 
-            QVBoxLayout* container = new QVBoxLayout();
+            QHBoxLayout* container = new QHBoxLayout();
             container->addLayout(imageLayout);
             container->addLayout(resultLayout);
 
@@ -62,6 +63,8 @@ void ResultWidget::displayResults(ClassificationResult &classificationResult){
 
         //TODO implement display of aggregated results
     }
+    ui->imagesQVBoxLayout->insertStretch(-1);
+
 }
 
 QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result) {
@@ -90,7 +93,7 @@ QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string,
         labelLayout->addWidget(name);
 
         QLabel* percentage = new QLabel(this);
-        percentage->setText(QString::number(pair.second));
+        percentage->setText((QString::number(pair.second) + "%"));
         percentage->setAlignment(Qt::AlignRight);
         labelLayout->addWidget(percentage);
 
