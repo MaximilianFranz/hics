@@ -24,31 +24,24 @@ StartWidget::~StartWidget()
 {
     delete ui;
 
-    //Delete all allocated objects inside the images layouts
+    //Delete all allocated QImages
     QMapIterator<QImage*, QHBoxLayout*> it(images);
     while (it.hasNext()) {
         it.next();
         clearLayout(it.value());
         delete it.key();
     }
-
-    //Delete allocated objects in the platform layout
-    clearLayout(ui->platformsQVBoxLayout);
-
-
-
-
 }
 
 QHBoxLayout* StartWidget::addInputImage(QImage* image, const QString &filePath){
     QHBoxLayout* layout = new QHBoxLayout();
-    QCheckBox* checkBox = new QCheckBox();
-    QLabel* label = new QLabel();
+    QCheckBox* checkBox = new QCheckBox(this);
+    QLabel* label = new QLabel(this);
 
     layout->addWidget(checkBox, 0);
 
     //Paint the QImage into a QLabel so that it can be displayed
-    QLabel* imageLabel = new QLabel();
+    QLabel* imageLabel = new QLabel(this);
     imageLabel->setPixmap(QPixmap::fromImage(*image).scaled(227, 227, Qt::KeepAspectRatio));
     layout->addWidget(imageLabel, 1);
 
@@ -132,7 +125,7 @@ void StartWidget::addPlatforms(std::list<PlatformInfo> &platforms){
         QString name = QString::fromStdString(it->getDescription());
 
         platformMap.insert(std::pair<QString, PlatformInfo>(name, *it));
-        QCheckBox* checkbox = new QCheckBox(name);
+        QCheckBox* checkbox = new QCheckBox(name, this);
         ui->platformsQVBoxLayout->addWidget(checkbox);
     }
 }
