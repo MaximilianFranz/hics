@@ -18,9 +18,9 @@ FullyConnectedLayer::FullyConnectedLayer(std::vector<int> inputDimensions, Weigh
     this->type = FULLYCONNECTED;
 }
 
-//TODO: Implement. Output size depends on the size of the weights
+//TODO: Verify. This should
 std::vector<int> FullyConnectedLayer::calcOutputDimensions() {
-    throw NotImplementedException();
+    std::vector<int> dim = {weights->getDimensions()[1]};
 }
 
 void FullyConnectedLayer::setWeights(WeightWrapper *weights) {
