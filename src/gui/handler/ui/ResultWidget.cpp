@@ -97,6 +97,8 @@ QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string,
         layout->addLayout(labelLayout);
 
     }
+
+    return layout;
 }
 
 std::vector<std::pair<std::string, float>> ResultWidget::sortVector(std::vector<std::pair<std::string, float>> &vector){
