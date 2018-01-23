@@ -10,11 +10,29 @@
 
 #include <ComputationHost.h>
 #include <NetInfo.h>
+#include <loader/json.hpp>
+#include <loader/StringLoader.h>
+
+using json = nlohmann::json;
 
 /**
  * Provides a static method to distribute the images to different ComputationHosts. Can not be instantiated.
  */
 class HostPlacer {
+    struct Performance {
+        int powerConsumption;
+        int timeConsumption;
+
+        Performance(int p, int t);
+    };
+
+private:
+    /**
+     * Reads the estimated performance of a ComputationHost.
+     * @param c
+     * @return pair of integers, containing power and time consumption.
+     */
+    Performance readComputationHostInfo(ComputationHost c);
 public:
     /**
      * Computes a distribution of tasks for the given ComputationHosts.
