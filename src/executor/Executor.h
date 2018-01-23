@@ -16,7 +16,7 @@
 
 class PlatformPlacer;
 
-class Executor : ComputationHost{
+class Executor : public ComputationHost {
 private:
     NeuralNet *net;
     OperationMode currentMode;
@@ -25,6 +25,7 @@ private:
     NetBuilder *builder;
     PlatformPlacer *placer;
     Interpreter *interpreter;
+    std::string name;
 
 
 
@@ -91,4 +92,8 @@ public:
     std::vector<NetInfo*> queryNets() override;
 
     DataWrapper *getImageData(ImageWrapper *imageWrapper);
+
+    Executor(std::string name) {
+        this->name = name;
+    };
 };
