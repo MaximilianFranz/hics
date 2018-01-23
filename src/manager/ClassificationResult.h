@@ -21,7 +21,7 @@ private:
     std::vector<ImageResult> results;               /*!< results of the classification*/
     NetInfo usedNet;                                /*!< neural net that was used for the computation*/
     PerformanceData performance;                    /*!< contains information about the performance*/
-    std::map<std::string, float> aggregatedResult;  /*!< contains the aggregated result*/
+    std::vector<std::pair<std::string, float>> aggregatedResult;  /*!< contains the aggregated result*/
 
 public:
     /**\brief Creates a new ClassificationResult.
@@ -57,7 +57,7 @@ public:
      * Accesses the aggregated results if available.
      * @return aggregated results as a map with label and probability
      */
-    const std::map<std::string, float> &getAggregatedResults() const;
+    const std::vector<std::pair<std::string, float>> &getAggregatedResults() const;
 
     /** \brief Aggregates the results.
      * Aggregates the results of the classification, meaning finding the 5 most probable labels that are on ALL images.
