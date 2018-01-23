@@ -17,7 +17,7 @@ set(SOURCE_FILES
         layerfunctions/normalization/CpuResponseNormalizationFunction.cpp layerfunctions/normalization/CpuResponseNormalizationFunction.h
         layerfunctions/FullyConnectedFunction.h
         layerfunctions/CpuFullyConnectedFunction.h layerfunctions/CpuFullyConnectedFunction.cpp
-        util/im2col.cpp util/im2col.h util/Dtype.cpp util/Dtype.h)
+        util/im2col.cpp util/im2col.h)
 add_library(platform STATIC ${SOURCE_FILES})
 target_link_libraries(platform netbuilder)
 

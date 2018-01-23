@@ -42,8 +42,6 @@ namespace helper {
     }
 
     // Explicit instantiation
-    template void set<int>(const int object_size, const int fill_byte, int *object_to_fill);
-
     template void set<float>(const int object_size, const float fill_byte, float *object_to_fill);
 
     template void set<double>(const int object_size, const double fill_byte, double *object_to_fill);
@@ -72,6 +70,21 @@ namespace helper {
      * 2 3 5 6
      * 4 5 7 8
      * 5 6 8 9
+     *
+     * Four to the right because: Kernel 2x2x1 = 4
+     * Four to the bottom because: ((3-2+2*0)/1+1)^2 = 2*2 = 4
+     *
+     * Another Example:
+     * input image is 227x227x3
+     * Kernel is 11x11x3
+     * stride is 4
+     *
+     * 363 to the right because 11*11*3
+     * 3025 to the bottom because ((227-11)/4+1)^2 = 55*55 = 3025
+     * => M = 3025x363
+     *
+     * Then perform Matrix multiply: M x W
+     * where Weight Matrix W = 363x96
      */
     template<typename Dtype>
     void im2col_cpu(const Dtype *data_image, const int channels, const int height, const int width,
@@ -89,14 +102,14 @@ namespace helper {
 
                     int input_row = -padding + kernel_row;
 
-                    for (int output_row = 0; output_row < output_h; ++output_row) {
+                    for (int output_rows = output_h; output_rows; output_rows--) {
                         if (!is_value_ge_zero_and_value_lt_boundary(input_row, height)) {
-                            for (int output_col = 0; output_col < output_w; ++output_col) {
+                            for (int output_cols = output_w; output_cols; output_cols--) {
                                 *(data_column++) = 0;
                             }
                         } else {
-                            int input_col = kernel_col - padding;
-                            for (int output_col = 0; output_col < output_w; ++output_col) {
+                            int input_col = -padding + kernel_col;
+                            for (int output_col = output_w; output_col; output_col--) {
                                 if (is_value_ge_zero_and_value_lt_boundary(input_col, width)) {
                                     *(data_column++) = data_image[input_row * width + input_col];
                                 } else {
@@ -113,12 +126,7 @@ namespace helper {
         }
     }
 
-    /*
     // Explicit instantiation
-    template void im2col_cpu<int>(const int *data_image, const int channels, const int height, const int width,
-                                  const int kernel_size, const int padding, const int stride,
-                                  int *data_column);
-
     template void im2col_cpu<float>(const float *data_image, const int channels, const int height, const int width,
                                     const int kernel_size, const int padding, const int stride,
                                     float *data_column);
@@ -126,9 +134,8 @@ namespace helper {
     template void im2col_cpu<double>(const double *data_image, const int channels, const int height, const int width,
                                      const int kernel_size, const int padding, const int stride,
                                      double *data_column);
-    */
 
-    
+
     template<typename Dtype>
     void col2im_cpu(const Dtype *data_column, const int channels, const int height, const int width,
                     const int kernel_size, const int padding, const int stride,
@@ -169,12 +176,7 @@ namespace helper {
         }
     }
 
-    /*
     // Explicit instantiation
-    template void col2im_cpu<int>(const int *data_column, const int channels, const int height, const int width,
-                                  const int kernel_size, const int padding, const int stride,
-                                  int *data_image);
-
     template void col2im_cpu<float>(const float *data_column, const int channels, const int height, const int width,
                                     const int kernel_size, const int padding, const int stride,
                                     float *data_image);
@@ -182,5 +184,4 @@ namespace helper {
     template void col2im_cpu<double>(const double *data_column, const int channels, const int height, const int width,
                                      const int kernel_size, const int padding, const int stride,
                                      double *data_image);
-    */
 }
