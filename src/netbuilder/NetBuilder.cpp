@@ -3,22 +3,30 @@
 //
 
 #include <loader/LabelLoader.h>
+#include <loader/weightloader/AlexNetWeightLoader.h>
 #include "NetBuilder.h"
 #include "../NotImplementedException.h"
 
+
 NeuralNet* NetBuilder::buildNeuralNet(NetInfo net) {
+    // Use static path for now
     std::string path ="../../../src/netbuilder/loader/models/alexnet.json";
     LayerMaker layerMaker;
     JSONModelLoader modelLoader(path);
     LayerConstructionParams lcp = modelLoader.getLayerConstructionParamsByIndex(0);
     InputLayer* inputLayer = layerMaker.createInputLayer(lcp);
+    // Use static path for now
+    AlexNetWeightLoader loader("../../../src/netbuilder/loader/weightloader/alexnet_weights.h5");
     NeuralNet* alexNet = new NeuralNet(inputLayer, net);
     Layer* layer;
+    int weightIndex = 0;
     for (int layerIndex = 1; layerIndex <= 21; layerIndex++) {
         lcp = modelLoader.getLayerConstructionParamsByIndex(layerIndex);
          std::vector<int> inputDimensionsForLayer = alexNet->getLastLayer()->getOutputDimensions();
         if (lcp.type == "conv"){
-            layer = layerMaker.createConvLayer(lcp, inputDimensionsForLayer,NULL);
+            WeightWrapper weights = loader.getWeights(WeightLoader::LayerIdentifier(weightIndex));
+            layer = layerMaker.createConvLayer(lcp, inputDimensionsForLayer, &weights);
+            weightIndex++;
         }
         else if (lcp.type == "activation") {
             layer = layerMaker.createReLuActivationLayer(lcp, inputDimensionsForLayer);
@@ -30,7 +38,9 @@ NeuralNet* NetBuilder::buildNeuralNet(NetInfo net) {
             layer = layerMaker.createMaxPoolLayer(lcp, inputDimensionsForLayer);
         }
         else if (lcp.type == "fullyConnected") {
-            layer = layerMaker.createFCLayer(lcp, inputDimensionsForLayer, NULL);
+            WeightWrapper weights = loader.getWeights(WeightLoader::LayerIdentifier(weightIndex));
+            layer = layerMaker.createFCLayer(lcp, inputDimensionsForLayer, &weights);
+            weightIndex++;
         }
         else {
             layer = layerMaker.createSoftmaxLossLayer(lcp, inputDimensionsForLayer);
