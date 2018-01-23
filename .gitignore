@@ -16,6 +16,9 @@ bvlc_alexnet.npy
 # Prerequisites
 *.d
 
+#### DON'T TRACK WEIGHTS! 
+*.h5
+
 # Compiled Object files
 *.slo
 *.lo
