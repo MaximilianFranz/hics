@@ -1,0 +1,14 @@
+{
+	"computationHosts": [
+		{
+			"name" : "local",
+			"power" : "1500",
+			"time" : "500"
+		},
+		{
+			"name" : "fpga",
+			"power" : "500",
+			"time" : "1500"
+		}		
+	]
+}
