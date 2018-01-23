@@ -41,7 +41,11 @@ NeuralNet* NetBuilder::buildNeuralNet(NetInfo net) {
 }
 
 std::vector<NetInfo *> NetBuilder::queryAvailableNets() {
-    throw NotImplementedException();
+    // STATIC ALEXNET for now!
+    std::vector<NetInfo*> availableNets;
+    NetInfo *alexnet = new NetInfo("alexnet", 227);
+    availableNets.push_back(alexnet);
+    return availableNets;
 }
 
 std::map<int, std::string> NetBuilder::getLabelMap(NetInfo net) {
