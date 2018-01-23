@@ -2,7 +2,7 @@
   "name": "AlexNet - 8 Layer Convolutional Neural Net",
   "identifier": "alexnet",
   "numSemanticLayers": 8,
-  "requiredDimension" : 227,
+  "requiredDimension" : [7,227,227],
   "branched" : false,
   "layers": [
     {

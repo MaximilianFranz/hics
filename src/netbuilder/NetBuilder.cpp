@@ -2,11 +2,12 @@
 // Created by David Culley on 07.01.18.
 //
 
+#include <loader/LabelLoader.h>
 #include "NetBuilder.h"
 #include "../NotImplementedException.h"
 
 NeuralNet* NetBuilder::buildNeuralNet(NetInfo net) {
-    std::string path ="../src/netbuilder/loader/alexnet.json";
+    std::string path ="../../../src/netbuilder/loader/models/alexnet.json";
     LayerMaker layerMaker;
     JSONModelLoader modelLoader(path);
     LayerConstructionParams lcp = modelLoader.getLayerConstructionParamsByIndex(0);
@@ -44,6 +45,6 @@ std::vector<NetInfo *> NetBuilder::queryAvailableNets() {
 }
 
 std::map<int, std::string> NetBuilder::getLabelMap(NetInfo net) {
-
-    throw NotImplementedException();
+    // Static return for now, later the we get paths from the ModelCrawler, maybe?
+    return LabelLoader::getLabelMap("../../../src/netbuilder/loader/models/alexnet_labels.txt");
 }
