@@ -9,6 +9,7 @@
 #include <LayerMaker.h>
 #include <map>
 #include <vector>
+#include "loader/ModelCrawler.h"
 #include "loader/JSONModelLoader.h"
 
 #include "NetInfo.h"
@@ -27,6 +28,7 @@ public:
 
     std::vector<NetInfo*> queryAvailableNets();
 
-    std::map<int, std::string> getLabelMap(NetInfo net);
+    std::map<int, std::string> getLabelMap(NetInfo *net);
 
+    const std::string MODEL_DIR = "../../../src/netbuilder/loader/models";
 };
