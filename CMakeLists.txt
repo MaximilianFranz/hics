@@ -4,6 +4,12 @@ project(HICS)
 
 set(CMAKE_CXX_STANDARD 11)
 
+# switch on various compiler warnings
+# https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
+if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+endif ()
+
 find_package(Qt5 COMPONENTS Core Widgets Gui)
 find_package(HDF5 COMPONENTS C)
 
