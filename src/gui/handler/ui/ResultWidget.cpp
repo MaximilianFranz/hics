@@ -16,39 +16,46 @@ ResultWidget::~ResultWidget()
 }
 
 void ResultWidget::displayResults(const ClassificationResult &classificationResult){
-    if(classificationResult.getAggregatedResults().size() == 0){
-        //Not aggregated
-        std::vector<ImageResult> results = classificationResult.getResults();
+    bool aggregated = false;
+    if(classificationResult.getAggregatedResults().size() > 0)
+        aggregated = true;
 
-        for(unsigned int i = 0; i<results.size(); ++i){
-            ImageResult imageResult = results[i];
-            QVBoxLayout* imageLayout = createImageLayout(imageResult.getImagePath());
+    std::vector<ImageResult> results = classificationResult.getResults();
 
-            std::vector<std::pair<std::string, float>> result = imageResult.getResults();
-            result = sortVector(result);
+    for(unsigned int i = 0; i<results.size(); ++i){
+        ImageResult imageResult = results[i];
+        QVBoxLayout* imageLayout = createImageLayout(imageResult.getImagePath());
 
+        std::vector<std::pair<std::string, float>> result = imageResult.getResults();
+        result = sortVector(result);
+
+        QHBoxLayout* container = new QHBoxLayout();
+        container->addLayout(imageLayout);
+
+        if(!aggregated){
+            container->addSpacing(25);
             QVBoxLayout* resultLayout = createResultLayout(result);
-
-            QHBoxLayout* container = new QHBoxLayout();
-            container->addLayout(imageLayout);
             container->addLayout(resultLayout);
+        }
 
-            ui->imagesQVBoxLayout->addLayout(container);
+        ui->imagesQVBoxLayout->addLayout(container);
             //TODO change this when results are added (results layout and image layout inside another layout) then add this layout to the imagesQVBoxLayout
             //ui->imagesQVBoxLayout->addLayout(imageLayout);
 
             //TODO add display for the results (percentages etc.)
             //TODO check if the size of the displayed picture, text etc. is alright
-        }
+    }
 
-    } else {
-        //Aggregated
-
-        //TODO implement display of aggregated results
+    if(aggregated){
+        //ui->imagesQWidgetContainer->resize(227, 507);
+        std::vector<std::pair<std::string, float>> aggregatedResult = classificationResult.getAggregatedResults();
+        QVBoxLayout* aggregatedLayout = createResultLayout(aggregatedResult);
+        ui->mainQHBoxLayout->insertLayout(2, aggregatedLayout);
     }
 
     ui->imagesQVBoxLayout->insertStretch(-1);
 }
+
 
 QVBoxLayout* ResultWidget::createImageLayout(const std::string &filePath){
     QVBoxLayout* imageLayout = new QVBoxLayout();
@@ -70,7 +77,7 @@ QVBoxLayout* ResultWidget::createImageLayout(const std::string &filePath){
 
 QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result) {
     QVBoxLayout* layout = new QVBoxLayout();
-
+    layout->insertStretch(0);
     int size = result.size();
 
     if(size > 5){
@@ -103,6 +110,7 @@ QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string,
         layout->addLayout(labelLayout);
     }
 
+    layout->insertStretch(-1);
     return layout;
 }
 
