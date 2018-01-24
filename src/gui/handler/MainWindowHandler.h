@@ -10,6 +10,7 @@
 
 #include "ui/StartWidget.h"
 #include "ui/ResultWidget.h"
+#include "ui/DetailDialog.h"
 #include "MainWindowSubject.h"
 #include "ui/MainWindow.h"
 
@@ -49,8 +50,7 @@ private:
     MainWindow* mainWindow;
     StartWidget* startWidget;
     ResultWidget* resultWidget;
-
-    //DetailDialogHandler detailDialogHandler;
+    DetailDialog* detailDialog;
 
     ClassificationRequest* classificationRequestState;
 

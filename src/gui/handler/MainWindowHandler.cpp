@@ -7,9 +7,11 @@ MainWindowHandler::MainWindowHandler(std::list<NetInfo> &neuralNets, std::list<P
     mainWindow = new MainWindow();
     startWidget = new StartWidget(neuralNets, platforms, operationModes);
     resultWidget = new ResultWidget();
+    detailDialog = new DetailDialog();
 
     mainWindow->addWidgetToStack(startWidget);
     mainWindow->addWidgetToStack(resultWidget);
+
     mainWindow->setCurrentWidget(startWidget);
     //TODO initialze result and detail widget and add them to the stack
 
@@ -44,6 +46,7 @@ ClassificationRequest* MainWindowHandler::getClassificationRequestState(){
 
 void MainWindowHandler::processClassificationResult(const ClassificationResult &classificationResult){
     resultWidget->displayResults(classificationResult);
+    detailDialog->insertDetails(&classificationResult);
     mainWindow->setCurrentWidget(resultWidget);
 }
 
@@ -55,5 +58,5 @@ void MainWindowHandler::processReturnQPushButton(){
 }
 
 void MainWindowHandler::processDetailQPushButton(){
-    throw NotImplementedException();
+    detailDialog->show();
 }
