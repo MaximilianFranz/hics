@@ -185,3 +185,65 @@ TEST_CASE("Realdata Convolution Test") {
     }
 
 }
+
+TEST_CASE("Maxpooling Test") {
+    int inSize = 5;
+    int stride = 1;
+    int padding = 0;
+    int filterSize = 2;
+    int outSize = (inSize - filterSize + 2 * padding) / stride + 1;
+    int numPlanes = 1;
+
+    // generate input data
+    std::vector<float> data;
+    for (int y = 0 ; y < inSize; y++) {
+        for (int x = 0; x < inSize; x++) {
+            data.push_back(x+y);
+        }
+    }
+
+    DataWrapper input({numPlanes, inSize, inSize}, data);
+    DataWrapper output({numPlanes, outSize, outSize});
+
+
+    PlatformManager &pm = PlatformManager::getInstance();
+    REQUIRE(pm.getPlatforms().size() >= 1);
+
+    Platform *p = pm.getPlatforms()[0];
+    REQUIRE(p != nullptr);
+
+    PoolingFunction *f = p->createPoolingFunction(LayerType::POOLING_MAX);
+    REQUIRE(f != nullptr);
+
+    f->execute(input, output, stride, filterSize, padding);
+
+    REQUIRE(output.getDimensions()[2] == 4);
+    REQUIRE(output.getData()[0] == 2);
+    REQUIRE(output.getData()[15] == 8);
+
+    /* stride 2 will lead to cut-off */
+    stride = 2;
+    padding = 0;
+    filterSize = 2;
+    outSize = (inSize - filterSize + 2 * padding) / stride + 1;
+    output= DataWrapper({numPlanes, outSize, outSize});
+
+    f->execute(input, output, stride, filterSize, padding);
+
+    REQUIRE(output.getDimensions()[2] == 2);
+    REQUIRE(output.getData()[1] == 4);
+    REQUIRE(output.getData()[3] == 6);
+
+    /* add some padding */
+    stride = 2;
+    padding = 1;
+    filterSize = 3;
+    outSize = (inSize - filterSize + 2 * padding) / stride + 1;
+    output= DataWrapper({numPlanes, outSize, outSize});
+
+    f->execute(input, output, stride, filterSize, padding);
+
+    REQUIRE(output.getDimensions()[2] == 3);
+    REQUIRE(output.getData()[1] == 4);
+    REQUIRE(output.getData()[8] == 8);
+}
