@@ -11,6 +11,8 @@ startWidget(neuralNets, platforms, operationModes){
     //TODO initialze result and detail widget and add them to the stack
 
     connect(startWidget.getClassificationQPushButton(), SIGNAL(clicked()), this, SLOT(setClassificationRequestState()));
+    connect(resultWidget.getReturnQPushButton(), SIGNAL(clicked()), this, SLOT(processReturnQPushButton()));
+    connect(resultWidget.getDetailsQPushButton(), SIGNAL(clicked()), this, SLOT(processDetailQPushButton()));
 }
 
 void MainWindowHandler::setClassificationRequestState(){
@@ -24,6 +26,8 @@ void MainWindowHandler::setClassificationRequestState(){
     this->classificationRequestState = &request;
 
     notify();
+
+    //TODO here maybe display loading screen/bar
 }
 
 ClassificationRequest* MainWindowHandler::getClassificationRequestState(){
@@ -36,11 +40,13 @@ ClassificationRequest* MainWindowHandler::getClassificationRequestState(){
 }
 
 void MainWindowHandler::processClassificationResult(const ClassificationResult &classificationResult){
-    throw NotImplementedException();
+    resultWidget.displayResults(classificationResult);
+    mainWindow.setCurrentWidget(resultWidget);
 }
 
 void MainWindowHandler::processReturnQPushButton(){
-    throw NotImplementedException();
+    mainWindow.setCurrentWidget(startWidget);
+    //TODO delete resultWidget
 }
 
 void MainWindowHandler::processDetailQPushButton(){
