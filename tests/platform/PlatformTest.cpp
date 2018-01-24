@@ -142,7 +142,7 @@ std::vector<float> getDataFromFile(std::string path) {
     return data;
 }
 
-TEST_CASE("Realdata Convolution Test") {
+TEST_CASE("Realdata Test") {
     std::string img_data_path = "../../../tests/resources/img_data.txt";
     std::string conv1_bias_path = "../../../tests/resources/conv1_bias.txt";
     std::string conv1_weights_path = "../../../tests/resources/conv1_weight.txt";
@@ -223,6 +223,26 @@ TEST_CASE("Realdata Convolution Test") {
 
     for (int i = 0; i < 55*55*96; i += 2000) { // Pick one or two samples for each filter
         REQUIRE(abs(lrn1_out.getData()[i] - lrn1_expected.getData()[i]) < 0.01);
+    }
+
+
+    /* Maxpooling */
+    in = lrn1_out;
+    DataWrapper maxpool1_out({96, 27, 27});
+    PoolingFunction *maxpool = p->createPoolingFunction(LayerType::POOLING_MAX);
+    maxpool->execute(in, maxpool1_out, 2, 3, 0);
+
+    std::string maxpool1_result_path = "../../../tests/resources/maxpool_data_out.txt";
+    std::vector<float> maxpool1_result = getDataFromFile(maxpool1_result_path);
+
+    DataWrapper maxpool1_expected({96, 27, 27}, maxpool1_result);
+    for (int i = 0; i < 27*27; i ++) { // Test the first layer fully
+        REQUIRE(abs(maxpool1_out.getData()[i] - maxpool1_expected.getData()[i]) < 0.01);
+
+    }
+
+    for (int i = 0; i < 27*27*96; i += 400) { // Pick one or two samples for each filter
+        REQUIRE(abs(maxpool1_out.getData()[i] - maxpool1_expected.getData()[i]) < 0.01);
     }
 
 }
