@@ -27,7 +27,7 @@ void ResultWidget::displayResults(ClassificationResult &classificationResult){
             QLabel* filePathLabel = new QLabel(this);
 
             QString filePath = QString::fromStdString(imageResult.getImagePath());
-            filePathLabel->setText(filePath);
+            filePathLabel->setText(shortLink(imageResult.getImagePath()));
             imageLayout->addWidget(filePathLabel);
 
             QLabel* imageLabel = new QLabel(this);
@@ -78,6 +78,7 @@ QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string,
 
     if(size != 0){
         QLabel* topResult = new QLabel();
+        topResult->setStyleSheet("QLabel { color : red; }");
         topResult->setText(QString::fromStdString(result.at(0).first));
         layout->addWidget(topResult);
     }
@@ -103,6 +104,18 @@ QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string,
     }
 
     return layout;
+}
+
+QString ResultWidget::shortLink(const std::string &link){
+    QString output = QString::fromStdString(link);
+
+    int slashIndex = output.lastIndexOf('/');
+
+    if(slashIndex != -1){
+        output.remove(0, slashIndex);
+    }
+
+    return output;
 }
 
 std::vector<std::pair<std::string, float>> ResultWidget::sortVector(std::vector<std::pair<std::string, float>> &vector){

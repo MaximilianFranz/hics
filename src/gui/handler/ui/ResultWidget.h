@@ -33,5 +33,7 @@ private:
 
     Ui::ResultWidget *ui;
 
+    QString shortLink(const std::string &link);
+
     QVBoxLayout* createResultLayout(std::vector<std::pair<std::string, float>> &result);
 };

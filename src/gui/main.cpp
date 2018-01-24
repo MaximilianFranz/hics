@@ -44,9 +44,21 @@ int main(int argc, char *argv[])
     ImageWrapper imageWrapper(b, "/home/pselab/Bilder/landscape-1843128_960_720.jpg");
     std::vector<std::pair<PlatformInfo, float>> plat;
     PerformanceData performanceData(1, 1, plat);
-    ImageResult imgResult(results, imageWrapper);
+    ImageResult imgResult1(results, imageWrapper);
+    ImageResult imgResult2(results, imageWrapper);
+    ImageResult imgResult3(results, imageWrapper);
+    ImageResult imgResult4(results, imageWrapper);
+    ImageResult imgResult5(results, imageWrapper);
+
+
+
     std::vector<ImageResult> imgResults;
-    imgResults.push_back(imgResult);
+    imgResults.push_back(imgResult1);
+    imgResults.push_back(imgResult2);
+    imgResults.push_back(imgResult3);
+    imgResults.push_back(imgResult4);
+    imgResults.push_back(imgResult5);
+
     ClassificationResult classificationResult(imgResults, net, performanceData);
 
     resultWidget.displayResults(classificationResult);
