@@ -6,12 +6,18 @@
 #include <sstream>
 #include <fstream>
 #include <iterator>
+#include <cmath>
+#include <limits>
 
 #include <wrapper/DataWrapper.h>
 
 #include <PlatformManager.h>
 
 #include "PlatformTest.h"
+
+//const float eps = std::numeric_limits<float>::epsilon();
+// be more lenient with our epsilon as our test data lacks the necessary precision
+const float eps = 0.001;
 
 TEST_CASE("Activation ReLU test") {
     PlatformManager& pm = PlatformManager::getInstance();
@@ -178,11 +184,11 @@ TEST_CASE("test with real data from AlexNet") {
     // out_real evaluates to 0 from i = 4 onwards
 
     for (int i = 0; i < 55*55; i++) { // Test the first filter fully
-        REQUIRE(abs(conv1_out.getData()[i] - conv1_expected.getData()[i]) < 0.01);
+        REQUIRE(std::abs(conv1_out.getData()[i] - conv1_expected.getData()[i]) < eps);
     }
 
     for (int i = 0; i < 55*55*96; i += 2000) { // Pick one or two samples for each filter
-        REQUIRE(abs(conv1_out.getData()[i] - conv1_expected.getData()[i]) < 0.01);
+        REQUIRE(std::abs(conv1_out.getData()[i] - conv1_expected.getData()[i]) < eps);
     }
 
 
@@ -198,11 +204,11 @@ TEST_CASE("test with real data from AlexNet") {
 
     DataWrapper relu1_expected(outDim, relu1_result);
     for (int i = 0; i < 55*55; i ++) { // Test the first layer fully
-        REQUIRE(abs(relu1_out.getData()[i] - relu1_expected.getData()[i]) < 0.01);
+        REQUIRE(std::abs(relu1_out.getData()[i] - relu1_expected.getData()[i]) < eps);
     }
 
     for (int i = 0; i < 55*55*96; i += 2000) { // Pick one or two samples for each filter
-        REQUIRE(abs(relu1_out.getData()[i] - relu1_expected.getData()[i]) < 0.01);
+        REQUIRE(std::abs(relu1_out.getData()[i] - relu1_expected.getData()[i]) < eps);
     }
 
 
@@ -218,11 +224,11 @@ TEST_CASE("test with real data from AlexNet") {
 
     DataWrapper lrn1_expected(outDim, lrn1_result);
     for (int i = 0; i < 55*55; i ++) { // Test the first layer fully
-        REQUIRE(abs(lrn1_out.getData()[i] - lrn1_expected.getData()[i]) < 0.01);
+        REQUIRE(std::abs(lrn1_out.getData()[i] - lrn1_expected.getData()[i]) < eps);
     }
 
     for (int i = 0; i < 55*55*96; i += 2000) { // Pick one or two samples for each filter
-        REQUIRE(abs(lrn1_out.getData()[i] - lrn1_expected.getData()[i]) < 0.01);
+        REQUIRE(std::abs(lrn1_out.getData()[i] - lrn1_expected.getData()[i]) < eps);
     }
 
 
@@ -237,12 +243,12 @@ TEST_CASE("test with real data from AlexNet") {
 
     DataWrapper maxpool1_expected({96, 27, 27}, maxpool1_result);
     for (int i = 0; i < 27*27; i ++) { // Test the first layer fully
-        REQUIRE(abs(maxpool1_out.getData()[i] - maxpool1_expected.getData()[i]) < 0.01);
+        REQUIRE(std::abs(maxpool1_out.getData()[i] - maxpool1_expected.getData()[i]) < eps);
 
     }
 
     for (int i = 0; i < 27*27*96; i += 400) { // Pick one or two samples for each filter
-        REQUIRE(abs(maxpool1_out.getData()[i] - maxpool1_expected.getData()[i]) < 0.01);
+        REQUIRE(std::abs(maxpool1_out.getData()[i] - maxpool1_expected.getData()[i]) < eps);
     }
 
 }
@@ -310,11 +316,9 @@ TEST_CASE("Maxpooling test") {
 }
 
 TEST_CASE("Softmax test") {
-
     std::vector<float> data = {1, 2, 3, 4, 1, 2, 3};
     DataWrapper input({1, 7}, data);
     DataWrapper output({1, 7});
-
 
     PlatformManager &pm = PlatformManager::getInstance();
     REQUIRE(pm.getPlatforms().size() >= 1);
@@ -327,12 +331,12 @@ TEST_CASE("Softmax test") {
 
     f->execute(input, output);
 
-    REQUIRE(abs(output.getData()[0] - 0.024) < 0.01);
+    REQUIRE(std::abs(output.getData()[0] - 0.024) < eps);
+
     float sum = 0;
     int n = output.getNumElements();
     for (int i = 0; i < n; i++) {
-        sum += output.getData()[1];
+        sum += output.getData()[i];
     }
-    REQUIRE(abs(sum - 1.0) < 0.01);
-
+    REQUIRE(std::abs(sum - 1.0) < eps);
 }
