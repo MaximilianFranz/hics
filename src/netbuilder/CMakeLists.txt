@@ -21,7 +21,6 @@ set(SOURCE_FILES
         loader/weightloader/WeightLoader.h
         loader/weightloader/AlexNetWeightLoader.cpp
         loader/weightloader/AlexNetWeightLoader.h
-        loader/weightloader/hdf_wrapper.h
         loader/StringLoader.cpp
         loader/StringLoader.h)
 

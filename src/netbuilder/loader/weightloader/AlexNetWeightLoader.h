@@ -2,7 +2,9 @@
 
 #include <string>
 #include <map>
-#include "hdf_wrapper.h"
+
+#include <hdf_wrapper.h>
+
 #include "loader/weightloader/WeightLoader.h"
 
 /**
