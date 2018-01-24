@@ -15,12 +15,12 @@ ResultWidget::~ResultWidget()
     delete ui;
 }
 
-void ResultWidget::displayResults(ClassificationResult &classificationResult){
+void ResultWidget::displayResults(const ClassificationResult &classificationResult){
     if(classificationResult.getAggregatedResults().size() == 0){
         //Not aggregated
         std::vector<ImageResult> results = classificationResult.getResults();
 
-        for(int i = 0; i<results.size(); ++i){
+        for(unsigned int i = 0; i<results.size(); ++i){
             ImageResult imageResult = results[i];
             QVBoxLayout* imageLayout = new QVBoxLayout();
 
@@ -53,18 +53,13 @@ void ResultWidget::displayResults(ClassificationResult &classificationResult){
             //TODO check if the size of the displayed picture, text etc. is alright
         }
 
-
-
-
-
-
     } else {
         //Aggregated
 
         //TODO implement display of aggregated results
     }
-    ui->imagesQVBoxLayout->insertStretch(-1);
 
+    ui->imagesQVBoxLayout->insertStretch(-1);
 }
 
 QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result) {
@@ -100,7 +95,6 @@ QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string,
         labelLayout->addWidget(percentage);
 
         layout->addLayout(labelLayout);
-
     }
 
     return layout;
@@ -120,10 +114,10 @@ QString ResultWidget::shortLink(const std::string &link){
 
 std::vector<std::pair<std::string, float>> ResultWidget::sortVector(std::vector<std::pair<std::string, float>> &vector){
 
-    for(int i = 0; i<vector.size(); ++i){
+    for(unsigned int i = 0; i<vector.size(); ++i){
         std::pair<std::string, float>* pair_i = &vector[i];
 
-        for (int j = 0; j<vector.size(); ++j){
+        for (unsigned int j = 0; j<vector.size(); ++j){
             std::pair<std::string, float>* pair_j = &vector[j];
 
             if((i != j) && (pair_i->second > pair_j->second)){

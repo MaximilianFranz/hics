@@ -21,7 +21,7 @@ public:
 
     ~ResultWidget();
 
-    void displayResults(ClassificationResult &classificationResult);
+    void displayResults(const ClassificationResult &classificationResult);
 
     std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
 
