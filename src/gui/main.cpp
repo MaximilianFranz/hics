@@ -7,6 +7,7 @@
 #include "handler/MainWindowHandler.h"
 #include "PerformanceData.h"
 #include "ClassificationResult.h"
+#include "handler/ui/DetailDialog.h"
 
 
 int main(int argc, char *argv[])
@@ -44,7 +45,17 @@ int main(int argc, char *argv[])
     std::vector<int> b(3);
     ImageWrapper imageWrapper(b, "/home/pselab/Bilder/landscape-1843128_960_720.jpg");
     std::vector<std::pair<PlatformInfo, float>> plat;
-    PerformanceData performanceData(1, 1, plat);
+    PlatformInfo info1("CPU", PlatformType::CPU, "id", 100, 4);
+    PlatformInfo info2("FPGA1", PlatformType::FPGA, "id", 50, 3);
+    PlatformInfo info3("GPU1", PlatformType::GPU, "id", 34, 55);
+    PlatformInfo info4("GPU2", PlatformType::GPU, "id", 99, 211);
+
+    plat.push_back(std::pair<PlatformInfo, float>(info1, 20));
+    plat.push_back(std::pair<PlatformInfo, float>(info2, 10));
+    plat.push_back(std::pair<PlatformInfo, float>(info3, 1));
+    plat.push_back(std::pair<PlatformInfo, float>(info4, 69));
+
+    PerformanceData performanceData(15, 999, plat);
     ImageResult imgResult1(results, imageWrapper);
     ImageResult imgResult2(results, imageWrapper);
     ImageResult imgResult3(results, imageWrapper);
@@ -62,9 +73,11 @@ int main(int argc, char *argv[])
 
     ClassificationResult classificationResult(imgResults, net, performanceData);
 
-    resultWidget->displayResults(classificationResult);
-    resultWidget->show();
+    //resultWidget->displayResults(classificationResult);
+    //resultWidget->show();
 
-
+    DetailDialog* d = new DetailDialog();
+    d->insertDetails(&classificationResult);
+    d->show();
     return a.exec();
 }
