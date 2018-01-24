@@ -17,8 +17,8 @@ void CpuResponseNormalizationFunction::execute(const DataWrapper &input,
     int numRows = input.getDimensions().data()[1];
     int numCols = input.getDimensions().data()[2];
 
-    auto i = input.getDataArray();
-    auto o = output.getDataArray();
+    auto in = input.getDataArray();
+    auto out = output.getDataArray();
 
     for (int plane = 0; plane < numPlanes; plane++) {
         for (int row = 0; row < numRows; row++) {
@@ -32,17 +32,17 @@ void CpuResponseNormalizationFunction::execute(const DataWrapper &input,
                     }
 
                     int index = (plane + r)*numCols*numRows + row*numCols + col;
-                    float data = i[index];
+                    float data = in[index];
                     sum += data*data;
                     // remember input value, so we don't have to compute the index again
                     if (r == 0) {
-                        input = i[index];
+                        input = in[index];
                     }
                 }
                 float result = input / pow((bias + sum * alpha), beta);
                 // store result and advance pointer
-                *o = result;
-                o++;
+                *out = result;
+                out++;
             }
         }
     }
