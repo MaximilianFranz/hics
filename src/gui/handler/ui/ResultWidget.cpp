@@ -22,22 +22,10 @@ void ResultWidget::displayResults(const ClassificationResult &classificationResu
 
         for(unsigned int i = 0; i<results.size(); ++i){
             ImageResult imageResult = results[i];
-            QVBoxLayout* imageLayout = new QVBoxLayout();
-
-            QLabel* filePathLabel = new QLabel(this);
-
-            QString filePath = QString::fromStdString(imageResult.getImagePath());
-            filePathLabel->setText(shortLink(imageResult.getImagePath()));
-            imageLayout->addWidget(filePathLabel);
-
-            QLabel* imageLabel = new QLabel(this);
-            QImage image(filePath);
-            imageLabel->setPixmap(QPixmap::fromImage(image).scaled(227, 227, Qt::KeepAspectRatio));
-            imageLayout->addWidget(imageLabel);
+            QVBoxLayout* imageLayout = createImageLayout(imageResult.getImagePath());
 
             std::vector<std::pair<std::string, float>> result = imageResult.getResults();
             result = sortVector(result);
-
 
             QVBoxLayout* resultLayout = createResultLayout(result);
 
@@ -60,6 +48,24 @@ void ResultWidget::displayResults(const ClassificationResult &classificationResu
     }
 
     ui->imagesQVBoxLayout->insertStretch(-1);
+}
+
+QVBoxLayout* ResultWidget::createImageLayout(const std::string &filePath){
+    QVBoxLayout* imageLayout = new QVBoxLayout();
+
+    QLabel* filePathLabel = new QLabel(this);
+
+    //TODO maybe QString attribute unnecessary (auto cast std::string to QString?)
+    QString q_filePath = QString::fromStdString(filePath);
+    filePathLabel->setText(shortLink(filePath));
+    imageLayout->addWidget(filePathLabel);
+
+    QLabel* imageLabel = new QLabel(this);
+    QImage image(q_filePath);
+    imageLabel->setPixmap(QPixmap::fromImage(image).scaled(227, 227, Qt::KeepAspectRatio));
+    imageLayout->addWidget(imageLabel);
+
+    return imageLayout;
 }
 
 QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result) {

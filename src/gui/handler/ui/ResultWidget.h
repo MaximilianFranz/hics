@@ -35,5 +35,7 @@ private:
 
     QString shortLink(const std::string &link);
 
+    QVBoxLayout* createImageLayout(const std::string &filePath);
+
     QVBoxLayout* createResultLayout(std::vector<std::pair<std::string, float>> &result);
 };
