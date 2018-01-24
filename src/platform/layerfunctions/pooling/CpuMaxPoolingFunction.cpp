@@ -21,14 +21,14 @@ void CpuMaxPoolingFunction::execute(const DataWrapper &input,
 
     int numPlanes = input.getDimensions()[0];
     int numRows = input.getDimensions()[1];
-    int numColumns = input.getDimensions()[2];
+    int numCols = input.getDimensions()[2];
 
     auto i = input.getDataArray();
     auto o = output.getDataArray();
 
     for (int plane = 0; plane < numPlanes; plane++) {
         for (int inRow = -zeroPadding; inRow < numRows+zeroPadding-filterSize+1; inRow += stride) {
-            for (int inCol = -zeroPadding; inCol < numColumns+zeroPadding-filterSize+1; inCol += stride) {
+            for (int inCol = -zeroPadding; inCol < numCols+zeroPadding-filterSize+1; inCol += stride) {
                 float max = 0;
 
                 for (int fRow = 0; fRow < filterSize; fRow++) {
@@ -38,13 +38,13 @@ void CpuMaxPoolingFunction::execute(const DataWrapper &input,
                     }
 
                     for (int fCol = 0; fCol < filterSize; fCol++) {
-                        if (inCol + fCol < 0 || inCol + fCol >= numColumns) {
+                        if (inCol + fCol < 0 || inCol + fCol >= numCols) {
                             // skip regions which are outside of the image, the values are 0 and don't change max
                             continue;
                         }
 
                         // calculate index
-                        int index = (inCol + fCol) + (inRow + fRow)*numColumns + plane*numColumns*numRows;
+                        int index = (inCol + fCol) + (inRow + fRow)*numCols + plane*numCols*numRows;
                         float cur = i[index];
                         if (cur > max)
                             max = cur;
