@@ -6,20 +6,21 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->setCentralWidget(&mainWindowQStackedWidget);
+    mainWindowQStackedWidget = new QStackedWidget(this);
+    this->setCentralWidget(mainWindowQStackedWidget);
     this->show();
 }
 
-void MainWindow::addWidgetToStack(QWidget &widget){
-    mainWindowQStackedWidget.addWidget(&widget);
+void MainWindow::addWidgetToStack(QWidget* widget){
+    mainWindowQStackedWidget->addWidget(widget);
 }
 
-void MainWindow::setCurrentWidget(QWidget &widget){
-    int index = mainWindowQStackedWidget.indexOf(&widget);
+void MainWindow::setCurrentWidget(QWidget* widget){
+    int index = mainWindowQStackedWidget->indexOf(widget);
 
     //Check if widget is inside mainWindowQStackedWidget
     if(index >= 0){
-        mainWindowQStackedWidget.setCurrentWidget(&widget);
+        mainWindowQStackedWidget->setCurrentWidget(widget);
     }
 }
 

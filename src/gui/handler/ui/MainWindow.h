@@ -30,17 +30,17 @@ public:
      * @brief addWidgetToStack adds the given widget to mainWindowQStackedWidget.
      * @param widget is the to be added widget
      */
-    void addWidgetToStack(QWidget &widget);
+    void addWidgetToStack(QWidget* widget);
 
     /**
      * @brief setCurrentWidget sets the given widget to the currently displayed one in mainWindowQStackedWidget, if it
      *        is stored in it.
      * @param widget is the to be displayed widget.
      */
-    void setCurrentWidget(QWidget &widget);
+    void setCurrentWidget(QWidget* widget);
 
 private:
     Ui::MainWindow *ui;
 
-    QStackedWidget mainWindowQStackedWidget;
+    QStackedWidget* mainWindowQStackedWidget;
 };

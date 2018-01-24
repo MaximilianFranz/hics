@@ -46,9 +46,9 @@ private:
 
      //TODO properly initialize the commented out in the constructor.
 
-    MainWindow mainWindow;
-    StartWidget startWidget;
-    ResultWidget resultWidget;
+    MainWindow* mainWindow;
+    StartWidget* startWidget;
+    ResultWidget* resultWidget;
 
     //DetailDialogHandler detailDialogHandler;
 
