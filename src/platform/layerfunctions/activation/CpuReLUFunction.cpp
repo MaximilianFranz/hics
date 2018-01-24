@@ -7,13 +7,11 @@
 #include "CpuReLUFunction.h"
 
 void CpuReLUFunction::execute(const DataWrapper &input, DataWrapper &output) {
-    auto *in = input.getDataArray();
+    auto in = input.getDataArray();
+    auto out = output.getDataArray();
     auto n = input.getNumElements();
-    auto *out = output.getDataArray();
 
     for (int i = 0; i < n; i++) {
-        *out = std::max(0.f, *in);
-        out++;
-        in++;
+        out[i] = std::max(0.f, in[i]);
     }
 }
