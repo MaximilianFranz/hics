@@ -142,7 +142,7 @@ std::vector<float> getDataFromFile(std::string path) {
     return data;
 }
 
-TEST_CASE("Realdata Convolution Test") {
+TEST_CASE("Realdata Test") {
     std::string img_data_path = "../../../tests/resources/img_data.txt";
     std::string conv1_bias_path = "../../../tests/resources/conv1_bias.txt";
     std::string conv1_weights_path = "../../../tests/resources/conv1_weight.txt";
@@ -161,8 +161,8 @@ TEST_CASE("Realdata Convolution Test") {
     std::vector<int> outDim = {96, 55, 55};
 
     DataWrapper in(inDim, image);
-    DataWrapper out_real(outDim);
-    DataWrapper out_expected(outDim, result);
+    DataWrapper conv1_out(outDim);
+    DataWrapper conv1_expected(outDim, result);
 
     PlatformManager &pm = PlatformManager::getInstance();
     REQUIRE(pm.getPlatforms().size() >= 1);
@@ -170,18 +170,79 @@ TEST_CASE("Realdata Convolution Test") {
     Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
 
+    /* Convolution */
     ConvolutionFunction *f = p->createConvolutionFunction();
     REQUIRE(f != nullptr);
 
-    f->execute(in, out_real, weightsWrapper, 4, 11, 96, 0);
+    f->execute(in, conv1_out, weightsWrapper, 4, 11, 96, 0);
     // out_real evaluates to 0 from i = 4 onwards
 
     for (int i = 0; i < 55*55; i++) { // Test the first filter fully
-        REQUIRE(abs(out_real.getData()[i] - out_expected.getData()[i]) < 0.01);
+        REQUIRE(abs(conv1_out.getData()[i] - conv1_expected.getData()[i]) < 0.01);
     }
 
     for (int i = 0; i < 55*55*96; i += 2000) { // Pick one or two samples for each filter
-        REQUIRE(abs(out_real.getData()[i] - out_expected.getData()[i]) < 0.01);
+        REQUIRE(abs(conv1_out.getData()[i] - conv1_expected.getData()[i]) < 0.01);
+    }
+
+
+    /* ReLU Activation */
+    in = conv1_out;
+    DataWrapper relu1_out(outDim);
+
+    ActivationFunction *relu = p->createActivationFunction(LayerType::ACTIVATION_RELU);
+    relu->execute(in, relu1_out);
+
+    std::string relu1_result_path = "../../../tests/resources/relu1_data_out.txt";
+    std::vector<float> relu1_result = getDataFromFile(relu1_result_path);
+
+    DataWrapper relu1_expected(outDim, relu1_result);
+    for (int i = 0; i < 55*55; i ++) { // Test the first layer fully
+        REQUIRE(abs(relu1_out.getData()[i] - relu1_expected.getData()[i]) < 0.01);
+    }
+
+    for (int i = 0; i < 55*55*96; i += 2000) { // Pick one or two samples for each filter
+        REQUIRE(abs(relu1_out.getData()[i] - relu1_expected.getData()[i]) < 0.01);
+    }
+
+
+    /* Response Normalization */
+    in = relu1_out;
+    DataWrapper lrn1_out(outDim);
+
+    ResponseNormalizationFunction *lrn = p->createResponseNormalizationFunction(LayerType::NORMALIZATION_LOCALRESPONSE);
+    lrn->execute(in, lrn1_out, 2, 0.00002, 0.75, 1.0);
+
+    std::string lrn1_result_path = "../../../tests/resources/lrn1_data_out.txt";
+    std::vector<float> lrn1_result = getDataFromFile(lrn1_result_path);
+
+    DataWrapper lrn1_expected(outDim, lrn1_result);
+    for (int i = 0; i < 55*55; i ++) { // Test the first layer fully
+        REQUIRE(abs(lrn1_out.getData()[i] - lrn1_expected.getData()[i]) < 0.01);
+    }
+
+    for (int i = 0; i < 55*55*96; i += 2000) { // Pick one or two samples for each filter
+        REQUIRE(abs(lrn1_out.getData()[i] - lrn1_expected.getData()[i]) < 0.01);
+    }
+
+
+    /* Maxpooling */
+    in = lrn1_out;
+    DataWrapper maxpool1_out({96, 27, 27});
+    PoolingFunction *maxpool = p->createPoolingFunction(LayerType::POOLING_MAX);
+    maxpool->execute(in, maxpool1_out, 2, 3, 0);
+
+    std::string maxpool1_result_path = "../../../tests/resources/maxpool_data_out.txt";
+    std::vector<float> maxpool1_result = getDataFromFile(maxpool1_result_path);
+
+    DataWrapper maxpool1_expected({96, 27, 27}, maxpool1_result);
+    for (int i = 0; i < 27*27; i ++) { // Test the first layer fully
+        REQUIRE(abs(maxpool1_out.getData()[i] - maxpool1_expected.getData()[i]) < 0.01);
+
+    }
+
+    for (int i = 0; i < 27*27*96; i += 400) { // Pick one or two samples for each filter
+        REQUIRE(abs(maxpool1_out.getData()[i] - maxpool1_expected.getData()[i]) < 0.01);
     }
 
 }
