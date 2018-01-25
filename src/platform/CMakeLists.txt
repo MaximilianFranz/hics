@@ -19,3 +19,4 @@ set(SOURCE_FILES
         layerfunctions/CpuFullyConnectedFunction.h layerfunctions/CpuFullyConnectedFunction.cpp
         util/im2col.cpp util/im2col.h util/Dtype.cpp util/Dtype.h)
 add_library(platform STATIC ${SOURCE_FILES})
+target_link_libraries(platform netbuilder)
