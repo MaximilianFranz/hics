@@ -7,6 +7,7 @@ ResultWidget::ResultWidget(QWidget *parent) :
     ui(new Ui::ResultWidget)
 {
     ui->setupUi(this);
+    ui->imagesQScrollArea->setWidgetResizable(true);
     ui->imagesQWidgetContainer->setLayout(ui->imagesQVBoxLayout);
 }
 

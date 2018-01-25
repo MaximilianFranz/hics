@@ -73,11 +73,11 @@ int main(int argc, char *argv[])
 
     ClassificationResult classificationResult(imgResults, net, performanceData);
 
-    //resultWidget->displayResults(classificationResult);
-    //resultWidget->show();
+    resultWidget->displayResults(classificationResult);
+    resultWidget->show();
 
     DetailDialog* d = new DetailDialog();
     d->insertDetails(&classificationResult);
-    d->show();
+    //d->show();
     return a.exec();
 }
