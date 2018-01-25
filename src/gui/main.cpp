@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
     ResultWidget* resultWidget = new ResultWidget();
 
-    NetInfo net("AlexNet", 224);
+    NetInfo net("AlexNet", 227, "alexnet");
 //    PlatformInfo platform("CPU", PlatformType::CPU, "id", 100, 4);
 //    OperationMode mode(HighPower);
 

@@ -9,7 +9,7 @@ typedef std::pair<std::string, float> label;
 const float eps = std::numeric_limits<float>::epsilon();
 
 SCENARIO("aggregateResult for trivial test case") {
-    NetInfo net = NetInfo("AlexNet", 3);
+    NetInfo net = NetInfo("AlexNet", 3, "alexnet");
     PlatformInfo plat = PlatformInfo();
 
     std::vector<std::pair<PlatformInfo, float>> usage;
