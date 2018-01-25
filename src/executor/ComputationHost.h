@@ -14,6 +14,8 @@
  * Defines the ComputationHost interface
  */
 class ComputationHost {
+protected:
+    std::string name;
 public:
     // Must have pure virtual methods
     /**
@@ -44,5 +46,11 @@ public:
      */
     virtual std::vector<NetInfo*> queryNets() = 0;
 
-
+    /**
+     * Getter for name
+     * @return name of the platform
+     */
+    virtual std::string getName() {
+        return name;
+    }
 };

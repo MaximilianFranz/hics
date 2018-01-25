@@ -8,15 +8,15 @@
 #include <NeuralNet.h>
 #include <NetBuilder.h>
 #include <SimpleNetIterator.h>
-#include "ImageResult.h"
 
+#include "ImageResult.h"
 #include "ComputationHost.h"
 #include "PlatformPlacer.h"
 #include "Interpreter.h"
 
 class PlatformPlacer;
 
-class Executor : ComputationHost{
+class Executor : public ComputationHost {
 private:
     NeuralNet *net;
     OperationMode currentMode;
@@ -25,6 +25,7 @@ private:
     NetBuilder *builder;
     PlatformPlacer *placer;
     Interpreter *interpreter;
+    std::string name;
 
 
 
@@ -91,4 +92,10 @@ public:
     std::vector<NetInfo*> queryNets() override;
 
     DataWrapper *getImageData(ImageWrapper *imageWrapper);
+
+    Executor(std::string name) : name(name){};
+
+    std::string getName() {
+        return name;
+    }
 };
