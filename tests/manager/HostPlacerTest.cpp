@@ -4,13 +4,6 @@
 
 #include "HostPlacerTest.h"
 
-struct Performance {
-    int power;
-    int time;
-
-    Performance(int p, int t) : power(p), time(t) {};
-};
-
 SCENARIO("Read values from JSON") {
     HostPlacer placer = HostPlacer();
 
@@ -19,8 +12,8 @@ SCENARIO("Read values from JSON") {
 
     REQUIRE(localHost->getName() == "local");
 
-    HostPlacer::Performance localPerformance = placer.readComputationHostInfo(*localHost);
-    HostPlacer::Performance fpgaPerformance = placer.readComputationHostInfo(*fpgaHost);
+    HostPlacer::Performance localPerformance = HostPlacer::readComputationHostInfo(*localHost);
+    HostPlacer::Performance fpgaPerformance = HostPlacer::readComputationHostInfo(*fpgaHost);
 
     REQUIRE(localPerformance.powerConsumption == 1500);
     REQUIRE(localPerformance.timeConsumption == 500);
