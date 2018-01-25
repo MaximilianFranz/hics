@@ -6,6 +6,7 @@
 
 
 #include <vector>
+#include <platforms/CpuPlatform.h>
 #include "../neuralnet/NeuralNet.h"
 #include "../manager/OperationMode.h"
 #include "../platform/PlatformInfo.h"
@@ -14,11 +15,29 @@
 
 class PlatformPlacer {
 private:
-    OperationMode currentMode;
-    std::vector<PlatformInfo> currentPlatforms;
-    PlatformManager* platformManager;
-    NeuralNet *net;
+    OperationMode currentMode;          //! The OperationMode applied to the last configuration
+    std::vector<PlatformInfo*> currentPlatformsInfos; //! The selected platforms infos in the last configurations
+    std::vector<Platform*> currentPlatforms;  //! The corresponding platforms used in the last configuration
+
+    PlatformManager* platformManager;   //! The platformManager is the access point to get available platforms
+    NeuralNet *net;                     //! the net that has been configured in the last excectuion
+
+    /**
+     * Configures all Layers in the NeuralNet with default functions from CpuPlatform
+     *
+     * @param pLayer
+     */
+    void default_setLayerFunctionForLayer(Layer *pLayer);
+
+    /**
+     *
+     * @return the CPU Platform for testing purposes
+     */
+    Platform * getDefaultPlatform();
 public:
+    /**
+     * Default constructor ensuring that required dependencies are initialized.
+     */
     PlatformPlacer();
 
     /**
@@ -31,7 +50,7 @@ public:
      * @param mode chosen OperationMode to consider during placement
      * @param platforms chosen platforms to place computations on
      */
-    void placeComputations(NeuralNet* net, OperationMode mode, std::vector<PlatformInfo*> platforms);
+    void placeComputations(NeuralNet* net, OperationMode mode, std::vector<PlatformInfo*> platformInfos);
 
     /**
      * \brief returns PlatformInfo for all Platforms currently available
