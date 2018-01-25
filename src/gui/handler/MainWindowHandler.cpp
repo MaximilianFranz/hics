@@ -51,6 +51,8 @@ void MainWindowHandler::processClassificationResult(const ClassificationResult &
 }
 
 void MainWindowHandler::processReturnQPushButton(){
+    //TODO do this also when resultWidget gets closed
+    //TODO reset detailDialog
     mainWindow->setCurrentWidget(startWidget);
     ResultWidget* temp = resultWidget;
     resultWidget = new ResultWidget();

@@ -57,26 +57,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QFrame" name="attachedQFrame">
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QLabel" name="attachedCaptionQLabel">
-          <property name="text">
-           <string>Attached devices/platforms:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="attachedQLabel">
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
       <widget class="QFrame" name="platformUsageQFrame">
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>

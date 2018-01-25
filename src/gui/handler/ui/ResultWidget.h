@@ -42,14 +42,35 @@ public:
      */
     explicit ResultWidget(QWidget *parent = 0);
 
+    /**
+     * @brief Destructor for ResultWidget
+     *
+     * Delets the ui and all its child widgets, as well as all allocated memory in ResultWidget.
+     */
     ~ResultWidget();
 
+    /**
+     * @brief displayResults() takes a ClassificationResult and displays its results in the ResultWidget
+     *
+     * displayResults() displays the images and their file path together with its classification results. If the results
+     * are aggregated, only the images and their file paths are displayed in the scroll widget and next to it the
+     * aggregated result.
+     * If the results are not aggregated, every image gets displayed together with its result in the scroll widget.
+     *
+     * @param classificationResult has the classification results
+     */
     void displayResults(const ClassificationResult &classificationResult);
 
-    std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
-
+    /**
+     * @brief Returns the QPushButton used to display the details
+     * @return the detailsQPushButton
+     */
     QPushButton* getDetailsQPushButton();
 
+    /**
+     * @brief Returns the QPushButton used to return to the starting page of the GUI
+     * @return the returnQPushButton
+     */
     QPushButton* getReturnQPushButton();
 
 private:
@@ -61,4 +82,6 @@ private:
     QVBoxLayout* createImageLayout(const std::string &filePath);
 
     QVBoxLayout* createResultLayout(std::vector<std::pair<std::string, float>> &result);
+
+    std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
 };
