@@ -5,10 +5,6 @@
 #include <iostream>
 #include "HostPlacer.h"
 
-bool jsonComparator(const json& first, const json& second) {
-    first["name"] == second["name"];
-}
-
 
 HostPlacer::Performance HostPlacer::readComputationHostInfo(ComputationHost& c) {
     std::string jsonStr = StringLoader::getStringFromFile("../../../src/manager/computationHosts.json");
@@ -115,7 +111,48 @@ HostPlacer::placeHighPower(std::vector<std::pair<ComputationHost *, HostPlacer::
 std::vector<std::pair<ComputationHost *, int>> &
 HostPlacer::placeEnergyEfficient(std::vector<std::pair<ComputationHost *, HostPlacer::Performance>> &hosts,
                                  int numOfImg) {
-    //return <#initializer#>;
+
+    //init vector with jobStack for each host
+    std::vector<int> jobStacks = std::vector<int>();
+    auto distribution = new std::vector<std::pair<ComputationHost *, int>>;
+
+    for (auto host : hosts) {
+        jobStacks.push_back(0);
+        distribution->emplace_back(host.first, 0);
+    }
+
+    int currentTimeMax = 0;
+    for (int i = 0; i < numOfImg; i++) {
+        int currentTime = 0;
+        int currentCostMin = INT32_MAX;
+        int hostIndex = 0;
+        int minHostIndex = -1;
+        int newStackHeight = 0;
+        ComputationHost *currentMinHost;
+
+        for (auto host : hosts) {
+            currentTime = jobStacks[hostIndex] + host.second.timeConsumption;
+            int currentCost = std::max((currentTime - currentTimeMax), 0) * timePriority +
+                    host.second.powerConsumption * powerPriority;
+            if (currentCost < currentCostMin) {
+                currentCostMin = currentCost;
+                minHostIndex = hostIndex;
+                currentMinHost = host.first;
+                newStackHeight = currentTime;
+            }
+            hostIndex++;
+        }
+        jobStacks[minHostIndex] = newStackHeight;
+        currentTimeMax = std::max(currentTimeMax, jobStacks[minHostIndex]);
+
+        //add image to job List
+        std::find_if(distribution->begin(), distribution->end(),
+                     [&currentMinHost](std::pair<ComputationHost *, int> element) {
+                         return element.first->getName() == currentMinHost->getName();
+                     }).operator*().second++;
+    }
+
+    return *distribution;
 }
 
 

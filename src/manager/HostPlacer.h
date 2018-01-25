@@ -35,6 +35,9 @@ private:
             std::vector<std::pair<ComputationHost*, Performance>> &hosts, int numOfImg);
     static std::vector<std::pair<ComputationHost*, int>>& placeEnergyEfficient(
             std::vector<std::pair<ComputationHost*, Performance>> &hosts, int numOfImg);
+
+    static const int timePriority = 2;
+    static const int powerPriority = 1;
 public:
     /**
      * Computes a distribution of tasks for the given ComputationHosts.
