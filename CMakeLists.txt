@@ -11,8 +11,9 @@ if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUC)
 endif ()
 
 find_package(Qt5 COMPONENTS Core Widgets Gui)
-find_package(HDF5 COMPONENTS C)
 
+find_package(HDF5 COMPONENTS C)
+include_directories(${HDF5_INCLUDE_DIRS})
 
 
 #this allows us to use direct includes instead of using relative paths
