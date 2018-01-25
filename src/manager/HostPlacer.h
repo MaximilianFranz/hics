@@ -20,9 +20,7 @@ using json = nlohmann::json;
  */
 class HostPlacer {
 
-private:
 public:
-
     struct Performance {
         int powerConsumption;
         int timeConsumption;
@@ -30,6 +28,14 @@ public:
         Performance(int p, int t);
     };
 
+private:
+    static std::vector<std::pair<ComputationHost*, int>>& placeLowPower(
+            std::vector<std::pair<ComputationHost*, Performance>> &hosts, int numOfImg);
+    static std::vector<std::pair<ComputationHost*, int>>& placeHighPower(
+            std::vector<std::pair<ComputationHost*, Performance>> &hosts, int numOfImg);
+    static std::vector<std::pair<ComputationHost*, int>>& placeEnergyEfficient(
+            std::vector<std::pair<ComputationHost*, Performance>> &hosts, int numOfImg);
+public:
     /**
      * Computes a distribution of tasks for the given ComputationHosts.
      * @param hosts     available computation hosts
@@ -38,7 +44,7 @@ public:
      * @param opMode    operation mode for the classification
      * @return          distribution of images, maps computation hosts to a number of images to classify
      */
-    static std::map<ComputationHost, int> place(std::vector<ComputationHost> &hosts, NetInfo net, int numOfImg,
+    static std::vector<std::pair<ComputationHost*, int>>& place(std::vector<ComputationHost*> &hosts, int numOfImg,
     OperationMode opMode);
 
 
@@ -47,5 +53,5 @@ public:
      * @param c
      * @return pair of integers, containing power and time consumption.
      */
-    Performance readComputationHostInfo(ComputationHost &c);
+    static Performance readComputationHostInfo(ComputationHost& c);
 };
