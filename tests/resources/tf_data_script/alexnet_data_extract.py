@@ -192,7 +192,8 @@ maxpool5 = tf.nn.max_pool(conv5, ksize=[1, k_h, k_w, 1], strides=[1, s_h, s_w, 1
 #fc(4096, name='fc6')
 fc6W = tf.Variable(net_data["fc6"][0])
 fc6b = tf.Variable(net_data["fc6"][1])
-fc6 = tf.nn.relu_layer(tf.reshape(maxpool5, [-1, int(prod(maxpool5.get_shape()[1:]))]), fc6W, fc6b)
+fc6_in = tf.reshape(maxpool5, [-1, int(prod(maxpool5.get_shape()[1:]))])
+fc6 = tf.nn.relu_layer(fc6_in, fc6W, fc6b)
 
 # print(maxpool5.get_shape())
 # print('weight', fc6W.get_shape())
@@ -221,7 +222,7 @@ sess.run(init)
 
 # USE CONV1_IN TO GET CONV OUTPUT WITHOUT RELU APPLIED.
 
-conv_out = sess.run(maxpool1, feed_dict = {x:[im1]})
+conv_out = sess.run(fc6, feed_dict = {x:[im1]})
 # evalR = sess.run(x, feed_dict = {x:[im1,im2]})
 # output = sess.run(prob, feed_dict = {x:[im1]}) #this is the original output of the net for classification
 ################################################################################
@@ -249,53 +250,33 @@ conv_out = sess.run(maxpool1, feed_dict = {x:[im1]})
 # conv1_data = "img_data in order \{rgb_channel, y, x\}: \n"
 conv2_data = ""
 
-z_shape = conv_out.shape[3]
-y_shape = conv_out.shape[2]
 x_shape = conv_out.shape[1]
+print("shape 1: ", x_shape)
 
-for z in range(z_shape):
-    for y in range(y_shape):
-        for x in range(x_shape):
-            conv2_data += str(conv_out[0][x][y][z]) + " "
-
+for x in range(x_shape):
+  conv2_data += str(conv_out[0][x]) + " "
 
 # conv1_file = open("../conv1_data_alexnet.txt", "r+")
 # conv1_file.write(conv1_data)
 # conv1_file.close()
 
-"""
-weights = net_data["conv2"][0]
 
-print("shape x ", weights.shape[0])
-print("shape y ", weights.shape[1])
-print("shape z ", weights.shape[2])
-print("shape kernel ", weights.shape[3])
 
-weights_out = "Weight data for conv1 in [Kernel, z, y, x] \n"
+# weights_out = ""
 
-for kernel in range(weights.shape[3]):
-	for z in range(weights.shape[2]):
-		for y in range(weights.shape[1]):
-			for x in range(weights.shape[0]):
-				weights_out += str(weights[x][y][z][kernel]) + " "
+# for y in range(weights.shape[1]):
+# 	for x in range(weights.shape[0]):
+# 		weights_out += str(weights[x][y]) + " "
 
-weight_file = open("../conv2_weights.txt", "r+")
-weight_file.write(weights_out)
-weight_file.close()
+# weight_file = open("../fc1_weights.txt", "r+")
+# weight_file.write(weights_out)
+# weight_file.close()
 
-bias = net_data["conv2"][1]
-bias_out = ""
 
-for i in range(bias.shape[0]):
-	bias_out += str(bias[i]) + " "
-
-bias_file = open("../conv2_bias.txt", "r+")
-bias_file.write(bias_out)
+bias_file = open("../fc1_data_out.txt", "r+")
+bias_file.write(conv2_data)
 bias_file.close()
-"""
-conv2_file = open("../maxpool_data_out.txt", "r+")
-conv2_file.write(conv2_data)
-conv2_file.close() 
+
 
 
 
