@@ -19,7 +19,7 @@ HostPlacer::Performance HostPlacer::readComputationHostInfo(ComputationHost& c) 
         if (compHostIt["name"] == c.getName()) {
             int power = compHostIt["power"];
             int time = compHostIt["time"];
-            return Performance(power, time);
+            return {power, time};
         }
     }
     //TODO: real execption
@@ -51,6 +51,7 @@ HostPlacer::place(std::vector<ComputationHost*> &hosts, int numOfImg, OperationM
     }
 }
 
+//TODO: Case: Two or more Hosts have the least amaount of power usage
 std::vector<std::pair<ComputationHost *, int>> &
 HostPlacer::placeLowPower(std::vector<std::pair<ComputationHost *, HostPlacer::Performance>> &hosts, int numOfImg) {
     //Find the Host with the least power consumption
@@ -70,9 +71,45 @@ HostPlacer::placeLowPower(std::vector<std::pair<ComputationHost *, HostPlacer::P
     return *distribution;
 }
 
+
 std::vector<std::pair<ComputationHost *, int>> &
 HostPlacer::placeHighPower(std::vector<std::pair<ComputationHost *, HostPlacer::Performance>> &hosts, int numOfImg) {
-    //return <#initializer#>;
+
+    //init vector with jobStack for each host
+    std::vector<int> jobStacks = std::vector<int>();
+    auto distribution = new std::vector<std::pair<ComputationHost *, int>>;
+
+    for (auto host : hosts) {
+        jobStacks.push_back(0);
+        distribution->emplace_back(host.first, 0);
+    }
+
+    for (int i = 0; i < numOfImg; i++) {
+        int currentMin = INT32_MAX;
+        ComputationHost *currentMinHost;
+        int hostIndex = 0;
+        int minHostIndex = -1;
+
+        //Find the minimum jobStack for the next image
+        for (auto currentHost : hosts) {
+            int estimatedTime = jobStacks[hostIndex] + currentHost.second.timeConsumption;
+            if (estimatedTime < currentMin) {
+                currentMinHost = currentHost.first;
+                currentMin = estimatedTime;
+                minHostIndex = hostIndex;
+            }
+
+            hostIndex++;
+        }
+        jobStacks[minHostIndex] = currentMin;
+
+        //add image to job List
+        std::find_if(distribution->begin(), distribution->end(),
+                     [&currentMinHost](std::pair<ComputationHost *, int> element) {
+                         return element.first->getName() == currentMinHost->getName();
+                     }).operator*().second++;
+    }
+    return *distribution;
 }
 
 std::vector<std::pair<ComputationHost *, int>> &
