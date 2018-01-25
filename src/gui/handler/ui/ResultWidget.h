@@ -84,4 +84,6 @@ private:
     QVBoxLayout* createResultLayout(std::vector<std::pair<std::string, float>> &result);
 
     std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
+
+    void clearLayout(QLayout *layout);
 };

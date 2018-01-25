@@ -15,6 +15,11 @@ ResultWidget::ResultWidget(QWidget *parent) :
 ResultWidget::~ResultWidget()
 {
     delete ui;
+    clearLayout(ui->imagesQVBoxLayout);
+    if(ui->mainQHBoxLayout->itemAt(2)->layout()){
+        clearLayout(ui->mainQHBoxLayout->itemAt(2)->layout());
+        delete ui->mainQHBoxLayout->itemAt(2);
+    }
 }
 
 void ResultWidget::displayResults(const ClassificationResult &classificationResult){
@@ -105,7 +110,7 @@ QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string,
 
     //Display the Top result in red and above the others
     if(size != 0){
-        QLabel* topResult = new QLabel();
+        QLabel* topResult = new QLabel(this);
         topResult->setStyleSheet("QLabel { color : red; }");
         topResult->setText(QString::fromStdString(result.at(0).first));
         layout->addWidget(topResult);
@@ -164,6 +169,21 @@ std::vector<std::pair<std::string, float>> ResultWidget::sortVector(std::vector<
     }
 
     return vector;
+}
+
+void ResultWidget::clearLayout(QLayout *layout){
+    QLayoutItem* item;
+
+    //Removes every item inside the layout and delete it
+    while((item = layout->takeAt(0))){
+        if (item->layout()) {
+            clearLayout(item->layout());
+            delete item->layout();
+        }
+        if(item->widget()){
+            delete item->widget();
+        }
+    }
 }
 
 QPushButton* ResultWidget::getDetailsQPushButton(){

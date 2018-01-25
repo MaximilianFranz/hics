@@ -76,6 +76,8 @@ int main(int argc, char *argv[])
     resultWidget->displayResults(classificationResult);
     resultWidget->show();
 
+    delete resultWidget;
+
     DetailDialog* d = new DetailDialog();
     d->insertDetails(&classificationResult);
     //d->show();
