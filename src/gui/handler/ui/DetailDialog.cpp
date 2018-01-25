@@ -9,14 +9,12 @@ DetailDialog::DetailDialog(QWidget *parent) :
 }
 
 void DetailDialog::insertDetails(const ClassificationResult* result){
-    PerformanceData performance = result->getPerformance();
-
     //Display the computation time.
-    ui->computationTimeQLabel->setText(QString::number(performance.getComputationTime()));
+    ui->computationTimeQLabel->setText(QString::number(result->getPerformance().getComputationTime()));
 
     //Display the power consumption
-    ui->powerConsumptionQLabel->setText(QString::number(performance.getPowerConsumption()));
-    std::vector<std::pair<PlatformInfo, float>> platformUsage = performance.getPlatformUsage();
+    ui->powerConsumptionQLabel->setText(QString::number(result->getPerformance().getPowerConsumption()));
+    std::vector<std::pair<PlatformInfo, float>> platformUsage = result->getPerformance().getPlatformUsage();
 
     //Add the used platforms and their usage to a QString
     QString platformText = "";
@@ -32,10 +30,7 @@ void DetailDialog::insertDetails(const ClassificationResult* result){
 
     //Display the platforms and their usage
     ui->platformUsageQLabel->setText(platformText);
-
-    //TODO add attached Platforms
 }
-
 
 DetailDialog::~DetailDialog()
 {
