@@ -5,8 +5,6 @@
 #include <loader/LabelLoader.h>
 #include <loader/weightloader/AlexNetWeightLoader.h>
 #include "NetBuilder.h"
-#include "../NotImplementedException.h"
-
 
 NeuralNet* NetBuilder::buildNeuralNet(NetInfo netInfo) {
     // Use static path for now

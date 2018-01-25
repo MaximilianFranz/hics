@@ -2,7 +2,7 @@
   "name": "AlexNet - 8 Layer Convolutional Neural Net",
   "identifier": "alexnet",
   "numSemanticLayers": 8,
-  "requiredDimension" : [7,227,227],
+  "requiredDimension" : [3,227,227],
   "branched" : false,
   "layers": [
     {
@@ -112,8 +112,7 @@
     },
     {
       "layerIndex": 15,
-      "layerType": "pooling",
-      "method": "maxpooling",
+      "layerType": "maxpooling",
       "filterSize": 3,
       "stride": 2,
       "padding": 0
