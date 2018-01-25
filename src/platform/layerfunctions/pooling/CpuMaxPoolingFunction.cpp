@@ -21,8 +21,8 @@ void CpuMaxPoolingFunction::execute(const DataWrapper &input,
     int numRows = input.getDimensions()[1];
     int numCols = input.getDimensions()[2];
 
-    auto i = input.getDataArray();
-    auto o = output.getDataArray();
+    auto in = input.getDataArray();
+    auto out = output.getDataArray();
 
     for (int plane = 0; plane < numPlanes; plane++) {
         for (int inRow = -zeroPadding; inRow < numRows+zeroPadding-filterSize+1; inRow += stride) {
@@ -43,15 +43,15 @@ void CpuMaxPoolingFunction::execute(const DataWrapper &input,
 
                         // calculate index
                         int index = (inCol + fCol) + (inRow + fRow)*numCols + plane*numCols*numRows;
-                        float cur = i[index];
+                        float cur = in[index];
                         if (cur > max)
                             max = cur;
 
                     }
                 }
                 // store result and advance pointer
-                *o = max;
-                o++;
+                *out = max;
+                out++;
 
             }
         }

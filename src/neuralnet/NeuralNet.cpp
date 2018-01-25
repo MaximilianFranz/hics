@@ -38,6 +38,7 @@ bool NeuralNet::isPlacementComplete() {
             return false;
         }
     }
+    return true;
 }
 
 bool NeuralNet::verifyConsistency() {
