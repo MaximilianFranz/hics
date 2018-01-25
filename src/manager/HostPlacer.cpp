@@ -34,7 +34,7 @@ HostPlacer::place(std::vector<ComputationHost*> &hosts, int numOfImg, OperationM
     //Read performance of every host from JSON
     for (auto host : hosts) {
         Performance temp = readComputationHostInfo(*host);
-        hostPerformance.emplace_back(host, temp);
+        hostPerformance.emplace_back(std::pair<ComputationHost *, HostPlacer::Performance>(host, temp));
     }
 
     //Select algorithm to calculate distribution according to operation mode
@@ -60,13 +60,14 @@ HostPlacer::placeLowPower(std::vector<std::pair<ComputationHost *, HostPlacer::P
                                             return left.second.powerConsumption < right.second.powerConsumption;
                                         });
     //Give him all images
-    std::vector<std::pair<ComputationHost *, int>> distribution;
-    distribution.emplace_back(lowest.operator*().first, numOfImg);
+    auto *distribution = new std::vector<std::pair<ComputationHost *, int>>();
+    (*distribution).emplace_back(std::pair<ComputationHost *, int>(lowest.operator*().first, numOfImg));
     for (auto hostIt : hosts) {
         if (hostIt.first != lowest.operator*().first) {
-            distribution.emplace_back(hostIt.first, 0);
+            (*distribution).emplace_back(hostIt.first, 0);
         }
     }
+    return *distribution;
 }
 
 std::vector<std::pair<ComputationHost *, int>> &
