@@ -12,6 +12,7 @@
 #include <wrapper/DataWrapper.h>
 
 #include <PlatformManager.h>
+#include <loader/weightloader/AlexNetWeightLoader.h>
 
 #include "PlatformTest.h"
 
@@ -339,4 +340,57 @@ TEST_CASE("Softmax test") {
         sum += output.getData()[i];
     }
     REQUIRE(std::abs(sum - 1.0) < eps);
+}
+
+TEST_CASE("FullyConnected") {
+//    std::string fc1_in = "../../../tests/resources/fc1_data_in.txt";
+//    std::string fc1_out = "../../../tests/resources/fc1_data_out.txt";
+//    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+//
+//    std::vector<float> result = getDataFromFile(fc1_out);
+//    std::vector<float> input = getDataFromFile(fc1_in);
+//
+//    std::vector<int> inDim = {9216};
+//    std::vector<int> outDim = {4098};
+
+
+    std::vector<float> easy_in = {1, 2, 3, 4};
+    std::vector<float> easy_weights = {1, 1, 1, 1,
+                                       2, 2, 2, 2,
+                                       3, 3, 3, 3,
+                                       4, 4, 4 ,4,
+                                        5, 5, 5, 5};
+    std::vector<float> easy_result = {10.1, 20.2, 30.3, 40.4, 50.5};
+
+
+
+    PlatformManager &pm = PlatformManager::getInstance();
+    REQUIRE(pm.getPlatforms().size() >= 1);
+
+    Platform *p = pm.getPlatforms()[0];
+    REQUIRE(p != nullptr);
+
+    FullyConnectedFunction *fc = p->createFullyConnectedFunction();
+    REQUIRE(fc != nullptr);
+
+//    ActivationFunction *relu = p->createActivationFunction(LayerType::ACTIVATION_RELU);
+//    REQUIRE(relu != nullptr);
+
+//    AlexNetWeightLoader loader(weightspath);
+//    WeightWrapper fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_1); //TODO: Change after merge to new enum!
+
+    DataWrapper in({4}, easy_in);
+    DataWrapper out_fc({5});
+    std::vector<int> biasDim = {5};
+    std::vector<int> weightDim = {4, 5};
+    std::vector<float> bias = {0.1, 0.2, 0.3, 0.4, 0.5};
+    WeightWrapper easy_w(weightDim, easy_weights, bias , biasDim);
+
+    fc->execute(in,out_fc,easy_w);
+    for (int i = 0; i < 5; i++) {
+        REQUIRE(out_fc.getData().at(i) == easy_result.at(i));
+    }
+
+
+
 }
