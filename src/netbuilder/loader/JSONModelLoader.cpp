@@ -24,7 +24,7 @@ string JSONModelLoader::getNetWorkID() {
 }
 
 int JSONModelLoader::getRequiredDimension() {
-    return model["requiredDimension"];
+    return model["requiredDimension"][1];
 }
 
 string JSONModelLoader::getLayerTypeByIndex(int index) {
@@ -74,4 +74,22 @@ LayerConstructionParams JSONModelLoader::getLayerConstructionParamsByIndex(int i
 
 json JSONModelLoader::getLayerJSON(int index) {
     return layers[index];
+}
+
+bool JSONModelLoader::isValid() {
+    if (model.count("name") == 0) {
+        return false;
+    }
+    else if (model.count("identifier") == 0) {
+        return false;
+    }
+    else if (model.count("requiredDimension") == 0) {
+        return false;
+    }
+    else if (model.count("layers") == 0) {
+        return false;
+    }
+    else {
+        return true;
+    }
 }

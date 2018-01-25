@@ -13,14 +13,15 @@ FullyConnectedLayer::FullyConnectedLayer(std::vector<int> inputDimensions) {
 
 FullyConnectedLayer::FullyConnectedLayer(std::vector<int> inputDimensions, WeightWrapper *weights) {
     this->inputDimensions = inputDimensions;
-    this->outputDimensions = calcOutputDimensions();
     this->weights = weights;
+    this->outputDimensions = calcOutputDimensions();
     this->type = FULLYCONNECTED;
 }
 
-//TODO: Implement. Output size depends on the size of the weights
+//TODO: Verify. This should
 std::vector<int> FullyConnectedLayer::calcOutputDimensions() {
-    throw NotImplementedException();
+    std::vector<int> dim = {weights->getDimensions()[1]};
+    return dim;
 }
 
 void FullyConnectedLayer::setWeights(WeightWrapper *weights) {

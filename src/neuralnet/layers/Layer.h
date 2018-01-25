@@ -133,7 +133,7 @@ public:
      *
      * @return dimensions of the output Wrapper.
      */
-    virtual std::vector<int> getOutputDimensions();
+    virtual std::vector<int> getOutputDimensions() const;
 
     virtual /**
      * Returns a pointer to the previous layer
