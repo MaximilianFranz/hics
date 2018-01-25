@@ -89,13 +89,13 @@ void AlexNetWeightLoader::populateWeightsMap() {
 
     insertWeightWrapper(LayerIdentifier::CONV_1, createWeightWrapper("conv_1"));
 
-    insertWeightWrapper(LayerIdentifier::CONV_2, appendLayers("conv_2_1", "conv_2_2"));
+    insertWeightWrapper(LayerIdentifier::CONV_2, createWeightWrapper("conv_2"));
 
     insertWeightWrapper(LayerIdentifier::CONV_3, createWeightWrapper("conv_3"));
 
-    insertWeightWrapper(LayerIdentifier::CONV_4, appendLayers("conv_4_1", "conv_4_2"));
+    insertWeightWrapper(LayerIdentifier::CONV_4, createWeightWrapper("conv_4"));
 
-    insertWeightWrapper(LayerIdentifier::CONV_5, appendLayers("conv_5_1", "conv_5_2"));
+    insertWeightWrapper(LayerIdentifier::CONV_5, createWeightWrapper("conv_5"));
 
     insertWeightWrapper(LayerIdentifier::FULLY_CON_1, createWeightWrapper("dense_1"));
 
