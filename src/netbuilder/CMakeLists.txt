@@ -22,11 +22,12 @@ set(SOURCE_FILES
         loader/weightloader/AlexNetWeightLoader.cpp
         loader/weightloader/AlexNetWeightLoader.h
         loader/StringLoader.cpp
-        loader/StringLoader.h)
+        loader/StringLoader.h
+        loader/LabelLoader.cpp
+        loader/LabelLoader.h loader/ModelCrawler.cpp loader/ModelCrawler.h)
 
 add_library(netbuilder STATIC ${SOURCE_FILES})
 target_link_libraries(netbuilder ${HDF5_LIBRARIES} neuralnet)
-
 include_directories(${HDF5_INCLUDE_DIRS})
 
 add_executable(netbuilder-exec main.cpp)

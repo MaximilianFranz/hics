@@ -18,4 +18,6 @@ public:
     LayerConstructionParams getLayerConstructionParamsByIndex(int index) override;
 
     json getLayerJSON(int index);
+
+    bool isValid();
 };

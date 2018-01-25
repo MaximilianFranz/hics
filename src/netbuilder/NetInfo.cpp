@@ -6,10 +6,9 @@
 #include "../NotImplementedException.h"
 
 
-NetInfo::NetInfo(std::string name, int imageDimension)
-    : name(name), imageDimension(imageDimension){
-    //throw NotImplementedException();
-
+NetInfo::NetInfo(std::string name, int imageDimension, std::string identifier)
+    : name(name), imageDimension(imageDimension), identifier(identifier) {
+    //
 }
 
 std::string NetInfo::getName() {
@@ -21,5 +20,7 @@ int NetInfo::getImageDimension() {
 }
 
 std::string NetInfo::getIdentifier() {
-    throw NotImplementedException();
+    return identifier;
 }
+
+

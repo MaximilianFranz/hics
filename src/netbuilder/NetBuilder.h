@@ -6,18 +6,29 @@
 
 #include <vector>
 #include <NeuralNet.h>
+#include <LayerMaker.h>
 #include <map>
-#include "NetInfo.h"
 #include <vector>
+#include "loader/ModelCrawler.h"
+#include "loader/JSONModelLoader.h"
+
+#include "NetInfo.h"
 
 class NetBuilder {
 
 public:
+
+    /***
+     * Constructs
+     * @param net
+     * @return
+     */
     NeuralNet* buildNeuralNet(NetInfo net);
 
 
-    std::vector<NetInfo*> queryAvailableNets(); // TODO change return type
+    std::vector<NetInfo*> queryAvailableNets();
 
-    std::map<int, std::string> getLabelMap(NetInfo net);
+    std::map<int, std::string> getLabelMap(NetInfo *net);
 
+    const std::string MODEL_DIR = "../../../src/netbuilder/loader/models";
 };

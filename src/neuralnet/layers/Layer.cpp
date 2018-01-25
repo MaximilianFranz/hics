@@ -33,7 +33,7 @@ void Layer::init() {
     functionSet = false;
 }
 
-std::vector<int> Layer::getOutputDimensions() {
+std::vector<int> Layer::getOutputDimensions() const{
     return outputDimensions;
 }
 

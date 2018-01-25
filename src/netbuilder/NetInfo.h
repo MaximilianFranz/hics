@@ -14,7 +14,7 @@ private:
 
 
 public:
-    NetInfo(std::string name, int imageDimension);
+    NetInfo(std::string name, int imageDimension, std::string identifier);
 
     std::string getName();
 
