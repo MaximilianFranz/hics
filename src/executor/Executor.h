@@ -93,7 +93,9 @@ public:
 
     DataWrapper *getImageData(ImageWrapper *imageWrapper);
 
-    Executor(std::string name) {
-        this->name = name;
-    };
+    Executor(std::string name) : name(name){};
+
+    std::string getName() {
+        return name;
+    }
 };
