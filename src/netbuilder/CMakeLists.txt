@@ -27,8 +27,6 @@ set(SOURCE_FILES
 add_library(netbuilder STATIC ${SOURCE_FILES})
 target_link_libraries(netbuilder ${HDF5_LIBRARIES} neuralnet)
 
-include_directories(${HDF5_INCLUDE_DIRS})
-
 add_executable(netbuilder-exec main.cpp)
 target_link_libraries(netbuilder-exec netbuilder)
 
