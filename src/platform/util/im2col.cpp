@@ -6,6 +6,7 @@
  */
 
 #include <cstring>
+#include <algorithm>
 #include "im2col.h"
 
 namespace helper {
@@ -184,4 +185,158 @@ namespace helper {
     template void col2im_cpu<double>(const double *data_column, const int channels, const int height, const int width,
                                      const int kernel_size, const int padding, const int stride,
                                      double *data_image);
+
+
+    template<typename Dtype>
+    void im2col_simple_version_cpu(const Dtype *data_image, const int channels, const int height, const int width,
+                                   const int kernel_size, const int padding, const int stride,
+                                   Dtype *data_column) {
+
+        int kernel_h, kernel_w;
+        kernel_h = kernel_w = kernel_size;
+
+        int pad_h, pad_w;
+        pad_h = pad_w = padding;
+
+        int stride_h, stride_w;
+        stride_h = stride_w = stride;
+
+        const int output_h = (height - kernel_h + 2 * pad_h) / stride_h + 1;
+        const int output_w = (height - kernel_w + 2 * pad_w) / stride_w + 1;
+        int channels_col = channels * kernel_size * kernel_size; // number of
+
+        for (int c = 0; c < channels_col; ++c) {
+            int w_offset = c % kernel_w;
+            int h_offset = (c / kernel_w) % kernel_h;
+            int c_im = c / (kernel_h * kernel_w);
+
+            for (int h = 0; h < output_h; ++h) {
+                for (int w = 0; w < output_w; ++w) {
+                    int h_pad = h * stride_h - pad_h + h_offset;
+                    int w_pad = w * stride_w - pad_w + w_offset;
+                    if (h_pad >= 0 && h_pad < height && w_pad >= 0 && w_pad < width) {
+                        data_column[(c * output_h + h) * output_w + w] =
+                                data_image[(c_im * height + h_pad) * width + w_pad];
+                    } else {
+                        data_column[(c * output_h + h) * output_w + w] = 0;
+                    }
+                }
+            }
+        }
+
+        /*
+        // remember the amount of elements inside a channel to move the pointer forward by that many addresses
+        const int channel_size = height * width;
+
+        for (int channel = channels; channel--; data_image += channel_size) {
+            for (int image_col = 0; image_col < width; image_col += stride) {
+                for (int image_row = 0; image_row < width; image_row += stride) {
+
+                    // erst Reihe für Reihe
+                    for (int kernel_col = 0; kernel_col < kernel_size; kernel_col++) {
+                        for (int kernel_row = 0; kernel_row < kernel_size; kernel_row++) {
+                            if (is_value_ge_zero_and_value_lt_boundary(kernel_row, height)) {
+                                *(data_column++) = data_image[image_row + kernel_row * width + image_col + kernel_col];
+                            } else {
+                                *(data_column++) = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        */
+
+        /*
+        for (int channel = channels; channel--; data_image += channel_size) {
+
+
+            int input_row = -padding + kernel_row;
+
+
+            for (int kernel_col = 0; kernel_col < kernel_size; ++kernel_col) {
+
+                if (!is_value_ge_zero_and_value_lt_boundary(input_row, width)) {
+                    for (int output_cols = output_w; output_cols; output_cols--) {
+                        *(data_column++) = 0;
+                    }
+                } else {
+                    // int input_col = -padding + kernel_col;
+
+                    for (int kernel_row = 0; kernel_row < kernel_size; ++kernel_row) {
+                        if (is_value_ge_zero_and_value_lt_boundary(kernel_row, height)) {
+                            *(data_column++) = data_image[kernel_col + kernel_row * width];
+                        } else {
+                            *(data_column++) = 0;
+                        }
+                        input_col += stride;
+                    }
+                }
+
+                input_row += stride;
+            }
+
+        }
+        */
+
+    }
+
+    // Explicit instantiation
+    template void
+    im2col_simple_version_cpu<float>(const float *data_image, const int channels, const int height, const int width,
+                                     const int kernel_size, const int padding, const int stride,
+                                     float *data_column);
+
+    template void
+    im2col_simple_version_cpu<double>(const double *data_image, const int channels, const int height, const int width,
+                                      const int kernel_size, const int padding, const int stride,
+                                      double *data_column);
+
+
+    template<typename Dtype>
+    void col2im_simple_version_cpu(const Dtype *data_column, const int channels, const int height, const int width,
+                                   const int kernel_size, const int padding, const int stride,
+                                   Dtype *data_image) {
+        int kernel_h, kernel_w;
+        kernel_h = kernel_w = kernel_size;
+
+        int pad_h, pad_w;
+        pad_h = pad_w = padding;
+
+        int stride_h, stride_w;
+        stride_h = stride_w = stride;
+
+        int height_col = (height + 2 * pad_h - kernel_h) / stride_h + 1;
+        int width_col = (width + 2 * pad_w - kernel_w) / stride_w + 1;
+        int channels_col = channels * kernel_h * kernel_w;
+
+        std::fill(data_image, data_image + width * height * channels, 0);
+        for (int c = 0; c < channels_col; ++c) {
+            int w_offset = c % kernel_w;
+            int h_offset = (c / kernel_w) % kernel_h;
+            int c_im = c / (kernel_h * kernel_w);
+
+            for (int h = 0; h < height_col; ++h) {
+                for (int w = 0; w < width_col; ++w) {
+                    int h_pad = h * stride_h - pad_h + h_offset;
+                    int w_pad = w * stride_w - pad_w + w_offset;
+                    if (h_pad >= 0 && h_pad < height && w_pad >= 0 && w_pad < width) {
+                        data_image[(c_im * height + h_pad) * width + w_pad] +=
+                                data_column[(c * height_col + h) * width_col + w];
+                    }
+                }
+            }
+        }
+    }
+
+    // Explicit instantiation
+    template void
+    col2im_simple_version_cpu<float>(const float *data_column, const int channels, const int height, const int width,
+                                     const int kernel_size, const int padding, const int stride,
+                                     float *data_image);
+
+    template void
+    col2im_simple_version_cpu<double>(const double *data_column, const int channels, const int height, const int width,
+                                      const int kernel_size, const int padding, const int stride,
+                                      double *data_image);
 }

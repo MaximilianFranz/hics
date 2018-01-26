@@ -20,6 +20,11 @@ namespace helper {
                     const int kernel_size, const int padding, const int stride,
                     Dtype *data_column);
 
+    template<typename Dtype>
+    void im2col_simple_version_cpu(const Dtype *data_image, const int channels, const int height, const int width,
+                                   const int kernel_size, const int padding, const int stride,
+                                   Dtype *data_column);
+
     /**
      * Initializes data with a value. Necessary for the col2im algorithm.
      *
@@ -49,4 +54,9 @@ namespace helper {
     void col2im_cpu(const Dtype *data_column, const int channels, const int height, const int width,
                     const int kernel_size, const int padding, const int stride,
                     Dtype *data_image);
+
+    template<typename Dtype>
+    void col2im_simple_version_cpu(const Dtype *data_column, const int channels, const int height, const int width,
+                                   const int kernel_size, const int padding, const int stride,
+                                   Dtype *data_image);
 }
