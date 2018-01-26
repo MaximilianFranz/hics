@@ -39,13 +39,7 @@ class MainWindowHandler : public QObject, MainWindowSubject{
 
     Q_OBJECT
 
-signals:
-
-    void emitSignal(QWidget &widget); //TODO change
-
 private:
-
-     //TODO properly initialize the commented out in the constructor.
 
     MainWindow* mainWindow;
     StartWidget* startWidget;
@@ -56,13 +50,6 @@ private:
 
 
 public:
-
-    //TODO delete when finished.
-//    MainWindowHandler(){
-
-//        connect(this, SIGNAL(emitSignal()), &mainWindow, SLOT(createButton()));
-//        emit emitSignal();
-//    }
 
      /**
      * @brief This constructor initializes the GUI with the needed information on available data.
@@ -95,13 +82,18 @@ public:
 public slots:
 
     /**
-     * @brief setClassificationRequestState will gather the needed data for a ClassificationRequest and overwrite
+     * @brief setClassificationRequestState gathers the needed data for a ClassificationRequest and overwrite
      *        classificationRequestState with the latest data.
+     *
+     * setClassificationRequestState notifies all observers on the MainWindowHandler that the state has changed.
      */
     void setClassificationRequestState();
 
     /**
      * @brief processReturnQPushButton will display the startWidget with the same content as before the classification.
+     *
+     * processReturnQPushButton deletes resultWidget and detailDialog from the heap and then allocates it again, so that
+     * two completely new objects will be created.
      */
     void processReturnQPushButton();
 
