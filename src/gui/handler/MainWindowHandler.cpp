@@ -5,9 +5,9 @@ MainWindowHandler::MainWindowHandler(std::list<NetInfo> &neuralNets, std::list<P
                   std::list<OperationMode> &operationModes) {
 
     mainWindow = new MainWindow();
-    startWidget = new StartWidget(neuralNets, platforms, operationModes);
-    resultWidget = new ResultWidget();
-    detailDialog = new DetailDialog();
+    startWidget = new StartWidget(neuralNets, platforms, operationModes, mainWindow);
+    resultWidget = new ResultWidget(mainWindow);
+    detailDialog = new DetailDialog(mainWindow);
 
     mainWindow->addWidgetToStack(startWidget);
     mainWindow->addWidgetToStack(resultWidget);
