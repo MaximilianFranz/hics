@@ -22,7 +22,6 @@ ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *original
         // Add Top 5 probabilities and their labels to the list.
         results.push_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output->getData())),
                                                         sortOut[i]));
-
     }
 
     ImageResult *i = new ImageResult(results, *originalImage);

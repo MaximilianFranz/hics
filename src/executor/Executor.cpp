@@ -20,6 +20,7 @@ std::vector<ImageResult*> Executor::classify(std::vector<ImageWrapper*> images, 
     return results;
 }
 
+
 std::vector<PlatformInfo*> Executor::queryPlatform() {
     return placer->queryPlatforms();
 }
@@ -32,6 +33,8 @@ std::vector<NetInfo*> Executor::queryNets() {
 Executor::Executor() {
     this->placer = (new PlatformPlacer());
     this->builder = (new NetBuilder());
+    NetInfo mock = createMockInfo();
+    this->net = new NeuralNet(nullptr, mock);
 
 }
 
@@ -60,11 +63,20 @@ void Executor::runDataForward(DataWrapper *data) {
     SimpleNetIterator* it = net->createIterator();
     it->getElement()->setInputWrapper(data); // SET INPUT TO FIRST LAYER EXPLICITLY!
     while (it->hasNext()) {
-        it->getElement()->forward();
-        it->getElement()->deleteGarbage();
+        Layer* layer = it->getElement();
+        layer->forward();
         it->next();
     }
+    // Do it manually for the last layer. TODO: Fix iterator to allow access to last element
+    Layer* l = it->getElement();
+    l->forward();
+    it->next();
 
+}
+
+NetInfo Executor::createMockInfo() {
+     NetInfo d("empty", 0, "empty");
+    return d;
 }
 
 
