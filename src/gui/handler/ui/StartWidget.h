@@ -3,12 +3,9 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QString>
-#include <QCheckBox>
 #include <QHBoxLayout>
 #include <QImage>
-#include <QPixmap>
 #include <QMap>
-#include <QFileDialog>
 #include <list>
 #include <map>
 #include <vector>
