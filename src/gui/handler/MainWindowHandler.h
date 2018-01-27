@@ -8,11 +8,11 @@
 #include <ClassificationRequest.h>
 #include <ClassificationResult.h>
 
+#include "MainWindowSubject.h"
+#include "ui/MainWindow.h"
 #include "ui/StartWidget.h"
 #include "ui/ResultWidget.h"
 #include "ui/DetailDialog.h"
-#include "MainWindowSubject.h"
-#include "ui/MainWindow.h"
 
 //TODO detailed comments when methods are implemented
 
