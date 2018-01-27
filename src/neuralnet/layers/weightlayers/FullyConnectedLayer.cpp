@@ -3,8 +3,6 @@
 //
 
 #include "FullyConnectedLayer.h"
-#include "NotImplementedException.h"
-
 
 
 FullyConnectedLayer::FullyConnectedLayer(std::vector<int> inputDimensions) {

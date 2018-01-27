@@ -3,12 +3,15 @@
 //
 
 #include <map>
-#include <loader/ModelLoader.h>
-#include <loader/ModelCrawler.h>
-#include "NetBuilder.h"
 #include <iostream>
-#include "NetBuilderTest.h"
+#include <algorithm>
+
+#include "loader/ModelLoader.h"
+#include "loader/ModelCrawler.h"
 #include "loader/LabelLoader.h"
+
+#include "NetBuilder.h"
+#include "NetBuilderTest.h"
 
 //Describe path without closing "/"!!!
 const std::string MODEL_DIR = "../../../src/netbuilder/loader/models";

@@ -3,8 +3,6 @@
 //
 
 #include "SoftMaxLossLayer.h"
-#include "NotImplementedException.h"
-
 
 
 

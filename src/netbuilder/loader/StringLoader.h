@@ -4,8 +4,8 @@
 
 #pragma once
 
-
 #include <string>
+
 class StringLoader {
 
 public:

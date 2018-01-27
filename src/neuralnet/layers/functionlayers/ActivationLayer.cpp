@@ -3,8 +3,6 @@
 //
 
 #include "ActivationLayer.h"
-#include "NotImplementedException.h"
-
 
 
 std::vector<int> ActivationLayer::calcOutputDimensions() {

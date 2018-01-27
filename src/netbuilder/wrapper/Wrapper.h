@@ -5,7 +5,6 @@
 #pragma once
 
 #include <vector>
-#include <list>
 
 //TODO: Add Class description to documentation.
 

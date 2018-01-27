@@ -3,7 +3,6 @@
 //
 
 #include "LocalResponseNormLayer.h"
-#include "NotImplementedException.h"
 
 
 LocalResponseNormLayer::LocalResponseNormLayer(std::vector<int> inputDimensions, float radius, float alpha, float beta,

@@ -3,7 +3,6 @@
 //
 
 #include "MaxPoolingLayer.h"
-#include "NotImplementedException.h"
 
 
 

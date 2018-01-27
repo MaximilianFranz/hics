@@ -2,7 +2,6 @@
 // Created by michael on 09.01.18.
 //
 
-#include <NotImplementedException.h>
 #include "Wrapper.h"
 
 //TODO: @Max: Redesign for new convention {channel, z, y, x}

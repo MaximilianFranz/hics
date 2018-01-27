@@ -2,9 +2,9 @@
 // Created by pselab on 11.01.18.
 //
 
-#include "StringLoader.h"
 #include <fstream>
 
+#include "StringLoader.h"
 
 std::string StringLoader::getStringFromFile(std::string path) {
     char resolved_path[1024];

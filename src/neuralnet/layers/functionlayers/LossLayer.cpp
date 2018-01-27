@@ -3,7 +3,6 @@
 //
 
 #include "LossLayer.h"
-#include "NotImplementedException.h"
 
 
 std::vector<int> LossLayer::calcOutputDimensions() {
