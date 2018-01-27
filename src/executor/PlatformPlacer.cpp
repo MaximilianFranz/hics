@@ -87,4 +87,5 @@ Platform* PlatformPlacer::getDefaultPlatform() {
             return pl; //We assume for now that there always is a CPU platform!
         }
     }
+    return nullptr;
 }
