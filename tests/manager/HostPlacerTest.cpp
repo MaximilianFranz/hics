@@ -13,8 +13,8 @@ SCENARIO("Read values from JSON") {
     REQUIRE(localHost->getName() == "local");
 
     SECTION("Test JSON reader") {
-        HostPlacer::Performance localPerformance = HostPlacer::readComputationHostInfo(*localHost);
-        HostPlacer::Performance fpgaPerformance = HostPlacer::readComputationHostInfo(*fpgaHost);
+        HostPlacer::Performance localPerformance = HostPlacer::readComputationHostInfo(localHost->getName());
+        HostPlacer::Performance fpgaPerformance = HostPlacer::readComputationHostInfo(fpgaHost->getName());
 
         REQUIRE(localPerformance.powerConsumption == 1500);
         REQUIRE(localPerformance.timeConsumption == 500);

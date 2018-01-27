@@ -8,13 +8,26 @@
 #include <string>
 #include <map>
 #include <wrapper/ImageWrapper.h>
+#include <PlatformInfo.h>
 
 
 class ImageResult {
 private:
     ImageWrapper image;
     std::vector<std::pair<std::string, float>> results; // ordered list of labels and their probabilities
+    std::vector<std::pair<PlatformInfo, float>> compDistribution;
 public:
+    /**
+     * Getter for compDistribution, which Platform computed what in percentages.
+     * @return compDistribution
+     */
+    const std::vector<std::pair<PlatformInfo, float>> &getCompDistribution() const;
+
+    /**
+     * Sets the compDistribution.
+     * @param compDistribution
+     */
+    void setCompDistribution(const std::vector<std::pair<PlatformInfo, float>> &compDistribution);
 
     /**\brief Constructor
      *

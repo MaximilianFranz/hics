@@ -6,13 +6,13 @@
 #include "HostPlacer.h"
 
 
-HostPlacer::Performance HostPlacer::readComputationHostInfo(ComputationHost& c) {
+HostPlacer::Performance HostPlacer::readComputationHostInfo(std::string hostName) {
     std::string jsonStr = StringLoader::getStringFromFile("../../../src/manager/computationHosts.json");
     json computationHostFile = json::parse(jsonStr);
     json computationHost = computationHostFile["computationHosts"];
 
     for (auto compHostIt : computationHost) {
-        if (compHostIt["name"] == c.getName()) {
+        if (compHostIt["name"] == hostName) {
             int power = compHostIt["power"];
             int time = compHostIt["time"];
             return {power, time};
@@ -29,7 +29,7 @@ HostPlacer::place(std::vector<ComputationHost*> &hosts, int numOfImg, OperationM
 
     //Read performance of every host from JSON
     for (auto host : hosts) {
-        Performance temp = readComputationHostInfo(*host);
+        Performance temp = readComputationHostInfo(host->getName());
         hostPerformance.emplace_back(std::pair<ComputationHost *, HostPlacer::Performance>(host, temp));
     }
 
