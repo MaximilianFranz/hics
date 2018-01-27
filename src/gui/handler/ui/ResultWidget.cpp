@@ -1,3 +1,5 @@
+#include <QLabel>
+#include <QHBoxLayout>
 #include "handler/ui/ResultWidget.h"
 #include "ui_ResultWidget.h"
 

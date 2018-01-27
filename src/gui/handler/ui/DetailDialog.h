@@ -2,8 +2,6 @@
 
 #include <QDialog>
 #include <ClassificationResult.h>
-#include <PerformanceData.h>
-#include <PlatformInfo.h>
 
 namespace Ui {
 class DetailDialog;

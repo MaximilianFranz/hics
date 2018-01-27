@@ -1,3 +1,5 @@
+#include <PerformanceData.h>
+#include <PlatformInfo.h>
 #include "DetailDialog.h"
 #include "ui_DetailDialog.h"
 

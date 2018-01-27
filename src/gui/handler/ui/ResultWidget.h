@@ -2,10 +2,8 @@
 
 #include <QWidget>
 #include <QPushButton>
-#include <QLabel>
-#include <QHBoxLayout>
 #include <QVBoxLayout>
-#include "ClassificationResult.h"
+#include <ClassificationResult.h>
 
 namespace Ui {
 class ResultWidget;

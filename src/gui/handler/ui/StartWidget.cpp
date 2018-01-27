@@ -1,3 +1,6 @@
+#include <QFileDialog>
+#include <QPixmap>
+#include <QCheckBox>
 #include "handler/ui/StartWidget.h"
 #include "ui_StartWidget.h"
 
