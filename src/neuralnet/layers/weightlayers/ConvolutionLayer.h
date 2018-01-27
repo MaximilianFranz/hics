@@ -22,6 +22,7 @@ protected:
     int filterSize;
     int zeroPadding;
     int stride;
+    int numGroups;
 public:
 
     /**
@@ -38,6 +39,7 @@ public:
                      int filterSize,
                      int zeroPadding,
                      int stride,
+                     int numGroups,
                      std::vector<int> &inputDimensions);
 
     /**
@@ -55,6 +57,7 @@ public:
                      int filterSize,
                      int zeroPadding,
                      int stride,
+                     int numGroups,
                      std::vector<int> &inputDimensions,
                      WeightWrapper* weights);
 
@@ -79,6 +82,7 @@ public:
 
     int getStride() const;
 
+    int getNumGroups() const;
 };
 
 

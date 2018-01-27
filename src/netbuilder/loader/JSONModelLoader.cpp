@@ -69,6 +69,9 @@ LayerConstructionParams JSONModelLoader::getLayerConstructionParamsByIndex(int i
     if (currentLayer.count("params") != 0)
         lp.normParams = currentLayer["params"];
 
+    if (currentLayer.count("numGroups") != 0)
+        lp.numGroups = currentLayer["numGroups"];
+
     return lp;
 }
 
