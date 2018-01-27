@@ -89,9 +89,8 @@ def conv(input, kernel, biases, k_h, k_w, c_o, s_h, s_w,  padding="VALID", group
     return  tf.reshape(tf.nn.bias_add(conv, biases), [-1]+conv.get_shape().as_list()[1:])
 
 
-
 # GENERATE IMAGE DATA for reference!
-img_data = "img_data in order \{rgb_channel, y, x\}: \n"
+img_data = ""
 print("imagetype", im1[0][0][0])
 print("z_shape", im1.shape[2])
 print("y_shape", im1.shape[1])
@@ -143,6 +142,11 @@ conv2_in = conv(maxpool1, conv2W, conv2b, k_h, k_w, c_o, s_h, s_w, padding="SAME
 conv2 = tf.nn.relu(conv2_in)
 
 
+print("conv 2 input: ",maxpool1.get_shape())
+print("conv 2 shape: ",conv2.get_shape())
+print("weight conv2: 1 ", conv2W.shape[1])
+print("weight conv2: 2 ", conv2W.shape[2])
+print("weight conv2: 3 ", conv2W.shape[3])
 
 #lrn2
 #lrn(2, 2e-05, 0.75, name='norm2')
@@ -241,20 +245,20 @@ conv_out = sess.run(fc6, feed_dict = {x:[im1]})
 
 # print(time.time()-t)
 
-# # WRITE OUTPUT FILES
-# img_file = open("../img_data.txt", "r+")
-# img_file.write(img_data)
-# img_file.close()
+# WRITE OUTPUT FILES
+img_file = open("../img_data.txt", "r+")
+img_file.write(img_data)
+img_file.close()
 
 # #WRITE OUTPUT OF 1 CONV LAYER BEFORE RELU
 # conv1_data = "img_data in order \{rgb_channel, y, x\}: \n"
-conv2_data = ""
+# conv2_data = ""
 
-x_shape = conv_out.shape[1]
-print("shape 1: ", x_shape)
+# x_shape = conv_out.shape[1]
+# print("shape 1: ", x_shape)
 
-for x in range(x_shape):
-  conv2_data += str(conv_out[0][x]) + " "
+# for x in range(x_shape):
+#   conv2_data += str(conv_out[0][x]) + " "
 
 # conv1_file = open("../conv1_data_alexnet.txt", "r+")
 # conv1_file.write(conv1_data)
@@ -273,9 +277,9 @@ for x in range(x_shape):
 # weight_file.close()
 
 
-bias_file = open("../fc1_data_out.txt", "r+")
-bias_file.write(conv2_data)
-bias_file.close()
+# bias_file = open("../img_data.txt", "r+")
+# bias_file.write(img_data)
+# bias_file.close()
 
 
 
