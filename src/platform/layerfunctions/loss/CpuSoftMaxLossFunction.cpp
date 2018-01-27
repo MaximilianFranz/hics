@@ -17,7 +17,7 @@ void CpuSoftMaxLossFunction::execute(const DataWrapper &input, DataWrapper &outp
     double out_temp[n];
 
     //find max
-    float max = -100000000;
+    float max = 0;
     for (int a = 0; a < n; a++) {
         if(in[a] > max) {
             max = in[a];
@@ -25,7 +25,7 @@ void CpuSoftMaxLossFunction::execute(const DataWrapper &input, DataWrapper &outp
     }
     //substract max from all entries for numerical stability and normalize
     for (int b = 0; b < n; b++) {
-        in_norm[b] = (in[b] - max)/1000;
+        in_norm[b] = (in[b] - max);
     }
     // calculate sum and
     for (int i = 0; i < n; i++) {
@@ -38,10 +38,5 @@ void CpuSoftMaxLossFunction::execute(const DataWrapper &input, DataWrapper &outp
     for (int i = 0; i < n; i++) {
         out[i] = static_cast<float>(out_temp[i] / sum); //is between 0 and 1
     }
-// Test calculate sum, should sum up to 1
-//    float sum_out = 0;
-//    for (int i = 0; i < n; i++) {
-//        sum_out += out[i];
-//    }
 
 }
