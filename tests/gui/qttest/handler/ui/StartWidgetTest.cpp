@@ -3,10 +3,11 @@
 //
 
 #include "StartWidgetTest.h"
+#include <handler/ui/StartWidget.h>
 
-void StartWidgetTest::test() {
-    int a = 3;
-    QVERIFY(a == 3);
+void StartWidgetTest::classifyButtonClicked() {
+    //TODO simulate mouse click on classify button
+    QTest::mouse
 }
 
 QTEST_MAIN(StartWidgetTest)
