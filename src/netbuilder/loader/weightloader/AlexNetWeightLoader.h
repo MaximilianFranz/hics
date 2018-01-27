@@ -30,7 +30,7 @@ private:
 
     const std::string filePath;
     h5cpp::File weightFile;
-    std::map<LayerIdentifier, WeightWrapper> weightsMap;
+    std::map<LayerIdentifier, WeightWrapper*> weightsMap;
 
     /**
      * @brief Creates a WeightWrapper out of a given groupName from the internally stored weightFile.
@@ -42,11 +42,11 @@ private:
      * @param groupName a string representing the group name for which the WeightWrapper shall be created
      * @return the created WeightWrapper
      */
-    WeightWrapper createWeightWrapper(const std::string &groupName);
+    WeightWrapper* createWeightWrapper(const std::string &groupName);
 
-    WeightWrapper appendLayers(const std::string &groupNameFirst, const std::string &groupNameSecond);
+    WeightWrapper* appendLayers(const std::string &groupNameFirst, const std::string &groupNameSecond);
 
-    void insertWeightWrapper(const LayerIdentifier &layerId, const WeightWrapper &weightWrapper);
+    void insertWeightWrapper(const LayerIdentifier &layerId, const WeightWrapper *weightWrapper);
 
     void populateWeightsMap();
 
@@ -70,5 +70,5 @@ public:
      * @param layerId is the identification for the wanted WeightWrapper in the weightsMap
      * @return the wanted WeightWrapper
      */
-    WeightWrapper getWeights(LayerIdentifier layerId) override; //TODO Maybe change return type to return by reference
+    WeightWrapper* getWeights(LayerIdentifier layerId) override; //TODO Maybe change return type to return by reference
 };
