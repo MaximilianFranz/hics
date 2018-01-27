@@ -82,5 +82,23 @@ const float Wrapper::getElement(int x, int y, int rgb) {
     return getElement(std::vector<int>{rgb, y, x});
 }
 
+Wrapper::Wrapper(const Wrapper &wrapper)
+        : data(wrapper.data),
+          dimensions(wrapper.dimensions),
+          numElements(wrapper.numElements) {
+
+}
+
+//Wrapper &Wrapper::operator=(const Wrapper &other) {
+//    throw NotImplementedException();
+//}
+
+Wrapper::~Wrapper() {
+    // No Destructor yet
+//    delete[](&data);
+//    delete[](&dimensions);
+//    delete[](&numElements);
+}
+
 
 

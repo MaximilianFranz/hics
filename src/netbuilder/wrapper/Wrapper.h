@@ -39,6 +39,18 @@ public:
     explicit Wrapper(std::vector<int> dimensionSizes);
 
     /**
+     * Provide explicit Copy-constructor!
+     *
+     * @param wrapper
+     */
+    Wrapper(const Wrapper& wrapper);
+
+    //TODO: Implement this correctly if needed!
+//    Wrapper& operator= (const Wrapper& other);
+
+    virtual ~Wrapper();
+
+    /**
      * Get number of dimensions the data in this Wrapper has.
      *
      * @return number of dimensions.
