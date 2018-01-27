@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <algorithm>
 #include "ManagerObserver.h"
 
 /**
@@ -22,7 +23,7 @@ class MainWindowSubject {
 
 private:
 
-    std::list<ManagerObserver> observers;
+    std::vector<ManagerObserver> observers;
 
 public:
 
@@ -36,12 +37,14 @@ public:
     }
 
     /**
-     * @brief A ManagerObserver who is attachted to the observer list can be detached.
+     * @brief A ManagerObserver who is attached to the observer list can be detached.
      *
      * @param manager is the to be detached ManagerObserver
      */
     void detach(const ManagerObserver &manager){
-        observers.remove(manager);
+        std::vector<ManagerObserver>::iterator it;
+        it = std::find(observers.begin(), observers.end(), manager);
+        observers.erase(it);
     }
 
     /**
@@ -49,7 +52,7 @@ public:
      *        on each one.
      */
     void notify(){
-        std::list<ManagerObserver>::iterator it;
+        std::vector<ManagerObserver>::iterator it;
 
         for(it = observers.begin(); it != observers.end(); ++it){
             it->update();
@@ -60,4 +63,8 @@ public:
      * @brief The default constructor for MainWindowSubject.
      */
     MainWindowSubject() = default;
+
+    std::vector<ManagerObserver>& getObservers(){
+        return observers;
+    }
 };
