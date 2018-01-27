@@ -24,7 +24,7 @@ unsigned long Wrapper::facultyOfDim(int dim) {
     return fac;
 }
 
-Wrapper::Wrapper(std::vector<int> &dimensions, std::vector<float> &data)
+Wrapper::Wrapper(std::vector<int> dimensions, std::vector<float> &data)
         :
           dimensions(dimensions),
           data(data)

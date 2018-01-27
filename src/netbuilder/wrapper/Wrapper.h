@@ -27,7 +27,7 @@ public:
      * @param dimensions
      * @param data
      */
-    Wrapper(std::vector<int> &dimensions, std::vector<float> &data);
+    Wrapper(std::vector<int> dimensions, std::vector<float> &data);
 
     /**\brief Create empty Wrapper to store data in. Reserves required size for dimensions.
      *
