@@ -8,6 +8,7 @@
 #include <string>
 #include <map>
 #include <wrapper/ImageWrapper.h>
+#include <PlatformInfo.h>
 
 
 class ImageResult {
