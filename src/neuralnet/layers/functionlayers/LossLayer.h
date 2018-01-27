@@ -16,5 +16,6 @@ public:
     void forward() override;
 
     std::vector<int> calcOutputDimensions() override;
+
 };
 

@@ -16,6 +16,7 @@ void LossLayer::setFunction(LossFunction *function) {
 }
 
 void LossLayer::forward() {
+    outputWrapper = new DataWrapper(getOutputDimensions());
     this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper);
     computed = true;
 }

@@ -36,9 +36,11 @@ bool FullyConnectedLayer::verifyWeights() {
 
 void FullyConnectedLayer::setFunction(FullyConnectedFunction *function) {
     this->function = function;
+    functionSet = true;
 }
 
 void FullyConnectedLayer::forward() {
+    outputWrapper = new DataWrapper(getOutputDimensions());
     this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper, *weights);
     computed = true;
 }

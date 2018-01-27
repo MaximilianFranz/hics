@@ -23,6 +23,7 @@ void PoolingLayer::setFunction(PoolingFunction *function) {
 
 
 void PoolingLayer::forward() {
+    outputWrapper = new DataWrapper(getOutputDimensions());
     this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper, stride, filterSize, zeroPadding);
     computed = true;
 }
