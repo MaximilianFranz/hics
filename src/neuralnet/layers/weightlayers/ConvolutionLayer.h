@@ -23,6 +23,9 @@ protected:
     int zeroPadding;
     int stride;
     int numGroups;
+
+    std::vector<int> splitDim(std::vector<int> in, int factor, int index);
+
 public:
 
     /**
@@ -83,6 +86,7 @@ public:
     int getStride() const;
 
     int getNumGroups() const;
+
 };
 
 
