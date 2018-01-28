@@ -84,7 +84,7 @@ SCENARIO("Testing Executor Module") {
 
     }
 
-    SECTION("Testing Executor") {
+    SECTION("Testing Complete execution of the net") {
         Executor executor;
         std::vector<NetInfo*> nets = executor.queryNets();
         NetInfo alexnetinfo = *nets.at(0);
@@ -100,7 +100,8 @@ SCENARIO("Testing Executor Module") {
         std::vector<PlatformInfo*> info_mock;
         results = executor.classify({img}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
 
-        //TODO: Once classifcation is correct, write correct REQUIRE() calls
+        // Highest prob is weasel
+        REQUIRE(results.front()->getResults().front().first == "weasel");
 
     }
 }
