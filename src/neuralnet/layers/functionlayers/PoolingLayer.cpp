@@ -3,7 +3,6 @@
 //
 
 #include "PoolingLayer.h"
-#include "NotImplementedException.h"
 
 
 std::vector<int> PoolingLayer::calcOutputDimensions() {

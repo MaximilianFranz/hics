@@ -4,7 +4,6 @@
 
 #include <IllegalArgumentException.h>
 #include "ConvolutionLayer.h"
-#include "NotImplementedException.h"
 
 const int X_DIM = 2;
 const int Y_DIM = 1;

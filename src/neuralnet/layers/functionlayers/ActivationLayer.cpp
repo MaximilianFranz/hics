@@ -3,7 +3,6 @@
 //
 
 #include "ActivationLayer.h"
-#include "NotImplementedException.h"
 
 
 
