@@ -63,6 +63,15 @@ void MainWindowHandler::processClassificationResult(const ClassificationResult &
     mainWindow->setCurrentWidget(resultWidget);
 }
 
+StartWidget* MainWindowHandler::getStartWidget() {
+    if(startWidget){
+        return startWidget;
+    } else {
+        //TODO Error message maybe
+        return nullptr;
+    }
+}
+
 void MainWindowHandler::processReturnQPushButton(){
     mainWindow->setCurrentWidget(startWidget);
     delete resultWidget;

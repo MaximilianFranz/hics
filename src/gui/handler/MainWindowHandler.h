@@ -79,6 +79,8 @@ public:
 
     //TODO here could be the displayErrorMessage(Exception e) method
 
+    StartWidget* getStartWidget();
+
 public slots:
 
     /**
