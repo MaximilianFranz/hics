@@ -13,7 +13,13 @@ void StartWidgetTest::classifyButtonClicked() {
     QCOMPARE(request->getAggregateResults(), false);
     NetInfo net = request->getSelectedNeuralNet();
     QCOMPARE(net.getIdentifier(), nets.front().getIdentifier());
-    //QCOMPARE(request->getSelectedOperationMode(), modes.front());
+    QCOMPARE(request->getSelectedOperationMode(), modes.front());
+
+    std::vector<PlatformInfo>::iterator itActual;
+    std::vector<PlatformInfo>::iterator itExpected;
+ /*   for(itActual = request->getSelectedPlatforms().begin() && itExpected = platforms.begin(); itActual != request->getSelectedPlatforms().end() && itExpected != platforms.end(); ++itActual && ++itExpected){
+        QCOMPARE(itActual->getPlatformId(), )itActual
+    }*/
     //QCOMPARE(request->getSelectedPlatforms(), platforms);
 }
 
