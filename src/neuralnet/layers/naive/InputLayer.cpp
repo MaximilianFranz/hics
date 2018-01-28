@@ -3,7 +3,6 @@
 //
 
 #include "InputLayer.h"
-#include "NotImplementedException.h"
 
 InputLayer::InputLayer(std::vector<int> inputDimensions) {
     this->inputDimensions = inputDimensions;

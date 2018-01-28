@@ -5,14 +5,11 @@
 #pragma once
 
 #include <vector>
-#include <NeuralNet.h>
-#include <LayerMaker.h>
 #include <map>
-#include <vector>
-#include "loader/ModelCrawler.h"
-#include "loader/JSONModelLoader.h"
 
+#include "NeuralNet.h"
 #include "NetInfo.h"
+
 
 class NetBuilder {
 

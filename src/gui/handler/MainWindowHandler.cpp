@@ -4,20 +4,29 @@
 MainWindowHandler::MainWindowHandler(std::list<NetInfo> &neuralNets, std::list<PlatformInfo> &platforms,
                   std::list<OperationMode> &operationModes) {
 
+    //Initialize the used UI's
     mainWindow = new MainWindow();
-    startWidget = new StartWidget(neuralNets, platforms, operationModes);
-    resultWidget = new ResultWidget();
-    detailDialog = new DetailDialog();
+    startWidget = new StartWidget(neuralNets, platforms, operationModes, mainWindow);
+    resultWidget = new ResultWidget(mainWindow);
+    detailDialog = new DetailDialog(mainWindow);
 
+    //mainWindow's QStackedWidget will be the main display
     mainWindow->addWidgetToStack(startWidget);
     mainWindow->addWidgetToStack(resultWidget);
 
     mainWindow->setCurrentWidget(startWidget);
-    //TODO initialze result and detail widget and add them to the stack
 
+    //Starts the classification
     connect(startWidget->getClassificationQPushButton(), SIGNAL(clicked()), this, SLOT(setClassificationRequestState()));
+
+    //Deletes resultWidget
     connect(resultWidget->getReturnQPushButton(), SIGNAL(clicked()), this, SLOT(processReturnQPushButton()));
+
+    //Opens the detailDialog
     connect(resultWidget->getDetailsQPushButton(), SIGNAL(clicked()), this, SLOT(processDetailQPushButton()));
+
+    //Resets detailDialog and resultWidget when resultWidget is destroyed; display startWidget
+    connect(resultWidget, SIGNAL(destroyed()), this, SLOT(processReturnQPushButton())); //TODO Check if this works
 }
 
 void MainWindowHandler::setClassificationRequestState(){
@@ -30,6 +39,7 @@ void MainWindowHandler::setClassificationRequestState(){
     ClassificationRequest request(neuralNet, platforms, m, aggregate, userImgs);
     this->classificationRequestState = &request;
 
+    //Notify all observers that the state has changed
     notify();
 
     //TODO here maybe display loading screen/bar
@@ -45,18 +55,20 @@ ClassificationRequest* MainWindowHandler::getClassificationRequestState(){
 }
 
 void MainWindowHandler::processClassificationResult(const ClassificationResult &classificationResult){
+    //Initialize the results in resultWidget
     resultWidget->displayResults(classificationResult);
+    //Initialize the details in detailDialog
     detailDialog->insertDetails(&classificationResult);
+    //Change the currently displayed widget to resultWidget
     mainWindow->setCurrentWidget(resultWidget);
 }
 
 void MainWindowHandler::processReturnQPushButton(){
-    //TODO do this also when resultWidget gets closed
-    //TODO reset detailDialog
     mainWindow->setCurrentWidget(startWidget);
-    ResultWidget* temp = resultWidget;
-    resultWidget = new ResultWidget();
-    delete temp;
+    delete resultWidget;
+    resultWidget = new ResultWidget(mainWindow);
+    delete detailDialog;
+    detailDialog = new DetailDialog(mainWindow);
 }
 
 void MainWindowHandler::processDetailQPushButton(){

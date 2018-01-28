@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <NotImplementedException.h>
+
 /**
  * This interface is implemented by the manager to observe the GUI. It follows the observer-pattern structure.
  */
@@ -14,7 +16,9 @@ public:
     /**
      * Observer method for the manager to implement
      */
-    virtual void update();
+    virtual void update(){
+        throw NotImplementedException();
+    }
 
     /**
      * @brief Overloads operator==() function to compare two ManagerObserver's on their identity.

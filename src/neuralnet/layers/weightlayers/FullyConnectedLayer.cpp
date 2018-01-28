@@ -4,8 +4,6 @@
 
 #include "FullyConnectedLayer.h"
 
-
-
 FullyConnectedLayer::FullyConnectedLayer(std::vector<int> inputDimensions) {
     this->inputDimensions = inputDimensions;
 }

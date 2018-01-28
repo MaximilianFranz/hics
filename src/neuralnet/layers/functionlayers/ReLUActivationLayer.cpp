@@ -3,7 +3,6 @@
 //
 
 #include "ReLUActivationLayer.h"
-#include "NotImplementedException.h"
 
 
 ReLUActivationLayer::ReLUActivationLayer(std::vector<int> &inputDimension) : ActivationLayer(inputDimension) {

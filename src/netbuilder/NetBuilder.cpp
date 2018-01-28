@@ -4,6 +4,12 @@
 
 #include <loader/LabelLoader.h>
 #include <loader/weightloader/AlexNetWeightLoader.h>
+#include <loader/JSONModelLoader.h>
+#include <loader/ModelCrawler.h>
+
+#include "NeuralNet.h"
+#include "LayerMaker.h"
+
 #include "NetBuilder.h"
 
 NeuralNet* NetBuilder::buildNeuralNet(NetInfo netInfo) {

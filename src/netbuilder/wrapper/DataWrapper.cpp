@@ -3,7 +3,6 @@
 //
 
 #include "DataWrapper.h"
-#include "../../NotImplementedException.h"
 
 
 DataWrapper::DataWrapper(std::vector<int> dimensions, std::vector<float> &data)

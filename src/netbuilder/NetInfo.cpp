@@ -3,7 +3,6 @@
 //
 
 #include "NetInfo.h"
-#include "../NotImplementedException.h"
 
 
 NetInfo::NetInfo(std::string name, int imageDimension, std::string identifier)

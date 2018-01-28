@@ -56,5 +56,5 @@ public:
      * @param c
      * @return pair of integers, containing power and time consumption.
      */
-    static Performance readComputationHostInfo(ComputationHost& c);
+    static Performance readComputationHostInfo(std::string hostName);
 };

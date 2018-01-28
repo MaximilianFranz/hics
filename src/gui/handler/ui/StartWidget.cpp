@@ -1,3 +1,6 @@
+#include <QFileDialog>
+#include <QPixmap>
+#include <QCheckBox>
 #include "handler/ui/StartWidget.h"
 #include "ui_StartWidget.h"
 
@@ -84,11 +87,9 @@ void StartWidget::processConfirmDeletionButton(){
         if((checkBox = (QCheckBox*)(it.value()->itemAt(0)->widget()))){
             if(checkBox->isChecked()){
                 clearLayout(it.value());
-                QHBoxLayout* tempLayout = it.value(); //TODO maybe unecessary since it is deleted in clearLayout()
-                QImage* tempImage = it.key();
+                delete it.value();
+                delete it.key();
                 images.remove(it.key());
-                delete tempLayout;
-                delete tempImage;
             }
         }
     }

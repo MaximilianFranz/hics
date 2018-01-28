@@ -1,4 +1,4 @@
-add_executable(managertests PreProcessorTest.cpp PreProcessorTest.h ClassificationResultTest.cpp ClassificationResultTest.h HostPlacerTest.cpp HostPlacerTest.h)
+add_executable(managertests PreProcessorTest.cpp PreProcessorTest.h ClassificationResultTest.cpp ClassificationResultTest.h HostPlacerTest.cpp HostPlacerTest.h PerformanceCalculatorTest.cpp PerformanceCalculatorTest.h)
 
 #Link against manager lib to get access to symbols
 #Link against catchtest to use the Catch-main function.

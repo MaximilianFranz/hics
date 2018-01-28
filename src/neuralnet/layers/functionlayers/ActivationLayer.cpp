@@ -5,7 +5,6 @@
 #include "ActivationLayer.h"
 
 
-
 std::vector<int> ActivationLayer::calcOutputDimensions() {
     return inputDimensions; //Activation does not change the dimensions of the input.
 }

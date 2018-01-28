@@ -4,7 +4,6 @@
 
 #include "SimpleNetIterator.h"
 #include "NeuralNet.h"
-#include "../NotImplementedException.h"
 
 void SimpleNetIterator::first() {
     index = 0;

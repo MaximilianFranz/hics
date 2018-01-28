@@ -8,6 +8,7 @@
 #include <Executor.h>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include "ExecutorTest.h"
 
 TEST_CASE("Testing Interpreter") {
