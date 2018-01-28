@@ -91,10 +91,6 @@ def conv(input, kernel, biases, k_h, k_w, c_o, s_h, s_w,  padding="VALID", group
 
 # GENERATE IMAGE DATA for reference!
 img_data = ""
-print("imagetype", im1[0][0][0])
-print("z_shape", im1.shape[2])
-print("y_shape", im1.shape[1])
-print("x_shape", im1.shape[0])
 
 for z in range(im1.shape[2] ):
     for y in range(im1.shape[1] ):
@@ -225,23 +221,27 @@ init = tf.initialize_all_variables()
 sess.run(init)
 
 # USE CONV1_IN TO GET CONV OUTPUT WITHOUT RELU APPLIED.
-
-conv_out = sess.run(fc6, feed_dict = {x:[im1]})
+fc7_in = sess.run(fc6, feed_dict = {x:[im1]})
+fc1_out = sess.run(fc6, feed_dict = {x:[im1]})
+maxpool5_out = sess.run(maxpool5, feed_dict = {x:[im1]})
+conv5_relu = sess.run(conv5, feed_dict = {x:[im1]})
+conv_out = sess.run(conv3_in, feed_dict = {x:[im1]})
+conv4_out = sess.run(conv4_in, feed_dict = {x:[im1]})
 # evalR = sess.run(x, feed_dict = {x:[im1,im2]})
-# output = sess.run(prob, feed_dict = {x:[im1]}) #this is the original output of the net for classification
+output = sess.run(prob, feed_dict = {x:[im1]}) #this is the original output of the net for classification
 ################################################################################
 
 #Output:
 
 
-# for input_im_ind in range(output.shape[0]):
-#     inds = argsort(output)[input_im_ind,:]
-#     print("Image", input_im_ind)
-#     for i in range(5):
-# ##        print(class_names[inds[-1-i]], output[input_im_ind, inds[-1-i]])
-#         print(output[input_im_ind, inds[-1-i]])
+for input_im_ind in range(output.shape[0]):
+    inds = argsort(output)[input_im_ind,:]
+    print("Image", input_im_ind)
+    for i in range(5):
+##        print(class_names[inds[-1-i]], output[input_im_ind, inds[-1-i]])
+        print(output[input_im_ind, inds[-1-i]])
 
-#     # print("beforetest",evalR, "test")    
+    # print("beforetest",evalR, "test")    
 
 # print(time.time()-t)
 
@@ -252,25 +252,82 @@ img_file.close()
 
 # #WRITE OUTPUT OF 1 CONV LAYER BEFORE RELU
 # conv1_data = "img_data in order \{rgb_channel, y, x\}: \n"
-# conv2_data = ""
+# conv3_data = ""
 
-# x_shape = conv_out.shape[1]
-# print("shape 1: ", x_shape)
 
-# for x in range(x_shape):
-#   conv2_data += str(conv_out[0][x]) + " "
+# for z in range(conv_out.shape[3]):
+#   for y in range(conv_out.shape[2]):
+#     for x in range(conv_out.shape[1]):
+#       conv3_data += str(conv_out[0][x][y][z]) + " "
 
-# conv1_file = open("../conv1_data_alexnet.txt", "r+")
-# conv1_file.write(conv1_data)
+# conv1_file = open("../conv3_data_out.txt", "r+")
+# conv1_file.write(conv3_data)
 # conv1_file.close()
 
+# conv4_data = ""
 
 
-# weights_out = ""
+# for z in range(conv4_out.shape[3]):
+#   for y in range(conv4_out.shape[2]):
+#     for x in range(conv4_out.shape[1]):
+#       conv4_data += str(conv4_out[0][x][y][z]) + " "
+
+# conv4_file = open("../conv4_data_out.txt", "r+")
+# conv4_file.write(conv4_data)
+# conv4_file.close()
+
+
+# conv5_relu_data = ""
+
+
+# for z in range(conv5_relu.shape[3]):
+#   for y in range(conv5_relu.shape[2]):
+#     for x in range(conv5_relu.shape[1]):
+#       conv5_relu_data += str(conv5_relu[0][x][y][z]) + " "
+
+# conv5_file = open("../conv5_relu_out.txt", "r+")
+# conv5_file.write(conv5_relu_data)
+# conv5_file.close()
+
+
+# maxpool_out_data = ""
+
+
+# for z in range(maxpool5_out.shape[3]):
+#   for y in range(maxpool5_out.shape[2]):
+#     for x in range(maxpool5_out.shape[1]):
+#       maxpool_out_data += str(maxpool5_out[0][x][y][z]) + " "
+
+# maxpool_file = open("../fc1_data_in.txt", "r+")
+# maxpool_file.write(maxpool_out_data)
+# maxpool_file.close()
+
+# fc1_data = ""
+
+
+# for x in range(fc1_out.shape[1]):
+#   fc1_data += str(fc1_out[0][x]) + " "
+
+# fc1_file = open("../fc1_data_out.txt", "r+")
+# fc1_file.write(fc1_data)
+# fc1_file.close()
+
+# fc7_data_in = ""
+
+
+# for x in range(fc7_in.shape[1]):
+#   fc7_data_in += str(fc7_in[0][x]) + " "
+
+# fc7_file = open("../fc7_in.txt", "r+")
+# fc7_file.write(fc7_data_in)
+# fc7_file.close()
+
+# weights = net_data["fc8"][0]
+
 
 # for y in range(weights.shape[1]):
 # 	for x in range(weights.shape[0]):
-# 		weights_out += str(weights[x][y]) + " "
+# 	 		weights_out += str(weights[x][y]) + " "
 
 # weight_file = open("../fc1_weights.txt", "r+")
 # weight_file.write(weights_out)
