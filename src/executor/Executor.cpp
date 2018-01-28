@@ -10,7 +10,7 @@ std::vector<ImageResult*> Executor::classify(std::vector<ImageWrapper*> images, 
     setupIfChanged(&netinfo, mode, selectedPlatforms);
     auto labelMap = builder->getLabelMap(&netinfo);
     interpreter = new Interpreter(labelMap);
-    std::vector<ImageResult*> results(Interpreter::TOP_X); //Number of Results from Interpreter settings
+    std::vector<ImageResult*> results; //Number of Results from Interpreter settings
 
     for (auto image : images) {
         ImageResult *r = classifyImage(image);
