@@ -36,6 +36,7 @@ struct LayerConstructionParams {
     int numFilters = 0;
     int stride = 0;
     int paddingSize = 0;
+    int numGroups = 1;
     string actFctType = "none"; // eg. relu, tanh, sigmoid, ...
     string normFctType = "none";
     nlohmann::basic_json<> normParams = {{"radius", 0}, {"alpha", 0}, {"beta", 0}, {"bias", 0}};

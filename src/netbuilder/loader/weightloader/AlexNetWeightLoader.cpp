@@ -1,6 +1,6 @@
 #include "AlexNetWeightLoader.h"
 
-WeightWrapper AlexNetWeightLoader::createWeightWrapper(const std::string &groupName) {
+WeightWrapper * AlexNetWeightLoader::createWeightWrapper(const std::string &groupName) {
 
     std::string datasetWeightName = groupName + "_W";
     std::string datasetBiasName = groupName + "_b";
@@ -21,8 +21,8 @@ WeightWrapper AlexNetWeightLoader::createWeightWrapper(const std::string &groupN
     for (int i = 0; i < weightDimensionCount; i++) {
         weightDimensions.push_back((int)weightDimensionArray[i]);
     }
-
-    std::vector<float> weightData((unsigned long)dataspace.get_npoints());
+    unsigned long elementCount = dataspace.get_npoints();
+    std::vector<float> weightData(elementCount);
 
     //Read and store the weightData in the float vector.
     dataset.read(&weightData[0]);
@@ -42,21 +42,21 @@ WeightWrapper AlexNetWeightLoader::createWeightWrapper(const std::string &groupN
     std::vector<float> biasData((unsigned long)dataspace.get_npoints());
     dataset.read(&biasData[0]);
 
-    WeightWrapper output(weightDimensions, weightData, biasData, biasDimensions);
+    WeightWrapper *output = new WeightWrapper(weightDimensions, weightData, biasData, biasDimensions);
 
     return output;
 }
 
-WeightWrapper AlexNetWeightLoader::appendLayers(const std::string &groupNameFirst, const std::string &groupNameSecond) {
+WeightWrapper * AlexNetWeightLoader::appendLayers(const std::string &groupNameFirst, const std::string &groupNameSecond) {
 
-    WeightWrapper first = createWeightWrapper(groupNameFirst);
-    WeightWrapper second = createWeightWrapper(groupNameSecond);
+    WeightWrapper *first = createWeightWrapper(groupNameFirst);
+    WeightWrapper *second = createWeightWrapper(groupNameSecond);
 
-    std::vector<float> firstWeights = first.getData();
-    const std::vector<float> secondWeights = second.getData();
+    std::vector<float> firstWeights = first->getData();
+    const std::vector<float> secondWeights = second->getData();
 
-    std::vector<float> firstBias = first.getBias();
-    const std::vector<float> secondBias = second.getBias();
+    std::vector<float> firstBias = first->getBias();
+    const std::vector<float> secondBias = second->getBias();
 
     for (auto i : secondWeights){
         firstWeights.push_back(secondWeights.at((unsigned long) i));
@@ -68,21 +68,21 @@ WeightWrapper AlexNetWeightLoader::appendLayers(const std::string &groupNameFirs
 
     //TODO watch out maybe other dimension attributes need to be changed aswell.
 
-    int firstWeightDimension = first.getDimensions().at(0) * 2;
+    int firstWeightDimension = first->getDimensions().at(0) * 2;
 
-    std::vector<int> temp = first.getDimensions();
+    std::vector<int> temp = first->getDimensions();
     temp.at(0) = firstWeightDimension;
 
     std::vector<int> temp2;
     temp2.push_back((int) firstBias.size());
 
-    WeightWrapper output(temp, firstWeights, firstBias, temp2);
+    WeightWrapper *output = new WeightWrapper(temp, firstWeights, firstBias, temp2);
 
     return output;
 }
 
-void AlexNetWeightLoader::insertWeightWrapper(const LayerIdentifier &layerId, const WeightWrapper &weightWrapper){
-    weightsMap.insert(std::pair<LayerIdentifier, WeightWrapper>(layerId, weightWrapper));
+void AlexNetWeightLoader::insertWeightWrapper(const LayerIdentifier &layerId, const WeightWrapper *weightWrapper){
+//    weightsMap.insert(std::pair<LayerIdentifier, WeightWrapper>(layerId, *weightWrapper));
 }
 
 void AlexNetWeightLoader::populateWeightsMap() {
@@ -104,14 +104,24 @@ void AlexNetWeightLoader::populateWeightsMap() {
     insertWeightWrapper(LayerIdentifier::FULLY_CON_3, createWeightWrapper("dense_3"));
 }
 
-WeightWrapper AlexNetWeightLoader::getWeights(LayerIdentifier layerId) {
-    return weightsMap.at(layerId);
+WeightWrapper * AlexNetWeightLoader::getWeights(LayerIdentifier layerId) {
+//    return weightsMap.at(layerId);
+    switch (layerId) {
+        case LayerIdentifier::CONV_1 : return createWeightWrapper("conv_1");
+        case LayerIdentifier::CONV_2 : return createWeightWrapper("conv_2");
+        case LayerIdentifier::CONV_3 : return createWeightWrapper("conv_3");
+        case LayerIdentifier::CONV_4 : return createWeightWrapper("conv_4");
+        case LayerIdentifier::CONV_5 : return createWeightWrapper("conv_5");
+        case LayerIdentifier::FULLY_CON_1 : return createWeightWrapper("dense_1");
+        case LayerIdentifier::FULLY_CON_2 : return createWeightWrapper("dense_2");
+        case LayerIdentifier::FULLY_CON_3 : return createWeightWrapper("dense_3");
+    }
+    return nullptr; //DOES NOT HAPPEN
 }
 
 
 AlexNetWeightLoader::AlexNetWeightLoader(const std::string &filePath)
         : filePath(filePath) {
     weightFile = h5cpp::File(filePath, "r");
-
-    populateWeightsMap();
+//    populateWeightsMap();
 }

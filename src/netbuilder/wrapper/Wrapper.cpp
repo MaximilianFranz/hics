@@ -24,7 +24,7 @@ unsigned long Wrapper::facultyOfDim(int dim) {
     return fac;
 }
 
-Wrapper::Wrapper(std::vector<int> &dimensions, std::vector<float> &data)
+Wrapper::Wrapper(std::vector<int> dimensions, std::vector<float> &data)
         :
           dimensions(dimensions),
           data(data)
@@ -80,6 +80,24 @@ std::vector<float> Wrapper::getData() const {
 
 const float Wrapper::getElement(int x, int y, int rgb) {
     return getElement(std::vector<int>{rgb, y, x});
+}
+
+Wrapper::Wrapper(const Wrapper &wrapper)
+        : data(wrapper.data),
+          dimensions(wrapper.dimensions),
+          numElements(wrapper.numElements) {
+
+}
+
+//Wrapper &Wrapper::operator=(const Wrapper &other) {
+//    throw NotImplementedException();
+//}
+
+Wrapper::~Wrapper() {
+    // No Destructor yet
+//    delete[](&data);
+//    delete[](&dimensions);
+//    delete[](&numElements);
 }
 
 

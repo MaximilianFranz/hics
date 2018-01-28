@@ -37,10 +37,8 @@ std::vector<std::string> ModelCrawler::getFilesInDir(std::string relPathToDir) {
         closedir (dir);
     } else {
         /* could not open directory */
-        perror ("");
-        std::cout << "error reading directory" << std::endl;
-        return results;
     }
+    return results;
 }
 
 std::vector<NetInfo *> ModelCrawler::getValidNets(std::string path) {

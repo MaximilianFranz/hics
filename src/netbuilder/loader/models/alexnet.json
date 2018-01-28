@@ -17,7 +17,8 @@
       "filterSize": 11,
       "kernels": 96,
       "stride": 4,
-      "padding": 0
+      "padding": 0,
+      "numGroups": 1
     },
     {
       "layerIndex": 2,
@@ -47,7 +48,8 @@
       "filterSize": 5,
       "kernels": 256,
       "stride": 1,
-      "padding": 2
+      "padding": 2,
+      "numGroups": 2
     },
     {
       "layerIndex": 6,
@@ -77,7 +79,8 @@
       "filterSize": 3,
       "kernels": 384,
       "stride": 1,
-      "padding": 1
+      "padding": 1,
+      "numGroups": 1
     },
     {
       "layerIndex": 10,
@@ -90,7 +93,8 @@
       "filterSize": 3,
       "kernels": 384,
       "stride": 1,
-      "padding": 1
+      "padding": 1,
+      "numGroups": 2
     },
     {
       "layerIndex": 12,
@@ -103,7 +107,8 @@
       "filterSize": 3,
       "kernels": 256,
       "stride": 1,
-      "padding": 1
+      "padding": 1,
+      "numGroups": 2
     },
     {
       "layerIndex": 14,

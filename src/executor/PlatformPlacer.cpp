@@ -34,6 +34,11 @@ void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::
         }
         it->next();
     }
+    //TODO: How to reach last layer?
+    if (!it->getElement()->isLayerFunctionSet()) {
+        default_setLayerFunctionForLayer(it->getElement()); //Use fallback for now
+    }
+
 
     // Making sure the placer knows the current state of the net
     this->currentMode = mode;
@@ -82,4 +87,5 @@ Platform* PlatformPlacer::getDefaultPlatform() {
             return pl; //We assume for now that there always is a CPU platform!
         }
     }
+    return nullptr;
 }

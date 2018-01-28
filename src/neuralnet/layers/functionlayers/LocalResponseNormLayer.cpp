@@ -44,6 +44,7 @@ void LocalResponseNormLayer::setFunction(ResponseNormalizationFunction *function
 
 
 void LocalResponseNormLayer::forward() {
+    outputWrapper = new DataWrapper(getOutputDimensions());
     this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper, radius, alpha, beta, bias);
 }
 

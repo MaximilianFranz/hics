@@ -15,3 +15,13 @@ DataWrapper::DataWrapper(std::vector<int> dimensions)
         : Wrapper(dimensions) {
 
 }
+
+DataWrapper::~DataWrapper() {
+//    delete[](&data);
+//    delete[](&dimensions);
+//    delete[](&numElements);
+}
+
+DataWrapper::DataWrapper(const DataWrapper &wrapper) : Wrapper(wrapper) {
+
+}

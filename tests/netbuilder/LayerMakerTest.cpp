@@ -38,6 +38,13 @@ SCENARIO("Testing construction of Layers" , "[layermaker]") {
         REQUIRE(conv->calcOutputDimensions() == outputafter1stconv);
     }
 
+    SECTION("ConvolutionLayer2") {
+        LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(5);
+        REQUIRE(lcp.type == "conv");
+        ConvolutionLayer* conv = l.createConvLayer(lcp, v, NULL);
+        REQUIRE(conv->getNumGroups() == 2);
+    }
+
     SECTION("ActivationLayer") {
         LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(2);
         REQUIRE(lcp.type == "activation");

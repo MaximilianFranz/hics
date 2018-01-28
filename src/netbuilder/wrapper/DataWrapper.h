@@ -23,4 +23,8 @@ public:
 
     DataWrapper(std::vector<int> dimensions);
 
+    virtual ~DataWrapper();
+
+    DataWrapper(const DataWrapper& wrapper);
+
 };

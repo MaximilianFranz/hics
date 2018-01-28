@@ -54,6 +54,8 @@ private:
      */
     void runDataForward(DataWrapper *data);
 
+    NetInfo createMockInfo();
+
 public:
 
     /**

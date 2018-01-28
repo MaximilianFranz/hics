@@ -10,9 +10,15 @@ InputLayer* LayerMaker::createInputLayer(LayerConstructionParams lcp){
     return input;
 }
 
+//TODO: Do line-breaks everywhere like this!
 ConvolutionLayer* LayerMaker::createConvLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights){
-    ConvolutionLayer* conv = new ConvolutionLayer(lcp.numFilters, lcp.filterSize, lcp.paddingSize, lcp.stride,
-    inputDims, weights);
+    ConvolutionLayer* conv = new ConvolutionLayer(lcp.numFilters,
+                                                  lcp.filterSize,
+                                                  lcp.paddingSize,
+                                                  lcp.stride,
+                                                  lcp.numGroups,
+                                                  inputDims,
+                                                  weights);
     return conv;
 }
 

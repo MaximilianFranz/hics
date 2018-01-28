@@ -27,7 +27,7 @@ public:
      * @param dimensions
      * @param data
      */
-    Wrapper(std::vector<int> &dimensions, std::vector<float> &data);
+    Wrapper(std::vector<int> dimensions, std::vector<float> &data);
 
     /**\brief Create empty Wrapper to store data in. Reserves required size for dimensions.
      *
@@ -37,6 +37,18 @@ public:
      * @param dimensionSizes
      */
     explicit Wrapper(std::vector<int> dimensionSizes);
+
+    /**
+     * Provide explicit Copy-constructor!
+     *
+     * @param wrapper
+     */
+    Wrapper(const Wrapper& wrapper);
+
+    //TODO: Implement this correctly if needed!
+//    Wrapper& operator= (const Wrapper& other);
+
+    virtual ~Wrapper();
 
     /**
      * Get number of dimensions the data in this Wrapper has.

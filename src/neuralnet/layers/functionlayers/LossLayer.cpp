@@ -3,7 +3,6 @@
 //
 
 #include "LossLayer.h"
-#include "NotImplementedException.h"
 
 
 std::vector<int> LossLayer::calcOutputDimensions() {
@@ -16,6 +15,7 @@ void LossLayer::setFunction(LossFunction *function) {
 }
 
 void LossLayer::forward() {
+    outputWrapper = new DataWrapper(getOutputDimensions());
     this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper);
     computed = true;
 }

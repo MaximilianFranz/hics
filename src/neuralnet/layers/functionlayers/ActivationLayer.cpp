@@ -3,7 +3,6 @@
 //
 
 #include "ActivationLayer.h"
-#include "NotImplementedException.h"
 
 
 
@@ -23,6 +22,7 @@ void ActivationLayer::setFunction(ActivationFunction *function) {
 
 //TODO: Use pointers instead of reference?
 void ActivationLayer::forward() {
+    outputWrapper = new DataWrapper(getOutputDimensions());
     this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper);
     this->computed = true;
 }

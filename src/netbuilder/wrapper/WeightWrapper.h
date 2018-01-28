@@ -9,7 +9,7 @@
 class WeightWrapper : public Wrapper {
 private:
     std::vector<float> bias;
-    std::vector<int> biasDimensionSizes;
+    std::vector<int> biasDimension;
 
 public:
 
@@ -22,8 +22,8 @@ public:
      * @param biasNumDimensions
      * @param biasDimensions
      */
-    WeightWrapper(std::vector<int> &dimensions, std::vector<float> &weights, std::vector<float> &bias,
-                  std::vector<int> &biasDimensions);
+    WeightWrapper(std::vector<int> dimensions, std::vector<float> &weights, std::vector<float> &bias,
+                  std::vector<int> biasDimensions);
 
 
 
@@ -56,4 +56,6 @@ public:
      * @return the vector with the bias of this WeightWrapper.
      */
     std::vector<float> getBias();
+
+    const std::vector<int> &getBiasDimension() const;
 };

@@ -22,6 +22,10 @@ protected:
     int filterSize;
     int zeroPadding;
     int stride;
+    int numGroups;
+
+    std::vector<int> splitDim(std::vector<int> in, int factor, int index);
+
 public:
 
     /**
@@ -38,6 +42,7 @@ public:
                      int filterSize,
                      int zeroPadding,
                      int stride,
+                     int numGroups,
                      std::vector<int> &inputDimensions);
 
     /**
@@ -55,6 +60,7 @@ public:
                      int filterSize,
                      int zeroPadding,
                      int stride,
+                     int numGroups,
                      std::vector<int> &inputDimensions,
                      WeightWrapper* weights);
 
@@ -78,6 +84,8 @@ public:
     int getZeroPadding() const;
 
     int getStride() const;
+
+    int getNumGroups() const;
 
 };
 

@@ -22,8 +22,8 @@ NeuralNet* NetBuilder::buildNeuralNet(NetInfo netInfo) {
         lcp = modelLoader.getLayerConstructionParamsByIndex(layerIndex);
          std::vector<int> inputDimensionsForLayer = alexNet->getLastLayer()->getOutputDimensions();
         if (lcp.type == "conv"){
-            WeightWrapper weights = loader.getWeights(WeightLoader::LayerIdentifier(weightIndex));
-            layer = layerMaker.createConvLayer(lcp, inputDimensionsForLayer, &weights);
+            WeightWrapper *weights = loader.getWeights(WeightLoader::LayerIdentifier(weightIndex));
+            layer = layerMaker.createConvLayer(lcp, inputDimensionsForLayer, weights);
             weightIndex++;
         }
             //Naive for now - No possibility for other activations
@@ -41,8 +41,8 @@ NeuralNet* NetBuilder::buildNeuralNet(NetInfo netInfo) {
             layer = layerMaker.createSoftmaxLossLayer(lcp, inputDimensionsForLayer);
         }
         else if (lcp.type == "fullyConnected") {
-            WeightWrapper weights = loader.getWeights(WeightLoader::LayerIdentifier(weightIndex));
-            layer = layerMaker.createFCLayer(lcp, inputDimensionsForLayer, &weights);
+            WeightWrapper *weights = loader.getWeights(WeightLoader::LayerIdentifier(weightIndex));
+            layer = layerMaker.createFCLayer(lcp, inputDimensionsForLayer, weights);
             weightIndex++;
         }
         else {

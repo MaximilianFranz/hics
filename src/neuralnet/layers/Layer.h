@@ -28,8 +28,8 @@ enum LayerType {
 class Layer {
 protected:
 
-    Layer* previousLayer;
-    Layer* nextLayer;
+    Layer* previousLayer = nullptr;
+    Layer* nextLayer = nullptr;
     DataWrapper* inputWrapper; //! == previousLayer.getOutputWrapper()
     DataWrapper* outputWrapper; //! == nextLayer.getInputWrapper()
 

@@ -13,6 +13,7 @@
 
 #include <PlatformManager.h>
 #include <loader/weightloader/AlexNetWeightLoader.h>
+#include <algorithm>
 
 #include "PlatformTest.h"
 
@@ -154,6 +155,8 @@ TEST_CASE("test with real data from AlexNet") {
     std::string conv1_bias_path = "../../../tests/resources/conv1_bias.txt";
     std::string conv1_weights_path = "../../../tests/resources/conv1_weight.txt";
     std::string conv1_result_path = "../../../tests/resources/conv1_data_alexnet.txt";
+    std::string conv2_result_path = "../../../tests/resources/conv2_data_out.txt";
+    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
 
     std::vector<float> weights = getDataFromFile(conv1_weights_path);
     std::vector<float> bias = getDataFromFile(conv1_bias_path);
@@ -162,8 +165,9 @@ TEST_CASE("test with real data from AlexNet") {
 
     std::vector<int> weightDim = {96,3,11,11};
     std::vector<int> biasDim = {96};
-    WeightWrapper weightsWrapper(weightDim, weights, bias, biasDim);
-
+   // WeightWrapper weightsWrapper(weightDim, weights, bias, biasDim);
+    AlexNetWeightLoader loader(weightspath);
+    WeightWrapper *weightsWrapper = loader.getWeights(WeightLoader::LayerIdentifier::CONV_1);
     std::vector<int> inDim = {3, 227, 227};
     std::vector<int> outDim = {96, 55, 55};
 
@@ -181,7 +185,7 @@ TEST_CASE("test with real data from AlexNet") {
     ConvolutionFunction *f = p->createConvolutionFunction();
     REQUIRE(f != nullptr);
 
-    f->execute(in, conv1_out, weightsWrapper, 4, 11, 96, 0);
+    f->execute(in, conv1_out, *weightsWrapper, 4, 11, 96, 0);
     // out_real evaluates to 0 from i = 4 onwards
 
     for (int i = 0; i < 55*55; i++) { // Test the first filter fully
@@ -343,15 +347,7 @@ TEST_CASE("Softmax test") {
 }
 
 TEST_CASE("FullyConnected") {
-//    std::string fc1_in = "../../../tests/resources/fc1_data_in.txt";
-//    std::string fc1_out = "../../../tests/resources/fc1_data_out.txt";
-//    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
-//
-//    std::vector<float> result = getDataFromFile(fc1_out);
-//    std::vector<float> input = getDataFromFile(fc1_in);
-//
-//    std::vector<int> inDim = {9216};
-//    std::vector<int> outDim = {4098};
+
 
 
     std::vector<float> easy_in = {1, 2, 3, 4};
@@ -392,5 +388,167 @@ TEST_CASE("FullyConnected") {
     }
 
 
+
+}
+
+TEST_CASE("FullyConnected one with real data") {
+    std::string fc1_in = "../../../tests/resources/fc1_data_in_flat.txt";
+    std::string fc1_out = "../../../tests/resources/fc1_data_out.txt";
+    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+    std::string weightFile = "../../../tests/resources/fc1_weights.txt";
+    std::string biasFile = "../../../tests/resources/fc1_bias.txt";
+
+    std::vector<float> result = getDataFromFile(fc1_out);
+    std::vector<float> input = getDataFromFile(fc1_in);
+
+    std::vector<int> inDim = {9216};
+    std::vector<int> outDim = {4098};
+
+    AlexNetWeightLoader loader(weightspath);
+    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_1); //TODO: Change after merge to new enum!
+    std::vector<float> weight = fc1_weights->getData();
+    std::vector<float> bias = fc1_weights->getBias();
+    WeightWrapper *transformedWeights = new WeightWrapper({4096,9216},weight, bias ,{4096} );
+
+    PlatformManager &pm = PlatformManager::getInstance();
+    REQUIRE(pm.getPlatforms().size() >= 1);
+
+    Platform *p = pm.getPlatforms()[0];
+    REQUIRE(p != nullptr);
+
+    FullyConnectedFunction *fc = p->createFullyConnectedFunction();
+    REQUIRE(fc != nullptr);
+
+    DataWrapper in({9216}, input);
+    DataWrapper out_fc({4096});
+
+    fc->execute(in, out_fc, *transformedWeights);
+
+
+    ActivationFunction *relu = p->createActivationFunction(LayerType::ACTIVATION_RELU);
+
+    DataWrapper out_relu({4096});
+
+    relu->execute(out_fc, out_relu);
+
+    for(int i = 0; i < 4096; i++) {
+        REQUIRE(std::abs(out_relu.getData().at(i) - result.at(i)) < eps);
+    }
+
+}
+
+TEST_CASE("FullyConnected two with real data") {
+    std::string fc2_in = "../../../tests/resources/fc7_in.txt";
+    std::string fc2_out = "../../../tests/resources/fc7_out.txt";
+    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+
+    std::vector<float> result = getDataFromFile(fc2_out);
+    std::vector<float> input = getDataFromFile(fc2_in);
+
+    std::vector<int> inDim = {9216};
+    std::vector<int> outDim = {4096};
+
+    AlexNetWeightLoader loader(weightspath);
+    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_2); //TODO: Change after merge to new enum!
+
+
+    PlatformManager &pm = PlatformManager::getInstance();
+    REQUIRE(pm.getPlatforms().size() >= 1);
+
+    Platform *p = pm.getPlatforms()[0];
+    REQUIRE(p != nullptr);
+
+    FullyConnectedFunction *fc = p->createFullyConnectedFunction();
+    REQUIRE(fc != nullptr);
+
+    DataWrapper in({4096}, input);
+    DataWrapper out_fc({4096});
+
+    fc->execute(in, out_fc, *fc1_weights);
+
+
+    ActivationFunction *relu = p->createActivationFunction(LayerType::ACTIVATION_RELU);
+
+    DataWrapper out_relu({4096});
+
+    relu->execute(out_fc, out_relu);
+
+    for(int i = 0; i < 4096; i++) {
+        REQUIRE(std::fabs(out_relu.getData().at(i) - result.at(i)) < eps);
+    }
+
+}
+
+
+TEST_CASE("FullyConnected three with real data") {
+    std::string fc3_in = "../../../tests/resources/fc7_out.txt";
+    std::string fc3_out = "../../../tests/resources/fc8_out.txt";
+    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+
+    std::vector<float> result = getDataFromFile(fc3_out);
+    std::vector<float> input = getDataFromFile(fc3_in);
+
+
+    AlexNetWeightLoader loader(weightspath);
+    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_3); //TODO: Change after merge to new enum!
+
+
+    PlatformManager &pm = PlatformManager::getInstance();
+    REQUIRE(pm.getPlatforms().size() >= 1);
+
+    Platform *p = pm.getPlatforms()[0];
+    REQUIRE(p != nullptr);
+
+    FullyConnectedFunction *fc = p->createFullyConnectedFunction();
+    REQUIRE(fc != nullptr);
+
+    DataWrapper in({4096}, input);
+    DataWrapper out_fc({1000});
+
+    fc->execute(in, out_fc, *fc1_weights);
+
+
+    for(int i = 0; i < 1000; i++) {
+        REQUIRE(std::fabs(out_fc.getData().at(i) - result.at(i)) < eps);
+    }
+
+}
+
+TEST_CASE("Softmax with real data") {
+    std::string sm_in = "../../../tests/resources/fc8_out.txt";
+    std::string sm_out = "../../../tests/resources/sm_out.txt";
+    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+
+    std::vector<float> result = getDataFromFile(sm_out);
+    std::vector<float> input = getDataFromFile(sm_in);
+
+
+    AlexNetWeightLoader loader(weightspath);
+
+
+    PlatformManager &pm = PlatformManager::getInstance();
+    REQUIRE(pm.getPlatforms().size() >= 1);
+
+    Platform *p = pm.getPlatforms()[0];
+    REQUIRE(p != nullptr);
+
+    LossFunction *sm = p->createLossFunction(LayerType::LOSS_SOFTMAX);
+    REQUIRE(sm != nullptr);
+
+    DataWrapper in({1000}, input);
+    DataWrapper out_sm({1000});
+
+    sm->execute(in, out_sm);
+
+    std::vector<float> sortRes = result;
+    std::sort(sortRes.begin(), sortRes.end());
+
+    std::vector<float> sortOut = out_sm.getData();
+    std::sort(sortOut.begin(), sortOut.end());
+
+
+    for(int i = 0; i < 1000; i++) {
+        REQUIRE(std::fabs(out_sm.getData().at(i) - result.at(i)) < eps);
+    }
 
 }

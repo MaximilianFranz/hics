@@ -48,5 +48,4 @@ SCENARIO("Testing Netbuilder methods") {
         NeuralNet* net =  n.buildNeuralNet(*netInfo);
         REQUIRE(net->getLastLayer()->getType() == LayerType::LOSS_SOFTMAX);
     }
-
 }

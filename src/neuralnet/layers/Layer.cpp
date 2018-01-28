@@ -67,7 +67,7 @@ DataWrapper *Layer::getInputWrapper() const {
 }
 
 void Layer::setInputWrapper(DataWrapper *inputWrapper) {
-    Layer::inputWrapper = inputWrapper;
+    Layer::inputWrapper = new DataWrapper(*(inputWrapper));
 }
 
 DataWrapper *Layer::getOutputWrapper() const {
@@ -79,7 +79,9 @@ void Layer::setOutputWrapper(DataWrapper *outputWrapper) {
 }
 
 void Layer::deleteGarbage() {
-    delete inputWrapper; //TODO: does this delete the object?
+    if(this->type != LayerType::INPUT) {
+        // TODO Maybe implement Garbe-collection manually
+    }
 }
 
 

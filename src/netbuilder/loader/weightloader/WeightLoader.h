@@ -23,5 +23,5 @@ public:
 
 
     // pure virtual function to make WeightLoader an abstract class
-    virtual WeightWrapper getWeights(LayerIdentifier layerId) = 0;
+    virtual WeightWrapper * getWeights(LayerIdentifier layerId) = 0;
 };
