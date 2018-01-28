@@ -7,4 +7,4 @@ find_package(Qt5Test REQUIRED)
 
 add_test(NAME guitestQt COMMAND guitestsQt)
 
-target_link_libraries(guitestsQt hics gui manager Qt5::Test)
+target_link_libraries(guitestsQt hics gui manager util netbuilder executor Qt5::Test)

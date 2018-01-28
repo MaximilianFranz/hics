@@ -9,6 +9,7 @@
 #include <PlatformInfo.h>
 #include <OperationMode.h>
 #include <handler/ui/StartWidget.h>
+#include <handler/MainWindowHandler.h>
 
 class StartWidgetTest : public QObject
 {
@@ -20,6 +21,7 @@ private:
     std::list<PlatformInfo> platforms;
     std::list<OperationMode> modes;
 
+    MainWindowHandler* mainWindowHandler;
     StartWidget *startWidget;
 
 private slots:
@@ -34,7 +36,8 @@ private slots:
         OperationMode mode = OperationMode::HighPower;
         modes.push_back(mode);
 
-        startWidget = new StartWidget(nets, platforms, modes);
+        mainWindowHandler = new MainWindowHandler(nets, platforms, modes);
+        startWidget = mainWindowHandler->getStartWidget();
     }
 
     void classifyButtonClicked();
