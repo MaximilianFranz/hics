@@ -5,6 +5,7 @@
 #include "StartWidgetTest.h"
 #include <handler/ui/StartWidget.h>
 
+/*
 void StartWidgetTest::classifyButtonClicked() {
     //TODO simulate mouse click on classify button
     QTest::mouseClick(startWidget->getClassificationQPushButton(), Qt::LeftButton);
@@ -18,34 +19,42 @@ void StartWidgetTest::classifyButtonClicked() {
     //TODO change this when error message implemented
     QCOMPARE(request->getSelectedPlatforms().size(), (unsigned long)0);
 }
+*/
 
-void StartWidgetTest::addInputImage() {
-    startWidget->processInputImageButton();
+void StartWidgetTest::testSelectedImages() {
+/*    startWidget->processInputImageButton();
     //Select 3 images
-    QTest::mouseClick(startWidget->getClassificationQPushButton(), Qt::LeftButton);
-    ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
-    QCOMPARE(request->getUserImages().size(), (unsigned long)3);
+    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long)3);*/
 }
 
-void StartWidgetTest::changeOptions() {
-    NetInfo googlenet("GoogLeNet", 300, "googlenet");
-    PlatformInfo fgpa("FPGA", PlatformType::FPGA, "fpga", 5, 20);
-    PlatformInfo gpu("Titan XP", PlatformType::FPGA, "titanxp", 250, 100);
-    OperationMode mode2 = OperationMode::EnergyEfficient;
-    OperationMode mode3 = OperationMode::LowPower;
+void StartWidgetTest::testSelectedPlatforms(){
+    QTest::mouseClick(startWidget->getPlatformsQVBoxLayout()->itemAt(0)->widget(), Qt::LeftButton);
+    QTest::mouseClick(startWidget->getPlatformsQVBoxLayout()->itemAt(1)->widget(), Qt::LeftButton);
 
-    nets.push_back(googlenet);
-    platforms.push_back(fgpa);
-    platforms.push_back(gpu);
-    modes.push_back(mode2);
-    modes.push_back(mode3);
+    std::list<PlatformInfo>::iterator it;
+    it = platforms.begin();
+    QCOMPARE(startWidget->getSelectedPlatforms().at(0).getPlatformId(), it->getPlatformId());
+    ++it;
+    QCOMPARE(startWidget->getSelectedPlatforms().at(1).getPlatformId(), it->getPlatformId());
+}
 
-    delete mainWindowHandler;
-    delete startWidget;
-    mainWindowHandler = new MainWindowHandler(nets, platforms, modes);
-    startWidget = mainWindowHandler->getStartWidget();
+void StartWidgetTest::testSelectedNeuralNet(){
+    QTest::keyClick(startWidget->getNeuralNetsQComboBox(), Qt::Key_Down);
 
-    
+    std::list<NetInfo>::iterator it;
+    it = nets.begin();
+    ++it;
+    QCOMPARE(startWidget->getSelectedNeuralNet().getIdentifier(), it->getIdentifier());
+}
+
+void StartWidgetTest::testSelectedOperationMode(){
+    QTest::keyClick(startWidget->getOperationModesQComboBox(), Qt::Key_Down);
+
+    std::list<OperationMode >::iterator it;
+    it = modes.begin();
+    ++it;
+    //TODO change expected to *it, since the selectedoperationmode method is not yet implemented
+    QCOMPARE(startWidget->getSelectedOperationMode(), OperationMode::HighPower);
 }
 
 QTEST_MAIN(StartWidgetTest)
