@@ -198,6 +198,12 @@ std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
     }
 }
 
+OperationMode StartWidget::getSelectedOperationMode(){
+    std::string modeName = ui->operationModesQComboBox->currentText().toStdString();
+    //TODO get operationMode by string
+    return OperationMode::HighPower;
+}
+
 bool StartWidget::isAggregated(){
     return ui->aggregateResultsQCheckBox->isChecked();
 }

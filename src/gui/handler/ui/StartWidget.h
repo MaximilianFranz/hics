@@ -74,9 +74,15 @@ public:
     std::map<QString, QImage> getSelectedImages();
 
     /**
-     * @brief isAggregated checks if the user selected to aggregate the results or not
-     * @return true if the results shall be aggregated, false if not
+     * @brief getSelectedOperationMode returns the selected operation mode.
+     * @return the selected operation mode
      */
+    OperationMode getSelectedOperationMode();
+
+        /**
+         * @brief isAggregated checks if the user selected to aggregate the results or not
+         * @return true if the results shall be aggregated, false if not
+         */
     bool isAggregated();
 
     /**
@@ -88,12 +94,25 @@ public:
      */
     QPushButton* getClassificationQPushButton();
 
+    /**
+     * @brief getOperationModesQComboBox returns the QComboBox containing the operation modes
+     * @return the combo box containing the operation modes
+     */
     QComboBox* getOperationModesQComboBox();
+
+    /**
+     * @brief getNeuralNetsQComboBox returns the QComboBox containing the available neural nets
+     * @return the combo box containing the available neural nets
+     */
     QComboBox* getNeuralNetsQComboBox();
+
+    /**
+     * @brief getPlatformsQVBoxLayout return a vertical layout containing the available platforms for the classification
+     * @return the layout containing all available platforms as checkboxes
+     */
     QVBoxLayout* getPlatformsQVBoxLayout();
 
-
-        public slots:
+public slots:
 
     /**
      * @brief processInputImageButton opens a QFileDialog, where the user can select images for the classification
