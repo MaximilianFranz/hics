@@ -225,3 +225,16 @@ std::map<QString, QImage> StartWidget::getSelectedImages(){
 QPushButton* StartWidget::getClassificationQPushButton(){
     return ui->classificationQPushButton;
 }
+
+QComboBox* StartWidget::getOperationModesQComboBox(){
+    return ui->operationModesQComboBox;
+}
+
+QComboBox* StartWidget::getNeuralNetsQComboBox(){
+    return ui->neuralNetsQComboBox;
+}
+
+QVBoxLayout* StartWidget::getPlatformsQVBoxLayout(){
+    return ui->platformsQVBoxLayout;
+}
+

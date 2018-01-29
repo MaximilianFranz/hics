@@ -12,6 +12,7 @@
 #include <NetInfo.h>
 #include <PlatformInfo.h>
 #include <OperationMode.h>
+#include <QtWidgets/QComboBox>
 
 namespace Ui {
 class StartWidget;
@@ -87,7 +88,12 @@ public:
      */
     QPushButton* getClassificationQPushButton();
 
-public slots:
+    QComboBox* getOperationModesQComboBox();
+    QComboBox* getNeuralNetsQComboBox();
+    QVBoxLayout* getPlatformsQVBoxLayout();
+
+
+        public slots:
 
     /**
      * @brief processInputImageButton opens a QFileDialog, where the user can select images for the classification
