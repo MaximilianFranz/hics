@@ -54,6 +54,7 @@ private slots:
     void testSelectedNeuralNet();
     void testSelectedOperationMode();
     void testSelectedImages();
+    void testIsAggregated();
 
 };
 

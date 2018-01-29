@@ -57,4 +57,11 @@ void StartWidgetTest::testSelectedOperationMode(){
     QCOMPARE(startWidget->getSelectedOperationMode(), OperationMode::HighPower);
 }
 
+void StartWidgetTest::testIsAggregated(){
+    QCOMPARE(startWidget->isAggregated(), false);
+    QTest::mouseClick(startWidget->getAggregateResultsQCheckBox(), Qt::LeftButton);
+    QCOMPARE(startWidget->isAggregated(), true);
+    QTest::mouseClick(startWidget->getAggregateResultsQCheckBox(), Qt::LeftButton);
+    QCOMPARE(startWidget->isAggregated(), false);
+}
 QTEST_MAIN(StartWidgetTest)
