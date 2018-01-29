@@ -244,3 +244,7 @@ QVBoxLayout* StartWidget::getPlatformsQVBoxLayout(){
     return ui->platformsQVBoxLayout;
 }
 
+QCheckBox* StartWidget::getAggregateResultsQCheckBox(){
+    return ui->aggregateResultsQCheckBox;
+}
+

@@ -13,6 +13,7 @@
 #include <PlatformInfo.h>
 #include <OperationMode.h>
 #include <QtWidgets/QComboBox>
+#include <QtWidgets/QCheckBox>
 
 namespace Ui {
 class StartWidget;
@@ -111,6 +112,12 @@ public:
      * @return the layout containing all available platforms as checkboxes
      */
     QVBoxLayout* getPlatformsQVBoxLayout();
+
+    /**
+     * @brief getAggregateResultsQCheckBox returns the QCheckBox which indicates if the results shall be aggregated or not.
+     * @return the check box where the user can select to aggregate the results or not
+     */
+    QCheckBox* getAggregateResultsQCheckBox();
 
 public slots:
 
