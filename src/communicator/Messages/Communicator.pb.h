@@ -43,31 +43,31 @@ struct TableStruct {
   static const ::google::protobuf::uint32 offsets[];
 };
 void AddDescriptors();
+void InitDefaultsLabelImpl();
+void InitDefaultsLabel();
+void InitDefaultsNetInfoMessageImpl();
+void InitDefaultsNetInfoMessage();
+void InitDefaultsPlatformInfoMessageImpl();
+void InitDefaultsPlatformInfoMessage();
+void InitDefaultsImageWrapperMessageImpl();
+void InitDefaultsImageWrapperMessage();
+void InitDefaultsPlatformDistributionMessageImpl();
+void InitDefaultsPlatformDistributionMessage();
+void InitDefaultsImageResultMessageImpl();
+void InitDefaultsImageResultMessage();
 void InitDefaultsClassifyRequestImpl();
 void InitDefaultsClassifyRequest();
 void InitDefaultsClassifyReplyImpl();
 void InitDefaultsClassifyReply();
-void InitDefaultsImageResultImpl();
-void InitDefaultsImageResult();
-void InitDefaultsImageWrapperImpl();
-void InitDefaultsImageWrapper();
-void InitDefaultsNetInfoImpl();
-void InitDefaultsNetInfo();
-void InitDefaultsPlatformInfoImpl();
-void InitDefaultsPlatformInfo();
-void InitDefaultsLabelImpl();
-void InitDefaultsLabel();
-void InitDefaultsPlatformDistributionImpl();
-void InitDefaultsPlatformDistribution();
 inline void InitDefaults() {
+  InitDefaultsLabel();
+  InitDefaultsNetInfoMessage();
+  InitDefaultsPlatformInfoMessage();
+  InitDefaultsImageWrapperMessage();
+  InitDefaultsPlatformDistributionMessage();
+  InitDefaultsImageResultMessage();
   InitDefaultsClassifyRequest();
   InitDefaultsClassifyReply();
-  InitDefaultsImageResult();
-  InitDefaultsImageWrapper();
-  InitDefaultsNetInfo();
-  InitDefaultsPlatformInfo();
-  InitDefaultsLabel();
-  InitDefaultsPlatformDistribution();
 }
 }  // namespace protobuf_Communicator_2eproto
 class ClassifyReply;
@@ -76,25 +76,47 @@ extern ClassifyReplyDefaultTypeInternal _ClassifyReply_default_instance_;
 class ClassifyRequest;
 class ClassifyRequestDefaultTypeInternal;
 extern ClassifyRequestDefaultTypeInternal _ClassifyRequest_default_instance_;
-class ImageResult;
-class ImageResultDefaultTypeInternal;
-extern ImageResultDefaultTypeInternal _ImageResult_default_instance_;
-class ImageWrapper;
-class ImageWrapperDefaultTypeInternal;
-extern ImageWrapperDefaultTypeInternal _ImageWrapper_default_instance_;
+class ImageResultMessage;
+class ImageResultMessageDefaultTypeInternal;
+extern ImageResultMessageDefaultTypeInternal _ImageResultMessage_default_instance_;
+class ImageWrapperMessage;
+class ImageWrapperMessageDefaultTypeInternal;
+extern ImageWrapperMessageDefaultTypeInternal _ImageWrapperMessage_default_instance_;
 class Label;
 class LabelDefaultTypeInternal;
 extern LabelDefaultTypeInternal _Label_default_instance_;
-class NetInfo;
-class NetInfoDefaultTypeInternal;
-extern NetInfoDefaultTypeInternal _NetInfo_default_instance_;
-class PlatformDistribution;
-class PlatformDistributionDefaultTypeInternal;
-extern PlatformDistributionDefaultTypeInternal _PlatformDistribution_default_instance_;
-class PlatformInfo;
-class PlatformInfoDefaultTypeInternal;
-extern PlatformInfoDefaultTypeInternal _PlatformInfo_default_instance_;
+class NetInfoMessage;
+class NetInfoMessageDefaultTypeInternal;
+extern NetInfoMessageDefaultTypeInternal _NetInfoMessage_default_instance_;
+class PlatformDistributionMessage;
+class PlatformDistributionMessageDefaultTypeInternal;
+extern PlatformDistributionMessageDefaultTypeInternal _PlatformDistributionMessage_default_instance_;
+class PlatformInfoMessage;
+class PlatformInfoMessageDefaultTypeInternal;
+extern PlatformInfoMessageDefaultTypeInternal _PlatformInfoMessage_default_instance_;
 
+enum PlatformInfoMessage_platformType {
+  PlatformInfoMessage_platformType_CPU = 0,
+  PlatformInfoMessage_platformType_FPGA = 1,
+  PlatformInfoMessage_platformType_GPU = 2,
+  PlatformInfoMessage_platformType_PlatformInfoMessage_platformType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  PlatformInfoMessage_platformType_PlatformInfoMessage_platformType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool PlatformInfoMessage_platformType_IsValid(int value);
+const PlatformInfoMessage_platformType PlatformInfoMessage_platformType_platformType_MIN = PlatformInfoMessage_platformType_CPU;
+const PlatformInfoMessage_platformType PlatformInfoMessage_platformType_platformType_MAX = PlatformInfoMessage_platformType_GPU;
+const int PlatformInfoMessage_platformType_platformType_ARRAYSIZE = PlatformInfoMessage_platformType_platformType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* PlatformInfoMessage_platformType_descriptor();
+inline const ::std::string& PlatformInfoMessage_platformType_Name(PlatformInfoMessage_platformType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    PlatformInfoMessage_platformType_descriptor(), value);
+}
+inline bool PlatformInfoMessage_platformType_Parse(
+    const ::std::string& name, PlatformInfoMessage_platformType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<PlatformInfoMessage_platformType>(
+    PlatformInfoMessage_platformType_descriptor(), name, value);
+}
 enum ClassifyRequest_operationMode {
   ClassifyRequest_operationMode_HighPower = 0,
   ClassifyRequest_operationMode_LowPower = 1,
@@ -117,846 +139,7 @@ inline bool ClassifyRequest_operationMode_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<ClassifyRequest_operationMode>(
     ClassifyRequest_operationMode_descriptor(), name, value);
 }
-enum PlatformInfo_platformType {
-  PlatformInfo_platformType_CPU = 0,
-  PlatformInfo_platformType_FPGA = 1,
-  PlatformInfo_platformType_GPU = 2,
-  PlatformInfo_platformType_PlatformInfo_platformType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  PlatformInfo_platformType_PlatformInfo_platformType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
-};
-bool PlatformInfo_platformType_IsValid(int value);
-const PlatformInfo_platformType PlatformInfo_platformType_platformType_MIN = PlatformInfo_platformType_CPU;
-const PlatformInfo_platformType PlatformInfo_platformType_platformType_MAX = PlatformInfo_platformType_GPU;
-const int PlatformInfo_platformType_platformType_ARRAYSIZE = PlatformInfo_platformType_platformType_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* PlatformInfo_platformType_descriptor();
-inline const ::std::string& PlatformInfo_platformType_Name(PlatformInfo_platformType value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    PlatformInfo_platformType_descriptor(), value);
-}
-inline bool PlatformInfo_platformType_Parse(
-    const ::std::string& name, PlatformInfo_platformType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<PlatformInfo_platformType>(
-    PlatformInfo_platformType_descriptor(), name, value);
-}
 // ===================================================================
-
-class ClassifyRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ClassifyRequest) */ {
- public:
-  ClassifyRequest();
-  virtual ~ClassifyRequest();
-
-  ClassifyRequest(const ClassifyRequest& from);
-
-  inline ClassifyRequest& operator=(const ClassifyRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  ClassifyRequest(ClassifyRequest&& from) noexcept
-    : ClassifyRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline ClassifyRequest& operator=(ClassifyRequest&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const ClassifyRequest& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const ClassifyRequest* internal_default_instance() {
-    return reinterpret_cast<const ClassifyRequest*>(
-               &_ClassifyRequest_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    0;
-
-  void Swap(ClassifyRequest* other);
-  friend void swap(ClassifyRequest& a, ClassifyRequest& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline ClassifyRequest* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  ClassifyRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const ClassifyRequest& from);
-  void MergeFrom(const ClassifyRequest& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(ClassifyRequest* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  typedef ClassifyRequest_operationMode operationMode;
-  static const operationMode HighPower =
-    ClassifyRequest_operationMode_HighPower;
-  static const operationMode LowPower =
-    ClassifyRequest_operationMode_LowPower;
-  static const operationMode EnergyEfficient =
-    ClassifyRequest_operationMode_EnergyEfficient;
-  static inline bool operationMode_IsValid(int value) {
-    return ClassifyRequest_operationMode_IsValid(value);
-  }
-  static const operationMode operationMode_MIN =
-    ClassifyRequest_operationMode_operationMode_MIN;
-  static const operationMode operationMode_MAX =
-    ClassifyRequest_operationMode_operationMode_MAX;
-  static const int operationMode_ARRAYSIZE =
-    ClassifyRequest_operationMode_operationMode_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  operationMode_descriptor() {
-    return ClassifyRequest_operationMode_descriptor();
-  }
-  static inline const ::std::string& operationMode_Name(operationMode value) {
-    return ClassifyRequest_operationMode_Name(value);
-  }
-  static inline bool operationMode_Parse(const ::std::string& name,
-      operationMode* value) {
-    return ClassifyRequest_operationMode_Parse(name, value);
-  }
-
-  // accessors -------------------------------------------------------
-
-  // repeated .ImageWrapper imgages = 1;
-  int imgages_size() const;
-  void clear_imgages();
-  static const int kImgagesFieldNumber = 1;
-  const ::ImageWrapper& imgages(int index) const;
-  ::ImageWrapper* mutable_imgages(int index);
-  ::ImageWrapper* add_imgages();
-  ::google::protobuf::RepeatedPtrField< ::ImageWrapper >*
-      mutable_imgages();
-  const ::google::protobuf::RepeatedPtrField< ::ImageWrapper >&
-      imgages() const;
-
-  // repeated .PlatformInfo selectedPlatforms = 3;
-  int selectedplatforms_size() const;
-  void clear_selectedplatforms();
-  static const int kSelectedPlatformsFieldNumber = 3;
-  const ::PlatformInfo& selectedplatforms(int index) const;
-  ::PlatformInfo* mutable_selectedplatforms(int index);
-  ::PlatformInfo* add_selectedplatforms();
-  ::google::protobuf::RepeatedPtrField< ::PlatformInfo >*
-      mutable_selectedplatforms();
-  const ::google::protobuf::RepeatedPtrField< ::PlatformInfo >&
-      selectedplatforms() const;
-
-  // .NetInfo net = 2;
-  bool has_net() const;
-  void clear_net();
-  static const int kNetFieldNumber = 2;
-  const ::NetInfo& net() const;
-  ::NetInfo* release_net();
-  ::NetInfo* mutable_net();
-  void set_allocated_net(::NetInfo* net);
-
-  // @@protoc_insertion_point(class_scope:ClassifyRequest)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::ImageWrapper > imgages_;
-  ::google::protobuf::RepeatedPtrField< ::PlatformInfo > selectedplatforms_;
-  ::NetInfo* net_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_Communicator_2eproto::TableStruct;
-  friend void ::protobuf_Communicator_2eproto::InitDefaultsClassifyRequestImpl();
-};
-// -------------------------------------------------------------------
-
-class ClassifyReply : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ClassifyReply) */ {
- public:
-  ClassifyReply();
-  virtual ~ClassifyReply();
-
-  ClassifyReply(const ClassifyReply& from);
-
-  inline ClassifyReply& operator=(const ClassifyReply& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  ClassifyReply(ClassifyReply&& from) noexcept
-    : ClassifyReply() {
-    *this = ::std::move(from);
-  }
-
-  inline ClassifyReply& operator=(ClassifyReply&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const ClassifyReply& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const ClassifyReply* internal_default_instance() {
-    return reinterpret_cast<const ClassifyReply*>(
-               &_ClassifyReply_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    1;
-
-  void Swap(ClassifyReply* other);
-  friend void swap(ClassifyReply& a, ClassifyReply& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline ClassifyReply* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  ClassifyReply* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const ClassifyReply& from);
-  void MergeFrom(const ClassifyReply& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(ClassifyReply* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // repeated .ImageResult results = 1;
-  int results_size() const;
-  void clear_results();
-  static const int kResultsFieldNumber = 1;
-  const ::ImageResult& results(int index) const;
-  ::ImageResult* mutable_results(int index);
-  ::ImageResult* add_results();
-  ::google::protobuf::RepeatedPtrField< ::ImageResult >*
-      mutable_results();
-  const ::google::protobuf::RepeatedPtrField< ::ImageResult >&
-      results() const;
-
-  // @@protoc_insertion_point(class_scope:ClassifyReply)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::ImageResult > results_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_Communicator_2eproto::TableStruct;
-  friend void ::protobuf_Communicator_2eproto::InitDefaultsClassifyReplyImpl();
-};
-// -------------------------------------------------------------------
-
-class ImageResult : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ImageResult) */ {
- public:
-  ImageResult();
-  virtual ~ImageResult();
-
-  ImageResult(const ImageResult& from);
-
-  inline ImageResult& operator=(const ImageResult& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  ImageResult(ImageResult&& from) noexcept
-    : ImageResult() {
-    *this = ::std::move(from);
-  }
-
-  inline ImageResult& operator=(ImageResult&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const ImageResult& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const ImageResult* internal_default_instance() {
-    return reinterpret_cast<const ImageResult*>(
-               &_ImageResult_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    2;
-
-  void Swap(ImageResult* other);
-  friend void swap(ImageResult& a, ImageResult& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline ImageResult* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  ImageResult* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const ImageResult& from);
-  void MergeFrom(const ImageResult& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(ImageResult* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // repeated .Label classification = 2;
-  int classification_size() const;
-  void clear_classification();
-  static const int kClassificationFieldNumber = 2;
-  const ::Label& classification(int index) const;
-  ::Label* mutable_classification(int index);
-  ::Label* add_classification();
-  ::google::protobuf::RepeatedPtrField< ::Label >*
-      mutable_classification();
-  const ::google::protobuf::RepeatedPtrField< ::Label >&
-      classification() const;
-
-  // repeated .PlatformDistribution platformDistribution = 3;
-  int platformdistribution_size() const;
-  void clear_platformdistribution();
-  static const int kPlatformDistributionFieldNumber = 3;
-  const ::PlatformDistribution& platformdistribution(int index) const;
-  ::PlatformDistribution* mutable_platformdistribution(int index);
-  ::PlatformDistribution* add_platformdistribution();
-  ::google::protobuf::RepeatedPtrField< ::PlatformDistribution >*
-      mutable_platformdistribution();
-  const ::google::protobuf::RepeatedPtrField< ::PlatformDistribution >&
-      platformdistribution() const;
-
-  // .ImageWrapper images = 1;
-  bool has_images() const;
-  void clear_images();
-  static const int kImagesFieldNumber = 1;
-  const ::ImageWrapper& images() const;
-  ::ImageWrapper* release_images();
-  ::ImageWrapper* mutable_images();
-  void set_allocated_images(::ImageWrapper* images);
-
-  // @@protoc_insertion_point(class_scope:ImageResult)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::Label > classification_;
-  ::google::protobuf::RepeatedPtrField< ::PlatformDistribution > platformdistribution_;
-  ::ImageWrapper* images_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_Communicator_2eproto::TableStruct;
-  friend void ::protobuf_Communicator_2eproto::InitDefaultsImageResultImpl();
-};
-// -------------------------------------------------------------------
-
-class ImageWrapper : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ImageWrapper) */ {
- public:
-  ImageWrapper();
-  virtual ~ImageWrapper();
-
-  ImageWrapper(const ImageWrapper& from);
-
-  inline ImageWrapper& operator=(const ImageWrapper& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  ImageWrapper(ImageWrapper&& from) noexcept
-    : ImageWrapper() {
-    *this = ::std::move(from);
-  }
-
-  inline ImageWrapper& operator=(ImageWrapper&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const ImageWrapper& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const ImageWrapper* internal_default_instance() {
-    return reinterpret_cast<const ImageWrapper*>(
-               &_ImageWrapper_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    3;
-
-  void Swap(ImageWrapper* other);
-  friend void swap(ImageWrapper& a, ImageWrapper& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline ImageWrapper* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  ImageWrapper* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const ImageWrapper& from);
-  void MergeFrom(const ImageWrapper& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(ImageWrapper* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // repeated int32 dimensions = 2;
-  int dimensions_size() const;
-  void clear_dimensions();
-  static const int kDimensionsFieldNumber = 2;
-  ::google::protobuf::int32 dimensions(int index) const;
-  void set_dimensions(int index, ::google::protobuf::int32 value);
-  void add_dimensions(::google::protobuf::int32 value);
-  const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
-      dimensions() const;
-  ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
-      mutable_dimensions();
-
-  // repeated float data = 3;
-  int data_size() const;
-  void clear_data();
-  static const int kDataFieldNumber = 3;
-  float data(int index) const;
-  void set_data(int index, float value);
-  void add_data(float value);
-  const ::google::protobuf::RepeatedField< float >&
-      data() const;
-  ::google::protobuf::RepeatedField< float >*
-      mutable_data();
-
-  // string filepath = 1;
-  void clear_filepath();
-  static const int kFilepathFieldNumber = 1;
-  const ::std::string& filepath() const;
-  void set_filepath(const ::std::string& value);
-  #if LANG_CXX11
-  void set_filepath(::std::string&& value);
-  #endif
-  void set_filepath(const char* value);
-  void set_filepath(const char* value, size_t size);
-  ::std::string* mutable_filepath();
-  ::std::string* release_filepath();
-  void set_allocated_filepath(::std::string* filepath);
-
-  // @@protoc_insertion_point(class_scope:ImageWrapper)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > dimensions_;
-  mutable int _dimensions_cached_byte_size_;
-  ::google::protobuf::RepeatedField< float > data_;
-  mutable int _data_cached_byte_size_;
-  ::google::protobuf::internal::ArenaStringPtr filepath_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_Communicator_2eproto::TableStruct;
-  friend void ::protobuf_Communicator_2eproto::InitDefaultsImageWrapperImpl();
-};
-// -------------------------------------------------------------------
-
-class NetInfo : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:NetInfo) */ {
- public:
-  NetInfo();
-  virtual ~NetInfo();
-
-  NetInfo(const NetInfo& from);
-
-  inline NetInfo& operator=(const NetInfo& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  NetInfo(NetInfo&& from) noexcept
-    : NetInfo() {
-    *this = ::std::move(from);
-  }
-
-  inline NetInfo& operator=(NetInfo&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const NetInfo& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const NetInfo* internal_default_instance() {
-    return reinterpret_cast<const NetInfo*>(
-               &_NetInfo_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    4;
-
-  void Swap(NetInfo* other);
-  friend void swap(NetInfo& a, NetInfo& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline NetInfo* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  NetInfo* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const NetInfo& from);
-  void MergeFrom(const NetInfo& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(NetInfo* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // string name = 1;
-  void clear_name();
-  static const int kNameFieldNumber = 1;
-  const ::std::string& name() const;
-  void set_name(const ::std::string& value);
-  #if LANG_CXX11
-  void set_name(::std::string&& value);
-  #endif
-  void set_name(const char* value);
-  void set_name(const char* value, size_t size);
-  ::std::string* mutable_name();
-  ::std::string* release_name();
-  void set_allocated_name(::std::string* name);
-
-  // string identifier = 3;
-  void clear_identifier();
-  static const int kIdentifierFieldNumber = 3;
-  const ::std::string& identifier() const;
-  void set_identifier(const ::std::string& value);
-  #if LANG_CXX11
-  void set_identifier(::std::string&& value);
-  #endif
-  void set_identifier(const char* value);
-  void set_identifier(const char* value, size_t size);
-  ::std::string* mutable_identifier();
-  ::std::string* release_identifier();
-  void set_allocated_identifier(::std::string* identifier);
-
-  // int32 imageDimension = 2;
-  void clear_imagedimension();
-  static const int kImageDimensionFieldNumber = 2;
-  ::google::protobuf::int32 imagedimension() const;
-  void set_imagedimension(::google::protobuf::int32 value);
-
-  // @@protoc_insertion_point(class_scope:NetInfo)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr name_;
-  ::google::protobuf::internal::ArenaStringPtr identifier_;
-  ::google::protobuf::int32 imagedimension_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_Communicator_2eproto::TableStruct;
-  friend void ::protobuf_Communicator_2eproto::InitDefaultsNetInfoImpl();
-};
-// -------------------------------------------------------------------
-
-class PlatformInfo : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:PlatformInfo) */ {
- public:
-  PlatformInfo();
-  virtual ~PlatformInfo();
-
-  PlatformInfo(const PlatformInfo& from);
-
-  inline PlatformInfo& operator=(const PlatformInfo& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  PlatformInfo(PlatformInfo&& from) noexcept
-    : PlatformInfo() {
-    *this = ::std::move(from);
-  }
-
-  inline PlatformInfo& operator=(PlatformInfo&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const PlatformInfo& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PlatformInfo* internal_default_instance() {
-    return reinterpret_cast<const PlatformInfo*>(
-               &_PlatformInfo_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    5;
-
-  void Swap(PlatformInfo* other);
-  friend void swap(PlatformInfo& a, PlatformInfo& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline PlatformInfo* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  PlatformInfo* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const PlatformInfo& from);
-  void MergeFrom(const PlatformInfo& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(PlatformInfo* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  typedef PlatformInfo_platformType platformType;
-  static const platformType CPU =
-    PlatformInfo_platformType_CPU;
-  static const platformType FPGA =
-    PlatformInfo_platformType_FPGA;
-  static const platformType GPU =
-    PlatformInfo_platformType_GPU;
-  static inline bool platformType_IsValid(int value) {
-    return PlatformInfo_platformType_IsValid(value);
-  }
-  static const platformType platformType_MIN =
-    PlatformInfo_platformType_platformType_MIN;
-  static const platformType platformType_MAX =
-    PlatformInfo_platformType_platformType_MAX;
-  static const int platformType_ARRAYSIZE =
-    PlatformInfo_platformType_platformType_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  platformType_descriptor() {
-    return PlatformInfo_platformType_descriptor();
-  }
-  static inline const ::std::string& platformType_Name(platformType value) {
-    return PlatformInfo_platformType_Name(value);
-  }
-  static inline bool platformType_Parse(const ::std::string& name,
-      platformType* value) {
-    return PlatformInfo_platformType_Parse(name, value);
-  }
-
-  // accessors -------------------------------------------------------
-
-  // string description = 1;
-  void clear_description();
-  static const int kDescriptionFieldNumber = 1;
-  const ::std::string& description() const;
-  void set_description(const ::std::string& value);
-  #if LANG_CXX11
-  void set_description(::std::string&& value);
-  #endif
-  void set_description(const char* value);
-  void set_description(const char* value, size_t size);
-  ::std::string* mutable_description();
-  ::std::string* release_description();
-  void set_allocated_description(::std::string* description);
-
-  // string platformId = 2;
-  void clear_platformid();
-  static const int kPlatformIdFieldNumber = 2;
-  const ::std::string& platformid() const;
-  void set_platformid(const ::std::string& value);
-  #if LANG_CXX11
-  void set_platformid(::std::string&& value);
-  #endif
-  void set_platformid(const char* value);
-  void set_platformid(const char* value, size_t size);
-  ::std::string* mutable_platformid();
-  ::std::string* release_platformid();
-  void set_allocated_platformid(::std::string* platformid);
-
-  // int32 powerConsumption = 3;
-  void clear_powerconsumption();
-  static const int kPowerConsumptionFieldNumber = 3;
-  ::google::protobuf::int32 powerconsumption() const;
-  void set_powerconsumption(::google::protobuf::int32 value);
-
-  // int32 flops = 4;
-  void clear_flops();
-  static const int kFlopsFieldNumber = 4;
-  ::google::protobuf::int32 flops() const;
-  void set_flops(::google::protobuf::int32 value);
-
-  // @@protoc_insertion_point(class_scope:PlatformInfo)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr description_;
-  ::google::protobuf::internal::ArenaStringPtr platformid_;
-  ::google::protobuf::int32 powerconsumption_;
-  ::google::protobuf::int32 flops_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_Communicator_2eproto::TableStruct;
-  friend void ::protobuf_Communicator_2eproto::InitDefaultsPlatformInfoImpl();
-};
-// -------------------------------------------------------------------
 
 class Label : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Label) */ {
  public:
@@ -993,7 +176,7 @@ class Label : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
                &_Label_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    6;
+    0;
 
   void Swap(Label* other);
   friend void swap(Label& a, Label& b) {
@@ -1072,24 +255,24 @@ class Label : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 };
 // -------------------------------------------------------------------
 
-class PlatformDistribution : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:PlatformDistribution) */ {
+class NetInfoMessage : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:NetInfoMessage) */ {
  public:
-  PlatformDistribution();
-  virtual ~PlatformDistribution();
+  NetInfoMessage();
+  virtual ~NetInfoMessage();
 
-  PlatformDistribution(const PlatformDistribution& from);
+  NetInfoMessage(const NetInfoMessage& from);
 
-  inline PlatformDistribution& operator=(const PlatformDistribution& from) {
+  inline NetInfoMessage& operator=(const NetInfoMessage& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  PlatformDistribution(PlatformDistribution&& from) noexcept
-    : PlatformDistribution() {
+  NetInfoMessage(NetInfoMessage&& from) noexcept
+    : NetInfoMessage() {
     *this = ::std::move(from);
   }
 
-  inline PlatformDistribution& operator=(PlatformDistribution&& from) noexcept {
+  inline NetInfoMessage& operator=(NetInfoMessage&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -1099,30 +282,30 @@ class PlatformDistribution : public ::google::protobuf::Message /* @@protoc_inse
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const PlatformDistribution& default_instance();
+  static const NetInfoMessage& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PlatformDistribution* internal_default_instance() {
-    return reinterpret_cast<const PlatformDistribution*>(
-               &_PlatformDistribution_default_instance_);
+  static inline const NetInfoMessage* internal_default_instance() {
+    return reinterpret_cast<const NetInfoMessage*>(
+               &_NetInfoMessage_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    7;
+    1;
 
-  void Swap(PlatformDistribution* other);
-  friend void swap(PlatformDistribution& a, PlatformDistribution& b) {
+  void Swap(NetInfoMessage* other);
+  friend void swap(NetInfoMessage& a, NetInfoMessage& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline PlatformDistribution* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline NetInfoMessage* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  PlatformDistribution* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  NetInfoMessage* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const PlatformDistribution& from);
-  void MergeFrom(const PlatformDistribution& from);
+  void CopyFrom(const NetInfoMessage& from);
+  void MergeFrom(const NetInfoMessage& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -1138,7 +321,7 @@ class PlatformDistribution : public ::google::protobuf::Message /* @@protoc_inse
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(PlatformDistribution* other);
+  void InternalSwap(NetInfoMessage* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1154,14 +337,442 @@ class PlatformDistribution : public ::google::protobuf::Message /* @@protoc_inse
 
   // accessors -------------------------------------------------------
 
-  // .PlatformInfo platform = 1;
+  // string name = 1;
+  void clear_name();
+  static const int kNameFieldNumber = 1;
+  const ::std::string& name() const;
+  void set_name(const ::std::string& value);
+  #if LANG_CXX11
+  void set_name(::std::string&& value);
+  #endif
+  void set_name(const char* value);
+  void set_name(const char* value, size_t size);
+  ::std::string* mutable_name();
+  ::std::string* release_name();
+  void set_allocated_name(::std::string* name);
+
+  // string identifier = 3;
+  void clear_identifier();
+  static const int kIdentifierFieldNumber = 3;
+  const ::std::string& identifier() const;
+  void set_identifier(const ::std::string& value);
+  #if LANG_CXX11
+  void set_identifier(::std::string&& value);
+  #endif
+  void set_identifier(const char* value);
+  void set_identifier(const char* value, size_t size);
+  ::std::string* mutable_identifier();
+  ::std::string* release_identifier();
+  void set_allocated_identifier(::std::string* identifier);
+
+  // int32 imageDimension = 2;
+  void clear_imagedimension();
+  static const int kImageDimensionFieldNumber = 2;
+  ::google::protobuf::int32 imagedimension() const;
+  void set_imagedimension(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:NetInfoMessage)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr name_;
+  ::google::protobuf::internal::ArenaStringPtr identifier_;
+  ::google::protobuf::int32 imagedimension_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_Communicator_2eproto::TableStruct;
+  friend void ::protobuf_Communicator_2eproto::InitDefaultsNetInfoMessageImpl();
+};
+// -------------------------------------------------------------------
+
+class PlatformInfoMessage : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:PlatformInfoMessage) */ {
+ public:
+  PlatformInfoMessage();
+  virtual ~PlatformInfoMessage();
+
+  PlatformInfoMessage(const PlatformInfoMessage& from);
+
+  inline PlatformInfoMessage& operator=(const PlatformInfoMessage& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  PlatformInfoMessage(PlatformInfoMessage&& from) noexcept
+    : PlatformInfoMessage() {
+    *this = ::std::move(from);
+  }
+
+  inline PlatformInfoMessage& operator=(PlatformInfoMessage&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PlatformInfoMessage& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const PlatformInfoMessage* internal_default_instance() {
+    return reinterpret_cast<const PlatformInfoMessage*>(
+               &_PlatformInfoMessage_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    2;
+
+  void Swap(PlatformInfoMessage* other);
+  friend void swap(PlatformInfoMessage& a, PlatformInfoMessage& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PlatformInfoMessage* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PlatformInfoMessage* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PlatformInfoMessage& from);
+  void MergeFrom(const PlatformInfoMessage& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PlatformInfoMessage* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef PlatformInfoMessage_platformType platformType;
+  static const platformType CPU =
+    PlatformInfoMessage_platformType_CPU;
+  static const platformType FPGA =
+    PlatformInfoMessage_platformType_FPGA;
+  static const platformType GPU =
+    PlatformInfoMessage_platformType_GPU;
+  static inline bool platformType_IsValid(int value) {
+    return PlatformInfoMessage_platformType_IsValid(value);
+  }
+  static const platformType platformType_MIN =
+    PlatformInfoMessage_platformType_platformType_MIN;
+  static const platformType platformType_MAX =
+    PlatformInfoMessage_platformType_platformType_MAX;
+  static const int platformType_ARRAYSIZE =
+    PlatformInfoMessage_platformType_platformType_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  platformType_descriptor() {
+    return PlatformInfoMessage_platformType_descriptor();
+  }
+  static inline const ::std::string& platformType_Name(platformType value) {
+    return PlatformInfoMessage_platformType_Name(value);
+  }
+  static inline bool platformType_Parse(const ::std::string& name,
+      platformType* value) {
+    return PlatformInfoMessage_platformType_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // string description = 1;
+  void clear_description();
+  static const int kDescriptionFieldNumber = 1;
+  const ::std::string& description() const;
+  void set_description(const ::std::string& value);
+  #if LANG_CXX11
+  void set_description(::std::string&& value);
+  #endif
+  void set_description(const char* value);
+  void set_description(const char* value, size_t size);
+  ::std::string* mutable_description();
+  ::std::string* release_description();
+  void set_allocated_description(::std::string* description);
+
+  // string platformId = 2;
+  void clear_platformid();
+  static const int kPlatformIdFieldNumber = 2;
+  const ::std::string& platformid() const;
+  void set_platformid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_platformid(::std::string&& value);
+  #endif
+  void set_platformid(const char* value);
+  void set_platformid(const char* value, size_t size);
+  ::std::string* mutable_platformid();
+  ::std::string* release_platformid();
+  void set_allocated_platformid(::std::string* platformid);
+
+  // int32 powerConsumption = 3;
+  void clear_powerconsumption();
+  static const int kPowerConsumptionFieldNumber = 3;
+  ::google::protobuf::int32 powerconsumption() const;
+  void set_powerconsumption(::google::protobuf::int32 value);
+
+  // int32 flops = 4;
+  void clear_flops();
+  static const int kFlopsFieldNumber = 4;
+  ::google::protobuf::int32 flops() const;
+  void set_flops(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:PlatformInfoMessage)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr description_;
+  ::google::protobuf::internal::ArenaStringPtr platformid_;
+  ::google::protobuf::int32 powerconsumption_;
+  ::google::protobuf::int32 flops_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_Communicator_2eproto::TableStruct;
+  friend void ::protobuf_Communicator_2eproto::InitDefaultsPlatformInfoMessageImpl();
+};
+// -------------------------------------------------------------------
+
+class ImageWrapperMessage : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ImageWrapperMessage) */ {
+ public:
+  ImageWrapperMessage();
+  virtual ~ImageWrapperMessage();
+
+  ImageWrapperMessage(const ImageWrapperMessage& from);
+
+  inline ImageWrapperMessage& operator=(const ImageWrapperMessage& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ImageWrapperMessage(ImageWrapperMessage&& from) noexcept
+    : ImageWrapperMessage() {
+    *this = ::std::move(from);
+  }
+
+  inline ImageWrapperMessage& operator=(ImageWrapperMessage&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ImageWrapperMessage& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ImageWrapperMessage* internal_default_instance() {
+    return reinterpret_cast<const ImageWrapperMessage*>(
+               &_ImageWrapperMessage_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    3;
+
+  void Swap(ImageWrapperMessage* other);
+  friend void swap(ImageWrapperMessage& a, ImageWrapperMessage& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ImageWrapperMessage* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ImageWrapperMessage* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ImageWrapperMessage& from);
+  void MergeFrom(const ImageWrapperMessage& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ImageWrapperMessage* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated int32 dimensions = 2;
+  int dimensions_size() const;
+  void clear_dimensions();
+  static const int kDimensionsFieldNumber = 2;
+  ::google::protobuf::int32 dimensions(int index) const;
+  void set_dimensions(int index, ::google::protobuf::int32 value);
+  void add_dimensions(::google::protobuf::int32 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+      dimensions() const;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+      mutable_dimensions();
+
+  // repeated float data = 3;
+  int data_size() const;
+  void clear_data();
+  static const int kDataFieldNumber = 3;
+  float data(int index) const;
+  void set_data(int index, float value);
+  void add_data(float value);
+  const ::google::protobuf::RepeatedField< float >&
+      data() const;
+  ::google::protobuf::RepeatedField< float >*
+      mutable_data();
+
+  // string filepath = 1;
+  void clear_filepath();
+  static const int kFilepathFieldNumber = 1;
+  const ::std::string& filepath() const;
+  void set_filepath(const ::std::string& value);
+  #if LANG_CXX11
+  void set_filepath(::std::string&& value);
+  #endif
+  void set_filepath(const char* value);
+  void set_filepath(const char* value, size_t size);
+  ::std::string* mutable_filepath();
+  ::std::string* release_filepath();
+  void set_allocated_filepath(::std::string* filepath);
+
+  // @@protoc_insertion_point(class_scope:ImageWrapperMessage)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > dimensions_;
+  mutable int _dimensions_cached_byte_size_;
+  ::google::protobuf::RepeatedField< float > data_;
+  mutable int _data_cached_byte_size_;
+  ::google::protobuf::internal::ArenaStringPtr filepath_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_Communicator_2eproto::TableStruct;
+  friend void ::protobuf_Communicator_2eproto::InitDefaultsImageWrapperMessageImpl();
+};
+// -------------------------------------------------------------------
+
+class PlatformDistributionMessage : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:PlatformDistributionMessage) */ {
+ public:
+  PlatformDistributionMessage();
+  virtual ~PlatformDistributionMessage();
+
+  PlatformDistributionMessage(const PlatformDistributionMessage& from);
+
+  inline PlatformDistributionMessage& operator=(const PlatformDistributionMessage& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  PlatformDistributionMessage(PlatformDistributionMessage&& from) noexcept
+    : PlatformDistributionMessage() {
+    *this = ::std::move(from);
+  }
+
+  inline PlatformDistributionMessage& operator=(PlatformDistributionMessage&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PlatformDistributionMessage& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const PlatformDistributionMessage* internal_default_instance() {
+    return reinterpret_cast<const PlatformDistributionMessage*>(
+               &_PlatformDistributionMessage_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    4;
+
+  void Swap(PlatformDistributionMessage* other);
+  friend void swap(PlatformDistributionMessage& a, PlatformDistributionMessage& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PlatformDistributionMessage* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PlatformDistributionMessage* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PlatformDistributionMessage& from);
+  void MergeFrom(const PlatformDistributionMessage& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PlatformDistributionMessage* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .PlatformInfoMessage platform = 1;
   bool has_platform() const;
   void clear_platform();
   static const int kPlatformFieldNumber = 1;
-  const ::PlatformInfo& platform() const;
-  ::PlatformInfo* release_platform();
-  ::PlatformInfo* mutable_platform();
-  void set_allocated_platform(::PlatformInfo* platform);
+  const ::PlatformInfoMessage& platform() const;
+  ::PlatformInfoMessage* release_platform();
+  ::PlatformInfoMessage* mutable_platform();
+  void set_allocated_platform(::PlatformInfoMessage* platform);
 
   // float usage = 2;
   void clear_usage();
@@ -1169,15 +780,404 @@ class PlatformDistribution : public ::google::protobuf::Message /* @@protoc_inse
   float usage() const;
   void set_usage(float value);
 
-  // @@protoc_insertion_point(class_scope:PlatformDistribution)
+  // @@protoc_insertion_point(class_scope:PlatformDistributionMessage)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PlatformInfo* platform_;
+  ::PlatformInfoMessage* platform_;
   float usage_;
   mutable int _cached_size_;
   friend struct ::protobuf_Communicator_2eproto::TableStruct;
-  friend void ::protobuf_Communicator_2eproto::InitDefaultsPlatformDistributionImpl();
+  friend void ::protobuf_Communicator_2eproto::InitDefaultsPlatformDistributionMessageImpl();
+};
+// -------------------------------------------------------------------
+
+class ImageResultMessage : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ImageResultMessage) */ {
+ public:
+  ImageResultMessage();
+  virtual ~ImageResultMessage();
+
+  ImageResultMessage(const ImageResultMessage& from);
+
+  inline ImageResultMessage& operator=(const ImageResultMessage& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ImageResultMessage(ImageResultMessage&& from) noexcept
+    : ImageResultMessage() {
+    *this = ::std::move(from);
+  }
+
+  inline ImageResultMessage& operator=(ImageResultMessage&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ImageResultMessage& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ImageResultMessage* internal_default_instance() {
+    return reinterpret_cast<const ImageResultMessage*>(
+               &_ImageResultMessage_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    5;
+
+  void Swap(ImageResultMessage* other);
+  friend void swap(ImageResultMessage& a, ImageResultMessage& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ImageResultMessage* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ImageResultMessage* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ImageResultMessage& from);
+  void MergeFrom(const ImageResultMessage& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ImageResultMessage* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .Label classification = 2;
+  int classification_size() const;
+  void clear_classification();
+  static const int kClassificationFieldNumber = 2;
+  const ::Label& classification(int index) const;
+  ::Label* mutable_classification(int index);
+  ::Label* add_classification();
+  ::google::protobuf::RepeatedPtrField< ::Label >*
+      mutable_classification();
+  const ::google::protobuf::RepeatedPtrField< ::Label >&
+      classification() const;
+
+  // repeated .PlatformDistributionMessage platformDistribution = 3;
+  int platformdistribution_size() const;
+  void clear_platformdistribution();
+  static const int kPlatformDistributionFieldNumber = 3;
+  const ::PlatformDistributionMessage& platformdistribution(int index) const;
+  ::PlatformDistributionMessage* mutable_platformdistribution(int index);
+  ::PlatformDistributionMessage* add_platformdistribution();
+  ::google::protobuf::RepeatedPtrField< ::PlatformDistributionMessage >*
+      mutable_platformdistribution();
+  const ::google::protobuf::RepeatedPtrField< ::PlatformDistributionMessage >&
+      platformdistribution() const;
+
+  // .ImageWrapperMessage images = 1;
+  bool has_images() const;
+  void clear_images();
+  static const int kImagesFieldNumber = 1;
+  const ::ImageWrapperMessage& images() const;
+  ::ImageWrapperMessage* release_images();
+  ::ImageWrapperMessage* mutable_images();
+  void set_allocated_images(::ImageWrapperMessage* images);
+
+  // @@protoc_insertion_point(class_scope:ImageResultMessage)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::Label > classification_;
+  ::google::protobuf::RepeatedPtrField< ::PlatformDistributionMessage > platformdistribution_;
+  ::ImageWrapperMessage* images_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_Communicator_2eproto::TableStruct;
+  friend void ::protobuf_Communicator_2eproto::InitDefaultsImageResultMessageImpl();
+};
+// -------------------------------------------------------------------
+
+class ClassifyRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ClassifyRequest) */ {
+ public:
+  ClassifyRequest();
+  virtual ~ClassifyRequest();
+
+  ClassifyRequest(const ClassifyRequest& from);
+
+  inline ClassifyRequest& operator=(const ClassifyRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ClassifyRequest(ClassifyRequest&& from) noexcept
+    : ClassifyRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline ClassifyRequest& operator=(ClassifyRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ClassifyRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ClassifyRequest* internal_default_instance() {
+    return reinterpret_cast<const ClassifyRequest*>(
+               &_ClassifyRequest_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    6;
+
+  void Swap(ClassifyRequest* other);
+  friend void swap(ClassifyRequest& a, ClassifyRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ClassifyRequest* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ClassifyRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ClassifyRequest& from);
+  void MergeFrom(const ClassifyRequest& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ClassifyRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef ClassifyRequest_operationMode operationMode;
+  static const operationMode HighPower =
+    ClassifyRequest_operationMode_HighPower;
+  static const operationMode LowPower =
+    ClassifyRequest_operationMode_LowPower;
+  static const operationMode EnergyEfficient =
+    ClassifyRequest_operationMode_EnergyEfficient;
+  static inline bool operationMode_IsValid(int value) {
+    return ClassifyRequest_operationMode_IsValid(value);
+  }
+  static const operationMode operationMode_MIN =
+    ClassifyRequest_operationMode_operationMode_MIN;
+  static const operationMode operationMode_MAX =
+    ClassifyRequest_operationMode_operationMode_MAX;
+  static const int operationMode_ARRAYSIZE =
+    ClassifyRequest_operationMode_operationMode_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  operationMode_descriptor() {
+    return ClassifyRequest_operationMode_descriptor();
+  }
+  static inline const ::std::string& operationMode_Name(operationMode value) {
+    return ClassifyRequest_operationMode_Name(value);
+  }
+  static inline bool operationMode_Parse(const ::std::string& name,
+      operationMode* value) {
+    return ClassifyRequest_operationMode_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // repeated .ImageWrapperMessage images = 2;
+  int images_size() const;
+  void clear_images();
+  static const int kImagesFieldNumber = 2;
+  const ::ImageWrapperMessage& images(int index) const;
+  ::ImageWrapperMessage* mutable_images(int index);
+  ::ImageWrapperMessage* add_images();
+  ::google::protobuf::RepeatedPtrField< ::ImageWrapperMessage >*
+      mutable_images();
+  const ::google::protobuf::RepeatedPtrField< ::ImageWrapperMessage >&
+      images() const;
+
+  // repeated .PlatformInfoMessage selectedPlatforms = 3;
+  int selectedplatforms_size() const;
+  void clear_selectedplatforms();
+  static const int kSelectedPlatformsFieldNumber = 3;
+  const ::PlatformInfoMessage& selectedplatforms(int index) const;
+  ::PlatformInfoMessage* mutable_selectedplatforms(int index);
+  ::PlatformInfoMessage* add_selectedplatforms();
+  ::google::protobuf::RepeatedPtrField< ::PlatformInfoMessage >*
+      mutable_selectedplatforms();
+  const ::google::protobuf::RepeatedPtrField< ::PlatformInfoMessage >&
+      selectedplatforms() const;
+
+  // .NetInfoMessage net = 1;
+  bool has_net() const;
+  void clear_net();
+  static const int kNetFieldNumber = 1;
+  const ::NetInfoMessage& net() const;
+  ::NetInfoMessage* release_net();
+  ::NetInfoMessage* mutable_net();
+  void set_allocated_net(::NetInfoMessage* net);
+
+  // @@protoc_insertion_point(class_scope:ClassifyRequest)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::ImageWrapperMessage > images_;
+  ::google::protobuf::RepeatedPtrField< ::PlatformInfoMessage > selectedplatforms_;
+  ::NetInfoMessage* net_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_Communicator_2eproto::TableStruct;
+  friend void ::protobuf_Communicator_2eproto::InitDefaultsClassifyRequestImpl();
+};
+// -------------------------------------------------------------------
+
+class ClassifyReply : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ClassifyReply) */ {
+ public:
+  ClassifyReply();
+  virtual ~ClassifyReply();
+
+  ClassifyReply(const ClassifyReply& from);
+
+  inline ClassifyReply& operator=(const ClassifyReply& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ClassifyReply(ClassifyReply&& from) noexcept
+    : ClassifyReply() {
+    *this = ::std::move(from);
+  }
+
+  inline ClassifyReply& operator=(ClassifyReply&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ClassifyReply& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ClassifyReply* internal_default_instance() {
+    return reinterpret_cast<const ClassifyReply*>(
+               &_ClassifyReply_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    7;
+
+  void Swap(ClassifyReply* other);
+  friend void swap(ClassifyReply& a, ClassifyReply& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ClassifyReply* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ClassifyReply* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ClassifyReply& from);
+  void MergeFrom(const ClassifyReply& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ClassifyReply* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .ImageResultMessage results = 1;
+  int results_size() const;
+  void clear_results();
+  static const int kResultsFieldNumber = 1;
+  const ::ImageResultMessage& results(int index) const;
+  ::ImageResultMessage* mutable_results(int index);
+  ::ImageResultMessage* add_results();
+  ::google::protobuf::RepeatedPtrField< ::ImageResultMessage >*
+      mutable_results();
+  const ::google::protobuf::RepeatedPtrField< ::ImageResultMessage >&
+      results() const;
+
+  // @@protoc_insertion_point(class_scope:ClassifyReply)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::ImageResultMessage > results_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_Communicator_2eproto::TableStruct;
+  friend void ::protobuf_Communicator_2eproto::InitDefaultsClassifyReplyImpl();
 };
 // ===================================================================
 
@@ -1188,647 +1188,6 @@ class PlatformDistribution : public ::google::protobuf::Message /* @@protoc_inse
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// ClassifyRequest
-
-// repeated .ImageWrapper imgages = 1;
-inline int ClassifyRequest::imgages_size() const {
-  return imgages_.size();
-}
-inline void ClassifyRequest::clear_imgages() {
-  imgages_.Clear();
-}
-inline const ::ImageWrapper& ClassifyRequest::imgages(int index) const {
-  // @@protoc_insertion_point(field_get:ClassifyRequest.imgages)
-  return imgages_.Get(index);
-}
-inline ::ImageWrapper* ClassifyRequest::mutable_imgages(int index) {
-  // @@protoc_insertion_point(field_mutable:ClassifyRequest.imgages)
-  return imgages_.Mutable(index);
-}
-inline ::ImageWrapper* ClassifyRequest::add_imgages() {
-  // @@protoc_insertion_point(field_add:ClassifyRequest.imgages)
-  return imgages_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::ImageWrapper >*
-ClassifyRequest::mutable_imgages() {
-  // @@protoc_insertion_point(field_mutable_list:ClassifyRequest.imgages)
-  return &imgages_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::ImageWrapper >&
-ClassifyRequest::imgages() const {
-  // @@protoc_insertion_point(field_list:ClassifyRequest.imgages)
-  return imgages_;
-}
-
-// .NetInfo net = 2;
-inline bool ClassifyRequest::has_net() const {
-  return this != internal_default_instance() && net_ != NULL;
-}
-inline void ClassifyRequest::clear_net() {
-  if (GetArenaNoVirtual() == NULL && net_ != NULL) {
-    delete net_;
-  }
-  net_ = NULL;
-}
-inline const ::NetInfo& ClassifyRequest::net() const {
-  const ::NetInfo* p = net_;
-  // @@protoc_insertion_point(field_get:ClassifyRequest.net)
-  return p != NULL ? *p : *reinterpret_cast<const ::NetInfo*>(
-      &::_NetInfo_default_instance_);
-}
-inline ::NetInfo* ClassifyRequest::release_net() {
-  // @@protoc_insertion_point(field_release:ClassifyRequest.net)
-  
-  ::NetInfo* temp = net_;
-  net_ = NULL;
-  return temp;
-}
-inline ::NetInfo* ClassifyRequest::mutable_net() {
-  
-  if (net_ == NULL) {
-    net_ = new ::NetInfo;
-  }
-  // @@protoc_insertion_point(field_mutable:ClassifyRequest.net)
-  return net_;
-}
-inline void ClassifyRequest::set_allocated_net(::NetInfo* net) {
-  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == NULL) {
-    delete net_;
-  }
-  if (net) {
-    ::google::protobuf::Arena* submessage_arena = NULL;
-    if (message_arena != submessage_arena) {
-      net = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, net, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  net_ = net;
-  // @@protoc_insertion_point(field_set_allocated:ClassifyRequest.net)
-}
-
-// repeated .PlatformInfo selectedPlatforms = 3;
-inline int ClassifyRequest::selectedplatforms_size() const {
-  return selectedplatforms_.size();
-}
-inline void ClassifyRequest::clear_selectedplatforms() {
-  selectedplatforms_.Clear();
-}
-inline const ::PlatformInfo& ClassifyRequest::selectedplatforms(int index) const {
-  // @@protoc_insertion_point(field_get:ClassifyRequest.selectedPlatforms)
-  return selectedplatforms_.Get(index);
-}
-inline ::PlatformInfo* ClassifyRequest::mutable_selectedplatforms(int index) {
-  // @@protoc_insertion_point(field_mutable:ClassifyRequest.selectedPlatforms)
-  return selectedplatforms_.Mutable(index);
-}
-inline ::PlatformInfo* ClassifyRequest::add_selectedplatforms() {
-  // @@protoc_insertion_point(field_add:ClassifyRequest.selectedPlatforms)
-  return selectedplatforms_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::PlatformInfo >*
-ClassifyRequest::mutable_selectedplatforms() {
-  // @@protoc_insertion_point(field_mutable_list:ClassifyRequest.selectedPlatforms)
-  return &selectedplatforms_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::PlatformInfo >&
-ClassifyRequest::selectedplatforms() const {
-  // @@protoc_insertion_point(field_list:ClassifyRequest.selectedPlatforms)
-  return selectedplatforms_;
-}
-
-// -------------------------------------------------------------------
-
-// ClassifyReply
-
-// repeated .ImageResult results = 1;
-inline int ClassifyReply::results_size() const {
-  return results_.size();
-}
-inline void ClassifyReply::clear_results() {
-  results_.Clear();
-}
-inline const ::ImageResult& ClassifyReply::results(int index) const {
-  // @@protoc_insertion_point(field_get:ClassifyReply.results)
-  return results_.Get(index);
-}
-inline ::ImageResult* ClassifyReply::mutable_results(int index) {
-  // @@protoc_insertion_point(field_mutable:ClassifyReply.results)
-  return results_.Mutable(index);
-}
-inline ::ImageResult* ClassifyReply::add_results() {
-  // @@protoc_insertion_point(field_add:ClassifyReply.results)
-  return results_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::ImageResult >*
-ClassifyReply::mutable_results() {
-  // @@protoc_insertion_point(field_mutable_list:ClassifyReply.results)
-  return &results_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::ImageResult >&
-ClassifyReply::results() const {
-  // @@protoc_insertion_point(field_list:ClassifyReply.results)
-  return results_;
-}
-
-// -------------------------------------------------------------------
-
-// ImageResult
-
-// .ImageWrapper images = 1;
-inline bool ImageResult::has_images() const {
-  return this != internal_default_instance() && images_ != NULL;
-}
-inline void ImageResult::clear_images() {
-  if (GetArenaNoVirtual() == NULL && images_ != NULL) {
-    delete images_;
-  }
-  images_ = NULL;
-}
-inline const ::ImageWrapper& ImageResult::images() const {
-  const ::ImageWrapper* p = images_;
-  // @@protoc_insertion_point(field_get:ImageResult.images)
-  return p != NULL ? *p : *reinterpret_cast<const ::ImageWrapper*>(
-      &::_ImageWrapper_default_instance_);
-}
-inline ::ImageWrapper* ImageResult::release_images() {
-  // @@protoc_insertion_point(field_release:ImageResult.images)
-  
-  ::ImageWrapper* temp = images_;
-  images_ = NULL;
-  return temp;
-}
-inline ::ImageWrapper* ImageResult::mutable_images() {
-  
-  if (images_ == NULL) {
-    images_ = new ::ImageWrapper;
-  }
-  // @@protoc_insertion_point(field_mutable:ImageResult.images)
-  return images_;
-}
-inline void ImageResult::set_allocated_images(::ImageWrapper* images) {
-  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == NULL) {
-    delete images_;
-  }
-  if (images) {
-    ::google::protobuf::Arena* submessage_arena = NULL;
-    if (message_arena != submessage_arena) {
-      images = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, images, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  images_ = images;
-  // @@protoc_insertion_point(field_set_allocated:ImageResult.images)
-}
-
-// repeated .Label classification = 2;
-inline int ImageResult::classification_size() const {
-  return classification_.size();
-}
-inline void ImageResult::clear_classification() {
-  classification_.Clear();
-}
-inline const ::Label& ImageResult::classification(int index) const {
-  // @@protoc_insertion_point(field_get:ImageResult.classification)
-  return classification_.Get(index);
-}
-inline ::Label* ImageResult::mutable_classification(int index) {
-  // @@protoc_insertion_point(field_mutable:ImageResult.classification)
-  return classification_.Mutable(index);
-}
-inline ::Label* ImageResult::add_classification() {
-  // @@protoc_insertion_point(field_add:ImageResult.classification)
-  return classification_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::Label >*
-ImageResult::mutable_classification() {
-  // @@protoc_insertion_point(field_mutable_list:ImageResult.classification)
-  return &classification_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::Label >&
-ImageResult::classification() const {
-  // @@protoc_insertion_point(field_list:ImageResult.classification)
-  return classification_;
-}
-
-// repeated .PlatformDistribution platformDistribution = 3;
-inline int ImageResult::platformdistribution_size() const {
-  return platformdistribution_.size();
-}
-inline void ImageResult::clear_platformdistribution() {
-  platformdistribution_.Clear();
-}
-inline const ::PlatformDistribution& ImageResult::platformdistribution(int index) const {
-  // @@protoc_insertion_point(field_get:ImageResult.platformDistribution)
-  return platformdistribution_.Get(index);
-}
-inline ::PlatformDistribution* ImageResult::mutable_platformdistribution(int index) {
-  // @@protoc_insertion_point(field_mutable:ImageResult.platformDistribution)
-  return platformdistribution_.Mutable(index);
-}
-inline ::PlatformDistribution* ImageResult::add_platformdistribution() {
-  // @@protoc_insertion_point(field_add:ImageResult.platformDistribution)
-  return platformdistribution_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::PlatformDistribution >*
-ImageResult::mutable_platformdistribution() {
-  // @@protoc_insertion_point(field_mutable_list:ImageResult.platformDistribution)
-  return &platformdistribution_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::PlatformDistribution >&
-ImageResult::platformdistribution() const {
-  // @@protoc_insertion_point(field_list:ImageResult.platformDistribution)
-  return platformdistribution_;
-}
-
-// -------------------------------------------------------------------
-
-// ImageWrapper
-
-// string filepath = 1;
-inline void ImageWrapper::clear_filepath() {
-  filepath_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& ImageWrapper::filepath() const {
-  // @@protoc_insertion_point(field_get:ImageWrapper.filepath)
-  return filepath_.GetNoArena();
-}
-inline void ImageWrapper::set_filepath(const ::std::string& value) {
-  
-  filepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:ImageWrapper.filepath)
-}
-#if LANG_CXX11
-inline void ImageWrapper::set_filepath(::std::string&& value) {
-  
-  filepath_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:ImageWrapper.filepath)
-}
-#endif
-inline void ImageWrapper::set_filepath(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  filepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:ImageWrapper.filepath)
-}
-inline void ImageWrapper::set_filepath(const char* value, size_t size) {
-  
-  filepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:ImageWrapper.filepath)
-}
-inline ::std::string* ImageWrapper::mutable_filepath() {
-  
-  // @@protoc_insertion_point(field_mutable:ImageWrapper.filepath)
-  return filepath_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* ImageWrapper::release_filepath() {
-  // @@protoc_insertion_point(field_release:ImageWrapper.filepath)
-  
-  return filepath_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void ImageWrapper::set_allocated_filepath(::std::string* filepath) {
-  if (filepath != NULL) {
-    
-  } else {
-    
-  }
-  filepath_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), filepath);
-  // @@protoc_insertion_point(field_set_allocated:ImageWrapper.filepath)
-}
-
-// repeated int32 dimensions = 2;
-inline int ImageWrapper::dimensions_size() const {
-  return dimensions_.size();
-}
-inline void ImageWrapper::clear_dimensions() {
-  dimensions_.Clear();
-}
-inline ::google::protobuf::int32 ImageWrapper::dimensions(int index) const {
-  // @@protoc_insertion_point(field_get:ImageWrapper.dimensions)
-  return dimensions_.Get(index);
-}
-inline void ImageWrapper::set_dimensions(int index, ::google::protobuf::int32 value) {
-  dimensions_.Set(index, value);
-  // @@protoc_insertion_point(field_set:ImageWrapper.dimensions)
-}
-inline void ImageWrapper::add_dimensions(::google::protobuf::int32 value) {
-  dimensions_.Add(value);
-  // @@protoc_insertion_point(field_add:ImageWrapper.dimensions)
-}
-inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
-ImageWrapper::dimensions() const {
-  // @@protoc_insertion_point(field_list:ImageWrapper.dimensions)
-  return dimensions_;
-}
-inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
-ImageWrapper::mutable_dimensions() {
-  // @@protoc_insertion_point(field_mutable_list:ImageWrapper.dimensions)
-  return &dimensions_;
-}
-
-// repeated float data = 3;
-inline int ImageWrapper::data_size() const {
-  return data_.size();
-}
-inline void ImageWrapper::clear_data() {
-  data_.Clear();
-}
-inline float ImageWrapper::data(int index) const {
-  // @@protoc_insertion_point(field_get:ImageWrapper.data)
-  return data_.Get(index);
-}
-inline void ImageWrapper::set_data(int index, float value) {
-  data_.Set(index, value);
-  // @@protoc_insertion_point(field_set:ImageWrapper.data)
-}
-inline void ImageWrapper::add_data(float value) {
-  data_.Add(value);
-  // @@protoc_insertion_point(field_add:ImageWrapper.data)
-}
-inline const ::google::protobuf::RepeatedField< float >&
-ImageWrapper::data() const {
-  // @@protoc_insertion_point(field_list:ImageWrapper.data)
-  return data_;
-}
-inline ::google::protobuf::RepeatedField< float >*
-ImageWrapper::mutable_data() {
-  // @@protoc_insertion_point(field_mutable_list:ImageWrapper.data)
-  return &data_;
-}
-
-// -------------------------------------------------------------------
-
-// NetInfo
-
-// string name = 1;
-inline void NetInfo::clear_name() {
-  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& NetInfo::name() const {
-  // @@protoc_insertion_point(field_get:NetInfo.name)
-  return name_.GetNoArena();
-}
-inline void NetInfo::set_name(const ::std::string& value) {
-  
-  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:NetInfo.name)
-}
-#if LANG_CXX11
-inline void NetInfo::set_name(::std::string&& value) {
-  
-  name_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:NetInfo.name)
-}
-#endif
-inline void NetInfo::set_name(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:NetInfo.name)
-}
-inline void NetInfo::set_name(const char* value, size_t size) {
-  
-  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:NetInfo.name)
-}
-inline ::std::string* NetInfo::mutable_name() {
-  
-  // @@protoc_insertion_point(field_mutable:NetInfo.name)
-  return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* NetInfo::release_name() {
-  // @@protoc_insertion_point(field_release:NetInfo.name)
-  
-  return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void NetInfo::set_allocated_name(::std::string* name) {
-  if (name != NULL) {
-    
-  } else {
-    
-  }
-  name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
-  // @@protoc_insertion_point(field_set_allocated:NetInfo.name)
-}
-
-// int32 imageDimension = 2;
-inline void NetInfo::clear_imagedimension() {
-  imagedimension_ = 0;
-}
-inline ::google::protobuf::int32 NetInfo::imagedimension() const {
-  // @@protoc_insertion_point(field_get:NetInfo.imageDimension)
-  return imagedimension_;
-}
-inline void NetInfo::set_imagedimension(::google::protobuf::int32 value) {
-  
-  imagedimension_ = value;
-  // @@protoc_insertion_point(field_set:NetInfo.imageDimension)
-}
-
-// string identifier = 3;
-inline void NetInfo::clear_identifier() {
-  identifier_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& NetInfo::identifier() const {
-  // @@protoc_insertion_point(field_get:NetInfo.identifier)
-  return identifier_.GetNoArena();
-}
-inline void NetInfo::set_identifier(const ::std::string& value) {
-  
-  identifier_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:NetInfo.identifier)
-}
-#if LANG_CXX11
-inline void NetInfo::set_identifier(::std::string&& value) {
-  
-  identifier_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:NetInfo.identifier)
-}
-#endif
-inline void NetInfo::set_identifier(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  identifier_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:NetInfo.identifier)
-}
-inline void NetInfo::set_identifier(const char* value, size_t size) {
-  
-  identifier_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:NetInfo.identifier)
-}
-inline ::std::string* NetInfo::mutable_identifier() {
-  
-  // @@protoc_insertion_point(field_mutable:NetInfo.identifier)
-  return identifier_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* NetInfo::release_identifier() {
-  // @@protoc_insertion_point(field_release:NetInfo.identifier)
-  
-  return identifier_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void NetInfo::set_allocated_identifier(::std::string* identifier) {
-  if (identifier != NULL) {
-    
-  } else {
-    
-  }
-  identifier_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), identifier);
-  // @@protoc_insertion_point(field_set_allocated:NetInfo.identifier)
-}
-
-// -------------------------------------------------------------------
-
-// PlatformInfo
-
-// string description = 1;
-inline void PlatformInfo::clear_description() {
-  description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& PlatformInfo::description() const {
-  // @@protoc_insertion_point(field_get:PlatformInfo.description)
-  return description_.GetNoArena();
-}
-inline void PlatformInfo::set_description(const ::std::string& value) {
-  
-  description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:PlatformInfo.description)
-}
-#if LANG_CXX11
-inline void PlatformInfo::set_description(::std::string&& value) {
-  
-  description_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:PlatformInfo.description)
-}
-#endif
-inline void PlatformInfo::set_description(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:PlatformInfo.description)
-}
-inline void PlatformInfo::set_description(const char* value, size_t size) {
-  
-  description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:PlatformInfo.description)
-}
-inline ::std::string* PlatformInfo::mutable_description() {
-  
-  // @@protoc_insertion_point(field_mutable:PlatformInfo.description)
-  return description_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* PlatformInfo::release_description() {
-  // @@protoc_insertion_point(field_release:PlatformInfo.description)
-  
-  return description_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void PlatformInfo::set_allocated_description(::std::string* description) {
-  if (description != NULL) {
-    
-  } else {
-    
-  }
-  description_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), description);
-  // @@protoc_insertion_point(field_set_allocated:PlatformInfo.description)
-}
-
-// string platformId = 2;
-inline void PlatformInfo::clear_platformid() {
-  platformid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& PlatformInfo::platformid() const {
-  // @@protoc_insertion_point(field_get:PlatformInfo.platformId)
-  return platformid_.GetNoArena();
-}
-inline void PlatformInfo::set_platformid(const ::std::string& value) {
-  
-  platformid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:PlatformInfo.platformId)
-}
-#if LANG_CXX11
-inline void PlatformInfo::set_platformid(::std::string&& value) {
-  
-  platformid_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:PlatformInfo.platformId)
-}
-#endif
-inline void PlatformInfo::set_platformid(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  platformid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:PlatformInfo.platformId)
-}
-inline void PlatformInfo::set_platformid(const char* value, size_t size) {
-  
-  platformid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:PlatformInfo.platformId)
-}
-inline ::std::string* PlatformInfo::mutable_platformid() {
-  
-  // @@protoc_insertion_point(field_mutable:PlatformInfo.platformId)
-  return platformid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* PlatformInfo::release_platformid() {
-  // @@protoc_insertion_point(field_release:PlatformInfo.platformId)
-  
-  return platformid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void PlatformInfo::set_allocated_platformid(::std::string* platformid) {
-  if (platformid != NULL) {
-    
-  } else {
-    
-  }
-  platformid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), platformid);
-  // @@protoc_insertion_point(field_set_allocated:PlatformInfo.platformId)
-}
-
-// int32 powerConsumption = 3;
-inline void PlatformInfo::clear_powerconsumption() {
-  powerconsumption_ = 0;
-}
-inline ::google::protobuf::int32 PlatformInfo::powerconsumption() const {
-  // @@protoc_insertion_point(field_get:PlatformInfo.powerConsumption)
-  return powerconsumption_;
-}
-inline void PlatformInfo::set_powerconsumption(::google::protobuf::int32 value) {
-  
-  powerconsumption_ = value;
-  // @@protoc_insertion_point(field_set:PlatformInfo.powerConsumption)
-}
-
-// int32 flops = 4;
-inline void PlatformInfo::clear_flops() {
-  flops_ = 0;
-}
-inline ::google::protobuf::int32 PlatformInfo::flops() const {
-  // @@protoc_insertion_point(field_get:PlatformInfo.flops)
-  return flops_;
-}
-inline void PlatformInfo::set_flops(::google::protobuf::int32 value) {
-  
-  flops_ = value;
-  // @@protoc_insertion_point(field_set:PlatformInfo.flops)
-}
-
-// -------------------------------------------------------------------
-
 // Label
 
 // string name = 1;
@@ -1900,40 +1259,419 @@ inline void Label::set_probability(float value) {
 
 // -------------------------------------------------------------------
 
-// PlatformDistribution
+// NetInfoMessage
 
-// .PlatformInfo platform = 1;
-inline bool PlatformDistribution::has_platform() const {
+// string name = 1;
+inline void NetInfoMessage::clear_name() {
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& NetInfoMessage::name() const {
+  // @@protoc_insertion_point(field_get:NetInfoMessage.name)
+  return name_.GetNoArena();
+}
+inline void NetInfoMessage::set_name(const ::std::string& value) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:NetInfoMessage.name)
+}
+#if LANG_CXX11
+inline void NetInfoMessage::set_name(::std::string&& value) {
+  
+  name_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:NetInfoMessage.name)
+}
+#endif
+inline void NetInfoMessage::set_name(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:NetInfoMessage.name)
+}
+inline void NetInfoMessage::set_name(const char* value, size_t size) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:NetInfoMessage.name)
+}
+inline ::std::string* NetInfoMessage::mutable_name() {
+  
+  // @@protoc_insertion_point(field_mutable:NetInfoMessage.name)
+  return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* NetInfoMessage::release_name() {
+  // @@protoc_insertion_point(field_release:NetInfoMessage.name)
+  
+  return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void NetInfoMessage::set_allocated_name(::std::string* name) {
+  if (name != NULL) {
+    
+  } else {
+    
+  }
+  name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
+  // @@protoc_insertion_point(field_set_allocated:NetInfoMessage.name)
+}
+
+// int32 imageDimension = 2;
+inline void NetInfoMessage::clear_imagedimension() {
+  imagedimension_ = 0;
+}
+inline ::google::protobuf::int32 NetInfoMessage::imagedimension() const {
+  // @@protoc_insertion_point(field_get:NetInfoMessage.imageDimension)
+  return imagedimension_;
+}
+inline void NetInfoMessage::set_imagedimension(::google::protobuf::int32 value) {
+  
+  imagedimension_ = value;
+  // @@protoc_insertion_point(field_set:NetInfoMessage.imageDimension)
+}
+
+// string identifier = 3;
+inline void NetInfoMessage::clear_identifier() {
+  identifier_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& NetInfoMessage::identifier() const {
+  // @@protoc_insertion_point(field_get:NetInfoMessage.identifier)
+  return identifier_.GetNoArena();
+}
+inline void NetInfoMessage::set_identifier(const ::std::string& value) {
+  
+  identifier_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:NetInfoMessage.identifier)
+}
+#if LANG_CXX11
+inline void NetInfoMessage::set_identifier(::std::string&& value) {
+  
+  identifier_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:NetInfoMessage.identifier)
+}
+#endif
+inline void NetInfoMessage::set_identifier(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  identifier_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:NetInfoMessage.identifier)
+}
+inline void NetInfoMessage::set_identifier(const char* value, size_t size) {
+  
+  identifier_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:NetInfoMessage.identifier)
+}
+inline ::std::string* NetInfoMessage::mutable_identifier() {
+  
+  // @@protoc_insertion_point(field_mutable:NetInfoMessage.identifier)
+  return identifier_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* NetInfoMessage::release_identifier() {
+  // @@protoc_insertion_point(field_release:NetInfoMessage.identifier)
+  
+  return identifier_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void NetInfoMessage::set_allocated_identifier(::std::string* identifier) {
+  if (identifier != NULL) {
+    
+  } else {
+    
+  }
+  identifier_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), identifier);
+  // @@protoc_insertion_point(field_set_allocated:NetInfoMessage.identifier)
+}
+
+// -------------------------------------------------------------------
+
+// PlatformInfoMessage
+
+// string description = 1;
+inline void PlatformInfoMessage::clear_description() {
+  description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& PlatformInfoMessage::description() const {
+  // @@protoc_insertion_point(field_get:PlatformInfoMessage.description)
+  return description_.GetNoArena();
+}
+inline void PlatformInfoMessage::set_description(const ::std::string& value) {
+  
+  description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:PlatformInfoMessage.description)
+}
+#if LANG_CXX11
+inline void PlatformInfoMessage::set_description(::std::string&& value) {
+  
+  description_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:PlatformInfoMessage.description)
+}
+#endif
+inline void PlatformInfoMessage::set_description(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:PlatformInfoMessage.description)
+}
+inline void PlatformInfoMessage::set_description(const char* value, size_t size) {
+  
+  description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:PlatformInfoMessage.description)
+}
+inline ::std::string* PlatformInfoMessage::mutable_description() {
+  
+  // @@protoc_insertion_point(field_mutable:PlatformInfoMessage.description)
+  return description_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PlatformInfoMessage::release_description() {
+  // @@protoc_insertion_point(field_release:PlatformInfoMessage.description)
+  
+  return description_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PlatformInfoMessage::set_allocated_description(::std::string* description) {
+  if (description != NULL) {
+    
+  } else {
+    
+  }
+  description_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), description);
+  // @@protoc_insertion_point(field_set_allocated:PlatformInfoMessage.description)
+}
+
+// string platformId = 2;
+inline void PlatformInfoMessage::clear_platformid() {
+  platformid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& PlatformInfoMessage::platformid() const {
+  // @@protoc_insertion_point(field_get:PlatformInfoMessage.platformId)
+  return platformid_.GetNoArena();
+}
+inline void PlatformInfoMessage::set_platformid(const ::std::string& value) {
+  
+  platformid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:PlatformInfoMessage.platformId)
+}
+#if LANG_CXX11
+inline void PlatformInfoMessage::set_platformid(::std::string&& value) {
+  
+  platformid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:PlatformInfoMessage.platformId)
+}
+#endif
+inline void PlatformInfoMessage::set_platformid(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  platformid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:PlatformInfoMessage.platformId)
+}
+inline void PlatformInfoMessage::set_platformid(const char* value, size_t size) {
+  
+  platformid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:PlatformInfoMessage.platformId)
+}
+inline ::std::string* PlatformInfoMessage::mutable_platformid() {
+  
+  // @@protoc_insertion_point(field_mutable:PlatformInfoMessage.platformId)
+  return platformid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PlatformInfoMessage::release_platformid() {
+  // @@protoc_insertion_point(field_release:PlatformInfoMessage.platformId)
+  
+  return platformid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PlatformInfoMessage::set_allocated_platformid(::std::string* platformid) {
+  if (platformid != NULL) {
+    
+  } else {
+    
+  }
+  platformid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), platformid);
+  // @@protoc_insertion_point(field_set_allocated:PlatformInfoMessage.platformId)
+}
+
+// int32 powerConsumption = 3;
+inline void PlatformInfoMessage::clear_powerconsumption() {
+  powerconsumption_ = 0;
+}
+inline ::google::protobuf::int32 PlatformInfoMessage::powerconsumption() const {
+  // @@protoc_insertion_point(field_get:PlatformInfoMessage.powerConsumption)
+  return powerconsumption_;
+}
+inline void PlatformInfoMessage::set_powerconsumption(::google::protobuf::int32 value) {
+  
+  powerconsumption_ = value;
+  // @@protoc_insertion_point(field_set:PlatformInfoMessage.powerConsumption)
+}
+
+// int32 flops = 4;
+inline void PlatformInfoMessage::clear_flops() {
+  flops_ = 0;
+}
+inline ::google::protobuf::int32 PlatformInfoMessage::flops() const {
+  // @@protoc_insertion_point(field_get:PlatformInfoMessage.flops)
+  return flops_;
+}
+inline void PlatformInfoMessage::set_flops(::google::protobuf::int32 value) {
+  
+  flops_ = value;
+  // @@protoc_insertion_point(field_set:PlatformInfoMessage.flops)
+}
+
+// -------------------------------------------------------------------
+
+// ImageWrapperMessage
+
+// string filepath = 1;
+inline void ImageWrapperMessage::clear_filepath() {
+  filepath_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ImageWrapperMessage::filepath() const {
+  // @@protoc_insertion_point(field_get:ImageWrapperMessage.filepath)
+  return filepath_.GetNoArena();
+}
+inline void ImageWrapperMessage::set_filepath(const ::std::string& value) {
+  
+  filepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:ImageWrapperMessage.filepath)
+}
+#if LANG_CXX11
+inline void ImageWrapperMessage::set_filepath(::std::string&& value) {
+  
+  filepath_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:ImageWrapperMessage.filepath)
+}
+#endif
+inline void ImageWrapperMessage::set_filepath(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  filepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:ImageWrapperMessage.filepath)
+}
+inline void ImageWrapperMessage::set_filepath(const char* value, size_t size) {
+  
+  filepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:ImageWrapperMessage.filepath)
+}
+inline ::std::string* ImageWrapperMessage::mutable_filepath() {
+  
+  // @@protoc_insertion_point(field_mutable:ImageWrapperMessage.filepath)
+  return filepath_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ImageWrapperMessage::release_filepath() {
+  // @@protoc_insertion_point(field_release:ImageWrapperMessage.filepath)
+  
+  return filepath_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ImageWrapperMessage::set_allocated_filepath(::std::string* filepath) {
+  if (filepath != NULL) {
+    
+  } else {
+    
+  }
+  filepath_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), filepath);
+  // @@protoc_insertion_point(field_set_allocated:ImageWrapperMessage.filepath)
+}
+
+// repeated int32 dimensions = 2;
+inline int ImageWrapperMessage::dimensions_size() const {
+  return dimensions_.size();
+}
+inline void ImageWrapperMessage::clear_dimensions() {
+  dimensions_.Clear();
+}
+inline ::google::protobuf::int32 ImageWrapperMessage::dimensions(int index) const {
+  // @@protoc_insertion_point(field_get:ImageWrapperMessage.dimensions)
+  return dimensions_.Get(index);
+}
+inline void ImageWrapperMessage::set_dimensions(int index, ::google::protobuf::int32 value) {
+  dimensions_.Set(index, value);
+  // @@protoc_insertion_point(field_set:ImageWrapperMessage.dimensions)
+}
+inline void ImageWrapperMessage::add_dimensions(::google::protobuf::int32 value) {
+  dimensions_.Add(value);
+  // @@protoc_insertion_point(field_add:ImageWrapperMessage.dimensions)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+ImageWrapperMessage::dimensions() const {
+  // @@protoc_insertion_point(field_list:ImageWrapperMessage.dimensions)
+  return dimensions_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+ImageWrapperMessage::mutable_dimensions() {
+  // @@protoc_insertion_point(field_mutable_list:ImageWrapperMessage.dimensions)
+  return &dimensions_;
+}
+
+// repeated float data = 3;
+inline int ImageWrapperMessage::data_size() const {
+  return data_.size();
+}
+inline void ImageWrapperMessage::clear_data() {
+  data_.Clear();
+}
+inline float ImageWrapperMessage::data(int index) const {
+  // @@protoc_insertion_point(field_get:ImageWrapperMessage.data)
+  return data_.Get(index);
+}
+inline void ImageWrapperMessage::set_data(int index, float value) {
+  data_.Set(index, value);
+  // @@protoc_insertion_point(field_set:ImageWrapperMessage.data)
+}
+inline void ImageWrapperMessage::add_data(float value) {
+  data_.Add(value);
+  // @@protoc_insertion_point(field_add:ImageWrapperMessage.data)
+}
+inline const ::google::protobuf::RepeatedField< float >&
+ImageWrapperMessage::data() const {
+  // @@protoc_insertion_point(field_list:ImageWrapperMessage.data)
+  return data_;
+}
+inline ::google::protobuf::RepeatedField< float >*
+ImageWrapperMessage::mutable_data() {
+  // @@protoc_insertion_point(field_mutable_list:ImageWrapperMessage.data)
+  return &data_;
+}
+
+// -------------------------------------------------------------------
+
+// PlatformDistributionMessage
+
+// .PlatformInfoMessage platform = 1;
+inline bool PlatformDistributionMessage::has_platform() const {
   return this != internal_default_instance() && platform_ != NULL;
 }
-inline void PlatformDistribution::clear_platform() {
+inline void PlatformDistributionMessage::clear_platform() {
   if (GetArenaNoVirtual() == NULL && platform_ != NULL) {
     delete platform_;
   }
   platform_ = NULL;
 }
-inline const ::PlatformInfo& PlatformDistribution::platform() const {
-  const ::PlatformInfo* p = platform_;
-  // @@protoc_insertion_point(field_get:PlatformDistribution.platform)
-  return p != NULL ? *p : *reinterpret_cast<const ::PlatformInfo*>(
-      &::_PlatformInfo_default_instance_);
+inline const ::PlatformInfoMessage& PlatformDistributionMessage::platform() const {
+  const ::PlatformInfoMessage* p = platform_;
+  // @@protoc_insertion_point(field_get:PlatformDistributionMessage.platform)
+  return p != NULL ? *p : *reinterpret_cast<const ::PlatformInfoMessage*>(
+      &::_PlatformInfoMessage_default_instance_);
 }
-inline ::PlatformInfo* PlatformDistribution::release_platform() {
-  // @@protoc_insertion_point(field_release:PlatformDistribution.platform)
+inline ::PlatformInfoMessage* PlatformDistributionMessage::release_platform() {
+  // @@protoc_insertion_point(field_release:PlatformDistributionMessage.platform)
   
-  ::PlatformInfo* temp = platform_;
+  ::PlatformInfoMessage* temp = platform_;
   platform_ = NULL;
   return temp;
 }
-inline ::PlatformInfo* PlatformDistribution::mutable_platform() {
+inline ::PlatformInfoMessage* PlatformDistributionMessage::mutable_platform() {
   
   if (platform_ == NULL) {
-    platform_ = new ::PlatformInfo;
+    platform_ = new ::PlatformInfoMessage;
   }
-  // @@protoc_insertion_point(field_mutable:PlatformDistribution.platform)
+  // @@protoc_insertion_point(field_mutable:PlatformDistributionMessage.platform)
   return platform_;
 }
-inline void PlatformDistribution::set_allocated_platform(::PlatformInfo* platform) {
+inline void PlatformDistributionMessage::set_allocated_platform(::PlatformInfoMessage* platform) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete platform_;
@@ -1949,21 +1687,283 @@ inline void PlatformDistribution::set_allocated_platform(::PlatformInfo* platfor
     
   }
   platform_ = platform;
-  // @@protoc_insertion_point(field_set_allocated:PlatformDistribution.platform)
+  // @@protoc_insertion_point(field_set_allocated:PlatformDistributionMessage.platform)
 }
 
 // float usage = 2;
-inline void PlatformDistribution::clear_usage() {
+inline void PlatformDistributionMessage::clear_usage() {
   usage_ = 0;
 }
-inline float PlatformDistribution::usage() const {
-  // @@protoc_insertion_point(field_get:PlatformDistribution.usage)
+inline float PlatformDistributionMessage::usage() const {
+  // @@protoc_insertion_point(field_get:PlatformDistributionMessage.usage)
   return usage_;
 }
-inline void PlatformDistribution::set_usage(float value) {
+inline void PlatformDistributionMessage::set_usage(float value) {
   
   usage_ = value;
-  // @@protoc_insertion_point(field_set:PlatformDistribution.usage)
+  // @@protoc_insertion_point(field_set:PlatformDistributionMessage.usage)
+}
+
+// -------------------------------------------------------------------
+
+// ImageResultMessage
+
+// .ImageWrapperMessage images = 1;
+inline bool ImageResultMessage::has_images() const {
+  return this != internal_default_instance() && images_ != NULL;
+}
+inline void ImageResultMessage::clear_images() {
+  if (GetArenaNoVirtual() == NULL && images_ != NULL) {
+    delete images_;
+  }
+  images_ = NULL;
+}
+inline const ::ImageWrapperMessage& ImageResultMessage::images() const {
+  const ::ImageWrapperMessage* p = images_;
+  // @@protoc_insertion_point(field_get:ImageResultMessage.images)
+  return p != NULL ? *p : *reinterpret_cast<const ::ImageWrapperMessage*>(
+      &::_ImageWrapperMessage_default_instance_);
+}
+inline ::ImageWrapperMessage* ImageResultMessage::release_images() {
+  // @@protoc_insertion_point(field_release:ImageResultMessage.images)
+  
+  ::ImageWrapperMessage* temp = images_;
+  images_ = NULL;
+  return temp;
+}
+inline ::ImageWrapperMessage* ImageResultMessage::mutable_images() {
+  
+  if (images_ == NULL) {
+    images_ = new ::ImageWrapperMessage;
+  }
+  // @@protoc_insertion_point(field_mutable:ImageResultMessage.images)
+  return images_;
+}
+inline void ImageResultMessage::set_allocated_images(::ImageWrapperMessage* images) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete images_;
+  }
+  if (images) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      images = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, images, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  images_ = images;
+  // @@protoc_insertion_point(field_set_allocated:ImageResultMessage.images)
+}
+
+// repeated .Label classification = 2;
+inline int ImageResultMessage::classification_size() const {
+  return classification_.size();
+}
+inline void ImageResultMessage::clear_classification() {
+  classification_.Clear();
+}
+inline const ::Label& ImageResultMessage::classification(int index) const {
+  // @@protoc_insertion_point(field_get:ImageResultMessage.classification)
+  return classification_.Get(index);
+}
+inline ::Label* ImageResultMessage::mutable_classification(int index) {
+  // @@protoc_insertion_point(field_mutable:ImageResultMessage.classification)
+  return classification_.Mutable(index);
+}
+inline ::Label* ImageResultMessage::add_classification() {
+  // @@protoc_insertion_point(field_add:ImageResultMessage.classification)
+  return classification_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::Label >*
+ImageResultMessage::mutable_classification() {
+  // @@protoc_insertion_point(field_mutable_list:ImageResultMessage.classification)
+  return &classification_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Label >&
+ImageResultMessage::classification() const {
+  // @@protoc_insertion_point(field_list:ImageResultMessage.classification)
+  return classification_;
+}
+
+// repeated .PlatformDistributionMessage platformDistribution = 3;
+inline int ImageResultMessage::platformdistribution_size() const {
+  return platformdistribution_.size();
+}
+inline void ImageResultMessage::clear_platformdistribution() {
+  platformdistribution_.Clear();
+}
+inline const ::PlatformDistributionMessage& ImageResultMessage::platformdistribution(int index) const {
+  // @@protoc_insertion_point(field_get:ImageResultMessage.platformDistribution)
+  return platformdistribution_.Get(index);
+}
+inline ::PlatformDistributionMessage* ImageResultMessage::mutable_platformdistribution(int index) {
+  // @@protoc_insertion_point(field_mutable:ImageResultMessage.platformDistribution)
+  return platformdistribution_.Mutable(index);
+}
+inline ::PlatformDistributionMessage* ImageResultMessage::add_platformdistribution() {
+  // @@protoc_insertion_point(field_add:ImageResultMessage.platformDistribution)
+  return platformdistribution_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::PlatformDistributionMessage >*
+ImageResultMessage::mutable_platformdistribution() {
+  // @@protoc_insertion_point(field_mutable_list:ImageResultMessage.platformDistribution)
+  return &platformdistribution_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::PlatformDistributionMessage >&
+ImageResultMessage::platformdistribution() const {
+  // @@protoc_insertion_point(field_list:ImageResultMessage.platformDistribution)
+  return platformdistribution_;
+}
+
+// -------------------------------------------------------------------
+
+// ClassifyRequest
+
+// .NetInfoMessage net = 1;
+inline bool ClassifyRequest::has_net() const {
+  return this != internal_default_instance() && net_ != NULL;
+}
+inline void ClassifyRequest::clear_net() {
+  if (GetArenaNoVirtual() == NULL && net_ != NULL) {
+    delete net_;
+  }
+  net_ = NULL;
+}
+inline const ::NetInfoMessage& ClassifyRequest::net() const {
+  const ::NetInfoMessage* p = net_;
+  // @@protoc_insertion_point(field_get:ClassifyRequest.net)
+  return p != NULL ? *p : *reinterpret_cast<const ::NetInfoMessage*>(
+      &::_NetInfoMessage_default_instance_);
+}
+inline ::NetInfoMessage* ClassifyRequest::release_net() {
+  // @@protoc_insertion_point(field_release:ClassifyRequest.net)
+  
+  ::NetInfoMessage* temp = net_;
+  net_ = NULL;
+  return temp;
+}
+inline ::NetInfoMessage* ClassifyRequest::mutable_net() {
+  
+  if (net_ == NULL) {
+    net_ = new ::NetInfoMessage;
+  }
+  // @@protoc_insertion_point(field_mutable:ClassifyRequest.net)
+  return net_;
+}
+inline void ClassifyRequest::set_allocated_net(::NetInfoMessage* net) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete net_;
+  }
+  if (net) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      net = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, net, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  net_ = net;
+  // @@protoc_insertion_point(field_set_allocated:ClassifyRequest.net)
+}
+
+// repeated .ImageWrapperMessage images = 2;
+inline int ClassifyRequest::images_size() const {
+  return images_.size();
+}
+inline void ClassifyRequest::clear_images() {
+  images_.Clear();
+}
+inline const ::ImageWrapperMessage& ClassifyRequest::images(int index) const {
+  // @@protoc_insertion_point(field_get:ClassifyRequest.images)
+  return images_.Get(index);
+}
+inline ::ImageWrapperMessage* ClassifyRequest::mutable_images(int index) {
+  // @@protoc_insertion_point(field_mutable:ClassifyRequest.images)
+  return images_.Mutable(index);
+}
+inline ::ImageWrapperMessage* ClassifyRequest::add_images() {
+  // @@protoc_insertion_point(field_add:ClassifyRequest.images)
+  return images_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::ImageWrapperMessage >*
+ClassifyRequest::mutable_images() {
+  // @@protoc_insertion_point(field_mutable_list:ClassifyRequest.images)
+  return &images_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::ImageWrapperMessage >&
+ClassifyRequest::images() const {
+  // @@protoc_insertion_point(field_list:ClassifyRequest.images)
+  return images_;
+}
+
+// repeated .PlatformInfoMessage selectedPlatforms = 3;
+inline int ClassifyRequest::selectedplatforms_size() const {
+  return selectedplatforms_.size();
+}
+inline void ClassifyRequest::clear_selectedplatforms() {
+  selectedplatforms_.Clear();
+}
+inline const ::PlatformInfoMessage& ClassifyRequest::selectedplatforms(int index) const {
+  // @@protoc_insertion_point(field_get:ClassifyRequest.selectedPlatforms)
+  return selectedplatforms_.Get(index);
+}
+inline ::PlatformInfoMessage* ClassifyRequest::mutable_selectedplatforms(int index) {
+  // @@protoc_insertion_point(field_mutable:ClassifyRequest.selectedPlatforms)
+  return selectedplatforms_.Mutable(index);
+}
+inline ::PlatformInfoMessage* ClassifyRequest::add_selectedplatforms() {
+  // @@protoc_insertion_point(field_add:ClassifyRequest.selectedPlatforms)
+  return selectedplatforms_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::PlatformInfoMessage >*
+ClassifyRequest::mutable_selectedplatforms() {
+  // @@protoc_insertion_point(field_mutable_list:ClassifyRequest.selectedPlatforms)
+  return &selectedplatforms_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::PlatformInfoMessage >&
+ClassifyRequest::selectedplatforms() const {
+  // @@protoc_insertion_point(field_list:ClassifyRequest.selectedPlatforms)
+  return selectedplatforms_;
+}
+
+// -------------------------------------------------------------------
+
+// ClassifyReply
+
+// repeated .ImageResultMessage results = 1;
+inline int ClassifyReply::results_size() const {
+  return results_.size();
+}
+inline void ClassifyReply::clear_results() {
+  results_.Clear();
+}
+inline const ::ImageResultMessage& ClassifyReply::results(int index) const {
+  // @@protoc_insertion_point(field_get:ClassifyReply.results)
+  return results_.Get(index);
+}
+inline ::ImageResultMessage* ClassifyReply::mutable_results(int index) {
+  // @@protoc_insertion_point(field_mutable:ClassifyReply.results)
+  return results_.Mutable(index);
+}
+inline ::ImageResultMessage* ClassifyReply::add_results() {
+  // @@protoc_insertion_point(field_add:ClassifyReply.results)
+  return results_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::ImageResultMessage >*
+ClassifyReply::mutable_results() {
+  // @@protoc_insertion_point(field_mutable_list:ClassifyReply.results)
+  return &results_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::ImageResultMessage >&
+ClassifyReply::results() const {
+  // @@protoc_insertion_point(field_list:ClassifyReply.results)
+  return results_;
 }
 
 #ifdef __GNUC__
@@ -1990,15 +1990,15 @@ inline void PlatformDistribution::set_usage(float value) {
 namespace google {
 namespace protobuf {
 
+template <> struct is_proto_enum< ::PlatformInfoMessage_platformType> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::PlatformInfoMessage_platformType>() {
+  return ::PlatformInfoMessage_platformType_descriptor();
+}
 template <> struct is_proto_enum< ::ClassifyRequest_operationMode> : ::google::protobuf::internal::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::ClassifyRequest_operationMode>() {
   return ::ClassifyRequest_operationMode_descriptor();
-}
-template <> struct is_proto_enum< ::PlatformInfo_platformType> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::PlatformInfo_platformType>() {
-  return ::PlatformInfo_platformType_descriptor();
 }
 
 }  // namespace protobuf

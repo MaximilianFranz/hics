@@ -4,40 +4,18 @@ service Communicator {
     rpc classify(ClassifyRequest) returns(ClassifyReply) {}
 }
 
-message ClassifyRequest {
-    repeated ImageWrapper imgages = 1;
-    NetInfo net = 2;
-    enum operationMode {
-        HighPower = 0;
-        LowPower = 1;
-        EnergyEfficient = 2;
-    }
-    repeated PlatformInfo selectedPlatforms = 3;
+message Label {
+    string name = 1;
+    float probability = 2;
 }
 
-message ClassifyReply {
-    repeated ImageResult results = 1;
-}
-
-message ImageResult {
-    ImageWrapper images = 1;
-    repeated Label classification = 2;
-    repeated PlatformDistribution platformDistribution = 3;
-}
-
-message ImageWrapper {
-    string filepath = 1;
-    repeated int32 dimensions = 2;
-    repeated float data = 3;
-}
-
-message NetInfo {
+message NetInfoMessage {
     string name = 1;
     int32 imageDimension = 2;
     string identifier = 3;
 }
 
-message PlatformInfo {
+message PlatformInfoMessage {
     string description = 1;
     enum platformType {
         CPU = 0;
@@ -49,12 +27,34 @@ message PlatformInfo {
     int32 flops = 4;
 }
 
-message Label {
-    string name = 1;
-    float probability = 2;
+message ImageWrapperMessage {
+    string filepath = 1;
+    repeated int32 dimensions = 2;
+    repeated float data = 3;
 }
 
-message PlatformDistribution {
-    PlatformInfo platform = 1;
+message PlatformDistributionMessage {
+    PlatformInfoMessage platform = 1;
     float usage = 2;
+}
+
+message ImageResultMessage {
+    ImageWrapperMessage images = 1;
+    repeated Label classification = 2;
+    repeated PlatformDistributionMessage platformDistribution = 3;
+}
+
+message ClassifyRequest {
+    NetInfoMessage net = 1;
+    enum operationMode {
+        HighPower = 0;
+        LowPower = 1;
+        EnergyEfficient = 2;
+    }
+    repeated ImageWrapperMessage images = 2;
+    repeated PlatformInfoMessage selectedPlatforms = 3;
+}
+
+message ClassifyReply {
+    repeated ImageResultMessage results = 1;
 }
