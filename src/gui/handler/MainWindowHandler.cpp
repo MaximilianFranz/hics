@@ -49,12 +49,7 @@ void MainWindowHandler::setClassificationRequestState(){
 }
 
 ClassificationRequest* MainWindowHandler::getClassificationRequestState(){
-    if(classificationRequestState){
-        return classificationRequestState;
-    } else {
-        setClassificationRequestState();
-        return classificationRequestState;
-    }
+    return classificationRequestState;
 }
 
 void MainWindowHandler::processClassificationResult(const ClassificationResult &classificationResult){
