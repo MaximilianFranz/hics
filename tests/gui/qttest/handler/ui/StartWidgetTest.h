@@ -49,6 +49,9 @@ private slots:
     }
 
     //void classifyButtonClicked();
+
+    void testConstructor();
+
     void testSelectedPlatforms();
 
     void testSelectedNeuralNet();

@@ -21,6 +21,17 @@ void StartWidgetTest::classifyButtonClicked() {
 }
 */
 
+void StartWidgetTest::testConstructor() {
+    //TODO test constructor
+    //Test available neural nets at startup
+    std::list<NetInfo>::iterator it;
+    it = nets.begin();
+    QCOMPARE(startWidget->getNeuralNetsQComboBox()->itemText(0), it->getName());
+
+    ++it;
+    QCOMPARE(startWidget->getNeuralNetsQComboBox()->itemText(1), it->getName());
+}
+
 void StartWidgetTest::testImageFunctions() {
     startWidget->processInputImageButton();
     //Select 3 images
