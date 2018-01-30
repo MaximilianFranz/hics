@@ -26,7 +26,7 @@ private:
 private slots:
 
     void initTestCase() {
-        NetInfo alexnet("AlexNet", 227, "alex");
+        NetInfo alexnet("AlexNet", 227, "alexnet");
         NetInfo googlenet("GoogLeNet", 300, "googlenet");
         nets.push_back(alexnet);
         nets.push_back(googlenet);

@@ -82,30 +82,23 @@ void StartWidgetTest::testSelectedPlatforms() {
     QTest::mouseClick(startWidget->getPlatformsQVBoxLayout()->itemAt(0)->widget(), Qt::LeftButton);
     QTest::mouseClick(startWidget->getPlatformsQVBoxLayout()->itemAt(1)->widget(), Qt::LeftButton);
 
-    std::list<PlatformInfo>::iterator it;
-    it = platforms.begin();
-    QCOMPARE(startWidget->getSelectedPlatforms().at(0).getPlatformId(), it->getPlatformId());
-    ++it;
-    QCOMPARE(startWidget->getSelectedPlatforms().at(1).getPlatformId(), it->getPlatformId());
+    QCOMPARE(startWidget->getSelectedPlatforms().at(0).getPlatformId(), (std::string)"cpu");
+    QCOMPARE(startWidget->getSelectedPlatforms().at(1).getPlatformId(), (std::string)"fpga");
 }
 
 void StartWidgetTest::testSelectedNeuralNet() {
-    std::list<NetInfo>::iterator it;
-    it = nets.begin();
-    QCOMPARE(startWidget->getSelectedNeuralNet().getIdentifier(), it->getIdentifier());
+    QCOMPARE(startWidget->getSelectedNeuralNet().getIdentifier(), (std::string)"alexnet");
 
     QTest::keyClick(startWidget->getNeuralNetsQComboBox(), Qt::Key_Down);
-    ++it;
-    QCOMPARE(startWidget->getSelectedNeuralNet().getIdentifier(), it->getIdentifier());
+
+    QCOMPARE(startWidget->getSelectedNeuralNet().getIdentifier(), (std::string)"googlenet");
 }
 
 void StartWidgetTest::testSelectedOperationMode() {
-    std::list<OperationMode>::iterator it;
-    it = modes.begin();
-    QCOMPARE(startWidget->getSelectedOperationMode(), *it);
+    QCOMPARE(startWidget->getSelectedOperationMode(), OperationMode::HighPower);
 
     QTest::keyClick(startWidget->getOperationModesQComboBox(), Qt::Key_Down);
-    ++it;
+
     //TODO change expected to *it, since the selectedoperationmode method is not yet implemented
     QCOMPARE(startWidget->getSelectedOperationMode(), OperationMode::HighPower);
 }
