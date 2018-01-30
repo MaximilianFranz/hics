@@ -41,12 +41,12 @@ class MainWindowHandler : public QObject, MainWindowSubject{
 
 private:
 
-    MainWindow* mainWindow;
-    StartWidget* startWidget;
-    ResultWidget* resultWidget;
-    DetailDialog* detailDialog;
+    MainWindow* mainWindow = nullptr;
+    StartWidget* startWidget = nullptr;
+    ResultWidget* resultWidget = nullptr;
+    DetailDialog* detailDialog = nullptr;
 
-    ClassificationRequest* classificationRequestState;
+    ClassificationRequest* classificationRequestState = nullptr;
 
 
 public:
@@ -64,6 +64,8 @@ public:
      */
     MainWindowHandler(std::list<NetInfo> &neuralNets, std::list<PlatformInfo> &platforms,
                       std::list<OperationMode> &operationModes);
+
+    ~MainWindowHandler();
 
     /**
      * @brief getClassificationRequestState returns the classificationRequest state attribute.

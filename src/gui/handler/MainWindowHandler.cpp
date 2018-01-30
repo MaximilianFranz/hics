@@ -30,14 +30,17 @@ MainWindowHandler::MainWindowHandler(std::list<NetInfo> &neuralNets, std::list<P
 }
 
 void MainWindowHandler::setClassificationRequestState(){
+    if(classificationRequestState){
+        delete classificationRequestState;
+    }
+
     NetInfo neuralNet = startWidget->getSelectedNeuralNet();
     std::vector<PlatformInfo> platforms = startWidget->getSelectedPlatforms();
     OperationMode m(OperationMode::HighPower); /*!< TODO change this when string mapping is implemented*/
     bool aggregate = startWidget->isAggregated();
     std::map<QString, QImage> userImgs = startWidget->getSelectedImages();
 
-    ClassificationRequest request(neuralNet, platforms, m, aggregate, userImgs);
-    this->classificationRequestState = &request;
+    classificationRequestState = new ClassificationRequest(neuralNet, platforms, m, aggregate, userImgs);
 
     //Notify all observers that the state has changed
     notify();
@@ -73,6 +76,12 @@ void MainWindowHandler::processReturnQPushButton(){
 
 void MainWindowHandler::processDetailQPushButton(){
     detailDialog->show();
+}
+
+MainWindowHandler::~MainWindowHandler(){
+    if(classificationRequestState){
+        delete classificationRequestState;
+    }
 }
 
 MainWindow *MainWindowHandler::getMainWindow() const {
