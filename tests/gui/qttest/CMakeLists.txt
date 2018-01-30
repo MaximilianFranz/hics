@@ -1,7 +1,7 @@
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-add_executable(guitestsQt handler/ui/StartWidgetTest.cpp handler/ui/StartWidgetTest.h)
+add_executable(guitestsQt handler/ui/StartWidgetTest.cpp handler/ui/StartWidgetTest.h handler/MainWindowHandlerTest.cpp handler/MainWindowHandlerTest.h)
 
 find_package(Qt5Test REQUIRED)
 
