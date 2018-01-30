@@ -19,7 +19,7 @@ add_definitions(-DTEST_RES_DIR="${CMAKE_SOURCE_DIR}/tests/resources/")
 find_package(Qt5 COMPONENTS Core Widgets Gui)
 
 # Required by the AlexNetWeightLoader
-find_package(HDF5 COMPONENTS C)
+find_package(HDF5 COMPONENTS C REQUIRED)
 include_directories(${HDF5_INCLUDE_DIRS})
 
 # Required by the communicator module
