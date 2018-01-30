@@ -2,6 +2,7 @@
 // Created by pselab on 30.01.18.
 //
 
+#include <QtTest/QSignalSpy>
 #include "MainWindowHandlerTest.h"
 
 void MainWindowHandlerTest::initTestCase(){
@@ -33,6 +34,12 @@ void MainWindowHandlerTest::cleanup(){
     delete mainWindowHandler;
 }
 
+void MainWindowHandlerTest::testConstructor() {
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->isVisible(), true);
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(), mainWindowHandler->getStartWidget());
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->widget(1), mainWindowHandler->getResultWidget());
+}
+
 /*
 void StartWidgetTest::classifyButtonClicked() {
     //TODO simulate mouse click on classify button
@@ -48,3 +55,5 @@ void StartWidgetTest::classifyButtonClicked() {
     QCOMPARE(request->getSelectedPlatforms().size(), (unsigned long)0);
 }
 */
+
+QTEST_MAIN(MainWindowHandlerTest)
