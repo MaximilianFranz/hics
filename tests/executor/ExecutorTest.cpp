@@ -9,6 +9,11 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <PreProcessor.h>
+
+#include <QImage>
+
+
 #include "ExecutorTest.h"
 
 TEST_CASE("Testing Interpreter") {
@@ -99,10 +104,41 @@ SCENARIO("Testing Executor Module") {
 
         std::vector<ImageResult*> results;
         std::vector<PlatformInfo*> info_mock;
-        results = executor.classify({img}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
+//        results = executor.classify({img}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
+//
+//        // Highest prob is weasel
+//        REQUIRE(results.front()->getResults().front().first == "weasel");
 
-        // Highest prob is weasel
-        REQUIRE(results.front()->getResults().front().first == "weasel");
+    }
+
+    SECTION("Testing PreProcessor and Execution") {
+        PreProcessor p;
+        p.setOutputSize(227,227);
+
+        QImage img("../../../tests/resources/tf_data_script/laska.png");
+
+        std::map<QString, QImage> map;
+        map.insert(std::pair<QString, QImage>(QString("laska"), img));
+        std::vector<ImageWrapper> images = p.processImages(map);
+
+        std::vector<float> imData = images.front().getData();
+
+        for (int i = 0; i < 10; i++) {
+            std::cout << i << " : " << imData[i] << "\n";
+        }
+
+        Executor executor;
+        std::vector<NetInfo*> nets = executor.queryNets();
+        NetInfo alexnetinfo = *nets.at(0);
+
+
+
+
+        std::vector<ImageResult*> results;
+        std::vector<PlatformInfo*> info_mock;
+        results = executor.classify({&images.front()}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
+
+        std::cout << results.front()->getResults().front().first;
 
     }
 }
