@@ -11,17 +11,16 @@
 #include <handler/ui/StartWidget.h>
 #include <handler/MainWindowHandler.h>
 
-class StartWidgetTest : public QObject
-{
+class StartWidgetTest : public QObject {
 
-    Q_OBJECT
+Q_OBJECT
 
 private:
     std::list<NetInfo> nets;
     std::list<PlatformInfo> platforms;
     std::list<OperationMode> modes;
 
-    MainWindowHandler* mainWindowHandler;
+    MainWindowHandler *mainWindowHandler;
     StartWidget *startWidget;
 
 private slots:
@@ -51,10 +50,13 @@ private slots:
 
     //void classifyButtonClicked();
     void testSelectedPlatforms();
-    void testSelectedNeuralNet();
-    void testSelectedOperationMode();
-    void testSelectedImages();
-    void testIsAggregated();
 
+    void testSelectedNeuralNet();
+
+    void testSelectedOperationMode();
+
+    void testImageFunctions();
+
+    void testIsAggregated();
 };
 

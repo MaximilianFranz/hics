@@ -21,13 +21,33 @@ void StartWidgetTest::classifyButtonClicked() {
 }
 */
 
-void StartWidgetTest::testSelectedImages() {
-/*    startWidget->processInputImageButton();
+void StartWidgetTest::testImageFunctions() {
+    startWidget->processInputImageButton();
     //Select 3 images
-    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long)3);*/
+    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 3);
+
+    QMapIterator<QImage *, QHBoxLayout *> it(*(startWidget->getImagesMap()));
+
+    it.next();
+    QCheckBox *checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget());
+    QTest::mouseClick(checkBox, Qt::LeftButton);
+
+    it.next();
+    checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget());
+    QTest::mouseClick(checkBox, Qt::LeftButton);
+
+    startWidget->processAbortDeletionQPushButton();
+    startWidget->processConfirmDeletionButton();
+    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 3);
+
+    it.previous();
+    checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget());
+    QTest::mouseClick(checkBox, Qt::LeftButton);
+    startWidget->processConfirmDeletionButton();
+    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 2);
 }
 
-void StartWidgetTest::testSelectedPlatforms(){
+void StartWidgetTest::testSelectedPlatforms() {
     QTest::mouseClick(startWidget->getPlatformsQVBoxLayout()->itemAt(0)->widget(), Qt::LeftButton);
     QTest::mouseClick(startWidget->getPlatformsQVBoxLayout()->itemAt(1)->widget(), Qt::LeftButton);
 
@@ -38,30 +58,33 @@ void StartWidgetTest::testSelectedPlatforms(){
     QCOMPARE(startWidget->getSelectedPlatforms().at(1).getPlatformId(), it->getPlatformId());
 }
 
-void StartWidgetTest::testSelectedNeuralNet(){
-    QTest::keyClick(startWidget->getNeuralNetsQComboBox(), Qt::Key_Down);
-
+void StartWidgetTest::testSelectedNeuralNet() {
     std::list<NetInfo>::iterator it;
     it = nets.begin();
+    QCOMPARE(startWidget->getSelectedNeuralNet().getIdentifier(), it->getIdentifier());
+
+    QTest::keyClick(startWidget->getNeuralNetsQComboBox(), Qt::Key_Down);
     ++it;
     QCOMPARE(startWidget->getSelectedNeuralNet().getIdentifier(), it->getIdentifier());
 }
 
-void StartWidgetTest::testSelectedOperationMode(){
-    QTest::keyClick(startWidget->getOperationModesQComboBox(), Qt::Key_Down);
-
-    std::list<OperationMode >::iterator it;
+void StartWidgetTest::testSelectedOperationMode() {
+    std::list<OperationMode>::iterator it;
     it = modes.begin();
+    QCOMPARE(startWidget->getSelectedOperationMode(), *it);
+
+    QTest::keyClick(startWidget->getOperationModesQComboBox(), Qt::Key_Down);
     ++it;
     //TODO change expected to *it, since the selectedoperationmode method is not yet implemented
     QCOMPARE(startWidget->getSelectedOperationMode(), OperationMode::HighPower);
 }
 
-void StartWidgetTest::testIsAggregated(){
+void StartWidgetTest::testIsAggregated() {
     QCOMPARE(startWidget->isAggregated(), false);
     QTest::mouseClick(startWidget->getAggregateResultsQCheckBox(), Qt::LeftButton);
     QCOMPARE(startWidget->isAggregated(), true);
     QTest::mouseClick(startWidget->getAggregateResultsQCheckBox(), Qt::LeftButton);
     QCOMPARE(startWidget->isAggregated(), false);
 }
+
 QTEST_MAIN(StartWidgetTest)
