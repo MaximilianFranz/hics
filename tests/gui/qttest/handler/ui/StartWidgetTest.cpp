@@ -124,4 +124,4 @@ void StartWidgetTest::testIsAggregated() {
     QCOMPARE(startWidget->isAggregated(), false);
 }
 
-QTEST_MAIN(StartWidgetTest)
+//QTEST_MAIN(StartWidgetTest)
