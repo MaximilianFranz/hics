@@ -24,12 +24,33 @@ void StartWidgetTest::classifyButtonClicked() {
 void StartWidgetTest::testConstructor() {
     //TODO test constructor
     //Test available neural nets at startup
-    std::list<NetInfo>::iterator it;
-    it = nets.begin();
-    QCOMPARE(startWidget->getNeuralNetsQComboBox()->itemText(0), it->getName());
 
-    ++it;
-    QCOMPARE(startWidget->getNeuralNetsQComboBox()->itemText(1), it->getName());
+    /*--------------Neural nets--------------------*/
+
+    QCOMPARE(startWidget->getNeuralNetsQComboBox()->itemText(0).toStdString(), (std::string)"AlexNet");
+
+    QCOMPARE(startWidget->getNeuralNetsQComboBox()->itemText(1).toStdString(), (std::string)"GoogLeNet");
+
+    //TODO implement modes test when string representation is done
+
+    /*--------------Operation Modes----------------*/
+
+    //QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(0), *itModes);
+
+    //QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(1), *itModes);
+
+    //QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(2), *itModes);
+
+    /*--------------Platforms---------------------*/
+
+    QCOMPARE(((QCheckBox *)(startWidget->getPlatformsQVBoxLayout()->itemAt(0)->widget()))->text().toStdString(),
+             (std::string)"CPU");
+
+    QCOMPARE(((QCheckBox *)(startWidget->getPlatformsQVBoxLayout()->itemAt(1)->widget()))->text().toStdString(),
+             (std::string)"FPGA");
+
+    QCOMPARE(((QCheckBox *)(startWidget->getPlatformsQVBoxLayout()->itemAt(2)->widget()))->text().toStdString(),
+             (std::string)"Titan XP");
 }
 
 void StartWidgetTest::testImageFunctions() {
