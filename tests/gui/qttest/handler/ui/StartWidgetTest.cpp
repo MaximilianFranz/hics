@@ -5,21 +5,34 @@
 #include "StartWidgetTest.h"
 #include <handler/ui/StartWidget.h>
 
-/*
-void StartWidgetTest::classifyButtonClicked() {
-    //TODO simulate mouse click on classify button
-    QTest::mouseClick(startWidget->getClassificationQPushButton(), Qt::LeftButton);
+void StartWidgetTest::initTestCase() {
+    NetInfo alexnet("AlexNet", 227, "alexnet");
+    NetInfo googlenet("GoogLeNet", 300, "googlenet");
+    nets.push_back(alexnet);
+    nets.push_back(googlenet);
 
-    ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
-    QCOMPARE(request->getAggregateResults(), false);
-    NetInfo net = request->getSelectedNeuralNet();
-    QCOMPARE(net.getIdentifier(), nets.front().getIdentifier());
-    QCOMPARE(request->getSelectedOperationMode(), modes.front());
-    //No platform selected
-    //TODO change this when error message implemented
-    QCOMPARE(request->getSelectedPlatforms().size(), (unsigned long)0);
+    PlatformInfo cpu("CPU", PlatformType::CPU, "cpu", 100, 5);
+    PlatformInfo fpga("FPGA", PlatformType::FPGA, "fpga", 5, 20);
+    PlatformInfo gpu("Titan XP", PlatformType::FPGA, "titanxp", 250, 100);
+    platforms.push_back(cpu);
+    platforms.push_back(fpga);
+    platforms.push_back(gpu);
+
+    OperationMode mode = OperationMode::HighPower;
+    OperationMode mode2 = OperationMode::EnergyEfficient;
+    OperationMode mode3 = OperationMode::LowPower;
+    modes.push_back(mode);
+    modes.push_back(mode2);
+    modes.push_back(mode3);
 }
-*/
+
+void StartWidgetTest::init() {
+    startWidget = new StartWidget(nets, platforms, modes);
+}
+
+void StartWidgetTest::cleanup() {
+    delete startWidget;
+}
 
 void StartWidgetTest::testConstructor() {
     //TODO test constructor
@@ -27,9 +40,9 @@ void StartWidgetTest::testConstructor() {
 
     /*--------------Neural nets--------------------*/
 
-    QCOMPARE(startWidget->getNeuralNetsQComboBox()->itemText(0).toStdString(), (std::string)"AlexNet");
+    QCOMPARE(startWidget->getNeuralNetsQComboBox()->itemText(0).toStdString(), (std::string) "AlexNet");
 
-    QCOMPARE(startWidget->getNeuralNetsQComboBox()->itemText(1).toStdString(), (std::string)"GoogLeNet");
+    QCOMPARE(startWidget->getNeuralNetsQComboBox()->itemText(1).toStdString(), (std::string) "GoogLeNet");
 
     //TODO implement modes test when string representation is done
 
@@ -43,14 +56,14 @@ void StartWidgetTest::testConstructor() {
 
     /*--------------Platforms---------------------*/
 
-    QCOMPARE(((QCheckBox *)(startWidget->getPlatformsQVBoxLayout()->itemAt(0)->widget()))->text().toStdString(),
-             (std::string)"CPU");
+    QCOMPARE(((QCheckBox *) (startWidget->getPlatformsQVBoxLayout()->itemAt(0)->widget()))->text().toStdString(),
+             (std::string) "CPU");
 
-    QCOMPARE(((QCheckBox *)(startWidget->getPlatformsQVBoxLayout()->itemAt(1)->widget()))->text().toStdString(),
-             (std::string)"FPGA");
+    QCOMPARE(((QCheckBox *) (startWidget->getPlatformsQVBoxLayout()->itemAt(1)->widget()))->text().toStdString(),
+             (std::string) "FPGA");
 
-    QCOMPARE(((QCheckBox *)(startWidget->getPlatformsQVBoxLayout()->itemAt(2)->widget()))->text().toStdString(),
-             (std::string)"Titan XP");
+    QCOMPARE(((QCheckBox *) (startWidget->getPlatformsQVBoxLayout()->itemAt(2)->widget()))->text().toStdString(),
+             (std::string) "Titan XP");
 }
 
 void StartWidgetTest::testImageFunctions() {
@@ -82,16 +95,16 @@ void StartWidgetTest::testSelectedPlatforms() {
     QTest::mouseClick(startWidget->getPlatformsQVBoxLayout()->itemAt(0)->widget(), Qt::LeftButton);
     QTest::mouseClick(startWidget->getPlatformsQVBoxLayout()->itemAt(1)->widget(), Qt::LeftButton);
 
-    QCOMPARE(startWidget->getSelectedPlatforms().at(0).getPlatformId(), (std::string)"cpu");
-    QCOMPARE(startWidget->getSelectedPlatforms().at(1).getPlatformId(), (std::string)"fpga");
+    QCOMPARE(startWidget->getSelectedPlatforms().at(0).getPlatformId(), (std::string) "cpu");
+    QCOMPARE(startWidget->getSelectedPlatforms().at(1).getPlatformId(), (std::string) "fpga");
 }
 
 void StartWidgetTest::testSelectedNeuralNet() {
-    QCOMPARE(startWidget->getSelectedNeuralNet().getIdentifier(), (std::string)"alexnet");
+    QCOMPARE(startWidget->getSelectedNeuralNet().getIdentifier(), (std::string) "alexnet");
 
     QTest::keyClick(startWidget->getNeuralNetsQComboBox(), Qt::Key_Down);
 
-    QCOMPARE(startWidget->getSelectedNeuralNet().getIdentifier(), (std::string)"googlenet");
+    QCOMPARE(startWidget->getSelectedNeuralNet().getIdentifier(), (std::string) "googlenet");
 }
 
 void StartWidgetTest::testSelectedOperationMode() {

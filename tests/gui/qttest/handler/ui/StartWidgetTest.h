@@ -20,33 +20,15 @@ private:
     std::list<PlatformInfo> platforms;
     std::list<OperationMode> modes;
 
-    MainWindowHandler *mainWindowHandler;
     StartWidget *startWidget;
 
 private slots:
 
-    void initTestCase() {
-        NetInfo alexnet("AlexNet", 227, "alexnet");
-        NetInfo googlenet("GoogLeNet", 300, "googlenet");
-        nets.push_back(alexnet);
-        nets.push_back(googlenet);
+    void initTestCase();
 
-        PlatformInfo cpu("CPU", PlatformType::CPU, "cpu", 100, 5);
-        PlatformInfo fpga("FPGA", PlatformType::FPGA, "fpga", 5, 20);
-        PlatformInfo gpu("Titan XP", PlatformType::FPGA, "titanxp", 250, 100);
-        platforms.push_back(cpu);
-        platforms.push_back(fpga);
-        platforms.push_back(gpu);
+    void init();
 
-        OperationMode mode = OperationMode::HighPower;
-        OperationMode mode2 = OperationMode::EnergyEfficient;
-        OperationMode mode3 = OperationMode::LowPower;
-        modes.push_back(mode);
-        modes.push_back(mode2);
-        modes.push_back(mode3);
-
-        startWidget = new StartWidget(nets, platforms, modes);
-    }
+    void cleanup();
 
     //void classifyButtonClicked();
 
