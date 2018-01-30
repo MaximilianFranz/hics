@@ -15,8 +15,8 @@
 
 #include <ComputationHost.h>
 
-#include "Messages/Communicator.grpc.pb.h"
-#include "Messages/Communicator.pb.h"
+#include "Communicator.grpc.pb.h"
+#include "Communicator.pb.h"
 
 using grpc::Channel;
 using grpc::ClientContext;

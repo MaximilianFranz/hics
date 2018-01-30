@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(HICS)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 set(CMAKE_CXX_STANDARD 11)
 
 # switch on various compiler warnings
@@ -16,11 +18,15 @@ add_definitions(-DTEST_RES_DIR="${CMAKE_SOURCE_DIR}/tests/resources/")
 
 find_package(Qt5 COMPONENTS Core Widgets Gui)
 
+# Required by the AlexNetWeightLoader
 find_package(HDF5 COMPONENTS C)
 include_directories(${HDF5_INCLUDE_DIRS})
 
+# Required by the communicator module
+find_package(Protobuf REQUIRED)
+find_package(Grpc REQUIRED)
 
-#this allows us to use direct includes instead of using relative paths
+# This allows us to use direct includes instead of using relative paths
 include_directories(src/communicator)
 include_directories(src/exceptions)
 include_directories(src/executor)

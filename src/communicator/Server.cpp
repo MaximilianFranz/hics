@@ -3,3 +3,6 @@
 //
 
 #include "Server.h"
+
+#include "Communicator.pb.h"
+#include "Communicator.grpc.pb.h"
