@@ -19,6 +19,10 @@ private:
 
     MainWindowHandler *mainWindowHandler;
 
+    ClassificationResult* classificationResult = nullptr;
+
+    void setUpClassificationResult();
+
 private slots:
 
     void initTestCase();
