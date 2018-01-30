@@ -29,21 +29,20 @@ void StartWidgetTest::testImageFunctions() {
     QMapIterator<QImage *, QHBoxLayout *> it(*(startWidget->getImagesMap()));
 
     it.next();
-    QCheckBox *checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget());
-    QTest::mouseClick(checkBox, Qt::LeftButton);
+    ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
 
     it.next();
-    checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget());
-    QTest::mouseClick(checkBox, Qt::LeftButton);
+    ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
 
     startWidget->processAbortDeletionQPushButton();
     startWidget->processConfirmDeletionButton();
     QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 3);
 
     it.previous();
-    checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget());
-    QTest::mouseClick(checkBox, Qt::LeftButton);
+    ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
+
     startWidget->processConfirmDeletionButton();
+
     QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 2);
 }
 
