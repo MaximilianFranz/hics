@@ -36,24 +36,27 @@ void MainWindowHandlerTest::cleanup(){
 
 void MainWindowHandlerTest::testConstructor() {
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->isVisible(), true);
-    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(), mainWindowHandler->getStartWidget());
-    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->widget(1), mainWindowHandler->getResultWidget());
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->widget(1),
+             mainWindowHandler->getResultWidget());
 }
 
-/*
-void StartWidgetTest::classifyButtonClicked() {
-    //TODO simulate mouse click on classify button
-    QTest::mouseClick(startWidget->getClassificationQPushButton(), Qt::LeftButton);
+void MainWindowHandlerTest::testStartClassification() {
+    mainWindowHandler->getStartWidget()->processInputImageButton();
+    QTest::keyClick(mainWindowHandler->getStartWidget()->getNeuralNetsQComboBox(), Qt::Key_Down);
+    ((QCheckBox*)(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->itemAt(1)->widget()))->setChecked(true);
+
+    QTest::mouseClick(mainWindowHandler->getStartWidget()->getClassificationQPushButton(), Qt::LeftButton);
 
     ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
     QCOMPARE(request->getAggregateResults(), false);
-    NetInfo net = request->getSelectedNeuralNet();
-    QCOMPARE(net.getIdentifier(), nets.front().getIdentifier());
-    QCOMPARE(request->getSelectedOperationMode(), modes.front());
-    //No platform selected
-    //TODO change this when error message implemented
-    QCOMPARE(request->getSelectedPlatforms().size(), (unsigned long)0);
+
+    QCOMPARE(request->getSelectedNeuralNet().getIdentifier(), (std::string)"googlenet");
+    QCOMPARE(request->getSelectedOperationMode(), OperationMode::HighPower); //TODO change this when operation mode implemented
+    QCOMPARE(request->getSelectedPlatforms().at(0).getPlatformId(), (std::string)"fpga");
+    QCOMPARE(request->getUserImages().size(), (unsigned long) 1);
 }
-*/
+
 
 QTEST_MAIN(MainWindowHandlerTest)

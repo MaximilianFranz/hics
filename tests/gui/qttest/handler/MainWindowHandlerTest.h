@@ -17,7 +17,7 @@ private:
     std::list<PlatformInfo> platforms;
     std::list<OperationMode> modes;
 
-    MainWindowHandler* mainWindowHandler;
+    MainWindowHandler *mainWindowHandler;
 
 private slots:
 
@@ -28,5 +28,8 @@ private slots:
     void cleanup();
 
     void testConstructor();
+
+    void testStartClassification();
+
 };
 
