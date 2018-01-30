@@ -79,7 +79,29 @@ public:
 
     //TODO here could be the displayErrorMessage(Exception e) method
 
-    StartWidget* getStartWidget();
+    /**
+     * @brief getStartWidget returns the startWidget which represents the starting page of the GUI.
+     * @return startWidget
+     */
+    StartWidget* getStartWidget() const;
+
+    /**
+     * @brief getResultWidget returns the resultWidget which represents the result page of the GUI
+     * @return resultWidget
+     */
+    ResultWidget* getResultWidget() const;
+
+    /**
+     * @brief getMainWindow returns the main window of the GUI which holds the stacked widget to display each widget
+     * @return mainWindow
+     */
+    MainWindow *getMainWindow() const;
+
+    /**
+     * @brief getDetailDialog returns the detail page of the GUI which displays the results of the GUI.
+     * @return detailDialog
+     */
+    DetailDialog *getDetailDialog() const;
 
 public slots:
 

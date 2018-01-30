@@ -63,15 +63,6 @@ void MainWindowHandler::processClassificationResult(const ClassificationResult &
     mainWindow->setCurrentWidget(resultWidget);
 }
 
-StartWidget* MainWindowHandler::getStartWidget() {
-    if(startWidget){
-        return startWidget;
-    } else {
-        //TODO Error message maybe
-        return nullptr;
-    }
-}
-
 void MainWindowHandler::processReturnQPushButton(){
     mainWindow->setCurrentWidget(startWidget);
     delete resultWidget;
@@ -82,4 +73,20 @@ void MainWindowHandler::processReturnQPushButton(){
 
 void MainWindowHandler::processDetailQPushButton(){
     detailDialog->show();
+}
+
+MainWindow *MainWindowHandler::getMainWindow() const {
+    return mainWindow;
+}
+
+StartWidget* MainWindowHandler::getStartWidget() const {
+    return startWidget;
+}
+
+ResultWidget* MainWindowHandler::getResultWidget() const {
+    return resultWidget;
+}
+
+DetailDialog *MainWindowHandler::getDetailDialog() const {
+    return detailDialog;
 }
