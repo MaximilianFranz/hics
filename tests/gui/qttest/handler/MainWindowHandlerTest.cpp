@@ -49,12 +49,12 @@ void MainWindowHandlerTest::setUpClassificationResult() {
     results.push_back(pair5);
 
     std::vector<int> dimensions{100, 100};
-    ImageWrapper imageWrapper(dimensions, "/../../../resources/tf_data_script/dog.png");
+    ImageWrapper imageWrapper(dimensions, "/home/pselab/Dokumente/repo/hics/tests/resources/tf_data_script/dog.png");
     std::vector<std::pair<PlatformInfo, float>> plat;
-    PlatformInfo info1("CPU", PlatformType::CPU, "id", 100, 4);
-    PlatformInfo info2("FPGA1", PlatformType::FPGA, "id", 50, 3);
-    PlatformInfo info3("GPU1", PlatformType::GPU, "id", 34, 55);
-    PlatformInfo info4("GPU2", PlatformType::GPU, "id", 99, 211);
+    PlatformInfo info1("CPU", PlatformType::CPU, "cpu", 100, 4);
+    PlatformInfo info2("FPGA1", PlatformType::FPGA, "fpga1", 50, 3);
+    PlatformInfo info3("GPU1", PlatformType::GPU, "gpu1", 34, 55);
+    PlatformInfo info4("GPU2", PlatformType::GPU, "gpu2", 99, 211);
 
     plat.push_back(std::pair<PlatformInfo, float>(info1, 20));
     plat.push_back(std::pair<PlatformInfo, float>(info2, 10));
@@ -113,6 +113,10 @@ void MainWindowHandlerTest::testDisplayClassification() {
         ->layout()->itemAt(2)
         ->layout()->itemAt(1)
         ->widget()))->text().toStdString(), (std::string) "Baukran");
+
+    QCOMPARE(mainWindowHandler->getDetailDialog()->getPowerConsumptionQLabel()->text().toStdString(), (std::string)"15");
+    QCOMPARE(mainWindowHandler->getDetailDialog()->getComputationTimeQLabel()->text().toStdString(), (std::string)"999");
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(), mainWindowHandler->getResultWidget());
 }
 
 
