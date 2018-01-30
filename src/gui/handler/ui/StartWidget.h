@@ -119,6 +119,10 @@ public:
      */
     QCheckBox* getAggregateResultsQCheckBox();
 
+    /**
+     * @brief getImagesMap returns the images map which hold all selected input images together with its layouts
+     * @return the image map
+     */
     QMap<QImage*, QHBoxLayout*>* getImagesMap();
 
 public slots:
