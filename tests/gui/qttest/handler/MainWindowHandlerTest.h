@@ -31,5 +31,7 @@ private slots:
 
     void testStartClassification();
 
+    void testDisplayClassification();
+
 };
 
