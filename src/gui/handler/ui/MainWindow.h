@@ -39,6 +39,13 @@ public:
      */
     void setCurrentWidget(QWidget* widget);
 
+    /**
+     * @brief getMainWindowQStackedWidget returns the QStackedWidget which holds the to be displayed widgets and is the
+     *        main display of the GUI.
+     * @return mainWindowQStackedWidget
+     */
+    QStackedWidget *getMainWindowQStackedWidget() const;
+
 private:
     Ui::MainWindow *ui;
 
