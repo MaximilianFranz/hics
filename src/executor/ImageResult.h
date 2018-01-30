@@ -36,6 +36,9 @@ public:
      */
     ImageResult(std::vector<std::pair<std::string, float>> results, ImageWrapper &image);
 
+    ImageResult(std::vector<std::pair<std::string, float>> results,
+                std::vector<std::pair<PlatformInfo, float>> distribution, ImageWrapper &image);
+
     /**
      *
      * @return path to the image that was classified

@@ -14,6 +14,15 @@ ImageResult::ImageResult(const std::vector<std::pair<std::string, float>> result
 
 }
 
+ImageResult::ImageResult(const std::vector<std::pair<std::string, float>> results,
+                         const std::vector<std::pair<PlatformInfo, float>> distribution, ImageWrapper &image)
+        : results(results),
+          compDistribution(distribution),
+          image(image)
+{
+
+}
+
 const std::vector<std::pair<std::string, float>> &ImageResult::getResults() const {
     return results;
 }
