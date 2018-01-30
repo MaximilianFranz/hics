@@ -16,10 +16,12 @@ ResultWidget::ResultWidget(QWidget *parent) :
 ResultWidget::~ResultWidget() {
     delete ui;
     clearLayout(ui->imagesQVBoxLayout);
-    if (ui->mainQHBoxLayout->itemAt(2)->layout()) {
-        clearLayout(ui->mainQHBoxLayout->itemAt(2)->layout());
-        delete ui->mainQHBoxLayout->itemAt(2);
-    }
+//    if (ui->mainQHBoxLayout->itemAt(2)->layout()) {
+//        clearLayout(ui->mainQHBoxLayout->itemAt(2)->layout());
+//        delete ui->mainQHBoxLayout->itemAt(2);
+//    }
+
+    //TODO delete aggregated results layout
 }
 
 void ResultWidget::displayResults(const ClassificationResult &classificationResult) {
