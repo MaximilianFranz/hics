@@ -26,10 +26,12 @@ std::vector<ImageWrapper> PreProcessor::processImages(std::map<QString, QImage> 
         std::vector<int> dim = {3, height, width};
         std::vector<float> bitmap;
 
-        //create float bitmap, convention: {rgb, y, x}
-        for (int rgb = 0; rgb < 3; ++rgb) {
-            for (int y = 0; y < height; ++y) {
-                for (int x = 0; x < width; ++x) {
+        float mean = 0;
+
+        //create float bitmap, convention: {rgb, y, x} -- OUTPUT IS IN BGR format
+        for (int rgb = 2; rgb >= 0; rgb--) {
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
                     float currentPixel;
                     //Fill image with black pixels if dimension is wrong
                     if (x >= currentImg.width() || y >= currentImg.height()) {
@@ -42,14 +44,17 @@ std::vector<ImageWrapper> PreProcessor::processImages(std::map<QString, QImage> 
                             case 0:
                                 //currentPixel = currentImg.pixelColor(x, y).red();
                                 currentPixel = qRed(currentImg.pixel(x, y));
+                                mean += currentPixel / (height*width*3);
                                 break;
                             case 1:
                                 //currentPixel = currentImg.pixelColor(x, y).green();
                                 currentPixel = qGreen(currentImg.pixel(x, y));
+                                mean += currentPixel / (height*width*3);
                                 break;
                             case 2:
                                 //currentPixel = currentImg.pixelColor(x, y).blue();
                                 currentPixel = qBlue(currentImg.pixel(x, y));
+                                mean += currentPixel / (height*width*3);
                                 break;
                             default:
                                 //TODO: specify exception
@@ -58,6 +63,11 @@ std::vector<ImageWrapper> PreProcessor::processImages(std::map<QString, QImage> 
                     bitmap.push_back(currentPixel);
                 }
             }
+        }
+
+        //substract mean
+        for (int i = 0; i < bitmap.size(); i++) {
+            bitmap[i] = bitmap[i] - mean;
         }
 
         images.emplace_back(ImageWrapper(dim, bitmap, stdFilePath));
