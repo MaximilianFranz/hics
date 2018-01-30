@@ -248,3 +248,7 @@ QCheckBox* StartWidget::getAggregateResultsQCheckBox(){
     return ui->aggregateResultsQCheckBox;
 }
 
+QMap<QImage*, QHBoxLayout*>* StartWidget::getImagesMap(){
+    return &images;
+};
+

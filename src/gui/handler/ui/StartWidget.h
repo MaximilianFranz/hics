@@ -119,6 +119,8 @@ public:
      */
     QCheckBox* getAggregateResultsQCheckBox();
 
+    QMap<QImage*, QHBoxLayout*>* getImagesMap();
+
 public slots:
 
     /**
