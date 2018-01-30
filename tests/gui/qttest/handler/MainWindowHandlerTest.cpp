@@ -119,5 +119,12 @@ void MainWindowHandlerTest::testDisplayClassification() {
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(), mainWindowHandler->getResultWidget());
 }
 
+void MainWindowHandlerTest::testReturnButton(){
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(), mainWindowHandler->getStartWidget());
+    setUpClassificationResult();
+    mainWindowHandler->processClassificationResult(*classificationResult);
+    //mainWindowHandler->processReturnQPushButton();
+    //TODO fix segfault when deleting result widget in MWH
+}
 
 QTEST_MAIN(MainWindowHandlerTest)
