@@ -38,3 +38,15 @@ DetailDialog::~DetailDialog()
 {
     delete ui;
 }
+
+QLabel* DetailDialog::getComputationTimeQLabel() {
+    return ui->computationTimeQLabel;
+}
+
+QLabel* DetailDialog::getPowerConsumptionQLabel() {
+    return ui->powerConsumptionQLabel;
+}
+
+QLabel* DetailDialog::getPlatformUsageQLabel() {
+    return ui->platformUsageQLabel;
+}
