@@ -508,9 +508,9 @@ class PlatformInfoMessage : public ::google::protobuf::Message /* @@protoc_inser
   ::std::string* release_description();
   void set_allocated_description(::std::string* description);
 
-  // string platformId = 2;
+  // string platformId = 3;
   void clear_platformid();
-  static const int kPlatformIdFieldNumber = 2;
+  static const int kPlatformIdFieldNumber = 3;
   const ::std::string& platformid() const;
   void set_platformid(const ::std::string& value);
   #if LANG_CXX11
@@ -522,15 +522,21 @@ class PlatformInfoMessage : public ::google::protobuf::Message /* @@protoc_inser
   ::std::string* release_platformid();
   void set_allocated_platformid(::std::string* platformid);
 
-  // int32 powerConsumption = 3;
+  // .PlatformInfoMessage.platformType type = 2;
+  void clear_type();
+  static const int kTypeFieldNumber = 2;
+  ::PlatformInfoMessage_platformType type() const;
+  void set_type(::PlatformInfoMessage_platformType value);
+
+  // int32 powerConsumption = 4;
   void clear_powerconsumption();
-  static const int kPowerConsumptionFieldNumber = 3;
+  static const int kPowerConsumptionFieldNumber = 4;
   ::google::protobuf::int32 powerconsumption() const;
   void set_powerconsumption(::google::protobuf::int32 value);
 
-  // int32 flops = 4;
+  // int32 flops = 5;
   void clear_flops();
-  static const int kFlopsFieldNumber = 4;
+  static const int kFlopsFieldNumber = 5;
   ::google::protobuf::int32 flops() const;
   void set_flops(::google::protobuf::int32 value);
 
@@ -540,6 +546,7 @@ class PlatformInfoMessage : public ::google::protobuf::Message /* @@protoc_inser
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr description_;
   ::google::protobuf::internal::ArenaStringPtr platformid_;
+  int type_;
   ::google::protobuf::int32 powerconsumption_;
   ::google::protobuf::int32 flops_;
   mutable int _cached_size_;
@@ -898,14 +905,14 @@ class ImageResultMessage : public ::google::protobuf::Message /* @@protoc_insert
   const ::google::protobuf::RepeatedPtrField< ::PlatformDistributionMessage >&
       platformdistribution() const;
 
-  // .ImageWrapperMessage images = 1;
-  bool has_images() const;
-  void clear_images();
-  static const int kImagesFieldNumber = 1;
-  const ::ImageWrapperMessage& images() const;
-  ::ImageWrapperMessage* release_images();
-  ::ImageWrapperMessage* mutable_images();
-  void set_allocated_images(::ImageWrapperMessage* images);
+  // .ImageWrapperMessage image = 1;
+  bool has_image() const;
+  void clear_image();
+  static const int kImageFieldNumber = 1;
+  const ::ImageWrapperMessage& image() const;
+  ::ImageWrapperMessage* release_image();
+  ::ImageWrapperMessage* mutable_image();
+  void set_allocated_image(::ImageWrapperMessage* image);
 
   // @@protoc_insertion_point(class_scope:ImageResultMessage)
  private:
@@ -913,7 +920,7 @@ class ImageResultMessage : public ::google::protobuf::Message /* @@protoc_insert
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::Label > classification_;
   ::google::protobuf::RepeatedPtrField< ::PlatformDistributionMessage > platformdistribution_;
-  ::ImageWrapperMessage* images_;
+  ::ImageWrapperMessage* image_;
   mutable int _cached_size_;
   friend struct ::protobuf_Communicator_2eproto::TableStruct;
   friend void ::protobuf_Communicator_2eproto::InitDefaultsImageResultMessageImpl();
@@ -1030,10 +1037,10 @@ class ClassifyRequest : public ::google::protobuf::Message /* @@protoc_insertion
 
   // accessors -------------------------------------------------------
 
-  // repeated .ImageWrapperMessage images = 2;
+  // repeated .ImageWrapperMessage images = 3;
   int images_size() const;
   void clear_images();
-  static const int kImagesFieldNumber = 2;
+  static const int kImagesFieldNumber = 3;
   const ::ImageWrapperMessage& images(int index) const;
   ::ImageWrapperMessage* mutable_images(int index);
   ::ImageWrapperMessage* add_images();
@@ -1042,10 +1049,10 @@ class ClassifyRequest : public ::google::protobuf::Message /* @@protoc_insertion
   const ::google::protobuf::RepeatedPtrField< ::ImageWrapperMessage >&
       images() const;
 
-  // repeated .PlatformInfoMessage selectedPlatforms = 3;
+  // repeated .PlatformInfoMessage selectedPlatforms = 4;
   int selectedplatforms_size() const;
   void clear_selectedplatforms();
-  static const int kSelectedPlatformsFieldNumber = 3;
+  static const int kSelectedPlatformsFieldNumber = 4;
   const ::PlatformInfoMessage& selectedplatforms(int index) const;
   ::PlatformInfoMessage* mutable_selectedplatforms(int index);
   ::PlatformInfoMessage* add_selectedplatforms();
@@ -1063,6 +1070,12 @@ class ClassifyRequest : public ::google::protobuf::Message /* @@protoc_insertion
   ::NetInfoMessage* mutable_net();
   void set_allocated_net(::NetInfoMessage* net);
 
+  // .ClassifyRequest.operationMode mode = 2;
+  void clear_mode();
+  static const int kModeFieldNumber = 2;
+  ::ClassifyRequest_operationMode mode() const;
+  void set_mode(::ClassifyRequest_operationMode value);
+
   // @@protoc_insertion_point(class_scope:ClassifyRequest)
  private:
 
@@ -1070,6 +1083,7 @@ class ClassifyRequest : public ::google::protobuf::Message /* @@protoc_insertion
   ::google::protobuf::RepeatedPtrField< ::ImageWrapperMessage > images_;
   ::google::protobuf::RepeatedPtrField< ::PlatformInfoMessage > selectedplatforms_;
   ::NetInfoMessage* net_;
+  int mode_;
   mutable int _cached_size_;
   friend struct ::protobuf_Communicator_2eproto::TableStruct;
   friend void ::protobuf_Communicator_2eproto::InitDefaultsClassifyRequestImpl();
@@ -1438,7 +1452,21 @@ inline void PlatformInfoMessage::set_allocated_description(::std::string* descri
   // @@protoc_insertion_point(field_set_allocated:PlatformInfoMessage.description)
 }
 
-// string platformId = 2;
+// .PlatformInfoMessage.platformType type = 2;
+inline void PlatformInfoMessage::clear_type() {
+  type_ = 0;
+}
+inline ::PlatformInfoMessage_platformType PlatformInfoMessage::type() const {
+  // @@protoc_insertion_point(field_get:PlatformInfoMessage.type)
+  return static_cast< ::PlatformInfoMessage_platformType >(type_);
+}
+inline void PlatformInfoMessage::set_type(::PlatformInfoMessage_platformType value) {
+  
+  type_ = value;
+  // @@protoc_insertion_point(field_set:PlatformInfoMessage.type)
+}
+
+// string platformId = 3;
 inline void PlatformInfoMessage::clear_platformid() {
   platformid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1491,7 +1519,7 @@ inline void PlatformInfoMessage::set_allocated_platformid(::std::string* platfor
   // @@protoc_insertion_point(field_set_allocated:PlatformInfoMessage.platformId)
 }
 
-// int32 powerConsumption = 3;
+// int32 powerConsumption = 4;
 inline void PlatformInfoMessage::clear_powerconsumption() {
   powerconsumption_ = 0;
 }
@@ -1505,7 +1533,7 @@ inline void PlatformInfoMessage::set_powerconsumption(::google::protobuf::int32 
   // @@protoc_insertion_point(field_set:PlatformInfoMessage.powerConsumption)
 }
 
-// int32 flops = 4;
+// int32 flops = 5;
 inline void PlatformInfoMessage::clear_flops() {
   flops_ = 0;
 }
@@ -1708,54 +1736,54 @@ inline void PlatformDistributionMessage::set_usage(float value) {
 
 // ImageResultMessage
 
-// .ImageWrapperMessage images = 1;
-inline bool ImageResultMessage::has_images() const {
-  return this != internal_default_instance() && images_ != NULL;
+// .ImageWrapperMessage image = 1;
+inline bool ImageResultMessage::has_image() const {
+  return this != internal_default_instance() && image_ != NULL;
 }
-inline void ImageResultMessage::clear_images() {
-  if (GetArenaNoVirtual() == NULL && images_ != NULL) {
-    delete images_;
+inline void ImageResultMessage::clear_image() {
+  if (GetArenaNoVirtual() == NULL && image_ != NULL) {
+    delete image_;
   }
-  images_ = NULL;
+  image_ = NULL;
 }
-inline const ::ImageWrapperMessage& ImageResultMessage::images() const {
-  const ::ImageWrapperMessage* p = images_;
-  // @@protoc_insertion_point(field_get:ImageResultMessage.images)
+inline const ::ImageWrapperMessage& ImageResultMessage::image() const {
+  const ::ImageWrapperMessage* p = image_;
+  // @@protoc_insertion_point(field_get:ImageResultMessage.image)
   return p != NULL ? *p : *reinterpret_cast<const ::ImageWrapperMessage*>(
       &::_ImageWrapperMessage_default_instance_);
 }
-inline ::ImageWrapperMessage* ImageResultMessage::release_images() {
-  // @@protoc_insertion_point(field_release:ImageResultMessage.images)
+inline ::ImageWrapperMessage* ImageResultMessage::release_image() {
+  // @@protoc_insertion_point(field_release:ImageResultMessage.image)
   
-  ::ImageWrapperMessage* temp = images_;
-  images_ = NULL;
+  ::ImageWrapperMessage* temp = image_;
+  image_ = NULL;
   return temp;
 }
-inline ::ImageWrapperMessage* ImageResultMessage::mutable_images() {
+inline ::ImageWrapperMessage* ImageResultMessage::mutable_image() {
   
-  if (images_ == NULL) {
-    images_ = new ::ImageWrapperMessage;
+  if (image_ == NULL) {
+    image_ = new ::ImageWrapperMessage;
   }
-  // @@protoc_insertion_point(field_mutable:ImageResultMessage.images)
-  return images_;
+  // @@protoc_insertion_point(field_mutable:ImageResultMessage.image)
+  return image_;
 }
-inline void ImageResultMessage::set_allocated_images(::ImageWrapperMessage* images) {
+inline void ImageResultMessage::set_allocated_image(::ImageWrapperMessage* image) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
-    delete images_;
+    delete image_;
   }
-  if (images) {
+  if (image) {
     ::google::protobuf::Arena* submessage_arena = NULL;
     if (message_arena != submessage_arena) {
-      images = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, images, submessage_arena);
+      image = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, image, submessage_arena);
     }
     
   } else {
     
   }
-  images_ = images;
-  // @@protoc_insertion_point(field_set_allocated:ImageResultMessage.images)
+  image_ = image;
+  // @@protoc_insertion_point(field_set_allocated:ImageResultMessage.image)
 }
 
 // repeated .Label classification = 2;
@@ -1872,7 +1900,21 @@ inline void ClassifyRequest::set_allocated_net(::NetInfoMessage* net) {
   // @@protoc_insertion_point(field_set_allocated:ClassifyRequest.net)
 }
 
-// repeated .ImageWrapperMessage images = 2;
+// .ClassifyRequest.operationMode mode = 2;
+inline void ClassifyRequest::clear_mode() {
+  mode_ = 0;
+}
+inline ::ClassifyRequest_operationMode ClassifyRequest::mode() const {
+  // @@protoc_insertion_point(field_get:ClassifyRequest.mode)
+  return static_cast< ::ClassifyRequest_operationMode >(mode_);
+}
+inline void ClassifyRequest::set_mode(::ClassifyRequest_operationMode value) {
+  
+  mode_ = value;
+  // @@protoc_insertion_point(field_set:ClassifyRequest.mode)
+}
+
+// repeated .ImageWrapperMessage images = 3;
 inline int ClassifyRequest::images_size() const {
   return images_.size();
 }
@@ -1902,7 +1944,7 @@ ClassifyRequest::images() const {
   return images_;
 }
 
-// repeated .PlatformInfoMessage selectedPlatforms = 3;
+// repeated .PlatformInfoMessage selectedPlatforms = 4;
 inline int ClassifyRequest::selectedplatforms_size() const {
   return selectedplatforms_.size();
 }

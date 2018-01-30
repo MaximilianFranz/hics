@@ -261,6 +261,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::PlatformInfoMessage, description_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::PlatformInfoMessage, type_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::PlatformInfoMessage, platformid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::PlatformInfoMessage, powerconsumption_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::PlatformInfoMessage, flops_),
@@ -284,7 +285,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::ImageResultMessage, images_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::ImageResultMessage, image_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::ImageResultMessage, classification_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::ImageResultMessage, platformdistribution_),
   ~0u,  // no _has_bits_
@@ -293,6 +294,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::ClassifyRequest, net_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::ClassifyRequest, mode_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::ClassifyRequest, images_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::ClassifyRequest, selectedplatforms_),
   ~0u,  // no _has_bits_
@@ -306,11 +308,11 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 0, -1, sizeof(::Label)},
   { 7, -1, sizeof(::NetInfoMessage)},
   { 15, -1, sizeof(::PlatformInfoMessage)},
-  { 24, -1, sizeof(::ImageWrapperMessage)},
-  { 32, -1, sizeof(::PlatformDistributionMessage)},
-  { 39, -1, sizeof(::ImageResultMessage)},
-  { 47, -1, sizeof(::ClassifyRequest)},
-  { 55, -1, sizeof(::ClassifyReply)},
+  { 25, -1, sizeof(::ImageWrapperMessage)},
+  { 33, -1, sizeof(::PlatformDistributionMessage)},
+  { 40, -1, sizeof(::ImageResultMessage)},
+  { 48, -1, sizeof(::ClassifyRequest)},
+  { 57, -1, sizeof(::ClassifyReply)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -349,30 +351,32 @@ void AddDescriptorsImpl() {
       "\n\022Communicator.proto\"*\n\005Label\022\014\n\004name\030\001 "
       "\001(\t\022\023\n\013probability\030\002 \001(\002\"J\n\016NetInfoMessa"
       "ge\022\014\n\004name\030\001 \001(\t\022\026\n\016imageDimension\030\002 \001(\005"
-      "\022\022\n\nidentifier\030\003 \001(\t\"\223\001\n\023PlatformInfoMes"
-      "sage\022\023\n\013description\030\001 \001(\t\022\022\n\nplatformId\030"
-      "\002 \001(\t\022\030\n\020powerConsumption\030\003 \001(\005\022\r\n\005flops"
-      "\030\004 \001(\005\"*\n\014platformType\022\007\n\003CPU\020\000\022\010\n\004FPGA\020"
-      "\001\022\007\n\003GPU\020\002\"I\n\023ImageWrapperMessage\022\020\n\010fil"
-      "epath\030\001 \001(\t\022\022\n\ndimensions\030\002 \003(\005\022\014\n\004data\030"
-      "\003 \003(\002\"T\n\033PlatformDistributionMessage\022&\n\010"
-      "platform\030\001 \001(\0132\024.PlatformInfoMessage\022\r\n\005"
-      "usage\030\002 \001(\002\"\226\001\n\022ImageResultMessage\022$\n\006im"
-      "ages\030\001 \001(\0132\024.ImageWrapperMessage\022\036\n\016clas"
-      "sification\030\002 \003(\0132\006.Label\022:\n\024platformDist"
-      "ribution\030\003 \003(\0132\034.PlatformDistributionMes"
-      "sage\"\311\001\n\017ClassifyRequest\022\034\n\003net\030\001 \001(\0132\017."
-      "NetInfoMessage\022$\n\006images\030\002 \003(\0132\024.ImageWr"
-      "apperMessage\022/\n\021selectedPlatforms\030\003 \003(\0132"
-      "\024.PlatformInfoMessage\"A\n\roperationMode\022\r"
-      "\n\tHighPower\020\000\022\014\n\010LowPower\020\001\022\023\n\017EnergyEff"
-      "icient\020\002\"5\n\rClassifyReply\022$\n\007results\030\001 \003"
-      "(\0132\023.ImageResultMessage2>\n\014Communicator\022"
-      ".\n\010classify\022\020.ClassifyRequest\032\016.Classify"
-      "Reply\"\000b\006proto3"
+      "\022\022\n\nidentifier\030\003 \001(\t\"\304\001\n\023PlatformInfoMes"
+      "sage\022\023\n\013description\030\001 \001(\t\022/\n\004type\030\002 \001(\0162"
+      "!.PlatformInfoMessage.platformType\022\022\n\npl"
+      "atformId\030\003 \001(\t\022\030\n\020powerConsumption\030\004 \001(\005"
+      "\022\r\n\005flops\030\005 \001(\005\"*\n\014platformType\022\007\n\003CPU\020\000"
+      "\022\010\n\004FPGA\020\001\022\007\n\003GPU\020\002\"I\n\023ImageWrapperMessa"
+      "ge\022\020\n\010filepath\030\001 \001(\t\022\022\n\ndimensions\030\002 \003(\005"
+      "\022\014\n\004data\030\003 \003(\002\"T\n\033PlatformDistributionMe"
+      "ssage\022&\n\010platform\030\001 \001(\0132\024.PlatformInfoMe"
+      "ssage\022\r\n\005usage\030\002 \001(\002\"\225\001\n\022ImageResultMess"
+      "age\022#\n\005image\030\001 \001(\0132\024.ImageWrapperMessage"
+      "\022\036\n\016classification\030\002 \003(\0132\006.Label\022:\n\024plat"
+      "formDistribution\030\003 \003(\0132\034.PlatformDistrib"
+      "utionMessage\"\367\001\n\017ClassifyRequest\022\034\n\003net\030"
+      "\001 \001(\0132\017.NetInfoMessage\022,\n\004mode\030\002 \001(\0162\036.C"
+      "lassifyRequest.operationMode\022$\n\006images\030\003"
+      " \003(\0132\024.ImageWrapperMessage\022/\n\021selectedPl"
+      "atforms\030\004 \003(\0132\024.PlatformInfoMessage\"A\n\ro"
+      "perationMode\022\r\n\tHighPower\020\000\022\014\n\010LowPower\020"
+      "\001\022\023\n\017EnergyEfficient\020\002\"5\n\rClassifyReply\022"
+      "$\n\007results\030\001 \003(\0132\023.ImageResultMessage2>\n"
+      "\014Communicator\022.\n\010classify\022\020.ClassifyRequ"
+      "est\032\016.ClassifyReply\"\000b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 935);
+      descriptor, 1029);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Communicator.proto", &protobuf_RegisterTypes);
 }
@@ -1086,6 +1090,7 @@ void PlatformInfoMessage::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int PlatformInfoMessage::kDescriptionFieldNumber;
+const int PlatformInfoMessage::kTypeFieldNumber;
 const int PlatformInfoMessage::kPlatformIdFieldNumber;
 const int PlatformInfoMessage::kPowerConsumptionFieldNumber;
 const int PlatformInfoMessage::kFlopsFieldNumber;
@@ -1112,18 +1117,18 @@ PlatformInfoMessage::PlatformInfoMessage(const PlatformInfoMessage& from)
   if (from.platformid().size() > 0) {
     platformid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.platformid_);
   }
-  ::memcpy(&powerconsumption_, &from.powerconsumption_,
+  ::memcpy(&type_, &from.type_,
     static_cast<size_t>(reinterpret_cast<char*>(&flops_) -
-    reinterpret_cast<char*>(&powerconsumption_)) + sizeof(flops_));
+    reinterpret_cast<char*>(&type_)) + sizeof(flops_));
   // @@protoc_insertion_point(copy_constructor:PlatformInfoMessage)
 }
 
 void PlatformInfoMessage::SharedCtor() {
   description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   platformid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&powerconsumption_, 0, static_cast<size_t>(
+  ::memset(&type_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&flops_) -
-      reinterpret_cast<char*>(&powerconsumption_)) + sizeof(flops_));
+      reinterpret_cast<char*>(&type_)) + sizeof(flops_));
   _cached_size_ = 0;
 }
 
@@ -1168,9 +1173,9 @@ void PlatformInfoMessage::Clear() {
 
   description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   platformid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&powerconsumption_, 0, static_cast<size_t>(
+  ::memset(&type_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&flops_) -
-      reinterpret_cast<char*>(&powerconsumption_)) + sizeof(flops_));
+      reinterpret_cast<char*>(&type_)) + sizeof(flops_));
   _internal_metadata_.Clear();
 }
 
@@ -1200,10 +1205,25 @@ bool PlatformInfoMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // string platformId = 2;
+      // .PlatformInfoMessage.platformType type = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          set_type(static_cast< ::PlatformInfoMessage_platformType >(value));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string platformId = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_platformid()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1216,10 +1236,10 @@ bool PlatformInfoMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // int32 powerConsumption = 3;
-      case 3: {
+      // int32 powerConsumption = 4;
+      case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -1230,10 +1250,10 @@ bool PlatformInfoMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // int32 flops = 4;
-      case 4: {
+      // int32 flops = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -1280,24 +1300,30 @@ void PlatformInfoMessage::SerializeWithCachedSizes(
       1, this->description(), output);
   }
 
-  // string platformId = 2;
+  // .PlatformInfoMessage.platformType type = 2;
+  if (this->type() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      2, this->type(), output);
+  }
+
+  // string platformId = 3;
   if (this->platformid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->platformid().data(), static_cast<int>(this->platformid().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PlatformInfoMessage.platformId");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->platformid(), output);
+      3, this->platformid(), output);
   }
 
-  // int32 powerConsumption = 3;
+  // int32 powerConsumption = 4;
   if (this->powerconsumption() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->powerconsumption(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->powerconsumption(), output);
   }
 
-  // int32 flops = 4;
+  // int32 flops = 5;
   if (this->flops() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->flops(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->flops(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1325,7 +1351,13 @@ void PlatformInfoMessage::SerializeWithCachedSizes(
         1, this->description(), target);
   }
 
-  // string platformId = 2;
+  // .PlatformInfoMessage.platformType type = 2;
+  if (this->type() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      2, this->type(), target);
+  }
+
+  // string platformId = 3;
   if (this->platformid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->platformid().data(), static_cast<int>(this->platformid().length()),
@@ -1333,17 +1365,17 @@ void PlatformInfoMessage::SerializeWithCachedSizes(
       "PlatformInfoMessage.platformId");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->platformid(), target);
+        3, this->platformid(), target);
   }
 
-  // int32 powerConsumption = 3;
+  // int32 powerConsumption = 4;
   if (this->powerconsumption() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->powerconsumption(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->powerconsumption(), target);
   }
 
-  // int32 flops = 4;
+  // int32 flops = 5;
   if (this->flops() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->flops(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->flops(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1370,21 +1402,27 @@ size_t PlatformInfoMessage::ByteSizeLong() const {
         this->description());
   }
 
-  // string platformId = 2;
+  // string platformId = 3;
   if (this->platformid().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->platformid());
   }
 
-  // int32 powerConsumption = 3;
+  // .PlatformInfoMessage.platformType type = 2;
+  if (this->type() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
+  }
+
+  // int32 powerConsumption = 4;
   if (this->powerconsumption() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->powerconsumption());
   }
 
-  // int32 flops = 4;
+  // int32 flops = 5;
   if (this->flops() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -1428,6 +1466,9 @@ void PlatformInfoMessage::MergeFrom(const PlatformInfoMessage& from) {
 
     platformid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.platformid_);
   }
+  if (from.type() != 0) {
+    set_type(from.type());
+  }
   if (from.powerconsumption() != 0) {
     set_powerconsumption(from.powerconsumption());
   }
@@ -1462,6 +1503,7 @@ void PlatformInfoMessage::InternalSwap(PlatformInfoMessage* other) {
   using std::swap;
   description_.Swap(&other->description_);
   platformid_.Swap(&other->platformid_);
+  swap(type_, other->type_);
   swap(powerconsumption_, other->powerconsumption_);
   swap(flops_, other->flops_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -2146,11 +2188,11 @@ void PlatformDistributionMessage::InternalSwap(PlatformDistributionMessage* othe
 // ===================================================================
 
 void ImageResultMessage::InitAsDefaultInstance() {
-  ::_ImageResultMessage_default_instance_._instance.get_mutable()->images_ = const_cast< ::ImageWrapperMessage*>(
+  ::_ImageResultMessage_default_instance_._instance.get_mutable()->image_ = const_cast< ::ImageWrapperMessage*>(
       ::ImageWrapperMessage::internal_default_instance());
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ImageResultMessage::kImagesFieldNumber;
+const int ImageResultMessage::kImageFieldNumber;
 const int ImageResultMessage::kClassificationFieldNumber;
 const int ImageResultMessage::kPlatformDistributionFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -2170,16 +2212,16 @@ ImageResultMessage::ImageResultMessage(const ImageResultMessage& from)
       platformdistribution_(from.platformdistribution_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_images()) {
-    images_ = new ::ImageWrapperMessage(*from.images_);
+  if (from.has_image()) {
+    image_ = new ::ImageWrapperMessage(*from.image_);
   } else {
-    images_ = NULL;
+    image_ = NULL;
   }
   // @@protoc_insertion_point(copy_constructor:ImageResultMessage)
 }
 
 void ImageResultMessage::SharedCtor() {
-  images_ = NULL;
+  image_ = NULL;
   _cached_size_ = 0;
 }
 
@@ -2189,7 +2231,7 @@ ImageResultMessage::~ImageResultMessage() {
 }
 
 void ImageResultMessage::SharedDtor() {
-  if (this != internal_default_instance()) delete images_;
+  if (this != internal_default_instance()) delete image_;
 }
 
 void ImageResultMessage::SetCachedSize(int size) const {
@@ -2223,10 +2265,10 @@ void ImageResultMessage::Clear() {
 
   classification_.Clear();
   platformdistribution_.Clear();
-  if (GetArenaNoVirtual() == NULL && images_ != NULL) {
-    delete images_;
+  if (GetArenaNoVirtual() == NULL && image_ != NULL) {
+    delete image_;
   }
-  images_ = NULL;
+  image_ = NULL;
   _internal_metadata_.Clear();
 }
 
@@ -2240,12 +2282,12 @@ bool ImageResultMessage::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .ImageWrapperMessage images = 1;
+      // .ImageWrapperMessage image = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_images()));
+               input, mutable_image()));
         } else {
           goto handle_unusual;
         }
@@ -2300,10 +2342,10 @@ void ImageResultMessage::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .ImageWrapperMessage images = 1;
-  if (this->has_images()) {
+  // .ImageWrapperMessage image = 1;
+  if (this->has_image()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, *this->images_, output);
+      1, *this->image_, output);
   }
 
   // repeated .Label classification = 2;
@@ -2334,11 +2376,11 @@ void ImageResultMessage::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .ImageWrapperMessage images = 1;
-  if (this->has_images()) {
+  // .ImageWrapperMessage image = 1;
+  if (this->has_image()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, *this->images_, deterministic, target);
+        1, *this->image_, deterministic, target);
   }
 
   // repeated .Label classification = 2;
@@ -2396,11 +2438,11 @@ size_t ImageResultMessage::ByteSizeLong() const {
     }
   }
 
-  // .ImageWrapperMessage images = 1;
-  if (this->has_images()) {
+  // .ImageWrapperMessage image = 1;
+  if (this->has_image()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *this->images_);
+        *this->image_);
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2434,8 +2476,8 @@ void ImageResultMessage::MergeFrom(const ImageResultMessage& from) {
 
   classification_.MergeFrom(from.classification_);
   platformdistribution_.MergeFrom(from.platformdistribution_);
-  if (from.has_images()) {
-    mutable_images()->::ImageWrapperMessage::MergeFrom(from.images());
+  if (from.has_image()) {
+    mutable_image()->::ImageWrapperMessage::MergeFrom(from.image());
   }
 }
 
@@ -2465,7 +2507,7 @@ void ImageResultMessage::InternalSwap(ImageResultMessage* other) {
   using std::swap;
   classification_.InternalSwap(&other->classification_);
   platformdistribution_.InternalSwap(&other->platformdistribution_);
-  swap(images_, other->images_);
+  swap(image_, other->image_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -2484,6 +2526,7 @@ void ClassifyRequest::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int ClassifyRequest::kNetFieldNumber;
+const int ClassifyRequest::kModeFieldNumber;
 const int ClassifyRequest::kImagesFieldNumber;
 const int ClassifyRequest::kSelectedPlatformsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -2508,11 +2551,14 @@ ClassifyRequest::ClassifyRequest(const ClassifyRequest& from)
   } else {
     net_ = NULL;
   }
+  mode_ = from.mode_;
   // @@protoc_insertion_point(copy_constructor:ClassifyRequest)
 }
 
 void ClassifyRequest::SharedCtor() {
-  net_ = NULL;
+  ::memset(&net_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&mode_) -
+      reinterpret_cast<char*>(&net_)) + sizeof(mode_));
   _cached_size_ = 0;
 }
 
@@ -2560,6 +2606,7 @@ void ClassifyRequest::Clear() {
     delete net_;
   }
   net_ = NULL;
+  mode_ = 0;
   _internal_metadata_.Clear();
 }
 
@@ -2585,10 +2632,25 @@ bool ClassifyRequest::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .ImageWrapperMessage images = 2;
+      // .ClassifyRequest.operationMode mode = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          set_mode(static_cast< ::ClassifyRequest_operationMode >(value));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated .ImageWrapperMessage images = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(input, add_images()));
         } else {
           goto handle_unusual;
@@ -2596,10 +2658,10 @@ bool ClassifyRequest::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .PlatformInfoMessage selectedPlatforms = 3;
-      case 3: {
+      // repeated .PlatformInfoMessage selectedPlatforms = 4;
+      case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(input, add_selectedplatforms()));
         } else {
           goto handle_unusual;
@@ -2639,18 +2701,24 @@ void ClassifyRequest::SerializeWithCachedSizes(
       1, *this->net_, output);
   }
 
-  // repeated .ImageWrapperMessage images = 2;
+  // .ClassifyRequest.operationMode mode = 2;
+  if (this->mode() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      2, this->mode(), output);
+  }
+
+  // repeated .ImageWrapperMessage images = 3;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->images_size()); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->images(static_cast<int>(i)), output);
+      3, this->images(static_cast<int>(i)), output);
   }
 
-  // repeated .PlatformInfoMessage selectedPlatforms = 3;
+  // repeated .PlatformInfoMessage selectedPlatforms = 4;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->selectedplatforms_size()); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, this->selectedplatforms(static_cast<int>(i)), output);
+      4, this->selectedplatforms(static_cast<int>(i)), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2674,20 +2742,26 @@ void ClassifyRequest::SerializeWithCachedSizes(
         1, *this->net_, deterministic, target);
   }
 
-  // repeated .ImageWrapperMessage images = 2;
+  // .ClassifyRequest.operationMode mode = 2;
+  if (this->mode() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      2, this->mode(), target);
+  }
+
+  // repeated .ImageWrapperMessage images = 3;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->images_size()); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        2, this->images(static_cast<int>(i)), deterministic, target);
+        3, this->images(static_cast<int>(i)), deterministic, target);
   }
 
-  // repeated .PlatformInfoMessage selectedPlatforms = 3;
+  // repeated .PlatformInfoMessage selectedPlatforms = 4;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->selectedplatforms_size()); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        3, this->selectedplatforms(static_cast<int>(i)), deterministic, target);
+        4, this->selectedplatforms(static_cast<int>(i)), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2707,7 +2781,7 @@ size_t ClassifyRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .ImageWrapperMessage images = 2;
+  // repeated .ImageWrapperMessage images = 3;
   {
     unsigned int count = static_cast<unsigned int>(this->images_size());
     total_size += 1UL * count;
@@ -2718,7 +2792,7 @@ size_t ClassifyRequest::ByteSizeLong() const {
     }
   }
 
-  // repeated .PlatformInfoMessage selectedPlatforms = 3;
+  // repeated .PlatformInfoMessage selectedPlatforms = 4;
   {
     unsigned int count = static_cast<unsigned int>(this->selectedplatforms_size());
     total_size += 1UL * count;
@@ -2734,6 +2808,12 @@ size_t ClassifyRequest::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
         *this->net_);
+  }
+
+  // .ClassifyRequest.operationMode mode = 2;
+  if (this->mode() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->mode());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2770,6 +2850,9 @@ void ClassifyRequest::MergeFrom(const ClassifyRequest& from) {
   if (from.has_net()) {
     mutable_net()->::NetInfoMessage::MergeFrom(from.net());
   }
+  if (from.mode() != 0) {
+    set_mode(from.mode());
+  }
 }
 
 void ClassifyRequest::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2799,6 +2882,7 @@ void ClassifyRequest::InternalSwap(ClassifyRequest* other) {
   images_.InternalSwap(&other->images_);
   selectedplatforms_.InternalSwap(&other->selectedplatforms_);
   swap(net_, other->net_);
+  swap(mode_, other->mode_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

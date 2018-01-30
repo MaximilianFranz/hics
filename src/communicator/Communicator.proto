@@ -22,9 +22,10 @@ message PlatformInfoMessage {
         FPGA = 1;
         GPU = 2;
     }
-    string platformId = 2;
-    int32 powerConsumption = 3;
-    int32 flops = 4;
+    platformType type = 2;
+    string platformId = 3;
+    int32 powerConsumption = 4;
+    int32 flops = 5;
 }
 
 message ImageWrapperMessage {
@@ -39,7 +40,7 @@ message PlatformDistributionMessage {
 }
 
 message ImageResultMessage {
-    ImageWrapperMessage images = 1;
+    ImageWrapperMessage image = 1;
     repeated Label classification = 2;
     repeated PlatformDistributionMessage platformDistribution = 3;
 }
@@ -51,8 +52,9 @@ message ClassifyRequest {
         LowPower = 1;
         EnergyEfficient = 2;
     }
-    repeated ImageWrapperMessage images = 2;
-    repeated PlatformInfoMessage selectedPlatforms = 3;
+    operationMode mode = 2;
+    repeated ImageWrapperMessage images = 3;
+    repeated PlatformInfoMessage selectedPlatforms = 4;
 }
 
 message ClassifyReply {
