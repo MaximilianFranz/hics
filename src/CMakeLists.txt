@@ -10,16 +10,3 @@ add_subdirectory(platform)
 
 set(SOURCE_FILES NotImplementedException.cpp NotImplementedException.h)
 add_library(hics STATIC ${SOURCE_FILES})
-
-add_executable(hics-exec main.cpp)
-target_link_libraries(hics-exec hics)
-
-target_link_libraries(hics-exec communicator)
-target_link_libraries(hics-exec executor)
-if(Qt5Core_FOUND AND Qt5Widgets_FOUND)
-    target_link_libraries(hics-exec gui)
-endif()
-target_link_libraries(hics-exec manager)
-target_link_libraries(hics-exec netbuilder)
-target_link_libraries(hics-exec neuralnet)
-target_link_libraries(hics-exec platform)
