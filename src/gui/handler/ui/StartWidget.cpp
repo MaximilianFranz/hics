@@ -135,9 +135,7 @@ void StartWidget::addOperationModes(std::list<OperationMode> &operationModes){
     std::list<OperationMode>::iterator it;
 
     for(it = operationModes.begin(); it != operationModes.end(); ++it){
-        //TODO add operation mode name when its implemented.
-        //QString name = QString::fromStdString(it->);
-        ui->operationModesQComboBox->addItem("operationMode");
+        ui->operationModesQComboBox->addItem(QString::fromStdString(OperationModeString::getName(*it)));
     }
 }
 
@@ -199,9 +197,7 @@ std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
 }
 
 OperationMode StartWidget::getSelectedOperationMode(){
-    std::string modeName = ui->operationModesQComboBox->currentText().toStdString();
-    //TODO get operationMode by string
-    return OperationMode::HighPower;
+    return OperationModeString::getMode(ui->operationModesQComboBox->currentText().toStdString());
 }
 
 bool StartWidget::isAggregated(){

@@ -14,8 +14,6 @@
 #include "ui/ResultWidget.h"
 #include "ui/DetailDialog.h"
 
-//TODO detailed comments when methods are implemented
-
 /**
  * @class   MainWindowHandler
  *

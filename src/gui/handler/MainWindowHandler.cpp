@@ -26,11 +26,11 @@ void MainWindowHandler::setClassificationRequestState(){
 
     NetInfo neuralNet = startWidget->getSelectedNeuralNet();
     std::vector<PlatformInfo> platforms = startWidget->getSelectedPlatforms();
-    OperationMode m(OperationMode::HighPower); /*!< TODO change this when string mapping is implemented*/
+    OperationMode mode = startWidget->getSelectedOperationMode();
     bool aggregate = startWidget->isAggregated();
     std::map<QString, QImage> userImgs = startWidget->getSelectedImages();
 
-    classificationRequestState = new ClassificationRequest(neuralNet, platforms, m, aggregate, userImgs);
+    classificationRequestState = new ClassificationRequest(neuralNet, platforms, mode, aggregate, userImgs);
 
     //Notify all observers that the state has changed
     notify();
