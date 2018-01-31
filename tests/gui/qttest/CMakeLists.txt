@@ -6,7 +6,7 @@ add_executable(guitestsQt handler/ui/StartWidgetTest.cpp handler/ui/StartWidgetT
                 handler/ui/ResultWidgetTest.cpp handler/ui/ResultWidgetTest.h
                 handler/ui/DetailDialogTest.cpp handler/ui/DetailDialogTest.h)
 
-find_package(Qt5Test REQUIRED)
+find_package(Qt5Test)
 
 add_test(NAME guitestQt COMMAND guitestsQt)
 
