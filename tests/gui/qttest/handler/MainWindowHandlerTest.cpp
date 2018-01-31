@@ -120,10 +120,16 @@ void MainWindowHandlerTest::testDisplayClassification() {
 }
 
 void MainWindowHandlerTest::testReturnButton(){
-    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(), mainWindowHandler->getStartWidget());
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
     setUpClassificationResult();
     mainWindowHandler->processClassificationResult(*classificationResult);
-    //mainWindowHandler->processReturnQPushButton();
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getResultWidget());
+    mainWindowHandler->processReturnQPushButton();
+
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
     //TODO fix segfault when deleting result widget in MWH
 }
 
