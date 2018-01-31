@@ -67,13 +67,13 @@ void MainWindowHandler::processDetailQPushButton(){
 
 void MainWindowHandler::connectAll(){
     //Starts the classification
-    connect(startWidget->getClassificationQPushButton(), SIGNAL(clicked()), this, SLOT(setClassificationRequestState()));
+    connect(startWidget->getClassificationQPushButton(), SIGNAL(clicked(bool)), this, SLOT(setClassificationRequestState()));
 
     //Deletes resultWidget
-    connect(resultWidget->getReturnQPushButton(), SIGNAL(clicked()), this, SLOT(processReturnQPushButton()));
+    connect(resultWidget->getReturnQPushButton(), SIGNAL(clicked(bool)), this, SLOT(processReturnQPushButton()));
 
     //Opens the detailDialog
-    connect(resultWidget->getDetailsQPushButton(), SIGNAL(clicked()), this, SLOT(processDetailQPushButton()));
+    connect(resultWidget->getDetailsQPushButton(), SIGNAL(clicked(bool)), this, SLOT(processDetailQPushButton()));
 
     //Resets detailDialog and resultWidget when resultWidget is destroyed; display startWidget
     connect(resultWidget, SIGNAL(destroyed()), this, SLOT(processReturnQPushButton())); //TODO Check if this works
