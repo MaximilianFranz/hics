@@ -10,6 +10,7 @@
 #include <iostream>
 #include <iterator>
 #include <PreProcessor.h>
+#include <algorithm>
 
 #include <QImage>
 
@@ -122,6 +123,15 @@ SCENARIO("Testing Executor Module") {
         std::vector<ImageWrapper> images = p.processImages(map);
 
         std::vector<float> imData = images.front().getData();
+        float min = 100, max = -100;
+
+        for (float data : imData) {
+            min = (data < min) ? data : min;
+            max = (data > max) ? data : max;
+        }
+
+        std::cout << max << std::endl;
+        std::cout << min << std::endl;
 
         for (int i = 0; i < 10; i++) {
             std::cout << i << " : " << imData[i] << "\n";
@@ -138,7 +148,8 @@ SCENARIO("Testing Executor Module") {
         std::vector<PlatformInfo*> info_mock;
         results = executor.classify({&images.front()}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
 
-        std::cout << results.front()->getResults().front().first;
+        std::cout << results.front()->getResults().front().first << std::endl;
+        std::cout << results.front()->getResults().front().second;
 
     }
 }
