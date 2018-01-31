@@ -19,21 +19,45 @@ private:
     std::vector<PlatformInfo*> currentPlatformsInfos; //! The selected platforms infos in the last configurations
     std::vector<Platform*> currentPlatforms;  //! The corresponding platforms used in the last configuration
 
+    std::vector<std::pair<PlatformInfo*, float>> compDistribution;
+
     PlatformManager* platformManager;   //! The platformManager is the access point to get available platforms
     NeuralNet *net;                     //! the net that has been configured in the last excectuion
-
-    /**
-     * Configures all Layers in the NeuralNet with default functions from CpuPlatform
-     *
-     * @param pLayer
-     */
-    void default_setLayerFunctionForLayer(Layer *pLayer);
 
     /**
      *
      * @return the CPU Platform for testing purposes
      */
     Platform * getDefaultPlatform();
+
+    /**
+     * Chooses platforms for low power mode and configures net accordingly
+     */
+    void placeLowPower();
+
+    /**
+     * Chooses platforms for energy effiecient mode and configures net accordingly
+     */
+    void placeEnergyEfficient();
+
+    /**
+     * Chooses platforms for high perfomance mode and configures net accordingly
+     */
+    void placeHighPerformance();
+
+    /**
+     * Places the net sequentially with the given platforms.
+     *
+     * Perfomance platform is used for computationally difficult tasks and fallback is usually CPU used for
+     * all other tasks, where
+     */
+    void placeNetWith(Platform* perfomance, Platform* fallback);
+
+    /**
+     * Chooses platforms for low power mode and configures net accordingly
+     */
+    void placeLayerWith(Platform* platform, Layer* layer);
+
 public:
     /**
      * Default constructor ensuring that required dependencies are initialized.
@@ -61,4 +85,9 @@ public:
      */
     std::vector<PlatformInfo* > queryPlatforms();
 
+    /**
+     * Getter for computationDistribution
+     * @return computationDistribution.
+     */
+    const std::vector<std::pair<PlatformInfo *, float>> &getCompDistribution() const;
 };
