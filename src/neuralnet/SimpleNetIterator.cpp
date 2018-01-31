@@ -6,15 +6,15 @@
 #include "NeuralNet.h"
 
 void SimpleNetIterator::first() {
-    index = 0;
+    this->index = 0;
 }
 
 void SimpleNetIterator::next() {
-    index++;
+    this->index++;
 }
 
 bool SimpleNetIterator::hasNext() {
-    return (index != net->layers.size() - 1); //index not yet at last element!
+    return (index < net->layers.size()); //index not yet at last element!
 }
 
 Layer *SimpleNetIterator::getElement() {

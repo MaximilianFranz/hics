@@ -14,20 +14,14 @@
 class ImageResult {
 private:
     ImageWrapper image;
-    std::vector<std::pair<std::string, float>> results; // ordered list of labels and their probabilities
-    std::vector<std::pair<PlatformInfo, float>> compDistribution;
+    std::vector<std::pair<std::string, float>> results; //! ordered list of labels and their probabilities
+    std::vector<std::pair<PlatformInfo*, float>> compDistribution; //!Shows the distribution of computation on different platforms.
 public:
     /**
      * Getter for compDistribution, which Platform computed what in percentages.
      * @return compDistribution
      */
-    const std::vector<std::pair<PlatformInfo, float>> &getCompDistribution() const;
-
-    /**
-     * Sets the compDistribution.
-     * @param compDistribution
-     */
-    void setCompDistribution(const std::vector<std::pair<PlatformInfo, float>> &compDistribution);
+    const std::vector<std::pair<PlatformInfo*, float>> &getCompDistribution() const;
 
     /**\brief Constructor
      *
@@ -37,7 +31,7 @@ public:
     ImageResult(std::vector<std::pair<std::string, float>> results, ImageWrapper &image);
 
     ImageResult(std::vector<std::pair<std::string, float>> results,
-                std::vector<std::pair<PlatformInfo, float>> distribution, ImageWrapper &image);
+                std::vector<std::pair<PlatformInfo*, float>> distribution, ImageWrapper &image);
 
     /**
      *

@@ -5,7 +5,7 @@
 #include <algorithm>
 
 #include "Interpreter.h"
-
+#include <PlatformPlacer.h>
 
 Interpreter::Interpreter(std::map<int, std::string> &labelMap)
         :labelMap(labelMap)
@@ -14,7 +14,7 @@ Interpreter::Interpreter(std::map<int, std::string> &labelMap)
 }
 
 //TODO: Faster way to match the top 5 results back to their original positing in output
-ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *originalImage) {
+ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *originalImage, PlatformPlacer* placer) {
     std::vector<float> sortOut = output->getData();
     std::sort(sortOut.begin(), sortOut.end(), compareDesc); //sort output in descending order
     std::vector<std::pair<std::string, float>> results; // ordered list of labels and their probabilities
@@ -24,7 +24,7 @@ ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *original
                                                         sortOut[i]));
     }
 
-    ImageResult *i = new ImageResult(results, *originalImage);
+    ImageResult *i = new ImageResult(results, placer->getCompDistribution(), *originalImage);
     return i;
 }
 

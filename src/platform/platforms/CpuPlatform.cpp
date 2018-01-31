@@ -60,7 +60,7 @@ FullyConnectedFunction *CpuPlatform::createFullyConnectedFunction() {
 }
 
 PlatformInfo &CpuPlatform::getPlatformInfo() {
-    throw NotImplementedException();
+    return this->platformInfo;
 }
 
 PlatformType CpuPlatform::getPlatformType() {

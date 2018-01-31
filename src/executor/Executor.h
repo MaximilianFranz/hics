@@ -25,17 +25,16 @@ private:
     NetBuilder *builder;
     PlatformPlacer *placer;
     Interpreter *interpreter;
+
     std::string name;
-
-
 
     /**
      * Ensures that required settings are met and satisfies missing settings by building or configuring them.
      *
      * This changes NeuralNet or Placement iff they have changed since the last call to this method!
      *
-     * @param net
-     * @param mode
+     * @param net                   a NetInfo specifying the net to setup.
+     * @param mode                  OperationMode enum specifying the mode which to consider
      * @param selectedPlatforms
      */
     void setupIfChanged(NetInfo *net, OperationMode mode, std::vector<PlatformInfo*> &selectedPlatforms);
@@ -50,9 +49,19 @@ private:
     /**
      * Propagates the given data through the network and handles garbage collection of unused DataWrapperss
      *
-     * @param image
+     * @param data                  input data in a Wrapper.
      */
     void runDataForward(DataWrapper *data);
+
+    /**
+    * helper method returning the DataWrapper out of an ImageWrapper.
+    *
+    * Image information is lost at this point.
+    *
+    * @param imageWrapper          Wrapper containing the image data and meta information
+    * @return
+    */
+    DataWrapper *getImageData(ImageWrapper *imageWrapper);
 
     NetInfo createMockInfo();
 
@@ -70,10 +79,10 @@ public:
      * This method hides the core functionality of our system and dispatches the different requirements to
      * the corresponding modules and classes.
      *
-     * @param images the images to be classified in ImageWrappers
-     * @param net a NetInfo specifying which net ought to be used to classfiy
-     * @param mode ENUM specifying which mode has been chosen
-     * @param selectedPlatforms list of PlatformInfo specifying which platforms to use for computation
+     * @param images                the images to be classified in ImageWrappers
+     * @param net                   a NetInfo specifying which net ought to be used to classfiy
+     * @param mode                  ENUM specifying which mode has been chosen
+     * @param selectedPlatforms     list of PlatformInfo specifying which platforms to use for computation
      * @return list of classfied Images with the top-5 results in an ImageResult!
      */
     std::vector<ImageResult*> classify(std::vector<ImageWrapper*> images, NetInfo net, OperationMode mode,
@@ -92,8 +101,6 @@ public:
      * @return list of NetInfo of the available neural net models.
      */
     std::vector<NetInfo*> queryNets() override;
-
-    DataWrapper *getImageData(ImageWrapper *imageWrapper);
 
     Executor(std::string name) : name(name){};
 
