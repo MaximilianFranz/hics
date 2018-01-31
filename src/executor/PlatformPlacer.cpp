@@ -85,7 +85,6 @@ void PlatformPlacer::placeNetWith(Platform *perfomance, Platform *fallback) {
     int fallbackCount = 0;
     SimpleNetIterator *it = net->createIterator();
     do {
-        it->next();
         Layer *currentLayer = it->getElement();
         if (currentLayer->getType() == LayerType::CONVOLUTION || currentLayer->getType() == LayerType::FULLYCONNECTED) {
             placeLayerWith(perfomance, currentLayer);
@@ -93,6 +92,7 @@ void PlatformPlacer::placeNetWith(Platform *perfomance, Platform *fallback) {
         } else if (currentLayer->getType() == LayerType::INPUT || currentLayer->getType() == LayerType::CONCAT){
 
             fallbackCount++; //Naive layers are computed on CPU
+            it->next();
             continue; // Nothing to do
 
         } else {
@@ -101,6 +101,7 @@ void PlatformPlacer::placeNetWith(Platform *perfomance, Platform *fallback) {
             fallbackCount++;
 
         }
+        it->next();
 
     } while(it->hasNext());
 

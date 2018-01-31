@@ -67,16 +67,11 @@ DataWrapper *Executor::getImageData(ImageWrapper *imageWrapper) {
 void Executor::runDataForward(DataWrapper *data) {
     SimpleNetIterator* it = net->createIterator();
     it->getElement()->setInputWrapper(data); // SET INPUT TO FIRST LAYER EXPLICITLY!
-    while (it->hasNext()) { //TODO: Use do-while to access last elem.
-        Layer* layer = it->getElement();
+    do {
+        Layer *layer = it->getElement();
         layer->forward();
         it->next();
-    }
-    // Do it manually for the last layer. TODO: Fix iterator to allow access to last element
-    Layer* l = it->getElement();
-    l->forward();
-    it->next();
-
+    } while (it->hasNext());
 }
 
 NetInfo Executor::createMockInfo() {
