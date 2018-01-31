@@ -83,6 +83,5 @@ ImageResult *Util::messageToImageResult(const ImageResultMessage *imgMes) {
         distribution.emplace_back(*platform, imgMes->platformdistribution(i).usage());
     }
 
-    //TODO: add distribution
-    return new ImageResult(results, *img);
+    return new ImageResult(results, distribution, *img);
 }
