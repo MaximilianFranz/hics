@@ -138,6 +138,3 @@ void ResultWidgetTest::testAggregated() {
     QCOMPARE(resultWidget->getImagesQVBoxLayout()
                  ->itemAt(0)->layout()->count(), 1);
 }
-
-
-QTEST_MAIN(ResultWidgetTest)

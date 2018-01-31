@@ -5,7 +5,7 @@
 #pragma once
 
 #include <QtTest/QTest>
-#include <QObject
+#include <QObject>
 #include <handler/ui/DetailDialog.h>
 
 
@@ -17,6 +17,8 @@ private:
 
     DetailDialog* detailDialog = nullptr;
 
+    ClassificationResult* classificationResult = nullptr;
+
 private slots:
 
     void initTestCase();
@@ -25,5 +27,6 @@ private slots:
 
     void cleanup();
 
+    void testInsertDetails();
 };
 
