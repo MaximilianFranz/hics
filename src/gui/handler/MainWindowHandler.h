@@ -35,33 +35,36 @@
  * @date    17.01.2018
  *
  */
-class MainWindowHandler : public QObject, MainWindowSubject{
+class MainWindowHandler : public QObject, MainWindowSubject {
 
-    Q_OBJECT
+Q_OBJECT
 
 private:
 
-    MainWindow* mainWindow = nullptr;
-    StartWidget* startWidget = nullptr;
-    ResultWidget* resultWidget = nullptr;
-    DetailDialog* detailDialog = nullptr;
+    MainWindow *mainWindow = nullptr;
+    StartWidget *startWidget = nullptr;
+    ResultWidget *resultWidget = nullptr;
+    DetailDialog *detailDialog = nullptr;
 
-    ClassificationRequest* classificationRequestState = nullptr;
+    ClassificationRequest *classificationRequestState = nullptr;
 
+    void connectAll();
+
+    void disconnectAll();
 
 public:
 
-     /**
-     * @brief This constructor initializes the GUI with the needed information on available data.
-     *
-     * The constructor gets the available neural nets, platforms and operation modes which will be displayed after
-     * the GUI is constructed.
-     * TODO more info
-     *
-     * @param neuralNets the available neural nets in the software
-     * @param platforms the available platforms in the software
-     * @param operationModes the available operation modes in the software
-     */
+    /**
+    * @brief This constructor initializes the GUI with the needed information on available data.
+    *
+    * The constructor gets the available neural nets, platforms and operation modes which will be displayed after
+    * the GUI is constructed.
+    * TODO more info
+    *
+    * @param neuralNets the available neural nets in the software
+    * @param platforms the available platforms in the software
+    * @param operationModes the available operation modes in the software
+    */
     MainWindowHandler(std::list<NetInfo> &neuralNets, std::list<PlatformInfo> &platforms,
                       std::list<OperationMode> &operationModes);
 
@@ -71,7 +74,7 @@ public:
      * @brief getClassificationRequestState returns the classificationRequest state attribute.
      * @return classificationRequestState
      */
-    ClassificationRequest* getClassificationRequestState();
+    ClassificationRequest *getClassificationRequestState();
 
     /**
      * @brief processClassificationResult will display the provided data in the ClassificationResult in the GUI.
@@ -85,13 +88,13 @@ public:
      * @brief getStartWidget returns the startWidget which represents the starting page of the GUI.
      * @return startWidget
      */
-    StartWidget* getStartWidget() const;
+    StartWidget *getStartWidget() const;
 
     /**
      * @brief getResultWidget returns the resultWidget which represents the result page of the GUI
      * @return resultWidget
      */
-    ResultWidget* getResultWidget() const;
+    ResultWidget *getResultWidget() const;
 
     /**
      * @brief getMainWindow returns the main window of the GUI which holds the stacked widget to display each widget
