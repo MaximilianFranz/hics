@@ -77,6 +77,12 @@ public:
      */
     QVBoxLayout *getImagesQVBoxLayout();
 
+    /**
+     * @brief getMainQHBoxLayout returns the main layout of ResultWidget
+     * @return mainQHBoxLayout
+     */
+    QHBoxLayout *getMainQHBoxLayout();
+
 private:
 
     Ui::ResultWidget *ui;

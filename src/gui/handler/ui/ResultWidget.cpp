@@ -200,3 +200,7 @@ QPushButton *ResultWidget::getReturnQPushButton() {
 QVBoxLayout *ResultWidget::getImagesQVBoxLayout() {
     return ui->imagesQVBoxLayout;
 }
+
+QHBoxLayout *ResultWidget::getMainQHBoxLayout() {
+    return ui->mainQHBoxLayout;
+}
