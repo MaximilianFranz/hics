@@ -63,61 +63,81 @@ void ResultWidgetTest::cleanup() {
     delete resultWidget;
 }
 
-std::string ResultWidgetTest::getActualString(int index, int layoutIndex){
-    std::string output = ((QLabel *) (resultWidget->getImagesQVBoxLayout()
-        ->itemAt(0)->layout()
-        ->itemAt(2)->layout()
-        ->itemAt(index)->layout()
-        ->itemAt(layoutIndex)->widget()))->text().toStdString();
+std::string ResultWidgetTest::getActualString(int index, int layoutIndex, bool aggregated) {
+    std::string output = "";
+    if (!aggregated) {
+        output = ((QLabel *) (resultWidget->getImagesQVBoxLayout()
+            ->itemAt(0)->layout() /*!< First container layout*/
+            ->itemAt(2)->layout() /*!< Result layout */
+            ->itemAt(index)->layout() /*!< Result row*/
+            ->itemAt(layoutIndex)->widget()))->text().toStdString(); /*!< layoutIndex 0 == Label name, 1 == percentage*/
+    } else {
+        output = ((QLabel *) (resultWidget->getMainQHBoxLayout()
+            ->itemAt(2)->layout()
+            ->itemAt(index)->layout()
+            ->itemAt(layoutIndex)->widget()))->text().toStdString();
+    }
 
     return output;
 }
 
 void ResultWidgetTest::testNotAggregated() {
     resultWidget->displayResults(*classificationResult);
-    QCOMPARE(((QLabel *) (resultWidget->getImagesQVBoxLayout()->itemAt(0)
-        ->layout()->itemAt(2)
-        ->layout()->itemAt(1)
-        ->widget()))->text().toStdString(), (std::string) "Baukran");
+    QCOMPARE(((QLabel *) (resultWidget->getImagesQVBoxLayout()
+        ->itemAt(0)->layout()
+        ->itemAt(2)->layout()
+        ->itemAt(1)->widget()))
+                 ->text().toStdString(), (std::string) "Baukran");
 
-//    QCOMPARE(((QLabel *) (resultWidget->getImagesQVBoxLayout()
-//        ->itemAt(0)->layout()
-//        ->itemAt(2)->layout()
-//        ->itemAt(2)->layout()
-//        ->itemAt(0)->widget()))->text().toStdString(), (std::string) "Baukran");
-//    QCOMPARE(((QLabel *) (resultWidget->getImagesQVBoxLayout()
-//        ->itemAt(0)->layout()
-//        ->itemAt(2)->layout()
-//        ->itemAt(2)->layout()
-//        ->itemAt(1)->widget()))->text().toStdString(), (std::string) "68.4%");
-//
-//    QCOMPARE(((QLabel *) (resultWidget->getImagesQVBoxLayout()
-//        ->itemAt(0)->layout()
-//        ->itemAt(2)->layout()
-//        ->itemAt(6)->layout()
-//        ->itemAt(0)->widget()))->text().toStdString(), (std::string) "KIT");
-//    QCOMPARE(((QLabel *) (resultWidget->getImagesQVBoxLayout()
-//        ->itemAt(0)->layout()
-//        ->itemAt(2)->layout()
-//        ->itemAt(6)->layout()
-//        ->itemAt(1)->widget()))->text().toStdString(), (std::string) "1.6%");
+    QCOMPARE(getActualString(2, 0, false), (std::string) "Baukran");
+    QCOMPARE(getActualString(2, 1, false), (std::string) "68.4%");
 
-    QCOMPARE(getActualString(2, 0), (std::string)"Baukran");
-    QCOMPARE(getActualString(2, 1), (std::string)"68.4%");
+    QCOMPARE(getActualString(3, 0, false), (std::string) "Haus");
+    QCOMPARE(getActualString(3, 1, false), (std::string) "17%");
 
-    QCOMPARE(getActualString(3, 0), (std::string)"Haus");
-    QCOMPARE(getActualString(3, 1), (std::string)"17%");
+    QCOMPARE(getActualString(4, 0, false), (std::string) "Tiger");
+    QCOMPARE(getActualString(4, 1, false), (std::string) "9%");
 
-    QCOMPARE(getActualString(4, 0), (std::string)"Tiger");
-    QCOMPARE(getActualString(4, 1), (std::string)"9%");
+    QCOMPARE(getActualString(5, 0, false), (std::string) "Leopard");
+    QCOMPARE(getActualString(5, 1, false), (std::string) "2.9%");
 
-    QCOMPARE(getActualString(5, 0), (std::string)"Leopard");
-    QCOMPARE(getActualString(5, 1), (std::string)"2.9%");
-
-    QCOMPARE(getActualString(6, 0), (std::string)"KIT");
-    QCOMPARE(getActualString(6, 1), (std::string)"1.6%");
+    QCOMPARE(getActualString(6, 0, false), (std::string) "KIT");
+    QCOMPARE(getActualString(6, 1, false), (std::string) "1.6%");
 
     QCOMPARE(resultWidget->getImagesQVBoxLayout()->count(), 6);
 }
+
+void ResultWidgetTest::testAggregated() {
+    classificationResult->aggregateResults();
+
+    resultWidget->displayResults(*classificationResult);
+
+    /*Index 2: Normaly SpacerItem but there is the aggregated result layout
+     *Index 1: SpacerItem at index 0 */
+    QCOMPARE(((QLabel *) (resultWidget->getMainQHBoxLayout()
+        ->itemAt(2)->layout()
+        ->itemAt(1)->widget()))
+                 ->text().toStdString(), (std::string)"Baukran");
+
+    QCOMPARE(getActualString(2, 0, true), (std::string) "Baukran");
+    QCOMPARE(getActualString(2, 1, true), (std::string) "68.4%");
+
+    QCOMPARE(getActualString(3, 0, true), (std::string) "Haus");
+    QCOMPARE(getActualString(3, 1, true), (std::string) "17%");
+
+    QCOMPARE(getActualString(4, 0, true), (std::string) "Tiger");
+    QCOMPARE(getActualString(4, 1, true), (std::string) "9%");
+
+    QCOMPARE(getActualString(5, 0, true), (std::string) "Leopard");
+    QCOMPARE(getActualString(5, 1, true), (std::string) "2.9%");
+
+    QCOMPARE(getActualString(6, 0, true), (std::string) "KIT");
+    QCOMPARE(getActualString(6, 1, true), (std::string) "1.6%");
+
+    //Container layout (image + not_aggr result) has only size 1 == no not_aggr result
+    QCOMPARE(resultWidget->getImagesQVBoxLayout()
+                 ->itemAt(0)->layout()->count(), 1);
+}
+
 
 QTEST_MAIN(ResultWidgetTest)

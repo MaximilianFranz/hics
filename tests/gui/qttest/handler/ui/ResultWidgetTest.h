@@ -17,7 +17,7 @@ private:
 
     ClassificationResult *classificationResult = nullptr;
 
-    std::string getActualString(int index, int layoutIndex);
+    std::string getActualString(int index, int layoutIndex, bool aggregated);
 
 private slots:
 
@@ -28,4 +28,6 @@ private slots:
     void cleanup();
 
     void testNotAggregated();
+
+    void testAggregated();
 };
