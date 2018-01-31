@@ -38,5 +38,8 @@ private slots:
     void testDisplayClassification();
 
     void testReturnButton();
+
+    void testDetailButton();
+
 };
 

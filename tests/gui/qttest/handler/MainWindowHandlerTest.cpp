@@ -32,7 +32,6 @@ void MainWindowHandlerTest::init() {
 }
 
 void MainWindowHandlerTest::cleanup() {
-    delete classificationResult;
     delete mainWindowHandler;
 }
 
@@ -139,4 +138,12 @@ void MainWindowHandlerTest::testReturnButton(){
     QCOMPARE(mainWindowHandler->getDetailDialog()->getComputationTimeQLabel()->text().toStdString(), (std::string)"0");
 }
 
+void MainWindowHandlerTest::testDetailButton(){
+    QCOMPARE(mainWindowHandler->getDetailDialog()->isVisible(), false);
+
+    QTest::mouseClick(mainWindowHandler->getResultWidget()->getDetailsQPushButton(), Qt::LeftButton);
+
+    QCOMPARE(mainWindowHandler->getDetailDialog()->isVisible(), true);
+
+}
 QTEST_MAIN(MainWindowHandlerTest)
