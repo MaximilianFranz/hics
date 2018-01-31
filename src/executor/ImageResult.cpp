@@ -15,7 +15,7 @@ ImageResult::ImageResult(const std::vector<std::pair<std::string, float>> result
 }
 
 ImageResult::ImageResult(const std::vector<std::pair<std::string, float>> results,
-                         const std::vector<std::pair<PlatformInfo, float>> distribution, ImageWrapper &image)
+                         const std::vector<std::pair<PlatformInfo*, float>> distribution, ImageWrapper &image)
         : results(results),
           compDistribution(distribution),
           image(image)
@@ -31,10 +31,7 @@ const std::string ImageResult::getImagePath() const {
     return image.getFilepath();
 }
 
-const std::vector<std::pair<PlatformInfo, float>> &ImageResult::getCompDistribution() const {
+const std::vector<std::pair<PlatformInfo*, float>> &ImageResult::getCompDistribution() const {
     return compDistribution;
 }
 
-void ImageResult::setCompDistribution(const std::vector<std::pair<PlatformInfo, float>> &compDistribution) {
-    ImageResult::compDistribution = compDistribution;
-}
