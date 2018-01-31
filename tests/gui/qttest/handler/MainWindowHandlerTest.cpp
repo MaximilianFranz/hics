@@ -32,6 +32,7 @@ void MainWindowHandlerTest::init() {
 }
 
 void MainWindowHandlerTest::cleanup() {
+    delete classificationResult;
     delete mainWindowHandler;
 }
 
@@ -123,14 +124,19 @@ void MainWindowHandlerTest::testReturnButton(){
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
              mainWindowHandler->getStartWidget());
     setUpClassificationResult();
+
     mainWindowHandler->processClassificationResult(*classificationResult);
+
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
              mainWindowHandler->getResultWidget());
-    mainWindowHandler->processReturnQPushButton();
+
+    QTest::mouseClick(mainWindowHandler->getResultWidget()->getReturnQPushButton(), Qt::LeftButton);
 
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
              mainWindowHandler->getStartWidget());
-    //TODO fix segfault when deleting result widget in MWH
+
+    QCOMPARE(mainWindowHandler->getResultWidget()->getImagesQVBoxLayout()->isEmpty(), true);
+    QCOMPARE(mainWindowHandler->getDetailDialog()->getComputationTimeQLabel()->text().toStdString(), (std::string)"0");
 }
 
 QTEST_MAIN(MainWindowHandlerTest)
