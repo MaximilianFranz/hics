@@ -5,10 +5,19 @@
 
 #include <QtTest/QTest>
 #include <QObject>
+#include <handler/ui/ResultWidget.h>
 
 class ResultWidgetTest : public QObject {
 
 Q_OBJECT
+
+private:
+
+    ResultWidget *resultWidget = nullptr;
+
+    ClassificationResult *classificationResult = nullptr;
+
+    std::string getActualString(int index, int layoutIndex);
 
 private slots:
 
@@ -17,4 +26,6 @@ private slots:
     void init();
 
     void cleanup();
+
+    void testNotAggregated();
 };

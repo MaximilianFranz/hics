@@ -146,4 +146,3 @@ void MainWindowHandlerTest::testDetailButton(){
     QCOMPARE(mainWindowHandler->getDetailDialog()->isVisible(), true);
 
 }
-QTEST_MAIN(MainWindowHandlerTest)
