@@ -10,6 +10,10 @@ if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 endif ()
 
+# those defines are expanded to absolute paths
+add_definitions(-DRES_DIR="${CMAKE_SOURCE_DIR}/resources/")
+add_definitions(-DTEST_RES_DIR="${CMAKE_SOURCE_DIR}/tests/resources/")
+
 find_package(Qt5 COMPONENTS Core Widgets Gui)
 
 find_package(HDF5 COMPONENTS C)

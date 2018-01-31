@@ -15,7 +15,7 @@
 using json = nlohmann::json;
 
 PlatformManager::PlatformManager() {
-    std::ifstream i("../../../resources/platforms.json");
+    std::ifstream i(RES_DIR "platforms.json");
     json j;
     i >> j;
 

@@ -14,11 +14,11 @@
 #include "NetBuilderTest.h"
 
 //Describe path without closing "/"!!!
-const std::string MODEL_DIR = "../../../src/netbuilder/loader/models";
+const std::string MODEL_DIR = RES_DIR "models";
 
 TEST_CASE("Testing LabelLoader on alexnet labels") {
     //TODO: Change if models folder is moved to resources/
-    std::string path = "../../../src/netbuilder/loader/models/alexnet_labels.txt";
+    std::string path = RES_DIR "models/alexnet_labels.txt";
     std::map<int, std::string> labelMap = LabelLoader::getLabelMap(path);
 
     REQUIRE(labelMap.at(1) == "goldfish, Carassius auratus");
