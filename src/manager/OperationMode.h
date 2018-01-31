@@ -37,4 +37,16 @@ struct OperationModeString {
         }
     }
 
+    static OperationMode getMode(const std::string name) {
+
+        if (name == "High power") {
+            return HighPower;
+        } else if (name == "Low power") {
+            return LowPower;
+        } else if (name == "Energy efficient") {
+            return EnergyEfficient;
+        } else {
+            throw std::exception();
+        }
+    }
 };
