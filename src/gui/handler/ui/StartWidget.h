@@ -12,6 +12,8 @@
 #include <NetInfo.h>
 #include <PlatformInfo.h>
 #include <OperationMode.h>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QCheckBox>
 
 namespace Ui {
 class StartWidget;
@@ -73,9 +75,15 @@ public:
     std::map<QString, QImage> getSelectedImages();
 
     /**
-     * @brief isAggregated checks if the user selected to aggregate the results or not
-     * @return true if the results shall be aggregated, false if not
+     * @brief getSelectedOperationMode returns the selected operation mode.
+     * @return the selected operation mode
      */
+    OperationMode getSelectedOperationMode();
+
+        /**
+         * @brief isAggregated checks if the user selected to aggregate the results or not
+         * @return true if the results shall be aggregated, false if not
+         */
     bool isAggregated();
 
     /**
@@ -86,6 +94,36 @@ public:
      * @return the classificationQPushButton
      */
     QPushButton* getClassificationQPushButton();
+
+    /**
+     * @brief getOperationModesQComboBox returns the QComboBox containing the operation modes
+     * @return the combo box containing the operation modes
+     */
+    QComboBox* getOperationModesQComboBox();
+
+    /**
+     * @brief getNeuralNetsQComboBox returns the QComboBox containing the available neural nets
+     * @return the combo box containing the available neural nets
+     */
+    QComboBox* getNeuralNetsQComboBox();
+
+    /**
+     * @brief getPlatformsQVBoxLayout return a vertical layout containing the available platforms for the classification
+     * @return the layout containing all available platforms as checkboxes
+     */
+    QVBoxLayout* getPlatformsQVBoxLayout();
+
+    /**
+     * @brief getAggregateResultsQCheckBox returns the QCheckBox which indicates if the results shall be aggregated or not.
+     * @return the check box where the user can select to aggregate the results or not
+     */
+    QCheckBox* getAggregateResultsQCheckBox();
+
+    /**
+     * @brief getImagesMap returns the images map which hold all selected input images together with its layouts
+     * @return the image map
+     */
+    QMap<QImage*, QHBoxLayout*>* getImagesMap();
 
 public slots:
 

@@ -27,3 +27,8 @@ void MainWindow::setCurrentWidget(QWidget* widget){
 MainWindow::~MainWindow(){
     delete ui;
 }
+
+
+QStackedWidget *MainWindow::getMainWindowQStackedWidget() const {
+    return mainWindowQStackedWidget;
+}

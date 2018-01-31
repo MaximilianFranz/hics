@@ -19,6 +19,9 @@ int main(int argc, char *argv[])
     NetInfo net("AlexNet", 227, "alexnet");
     PlatformInfo platform("CPU", PlatformType::CPU, "id", 100, 4);
     OperationMode mode(HighPower);
+    OperationMode mode2(LowPower);
+    OperationMode mode3(EnergyEfficient);
+
 
     std::list<NetInfo> nets;
     nets.push_back(net);
@@ -26,6 +29,9 @@ int main(int argc, char *argv[])
     plats.push_back(platform);
     std::list<OperationMode> modes;
     modes.push_back(mode);
+    modes.push_back(mode2);
+    modes.push_back(mode3);
+
 
     MainWindowHandler handler(nets, plats, modes);
 

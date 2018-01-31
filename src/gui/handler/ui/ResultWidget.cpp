@@ -5,8 +5,7 @@
 
 ResultWidget::ResultWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::ResultWidget)
-{
+    ui(new Ui::ResultWidget) {
     ui->setupUi(this);
     ui->imagesQScrollArea->setWidgetResizable(true);
 
@@ -14,31 +13,32 @@ ResultWidget::ResultWidget(QWidget *parent) :
     ui->imagesQWidgetContainer->setLayout(ui->imagesQVBoxLayout);
 }
 
-ResultWidget::~ResultWidget()
-{
+ResultWidget::~ResultWidget() {
     delete ui;
     clearLayout(ui->imagesQVBoxLayout);
-    if(ui->mainQHBoxLayout->itemAt(2)->layout()){
-        clearLayout(ui->mainQHBoxLayout->itemAt(2)->layout());
-        delete ui->mainQHBoxLayout->itemAt(2);
-    }
+//    if (ui->mainQHBoxLayout->itemAt(2)->layout()) {
+//        clearLayout(ui->mainQHBoxLayout->itemAt(2)->layout());
+//        delete ui->mainQHBoxLayout->itemAt(2);
+//    }
+
+    //TODO delete aggregated results layout
 }
 
-void ResultWidget::displayResults(const ClassificationResult &classificationResult){
+void ResultWidget::displayResults(const ClassificationResult &classificationResult) {
 
     bool aggregated = false;
 
     //Checks if the results need to be displayed aggregated or not
-    if(classificationResult.getAggregatedResults().size() > 0)
+    if (classificationResult.getAggregatedResults().size() > 0)
         aggregated = true;
 
     std::vector<ImageResult> results = classificationResult.getResults();
 
-    for(unsigned int i = 0; i<results.size(); ++i){
+    for (unsigned int i = 0; i < results.size(); ++i) {
         ImageResult imageResult = results[i];
 
         //Creates a layout which display the file path and its image on top of each other
-        QVBoxLayout* imageLayout = createImageLayout(imageResult.getImagePath());
+        QVBoxLayout *imageLayout = createImageLayout(imageResult.getImagePath());
 
         std::vector<std::pair<std::string, float>> result = imageResult.getResults();
 
@@ -46,13 +46,13 @@ void ResultWidget::displayResults(const ClassificationResult &classificationResu
         result = sortVector(result);
 
         //A container is needed if the results are not aggregated; it will hold the image layout and possibly its result
-        QHBoxLayout* container = new QHBoxLayout();
+        QHBoxLayout *container = new QHBoxLayout();
         container->addLayout(imageLayout);
 
         //If its not aggregated the individual result must be inside the QScrollArea
-        if(!aggregated){
+        if (!aggregated) {
             container->addSpacing(25);
-            QVBoxLayout* resultLayout = createResultLayout(result);
+            QVBoxLayout *resultLayout = createResultLayout(result);
             container->addLayout(resultLayout);
         }
 
@@ -61,9 +61,9 @@ void ResultWidget::displayResults(const ClassificationResult &classificationResu
     }
 
     //Display the aggregated result outside of the QScrollArea
-    if(aggregated){
+    if (aggregated) {
         std::vector<std::pair<std::string, float>> aggregatedResult = classificationResult.getAggregatedResults();
-        QVBoxLayout* aggregatedLayout = createResultLayout(aggregatedResult);
+        QVBoxLayout *aggregatedLayout = createResultLayout(aggregatedResult);
 
         /* Places the aggregated result between two horizontal spacers in mainQHBoxLayout (index = 2) to avoid the
          * stretching of the result layout. */
@@ -75,11 +75,11 @@ void ResultWidget::displayResults(const ClassificationResult &classificationResu
 }
 
 
-QVBoxLayout* ResultWidget::createImageLayout(const std::string &filePath){
-    QVBoxLayout* imageLayout = new QVBoxLayout();
+QVBoxLayout *ResultWidget::createImageLayout(const std::string &filePath) {
+    QVBoxLayout *imageLayout = new QVBoxLayout();
 
     //Displays the file path
-    QLabel* filePathLabel = new QLabel(this);
+    QLabel *filePathLabel = new QLabel(this);
 
     //TODO maybe QString attribute unnecessary (auto cast std::string to QString?)
     QString q_filePath = QString::fromStdString(filePath);
@@ -89,7 +89,7 @@ QVBoxLayout* ResultWidget::createImageLayout(const std::string &filePath){
     imageLayout->addWidget(filePathLabel);
 
     //Displays the image
-    QLabel* imageLabel = new QLabel(this);
+    QLabel *imageLabel = new QLabel(this);
     QImage image(q_filePath);
     imageLabel->setPixmap(QPixmap::fromImage(image).scaled(227, 227, Qt::KeepAspectRatio));
     imageLayout->addWidget(imageLabel);
@@ -97,8 +97,8 @@ QVBoxLayout* ResultWidget::createImageLayout(const std::string &filePath){
     return imageLayout;
 }
 
-QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result) {
-    QVBoxLayout* layout = new QVBoxLayout();
+QVBoxLayout *ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result) {
+    QVBoxLayout *layout = new QVBoxLayout();
 
     //Stretch the layout from the top
     layout->insertStretch(0);
@@ -106,30 +106,30 @@ QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string,
 
     //TODO Maybe unnecessary since only Top5 ist stores in the ClassificaionResult
     //Only the Top-5 shall be displayed.
-    if(size > 5){
+    if (size > 5) {
         size = 5;
     }
 
     //Display the Top result in red and above the others
-    if(size != 0){
-        QLabel* topResult = new QLabel(this);
+    if (size != 0) {
+        QLabel *topResult = new QLabel(this);
         topResult->setStyleSheet("QLabel { color : red; }");
         topResult->setText(QString::fromStdString(result.at(0).first));
         layout->addWidget(topResult);
     }
 
-    for(int i = 0; i<size; ++i){
+    for (int i = 0; i < size; ++i) {
         std::pair<std::string, float> pair = result[i];
 
         //For every result insert a layout which has the result's name left and its percentage on the right side
-        QHBoxLayout* labelLayout = new QHBoxLayout();
+        QHBoxLayout *labelLayout = new QHBoxLayout();
 
-        QLabel* name = new QLabel(this);
+        QLabel *name = new QLabel(this);
         name->setText(QString::fromStdString(pair.first));
         name->setAlignment(Qt::AlignLeft);
         labelLayout->addWidget(name);
 
-        QLabel* percentage = new QLabel(this);
+        QLabel *percentage = new QLabel(this);
         //TODO when percentage too long round the number
         percentage->setText((QString::number(pair.second) + "%"));
         percentage->setAlignment(Qt::AlignRight);
@@ -143,28 +143,29 @@ QVBoxLayout* ResultWidget::createResultLayout(std::vector<std::pair<std::string,
     return layout;
 }
 
-QString ResultWidget::shortLink(const std::string &link){
+QString ResultWidget::shortLink(const std::string &link) {
     QString output = QString::fromStdString(link);
 
     int slashIndex = output.lastIndexOf('/');
 
     //When lastIndexOf() returns -1 the char has not been found
-    if(slashIndex != -1){
+    if (slashIndex != -1) {
         output.remove(0, slashIndex);
     }
 
     return output;
 }
 
-std::vector<std::pair<std::string, float>> ResultWidget::sortVector(std::vector<std::pair<std::string, float>> &vector){
+std::vector<std::pair<std::string, float>>
+ResultWidget::sortVector(std::vector<std::pair<std::string, float>> &vector) {
 
-    for(unsigned int i = 0; i<vector.size(); ++i){
-        std::pair<std::string, float>* pair_i = &vector[i];
+    for (unsigned int i = 0; i < vector.size(); ++i) {
+        std::pair<std::string, float> *pair_i = &vector[i];
 
-        for (unsigned int j = 0; j<vector.size(); ++j){
-            std::pair<std::string, float>* pair_j = &vector[j];
+        for (unsigned int j = 0; j < vector.size(); ++j) {
+            std::pair<std::string, float> *pair_j = &vector[j];
 
-            if((i != j) && (pair_i->second > pair_j->second)){
+            if ((i != j) && (pair_i->second > pair_j->second)) {
                 std::swap(*pair_i, *pair_j);
             }
         }
@@ -173,25 +174,33 @@ std::vector<std::pair<std::string, float>> ResultWidget::sortVector(std::vector<
     return vector;
 }
 
-void ResultWidget::clearLayout(QLayout *layout){
-    QLayoutItem* item;
+void ResultWidget::clearLayout(QLayout *layout) {
+    QLayoutItem *item;
 
     //Removes every item inside the layout and delete it
-    while((item = layout->takeAt(0))){
+    while ((item = layout->takeAt(0))) {
         if (item->layout()) {
             clearLayout(item->layout());
             delete item->layout();
         }
-        if(item->widget()){
+        if (item->widget()) {
             delete item->widget();
         }
     }
 }
 
-QPushButton* ResultWidget::getDetailsQPushButton(){
+QPushButton *ResultWidget::getDetailsQPushButton() {
     return ui->detailsQPushButton;
 }
 
-QPushButton* ResultWidget::getReturnQPushButton(){
+QPushButton *ResultWidget::getReturnQPushButton() {
     return ui->returnQPushButton;
+}
+
+QVBoxLayout *ResultWidget::getImagesQVBoxLayout() {
+    return ui->imagesQVBoxLayout;
+}
+
+QHBoxLayout *ResultWidget::getMainQHBoxLayout() {
+    return ui->mainQHBoxLayout;
 }

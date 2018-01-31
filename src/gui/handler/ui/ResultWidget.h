@@ -6,7 +6,7 @@
 #include <ClassificationResult.h>
 
 namespace Ui {
-class ResultWidget;
+    class ResultWidget;
 }
 
 /**
@@ -26,7 +26,7 @@ class ResultWidget;
  */
 class ResultWidget : public QWidget {
 
-    Q_OBJECT
+Q_OBJECT
 
 public:
 
@@ -63,13 +63,25 @@ public:
      * @brief Returns the QPushButton used to display the details
      * @return the detailsQPushButton
      */
-    QPushButton* getDetailsQPushButton();
+    QPushButton *getDetailsQPushButton();
 
     /**
      * @brief Returns the QPushButton used to return to the starting page of the GUI
      * @return the returnQPushButton
      */
-    QPushButton* getReturnQPushButton();
+    QPushButton *getReturnQPushButton();
+
+    /**
+     * @brief getImagesQVBoxLayout returns the layout in which the images and their results are stored
+     * @return imagesQVBoxLayout
+     */
+    QVBoxLayout *getImagesQVBoxLayout();
+
+    /**
+     * @brief getMainQHBoxLayout returns the main layout of ResultWidget
+     * @return mainQHBoxLayout
+     */
+    QHBoxLayout *getMainQHBoxLayout();
 
 private:
 
@@ -77,9 +89,9 @@ private:
 
     QString shortLink(const std::string &link);
 
-    QVBoxLayout* createImageLayout(const std::string &filePath);
+    QVBoxLayout *createImageLayout(const std::string &filePath);
 
-    QVBoxLayout* createResultLayout(std::vector<std::pair<std::string, float>> &result);
+    QVBoxLayout *createResultLayout(std::vector<std::pair<std::string, float>> &result);
 
     std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
 

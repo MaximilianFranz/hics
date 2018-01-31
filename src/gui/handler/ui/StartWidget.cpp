@@ -135,9 +135,7 @@ void StartWidget::addOperationModes(std::list<OperationMode> &operationModes){
     std::list<OperationMode>::iterator it;
 
     for(it = operationModes.begin(); it != operationModes.end(); ++it){
-        //TODO add operation mode name when its implemented.
-        //QString name = QString::fromStdString(it->);
-        ui->operationModesQComboBox->addItem("operationMode");
+        ui->operationModesQComboBox->addItem(QString::fromStdString(OperationModeString::getName(*it)));
     }
 }
 
@@ -198,6 +196,10 @@ std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
     }
 }
 
+OperationMode StartWidget::getSelectedOperationMode(){
+    return OperationModeString::getMode(ui->operationModesQComboBox->currentText().toStdString());
+}
+
 bool StartWidget::isAggregated(){
     return ui->aggregateResultsQCheckBox->isChecked();
 }
@@ -225,3 +227,24 @@ std::map<QString, QImage> StartWidget::getSelectedImages(){
 QPushButton* StartWidget::getClassificationQPushButton(){
     return ui->classificationQPushButton;
 }
+
+QComboBox* StartWidget::getOperationModesQComboBox(){
+    return ui->operationModesQComboBox;
+}
+
+QComboBox* StartWidget::getNeuralNetsQComboBox(){
+    return ui->neuralNetsQComboBox;
+}
+
+QVBoxLayout* StartWidget::getPlatformsQVBoxLayout(){
+    return ui->platformsQVBoxLayout;
+}
+
+QCheckBox* StartWidget::getAggregateResultsQCheckBox(){
+    return ui->aggregateResultsQCheckBox;
+}
+
+QMap<QImage*, QHBoxLayout*>* StartWidget::getImagesMap(){
+    return &images;
+};
+

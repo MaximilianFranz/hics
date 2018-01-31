@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDialog>
+#include <QLabel>
 #include <ClassificationResult.h>
 
 namespace Ui {
@@ -49,6 +50,12 @@ public:
      * Destructor of DetaiDialog which deletes all allocated memory on the heap.
      */
     ~DetailDialog();
+
+    QLabel* getComputationTimeQLabel();
+
+    QLabel* getPowerConsumptionQLabel();
+
+    QLabel* getPlatformUsageQLabel();
 
 private:
     Ui::DetailDialog *ui;
