@@ -71,4 +71,4 @@ void DetailDialogTest::testInsertDetails() {
              (std::string)"CPU: 20%, FPGA1: 10%, GPU1: 1%, GPU2: 69%");
 }
 
-QTEST_MAIN(DetailDialogTest)
+//QTEST_MAIN(DetailDialogTest)

@@ -35,8 +35,6 @@ void StartWidgetTest::cleanup() {
 }
 
 void StartWidgetTest::testConstructor() {
-    //TODO test constructor
-    //Test available neural nets at startup
 
     /*--------------Neural nets--------------------*/
 
@@ -44,15 +42,13 @@ void StartWidgetTest::testConstructor() {
 
     QCOMPARE(startWidget->getNeuralNetsQComboBox()->itemText(1).toStdString(), (std::string) "GoogLeNet");
 
-    //TODO implement modes test when string representation is done
-
     /*--------------Operation Modes----------------*/
 
-    //QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(0), *itModes);
+    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(0).toStdString(), (std::string)"High power");
 
-    //QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(1), *itModes);
+    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(1).toStdString(), (std::string)"Energy efficient");
 
-    //QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(2), *itModes);
+    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(2).toStdString(), (std::string)"Low power");
 
     /*--------------Platforms---------------------*/
 
@@ -112,8 +108,7 @@ void StartWidgetTest::testSelectedOperationMode() {
 
     QTest::keyClick(startWidget->getOperationModesQComboBox(), Qt::Key_Down);
 
-    //TODO change expected to *it, since the selectedoperationmode method is not yet implemented
-    QCOMPARE(startWidget->getSelectedOperationMode(), OperationMode::HighPower);
+    QCOMPARE(startWidget->getSelectedOperationMode(), OperationMode::EnergyEfficient);
 }
 
 void StartWidgetTest::testIsAggregated() {
@@ -124,4 +119,4 @@ void StartWidgetTest::testIsAggregated() {
     QCOMPARE(startWidget->isAggregated(), false);
 }
 
-//QTEST_MAIN(StartWidgetTest)
+QTEST_MAIN(StartWidgetTest)
