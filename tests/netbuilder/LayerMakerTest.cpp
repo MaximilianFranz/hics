@@ -11,7 +11,7 @@
 SCENARIO("Testing construction of Layers" , "[layermaker]") {
 
     LayerMaker l;
-    std::string path ="../../../src/netbuilder/loader/models/alexnet.json";
+    std::string path = "../../../resources/models/alexnet.json";
     JSONModelLoader m(path);
     std::vector<int> v{3, 227, 227};
     std::vector<int> outputafter1stconv{96, 55, 55};

@@ -156,7 +156,7 @@ TEST_CASE("test with real data from AlexNet") {
     std::string conv1_weights_path = "../../../tests/resources/conv1_weight.txt";
     std::string conv1_result_path = "../../../tests/resources/conv1_data_alexnet.txt";
     std::string conv2_result_path = "../../../tests/resources/conv2_data_out.txt";
-    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+    std::string weightspath = "../../../resources/weights/alexnet_weights.h5";
 
     std::vector<float> weights = getDataFromFile(conv1_weights_path);
     std::vector<float> bias = getDataFromFile(conv1_bias_path);
@@ -394,7 +394,7 @@ TEST_CASE("FullyConnected") {
 TEST_CASE("FullyConnected one with real data") {
     std::string fc1_in = "../../../tests/resources/fc1_data_in_flat.txt";
     std::string fc1_out = "../../../tests/resources/fc1_data_out.txt";
-    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+    std::string weightspath = "../../../resources/weights/alexnet_weights.h5";
     std::string weightFile = "../../../tests/resources/fc1_weights.txt";
     std::string biasFile = "../../../tests/resources/fc1_bias.txt";
 
@@ -440,7 +440,7 @@ TEST_CASE("FullyConnected one with real data") {
 TEST_CASE("FullyConnected two with real data") {
     std::string fc2_in = "../../../tests/resources/fc7_in.txt";
     std::string fc2_out = "../../../tests/resources/fc7_out.txt";
-    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+    std::string weightspath = "../../../resources/weights/alexnet_weights.h5";
 
     std::vector<float> result = getDataFromFile(fc2_out);
     std::vector<float> input = getDataFromFile(fc2_in);
@@ -483,7 +483,7 @@ TEST_CASE("FullyConnected two with real data") {
 TEST_CASE("FullyConnected three with real data") {
     std::string fc3_in = "../../../tests/resources/fc7_out.txt";
     std::string fc3_out = "../../../tests/resources/fc8_out.txt";
-    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+    std::string weightspath = "../../../resources/weights/alexnet_weights.h5";
 
     std::vector<float> result = getDataFromFile(fc3_out);
     std::vector<float> input = getDataFromFile(fc3_in);
@@ -517,7 +517,7 @@ TEST_CASE("FullyConnected three with real data") {
 TEST_CASE("Softmax with real data") {
     std::string sm_in = "../../../tests/resources/fc8_out.txt";
     std::string sm_out = "../../../tests/resources/sm_out.txt";
-    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+    std::string weightspath = "../../../resources/weights/alexnet_weights.h5";
 
     std::vector<float> result = getDataFromFile(sm_out);
     std::vector<float> input = getDataFromFile(sm_in);

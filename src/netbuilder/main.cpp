@@ -7,7 +7,7 @@
 int main(void){
 
     std::string FILE_PATH;
-    FILE_PATH = "../../../src/netbuilder/loader/weightloader/converted_AlexNet_Weights.h5";
+    FILE_PATH = "../../../resources/weights/alexnet_weights.h5";
 
     AlexNetWeightLoader alex(FILE_PATH);
 

@@ -20,7 +20,7 @@ NeuralNet* NetBuilder::buildNeuralNet(NetInfo netInfo) {
     LayerConstructionParams lcp = modelLoader.getLayerConstructionParamsByIndex(0);
     InputLayer* inputLayer = layerMaker.createInputLayer(lcp);
     // Use static path for now
-    AlexNetWeightLoader loader("../../../src/netbuilder/loader/weightloader/alexnet_weights.h5");
+    AlexNetWeightLoader loader("../../../resources/weights/alexnet_weights.h5");
     NeuralNet* alexNet = new NeuralNet(inputLayer, netInfo);
     Layer* layer;
     int weightIndex = 0;

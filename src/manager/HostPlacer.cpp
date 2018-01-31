@@ -7,7 +7,7 @@
 
 
 HostPlacer::Performance HostPlacer::readComputationHostInfo(std::string hostName) {
-    std::string jsonStr = StringLoader::getStringFromFile("../../../src/manager/computationHosts.json");
+    std::string jsonStr = StringLoader::getStringFromFile("../../../resources/computationHosts.json");
     json computationHostFile = json::parse(jsonStr);
     json computationHost = computationHostFile["computationHosts"];
 

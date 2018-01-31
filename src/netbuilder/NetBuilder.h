@@ -27,5 +27,5 @@ public:
 
     std::map<int, std::string> getLabelMap(NetInfo *net);
 
-    const std::string MODEL_DIR = "../../../src/netbuilder/loader/models";
+    const std::string MODEL_DIR = "../../../resources/models";
 };
