@@ -22,7 +22,7 @@
      <item>
       <widget class="QScrollArea" name="imagesQScrollArea">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -35,7 +35,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>76</width>
+          <width>223</width>
           <height>578</height>
          </rect>
         </property>

@@ -77,7 +77,6 @@ void ResultWidget::displayResults(const ClassificationResult &classificationResu
 
 QVBoxLayout *ResultWidget::createImageLayout(const std::string &filePath) {
     QVBoxLayout *imageLayout = new QVBoxLayout();
-
     //Displays the file path
     QLabel *filePathLabel = new QLabel(this);
 
@@ -91,7 +90,7 @@ QVBoxLayout *ResultWidget::createImageLayout(const std::string &filePath) {
     //Displays the image
     QLabel *imageLabel = new QLabel(this);
     QImage image(q_filePath);
-    imageLabel->setPixmap(QPixmap::fromImage(image).scaled(227, 227, Qt::KeepAspectRatio));
+    imageLabel->setPixmap(QPixmap::fromImage(image).scaled(150, 150, Qt::KeepAspectRatio));
     imageLayout->addWidget(imageLabel);
 
     return imageLayout;
@@ -154,6 +153,11 @@ QString ResultWidget::shortLink(const std::string &link) {
     }
 
     return output;
+}
+
+QString ResultWidget::shortPercentage(const float percentage, int floatingPoint){
+    QString output = QString::number(percentage);
+    //TODO implement this
 }
 
 std::vector<std::pair<std::string, float>>
