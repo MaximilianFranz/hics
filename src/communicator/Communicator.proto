@@ -3,6 +3,7 @@ syntax = "proto3";
 service Communicator {
     rpc classify(ClassifyRequest) returns(ClassifyReply) {}
     rpc queryPlatform(NullMessage) returns(PlatformReply) {}
+    rpc queryNets(NullMessage) returns(NetInfoReply) {}
 }
 
 message LabelMessage {
@@ -64,6 +65,10 @@ message ClassifyReply {
 
 message PlatformReply {
     repeated PlatformInfoMessage platforms = 1;
+}
+
+message NetInfoReply {
+    repeated NetInfoMessage nets = 1;
 }
 
 message NullMessage {}
