@@ -23,15 +23,17 @@ private:
     ComputationHost* fpgaExecutor;
     Status classify(::grpc::ServerContext *context, const ::ClassifyRequest *request,
                            ::ClassifyReply *response);
-    Status queryPlatforms(ClientContext *context, NullMessage *request, PlatformReply *reply);
-    Status queryNets(ClientContext *context, NullMessage *request, NetInfoReply *reply);
+    Status queryPlatforms(::grpc::ServerContext *context, const NullMessage *request, PlatformReply *reply);
+    Status queryNets(grpc::ServerContext *context, const NullMessage *request, NetInfoReply *reply);
 
 public:
     void init();
 
     //Status Communicator::Service::classifyRequest(ClientContext* context, ClassifyRequest* request, ClassifyReply* reply) override ;
-    Status queryPlatformsRequest(::grpc::ServerContext *context, const ::NullMessage *request, ::PlatformReply *reply);
-    Status queryNetsRequest(::grpc::ServerContext *context, const ::NullMessage *request, ::NetInfoReply *reply);
+    Status queryPlatformsRequest(::grpc::ServerContext *context, const ::NullMessage *request,
+                                 ::PlatformReply *reply) override;
+    Status queryNetsRequest(::grpc::ServerContext *context, const ::NullMessage *request,
+                            ::NetInfoReply *reply) override;
     Status classifyRequest(::grpc::ServerContext *context, const ::ClassifyRequest *request,
                                                   ::ClassifyReply *response) override;
 };

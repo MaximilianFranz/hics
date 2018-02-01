@@ -48,11 +48,37 @@ Status Server::classify(::grpc::ServerContext *context, const ::ClassifyRequest 
 }
 
 Status
-Server::queryPlatforms(ClientContext *context, NullMessage *request, PlatformReply *reply) {
-    return Status::CANCELLED;
+Server::queryPlatforms(grpc::ServerContext *context, const NullMessage *request, PlatformReply *reply) {
+    std::vector<PlatformInfo*> platforms = fpgaExecutor->queryPlatform();
+
+    for (auto platformIt : platforms) {
+        PlatformInfoMessage* newPlatform = reply->add_platforms();
+        Util::platformInfoToMessage(platformIt, newPlatform);
+    }
+    return Status::OK;
 }
 
 Status
-Server::queryNets(ClientContext *context, NullMessage *request, NetInfoReply *reply) {
-    return Status::CANCELLED;
+Server::queryNets(grpc::ServerContext *context, const NullMessage *request, NetInfoReply *reply) {
+    std::vector<NetInfo*> nets = fpgaExecutor->queryNets();
+
+    for (auto netIt : nets) {
+        NetInfoMessage* newNet = reply->add_nets();
+        Util::netInfoToMessage(netIt, newNet);
+    }
+    return Status::OK;
+}
+
+Status
+Server::queryPlatformsRequest(::grpc::ServerContext *context, const ::NullMessage *request, ::PlatformReply *reply) {
+    return Server::queryPlatforms(context, request, reply);
+}
+
+Status Server::queryNetsRequest(::grpc::ServerContext *context, const ::NullMessage *request, ::NetInfoReply *reply) {
+    return Server::queryNets(context, request, reply);
+}
+
+Status
+Server::classifyRequest(::grpc::ServerContext *context, const ::ClassifyRequest *request, ::ClassifyReply *response) {
+    return Service::classifyRequest(context, request, response);
 }

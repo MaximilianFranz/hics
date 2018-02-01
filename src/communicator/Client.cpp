@@ -19,7 +19,7 @@ std::vector<ImageResult*> Client::classify(std::vector<ImageWrapper *> images, N
 
     //create and add netInfo message object
     NetInfoMessage* netMes = request.mutable_net();
-    Util::netInfoToMessage(net, netMes);
+    Util::netInfoToMessage(&net, netMes);
 
     //set operation mode
     switch (mode) {

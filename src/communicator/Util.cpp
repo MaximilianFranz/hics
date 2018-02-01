@@ -16,10 +16,10 @@ void Util::imageWrapperToMessage(const ImageWrapper *img, ImageWrapperMessage *m
     }
 }
 
-void Util::netInfoToMessage(NetInfo net, NetInfoMessage *messagePtr) {
-    messagePtr->set_name(net.getName());
-    messagePtr->set_identifier(net.getIdentifier());
-    messagePtr->set_imagedimension(net.getImageDimension());
+void Util::netInfoToMessage(NetInfo* net, NetInfoMessage *messagePtr) {
+    messagePtr->set_name(net->getName());
+    messagePtr->set_identifier(net->getIdentifier());
+    messagePtr->set_imagedimension(net->getImageDimension());
 }
 
 void Util::platformInfoToMessage(const PlatformInfo *platform, PlatformInfoMessage *messagePtr) {
@@ -53,13 +53,6 @@ void Util::imageResultToMessage(const ImageResult *result, ImageResultMessage *r
         PlatformDistributionMessage* newDistribution = resultPtr->add_platformdistribution();
         platformInfoToMessage(&(distributionIt.first), newDistribution->mutable_platform());
         newDistribution->set_usage(distributionIt.second);
-    }
-}
-
-void Util::labelsToMessage(const std::vector<std::pair<std::string, float> *> labels, LabelMessage *labelPtr) {
-
-    for (auto labelIt : labels) {
-
     }
 }
 
