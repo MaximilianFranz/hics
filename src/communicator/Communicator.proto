@@ -4,7 +4,7 @@ service Communicator {
     rpc classify(ClassifyRequest) returns(ClassifyReply) {}
 }
 
-message Label {
+message LabelMessage {
     string name = 1;
     float probability = 2;
 }
@@ -41,7 +41,7 @@ message PlatformDistributionMessage {
 
 message ImageResultMessage {
     ImageWrapperMessage image = 1;
-    repeated Label classification = 2;
+    repeated LabelMessage classification = 2;
     repeated PlatformDistributionMessage platformDistribution = 3;
 }
 
