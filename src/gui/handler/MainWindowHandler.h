@@ -63,8 +63,8 @@ public:
     * @param platforms the available platforms in the software
     * @param operationModes the available operation modes in the software
     */
-    MainWindowHandler(std::list<NetInfo*> &neuralNets, std::list<PlatformInfo*> &platforms,
-                      std::list<OperationMode> &operationModes);
+    MainWindowHandler(std::vector<NetInfo*> &neuralNets, std::vector<PlatformInfo*> &platforms,
+                      std::vector<OperationMode> &operationModes);
 
     ~MainWindowHandler();
 

@@ -48,8 +48,8 @@ public:
      * @param operationModes are the available operation modes
      * @param parent is a possible parent widget
      */
-    explicit StartWidget(std::list<NetInfo*> &neuralNets, std::list<PlatformInfo*> &platforms,
-                                      std::list<OperationMode> &operationModes, QWidget *parent = 0);
+    explicit StartWidget(std::vector<NetInfo*> &neuralNets, std::vector<PlatformInfo*> &platforms,
+                                      std::vector<OperationMode> &operationModes, QWidget *parent = 0);
 
     /**
      * The destructor to delete all allocated memory on the heap.
@@ -153,14 +153,14 @@ private:
     Ui::StartWidget *ui;
     QList<QHBoxLayout*> inputImagesLayouts; /*!< Layout order: QCheckBox, QPixmap (the image), QLabel (the file path) */
     QMap<QImage*, QHBoxLayout*> images; /*!< Maps all loaded images to its layout */
-    std::map<QString, NetInfo> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
-    std::map<QString, PlatformInfo> platformMap; /*!< used to return the selected platform by using the displayed QString */
+    std::map<QString, NetInfo*> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
+    std::map<QString, PlatformInfo*> platformMap; /*!< used to return the selected platform by using the displayed QString */
 
-    void addNeuralNets(std::list<NetInfo*> &neuralNets);
+    void addNeuralNets(std::vector<NetInfo*> &neuralNets);
 
-    void addPlatforms(std::list<PlatformInfo*> &platforms);
+    void addPlatforms(std::vector<PlatformInfo*> &platforms);
 
-    void addOperationModes(std::list<OperationMode> &operationModes);
+    void addOperationModes(std::vector<OperationMode> &operationModes);
 
     QHBoxLayout* addInputImage(QImage* image, const QString &filePath);
 

@@ -12,13 +12,9 @@ Manager::Manager(){
 void Manager::initGUI(){
     auto nets = executor->queryNets();
     auto platforms = executor->queryPlatform();
-    std::list<OperationMode> modes{OperationMode::HighPower, OperationMode::LowPower, OperationMode::EnergyEfficient};
+    std::vector<OperationMode> modes{OperationMode::HighPower, OperationMode::LowPower, OperationMode::EnergyEfficient};
 
-    //TODO change list to vector
-    std::list<NetInfo*> newNets(nets.begin(), nets.end());
-    std::list<PlatformInfo*> newPlats(platforms.begin(), platforms.end());
-
-    mainWindowHandler = new MainWindowHandler(newNets, newPlats, modes);
+    mainWindowHandler = new MainWindowHandler(nets, platforms, modes);
     mainWindowHandler->attach(this);
 }
 

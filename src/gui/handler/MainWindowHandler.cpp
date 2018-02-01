@@ -1,8 +1,8 @@
 #include <NotImplementedException.h>
 #include "MainWindowHandler.h"
 
-MainWindowHandler::MainWindowHandler(std::list<NetInfo*> &neuralNets, std::list<PlatformInfo*> &platforms,
-                  std::list<OperationMode> &operationModes) {
+MainWindowHandler::MainWindowHandler(std::vector<NetInfo*> &neuralNets, std::vector<PlatformInfo*> &platforms,
+                  std::vector<OperationMode> &operationModes) {
 
     //Initialize the used UI's
     mainWindow = new MainWindow();

@@ -4,8 +4,8 @@
 #include "handler/ui/StartWidget.h"
 #include "ui_StartWidget.h"
 
-StartWidget::StartWidget(std::list<NetInfo*> &neuralNets, std::list<PlatformInfo*> &platforms,
-                         std::list<OperationMode> &operationModes, QWidget *parent) :
+StartWidget::StartWidget(std::vector<NetInfo*> &neuralNets, std::vector<PlatformInfo*> &platforms,
+                         std::vector<OperationMode> &operationModes, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::StartWidget)
 {
@@ -109,30 +109,30 @@ void StartWidget::processAbortDeletionQPushButton(){
 }
 
 
-void StartWidget::addNeuralNets(std::list<NetInfo*> &neuralNets){
-    std::list<NetInfo*>::iterator it;
+void StartWidget::addNeuralNets(std::vector<NetInfo*> &neuralNets){
+    std::vector<NetInfo*>::iterator it;
 
     for(it = neuralNets.begin(); it != neuralNets.end(); ++it){
         QString name = QString::fromStdString((*it)->getName());
-        neuralNetMap.insert(std::pair<QString, NetInfo>(name, **it));
+        neuralNetMap.insert(std::pair<QString, NetInfo*>(name, *it));
         ui->neuralNetsQComboBox->addItem(name);
     }
 }
 
-void StartWidget::addPlatforms(std::list<PlatformInfo*> &platforms){
-    std::list<PlatformInfo*>::iterator it;
+void StartWidget::addPlatforms(std::vector<PlatformInfo*> &platforms){
+    std::vector<PlatformInfo*>::iterator it;
 
     for(it = platforms.begin(); it != platforms.end(); ++it){
         QString name = QString::fromStdString((*it)->getDescription());
 
-        platformMap.insert(std::pair<QString, PlatformInfo>(name, **it));
+        platformMap.insert(std::pair<QString, PlatformInfo*>(name, *it));
         QCheckBox* checkbox = new QCheckBox(name, this);
         ui->platformsQVBoxLayout->addWidget(checkbox);
     }
 }
 
-void StartWidget::addOperationModes(std::list<OperationMode> &operationModes){
-    std::list<OperationMode>::iterator it;
+void StartWidget::addOperationModes(std::vector<OperationMode> &operationModes){
+    std::vector<OperationMode>::iterator it;
 
     for(it = operationModes.begin(); it != operationModes.end(); ++it){
         ui->operationModesQComboBox->addItem(QString::fromStdString(OperationModeString::getName(*it)));
@@ -156,14 +156,14 @@ void StartWidget::clearLayout(QLayout *layout){
 
 NetInfo StartWidget::getSelectedNeuralNet(){
     QString name = ui->neuralNetsQComboBox->currentText();
-    std::map<QString, NetInfo>::iterator it = neuralNetMap.find(name);
+    std::map<QString, NetInfo*>::iterator it = neuralNetMap.find(name);
 
     if(it == neuralNetMap.end()){
         //TODO throw exception here
 
     }
 
-    return it->second;
+    return *it->second;
 }
 
 std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
@@ -178,8 +178,8 @@ std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
                 checkBox = (QCheckBox*)(layout->itemAt(i)->widget());
                 if(checkBox->isChecked()){
                     try{
-                        PlatformInfo platform = platformMap.at(checkBox->text());
-                        selectedPlatforms.push_back(platform);
+                        PlatformInfo* platform = platformMap.at(checkBox->text());
+                        selectedPlatforms.push_back(*platform);
                     } catch (std::out_of_range e) {
                         e.what();
                     }
