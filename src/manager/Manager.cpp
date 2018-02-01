@@ -59,7 +59,9 @@ void Manager::update(){
 
     ClassificationResult* result = new ClassificationResult(newResults, request->getSelectedNeuralNet(), performanceData);
 
-    //TODO check if(aggregated) and aggregate if necessary
+    if(request->getAggregateResults()){
+        result->aggregateResults();
+    }
     mainWindowHandler->processClassificationResult(*result);
 }
 
