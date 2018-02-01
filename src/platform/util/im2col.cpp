@@ -11,6 +11,23 @@
 
 namespace helper {
 
+    void multiply_matrices_using_1d_vectors(const float *matrix_left,
+                                            const int matrix_left_rows, const int matrix_left_columns,
+                                            const float *matrix_right,
+                                            const int matrix_right_rows, const int matrix_right_columns,
+                                            float *result_matrix) {
+        const auto result_matrix_columns = matrix_right_columns;
+        for (int m = 0; m < matrix_left_rows; m++) {
+            for (int n = 0; n < matrix_right_columns; n++) {
+                float value = 0.f;
+                for (int k = 0; k < matrix_right_rows; k++) {
+                    value += matrix_left[m * matrix_left_columns + k] * matrix_right[k * matrix_right_columns + n];
+                }
+                result_matrix[m * result_matrix_columns + n] = value;
+            }
+        }
+    }
+
     /**
     * Checks if a given index lies in the interval [0,boundary).
     *
@@ -203,7 +220,7 @@ namespace helper {
 
         const int output_h = (height - kernel_h + 2 * pad_h) / stride_h + 1;
         const int output_w = (height - kernel_w + 2 * pad_w) / stride_w + 1;
-        int channels_col = channels * kernel_size * kernel_size; // number of
+        int channels_col = channels * kernel_size * kernel_size;
 
         for (int c = 0; c < channels_col; ++c) {
             int w_offset = c % kernel_w;
@@ -223,62 +240,6 @@ namespace helper {
                 }
             }
         }
-
-        /*
-        // remember the amount of elements inside a channel to move the pointer forward by that many addresses
-        const int channel_size = height * width;
-
-        for (int channel = channels; channel--; data_image += channel_size) {
-            for (int image_col = 0; image_col < width; image_col += stride) {
-                for (int image_row = 0; image_row < width; image_row += stride) {
-
-                    // erst Reihe für Reihe
-                    for (int kernel_col = 0; kernel_col < kernel_size; kernel_col++) {
-                        for (int kernel_row = 0; kernel_row < kernel_size; kernel_row++) {
-                            if (is_value_ge_zero_and_value_lt_boundary(kernel_row, height)) {
-                                *(data_column++) = data_image[image_row + kernel_row * width + image_col + kernel_col];
-                            } else {
-                                *(data_column++) = 0;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        */
-
-        /*
-        for (int channel = channels; channel--; data_image += channel_size) {
-
-
-            int input_row = -padding + kernel_row;
-
-
-            for (int kernel_col = 0; kernel_col < kernel_size; ++kernel_col) {
-
-                if (!is_value_ge_zero_and_value_lt_boundary(input_row, width)) {
-                    for (int output_cols = output_w; output_cols; output_cols--) {
-                        *(data_column++) = 0;
-                    }
-                } else {
-                    // int input_col = -padding + kernel_col;
-
-                    for (int kernel_row = 0; kernel_row < kernel_size; ++kernel_row) {
-                        if (is_value_ge_zero_and_value_lt_boundary(kernel_row, height)) {
-                            *(data_column++) = data_image[kernel_col + kernel_row * width];
-                        } else {
-                            *(data_column++) = 0;
-                        }
-                        input_col += stride;
-                    }
-                }
-
-                input_row += stride;
-            }
-
-        }
-        */
-
     }
 
     // Explicit instantiation
@@ -306,9 +267,9 @@ namespace helper {
         int stride_h, stride_w;
         stride_h = stride_w = stride;
 
-        int height_col = (height + 2 * pad_h - kernel_h) / stride_h + 1;
-        int width_col = (width + 2 * pad_w - kernel_w) / stride_w + 1;
-        int channels_col = channels * kernel_h * kernel_w;
+        int height_col = (height - kernel_h + 2 * pad_h) / stride_h + 1;
+        int width_col = (width - kernel_w + 2 * pad_w) / stride_w + 1;
+        int channels_col = kernel_h * kernel_w * channels;
 
         std::fill(data_image, data_image + width * height * channels, 0);
         for (int c = 0; c < channels_col; ++c) {
