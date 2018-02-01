@@ -67,4 +67,6 @@ PlatformType CpuPlatform::getPlatformType() {
     return PlatformType::CPU;
 }
 
-CpuPlatform::CpuPlatform() {}
+CpuPlatform::CpuPlatform() {
+    platformInfo = *(new PlatformInfo("CPU", PlatformType::CPU, "someID", 100, 3333));
+}
