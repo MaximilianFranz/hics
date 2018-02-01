@@ -7,7 +7,7 @@ MainWindowHandler::MainWindowHandler(std::list<NetInfo*> &neuralNets, std::list<
     //Initialize the used UI's
     mainWindow = new MainWindow();
     startWidget = new StartWidget(neuralNets, platforms, operationModes, mainWindow);
-    resultWidget = new ResultWidget(mainWindow);
+    resultWidget = new ResultWidget();
     detailDialog = new DetailDialog(mainWindow);
 
     //mainWindow's QStackedWidget will be the main display
@@ -43,8 +43,14 @@ ClassificationRequest* MainWindowHandler::getClassificationRequestState(){
 }
 
 void MainWindowHandler::processClassificationResult(const ClassificationResult &classificationResult){
+    disconnectAll();
+    mainWindow->removeWidgetFromStack(resultWidget);
+    delete resultWidget;
+    resultWidget = new ResultWidget;
+    connectAll();
     //Initialize the results in resultWidget
     resultWidget->displayResults(classificationResult);
+    mainWindow->addWidgetToStack(resultWidget);
     //Initialize the details in detailDialog
     detailDialog->insertDetails(&classificationResult);
     //Change the currently displayed widget to resultWidget
@@ -53,9 +59,14 @@ void MainWindowHandler::processClassificationResult(const ClassificationResult &
 
 void MainWindowHandler::processReturnQPushButton(){
     mainWindow->setCurrentWidget(startWidget);
+
     disconnectAll();
+    mainWindow->removeWidgetFromStack(resultWidget);
     delete resultWidget;
+
     resultWidget = new ResultWidget(mainWindow);
+    mainWindow->addWidgetToStack(resultWidget);
+
     delete detailDialog;
     detailDialog = new DetailDialog(mainWindow);
     connectAll();
