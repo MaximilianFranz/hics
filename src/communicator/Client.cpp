@@ -34,7 +34,7 @@ std::vector<ImageResult*> Client::classify(std::vector<ImageWrapper *> images, N
         Util::platformInfoToMessage(platform, platMes);
     }
     //Client::stub_.operator*().classify(context, request, reply);
-    Status status = Client::stub_.operator*().classify(&context, request, &reply);
+    Status status = Client::stub_.operator*().classifyRequest(&context, request, &reply);
 
     if (status.ok()) {
         std::vector<ImageResult*> results;
@@ -54,7 +54,7 @@ std::vector<PlatformInfo*> Client::queryPlatform() {
     PlatformReply reply;
     ClientContext context;
 
-    Status status = Client::stub_.operator*().queryPlatform(&context, request, &reply);
+    Status status = Client::stub_.operator*().queryPlatformsRequest(&context, request, &reply);
 
     if (status.ok()) {
         std::vector<PlatformInfo*> platforms;
@@ -74,7 +74,7 @@ std::vector<NetInfo*> Client::queryNets() {
     NetInfoReply reply;
     ClientContext context;
 
-    Status status = Client::stub_.operator*().queryNets(&context, request, &reply);
+    Status status = Client::stub_.operator*().queryNetsRequest(&context, request, &reply);
 
     if (status.ok()) {
         std::vector<NetInfo*> nets;

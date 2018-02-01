@@ -1,9 +1,9 @@
 syntax = "proto3";
 
 service Communicator {
-    rpc classify(ClassifyRequest) returns(ClassifyReply) {}
-    rpc queryPlatform(NullMessage) returns(PlatformReply) {}
-    rpc queryNets(NullMessage) returns(NetInfoReply) {}
+    rpc classifyRequest(ClassifyRequest) returns(ClassifyReply) {}
+    rpc queryPlatformsRequest(NullMessage) returns(PlatformReply) {}
+    rpc queryNetsRequest(NullMessage) returns(NetInfoReply) {}
 }
 
 message LabelMessage {

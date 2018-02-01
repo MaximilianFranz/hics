@@ -6,19 +6,19 @@
 #include "Util.h"
 
 
-std::vector<ImageResult *>
-Server::cassifyRequest(ClientContext &context, ClassifyRequest request, ClassifyReply &reply) {
+Status Server::classify(::grpc::ServerContext *context, const ::ClassifyRequest *request,
+                ::ClassifyReply *reply) {
     std::vector<ImageWrapper*> images;
 
-    for (int i = 0; i < request.images_size(); i++) {
-        images.push_back(Util::messageToImageWrapper(&(request.images(i))));
+    for (int i = 0; i < request->images_size(); i++) {
+        images.push_back(Util::messageToImageWrapper(&(request->images(i))));
     }
 
-    NetInfo net = *(Util::messageToNetInfo(&(request.net())));
+    NetInfo net = *(Util::messageToNetInfo(&(request->net())));
 
     OperationMode mode;
 
-    switch (request.mode()) {
+    switch (request->mode()) {
         case ClassifyRequest::HighPower         : mode = OperationMode::HighPower;
             break;
         case ClassifyRequest::LowPower          : mode = OperationMode::LowPower;
@@ -27,21 +27,32 @@ Server::cassifyRequest(ClientContext &context, ClassifyRequest request, Classify
             break;
         default:
             //TODO: specific exeption
-            throw new std::exception;
+            throw std::exception();
     }
 
     std::vector<PlatformInfo*> platforms;
 
-    for (int i = 0; i < request.selectedplatforms_size(); i++) {
-        platforms.push_back(Util::messageToPlatformInfo(&(request.selectedplatforms(i))));
+    for (int i = 0; i < request->selectedplatforms_size(); i++) {
+        platforms.push_back(Util::messageToPlatformInfo(&(request->selectedplatforms(i))));
     }
 
+    //TODO: find way to include private attribute
     std::vector<ImageResult*> results = fpgaExecutor->classify(images, net, mode, platforms);
 
     //Set the new result in the message reply
     for (auto resultIt : results) {
-        ImageResultMessage* newResult = reply.add_results();
+        ImageResultMessage* newResult = reply->add_results();
         Util::imageResultToMessage(resultIt, newResult);
     }
-    return std::vector<ImageResult *>();
+    return Status::OK;
+}
+
+Status
+Server::queryPlatforms(ClientContext *context, NullMessage *request, PlatformReply *reply) {
+    return Status::CANCELLED;
+}
+
+Status
+Server::queryNets(ClientContext *context, NullMessage *request, NetInfoReply *reply) {
+    return Status::CANCELLED;
 }
