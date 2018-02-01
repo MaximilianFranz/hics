@@ -3,6 +3,45 @@
 //
 
 #include "Server.h"
+#include "Util.h"
 
-#include "Communicator.pb.h"
-#include "Communicator.grpc.pb.h"
+
+std::vector<ImageResult *>
+Server::cassifyRequest(ClientContext &context, ClassifyRequest request, ClassifyReply &reply) {
+    std::vector<ImageWrapper*> images;
+
+    for (int i = 0; i < request.images_size(); i++) {
+        images.push_back(Util::messageToImageWrapper(&(request.images(i))));
+    }
+
+    NetInfo net = *(Util::messageToNetInfo(&(request.net())));
+
+    OperationMode mode;
+
+    switch (request.mode()) {
+        case ClassifyRequest::HighPower         : mode = OperationMode::HighPower;
+            break;
+        case ClassifyRequest::LowPower          : mode = OperationMode::LowPower;
+            break;
+        case ClassifyRequest::EnergyEfficient   : mode = OperationMode::EnergyEfficient;
+            break;
+        default:
+            //TODO: specific exeption
+            throw new std::exception;
+    }
+
+    std::vector<PlatformInfo*> platforms;
+
+    for (int i = 0; i < request.selectedplatforms_size(); i++) {
+        platforms.push_back(Util::messageToPlatformInfo(&(request.selectedplatforms(i))));
+    }
+
+    std::vector<ImageResult*> results = fpgaExecutor->classify(images, net, mode, platforms);
+
+    //Set the new result in the message reply
+    for (auto resultIt : results) {
+        ImageResultMessage* newResult = reply.add_results();
+        Util::imageResultToMessage(resultIt, newResult);
+    }
+    return std::vector<ImageResult *>();
+}
