@@ -25,6 +25,10 @@ PlatformManager& PlatformManager::getInstance() {
 }
 
 std::vector<PlatformInfo*> PlatformManager::getPlatformInfos() {
-    return std::vector<PlatformInfo*>();
+    std::vector<PlatformInfo*> infos;
+    for (auto p : platforms) {
+        infos.push_back(&(p->getPlatformInfo()));
+    }
+    return infos;
 }
 
