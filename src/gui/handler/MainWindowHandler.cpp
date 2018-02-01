@@ -42,7 +42,7 @@ ClassificationRequest* MainWindowHandler::getClassificationRequestState(){
     return classificationRequestState;
 }
 
-void MainWindowHandler::processClassificationResult(const ClassificationResult &classificationResult){
+void MainWindowHandler::processClassificationResult(ClassificationResult *classificationResult){
     disconnectAll();
     mainWindow->removeWidgetFromStack(resultWidget);
     delete resultWidget;
@@ -52,7 +52,7 @@ void MainWindowHandler::processClassificationResult(const ClassificationResult &
     resultWidget->displayResults(classificationResult);
     mainWindow->addWidgetToStack(resultWidget);
     //Initialize the details in detailDialog
-    detailDialog->insertDetails(&classificationResult);
+    detailDialog->insertDetails(classificationResult);
     //Change the currently displayed widget to resultWidget
     mainWindow->setCurrentWidget(resultWidget);
 }

@@ -62,7 +62,7 @@ void Manager::update(){
     if(request->getAggregateResults()){
         result->aggregateResults();
     }
-    mainWindowHandler->processClassificationResult(*result);
+    mainWindowHandler->processClassificationResult(result);
 }
 
 bool Manager::operator==(const ManagerObserver &managerObserver){

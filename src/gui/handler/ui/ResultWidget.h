@@ -57,7 +57,7 @@ public:
      *
      * @param classificationResult has the classification results
      */
-    void displayResults(const ClassificationResult &classificationResult);
+    void displayResults(ClassificationResult *classificationResult);
 
     /**
      * @brief Returns the QPushButton used to display the details

@@ -78,7 +78,7 @@ public:
      * @brief processClassificationResult will display the provided data in the ClassificationResult in the GUI.
      * @param classificationResult contains the classification result and details which shall be displayed
      */
-    void processClassificationResult(const ClassificationResult &classificationResult);
+    void processClassificationResult(ClassificationResult *classificationResult);
 
     //TODO here could be the displayErrorMessage(Exception e) method
 

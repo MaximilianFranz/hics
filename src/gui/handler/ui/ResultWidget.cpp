@@ -24,15 +24,15 @@ ResultWidget::~ResultWidget() {
     //TODO delete aggregated results layout
 }
 
-void ResultWidget::displayResults(const ClassificationResult &classificationResult) {
+void ResultWidget::displayResults(ClassificationResult *classificationResult) {
 
     bool aggregated = false;
 
     //Checks if the results need to be displayed aggregated or not
-    if (classificationResult.getAggregatedResults().size() > 0)
+    if (classificationResult->getAggregatedResults().size() > 0)
         aggregated = true;
 
-    std::vector<ImageResult> results = classificationResult.getResults();
+    std::vector<ImageResult> results = classificationResult->getResults();
 
     for (unsigned int i = 0; i < results.size(); ++i) {
         ImageResult imageResult = results[i];
@@ -62,7 +62,7 @@ void ResultWidget::displayResults(const ClassificationResult &classificationResu
 
     //Display the aggregated result outside of the QScrollArea
     if (aggregated) {
-        std::vector<std::pair<std::string, float>> aggregatedResult = classificationResult.getAggregatedResults();
+        std::vector<std::pair<std::string, float>> aggregatedResult = classificationResult->getAggregatedResults();
         QVBoxLayout *aggregatedLayout = createResultLayout(aggregatedResult);
 
         /* Places the aggregated result between two horizontal spacers in mainQHBoxLayout (index = 2) to avoid the
