@@ -4,6 +4,8 @@
 
 #include "Configuration.h"
 
+const std::string Configuration::SETTINGS_PATH = "../../../resources";
+
 std::string Configuration::get_model_path() {
     return SETTINGS_PATH + "/models";
 }
