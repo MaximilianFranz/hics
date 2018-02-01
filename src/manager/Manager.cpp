@@ -19,6 +19,7 @@ void Manager::initGUI(){
     std::list<PlatformInfo*> newPlats(platforms.begin(), platforms.end());
 
     mainWindowHandler = new MainWindowHandler(newNets, newPlats, modes);
+    mainWindowHandler->attach(*this);
 }
 
 void Manager::update(){

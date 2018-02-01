@@ -26,7 +26,7 @@ private:
     std::vector<ManagerObserver> observers;
 
 public:
-
+    //TODO add pointers
     /**
      * @brief A ManagerObserver can be attached to the observers list.
      *
