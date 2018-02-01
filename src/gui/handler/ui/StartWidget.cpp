@@ -4,7 +4,7 @@
 #include "handler/ui/StartWidget.h"
 #include "ui_StartWidget.h"
 
-StartWidget::StartWidget(std::list<NetInfo> &neuralNets, std::list<PlatformInfo> &platforms,
+StartWidget::StartWidget(std::list<NetInfo*> &neuralNets, std::list<PlatformInfo*> &platforms,
                          std::list<OperationMode> &operationModes, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::StartWidget)
@@ -109,23 +109,23 @@ void StartWidget::processAbortDeletionQPushButton(){
 }
 
 
-void StartWidget::addNeuralNets(std::list<NetInfo> &neuralNets){
-    std::list<NetInfo>::iterator it;
+void StartWidget::addNeuralNets(std::list<NetInfo*> &neuralNets){
+    std::list<NetInfo*>::iterator it;
 
     for(it = neuralNets.begin(); it != neuralNets.end(); ++it){
-        QString name = QString::fromStdString(it->getName());
-        neuralNetMap.insert(std::pair<QString, NetInfo>(name, *it));
+        QString name = QString::fromStdString((*it)->getName());
+        neuralNetMap.insert(std::pair<QString, NetInfo>(name, **it));
         ui->neuralNetsQComboBox->addItem(name);
     }
 }
 
-void StartWidget::addPlatforms(std::list<PlatformInfo> &platforms){
-    std::list<PlatformInfo>::iterator it;
+void StartWidget::addPlatforms(std::list<PlatformInfo*> &platforms){
+    std::list<PlatformInfo*>::iterator it;
 
     for(it = platforms.begin(); it != platforms.end(); ++it){
-        QString name = QString::fromStdString(it->getDescription());
+        QString name = QString::fromStdString((*it)->getDescription());
 
-        platformMap.insert(std::pair<QString, PlatformInfo>(name, *it));
+        platformMap.insert(std::pair<QString, PlatformInfo>(name, **it));
         QCheckBox* checkbox = new QCheckBox(name, this);
         ui->platformsQVBoxLayout->addWidget(checkbox);
     }

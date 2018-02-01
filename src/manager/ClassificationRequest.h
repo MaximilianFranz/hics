@@ -92,7 +92,7 @@ public:
      * Accesses the list containing the available computation platforms
      * @return      platforms
      */
-    std::vector<PlatformInfo> getSelectedPlatforms();
+    std::vector<PlatformInfo*> getSelectedPlatforms();
 
     /**
      * Accesses the selected operation mode.

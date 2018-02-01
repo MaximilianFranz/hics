@@ -10,9 +10,9 @@ void PreProcessor::setOutputSize(int w, int h) {
     height = h;
 }
 
-std::vector<ImageWrapper> PreProcessor::processImages(std::map<QString, QImage> imgMap) {
+std::vector<ImageWrapper*> PreProcessor::processImages(std::map<QString, QImage> imgMap) {
 
-    std::vector<ImageWrapper> images;
+    std::vector<ImageWrapper*> images;
 
     //iterate over each image
     for (auto it = imgMap.begin(); it != imgMap.end(); ++it) {
@@ -75,7 +75,7 @@ std::vector<ImageWrapper> PreProcessor::processImages(std::map<QString, QImage> 
             bitmap[i] = float(bitmap[i] - (meanR + meanG + meanB)/3);
         }
 
-        images.emplace_back(ImageWrapper(dim, bitmap, stdFilePath));
+        images.emplace_back(new ImageWrapper(dim, bitmap, stdFilePath));
 
     }
 

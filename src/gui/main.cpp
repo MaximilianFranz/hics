@@ -3,6 +3,7 @@
 //
 
 #include <QApplication>
+#include <Manager.h>
 #include "handler/ui/MainWindow.h"
 #include "handler/MainWindowHandler.h"
 #include "PerformanceData.h"
@@ -14,26 +15,26 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    ResultWidget* resultWidget = new ResultWidget();
-
-    NetInfo net("AlexNet", 227, "alexnet");
-    PlatformInfo platform("CPU", PlatformType::CPU, "id", 100, 4);
-    OperationMode mode(HighPower);
-    OperationMode mode2(LowPower);
-    OperationMode mode3(EnergyEfficient);
-
-
-    std::list<NetInfo> nets;
-    nets.push_back(net);
-    std::list<PlatformInfo> plats;
-    plats.push_back(platform);
-    std::list<OperationMode> modes;
-    modes.push_back(mode);
-    modes.push_back(mode2);
-    modes.push_back(mode3);
-
-
-    MainWindowHandler handler(nets, plats, modes);
+//    ResultWidget* resultWidget = new ResultWidget();
+//
+//    NetInfo net("AlexNet", 227, "alexnet");
+//    PlatformInfo platform("CPU", PlatformType::CPU, "id", 100, 4);
+//    OperationMode mode(HighPower);
+//    OperationMode mode2(LowPower);
+//    OperationMode mode3(EnergyEfficient);
+//
+//
+//    std::list<NetInfo> nets;
+//    nets.push_back(net);
+//    std::list<PlatformInfo> plats;
+//    plats.push_back(platform);
+//    std::list<OperationMode> modes;
+//    modes.push_back(mode);
+//    modes.push_back(mode2);
+//    modes.push_back(mode3);
+//
+//
+//    MainWindowHandler handler(nets, plats, modes);
 
 
 //    std::vector<std::pair<std::string, float>> results;
@@ -87,5 +88,13 @@ int main(int argc, char *argv[])
 //    DetailDialog* d = new DetailDialog();
 //    d->insertDetails(&classificationResult);
 //    //d->show();
+
+
+    Manager manager;
+    manager.initGUI();
+
+
+
+
     return a.exec();
 }

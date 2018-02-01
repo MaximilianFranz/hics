@@ -32,5 +32,5 @@ public:
      * @param imgMap    Map containing the images
      * @return  vector with the images as ImageWrapper
      */
-    std::vector<ImageWrapper> processImages(std::map<QString, QImage> imgMap);
+    std::vector<ImageWrapper*> processImages(std::map<QString, QImage> imgMap);
 };

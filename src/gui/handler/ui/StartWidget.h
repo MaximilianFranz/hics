@@ -48,7 +48,7 @@ public:
      * @param operationModes are the available operation modes
      * @param parent is a possible parent widget
      */
-    explicit StartWidget(std::list<NetInfo> &neuralNets, std::list<PlatformInfo> &platforms,
+    explicit StartWidget(std::list<NetInfo*> &neuralNets, std::list<PlatformInfo*> &platforms,
                                       std::list<OperationMode> &operationModes, QWidget *parent = 0);
 
     /**
@@ -156,9 +156,9 @@ private:
     std::map<QString, NetInfo> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
     std::map<QString, PlatformInfo> platformMap; /*!< used to return the selected platform by using the displayed QString */
 
-    void addNeuralNets(std::list<NetInfo> &neuralNets);
+    void addNeuralNets(std::list<NetInfo*> &neuralNets);
 
-    void addPlatforms(std::list<PlatformInfo> &platforms);
+    void addPlatforms(std::list<PlatformInfo*> &platforms);
 
     void addOperationModes(std::list<OperationMode> &operationModes);
 
