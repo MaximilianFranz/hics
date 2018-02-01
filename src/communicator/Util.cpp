@@ -37,6 +37,32 @@ void Util::platformInfoToMessage(const PlatformInfo *platform, PlatformInfoMessa
     messagePtr->set_flops(platform->getFlops());
 }
 
+void Util::imageResultToMessage(const ImageResult *result, ImageResultMessage *resultPtr) {
+    //convert image
+    imageWrapperToMessage(&(result->getImage()), resultPtr->mutable_image());
+
+    //convert result labels
+    for (auto labelIt : result->getResults()) {
+        LabelMessage* newLabel = resultPtr->add_classification();
+        newLabel->set_name(labelIt.first);
+        newLabel->set_probability(labelIt.second);
+    }
+
+    //convert computationDistribution
+    for (auto distributionIt : result->getCompDistribution()) {
+        PlatformDistributionMessage* newDistribution = resultPtr->add_platformdistribution();
+        platformInfoToMessage(&(distributionIt.first), newDistribution->mutable_platform());
+        newDistribution->set_usage(distributionIt.second);
+    }
+}
+
+void Util::labelsToMessage(const std::vector<std::pair<std::string, float> *> labels, LabelMessage *labelPtr) {
+
+    for (auto labelIt : labels) {
+
+    }
+}
+
 ImageWrapper* Util::messageToImageWrapper(const ImageWrapperMessage *imgMes) {
     //read dimensions
     std::vector<int> dimensions;
@@ -84,4 +110,8 @@ ImageResult *Util::messageToImageResult(const ImageResultMessage *imgMes) {
     }
 
     return new ImageResult(results, distribution, *img);
+}
+
+NetInfo *Util::messageToNetInfo(const NetInfoMessage *net) {
+    return new NetInfo(net->name(), net->imagedimension(), net->identifier());
 }
