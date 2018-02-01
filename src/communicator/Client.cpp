@@ -50,6 +50,23 @@ std::vector<ImageResult*> Client::classify(std::vector<ImageWrapper *> images, N
 }
 
 std::vector<PlatformInfo*> Client::queryPlatform() {
+    NullMessage request;
+    PlatformReply reply;
+    ClientContext context;
+
+    Status status = Client::stub_.operator*().queryPlatform(&context, request, &reply);
+
+    if (status.ok()) {
+        std::vector<PlatformInfo*> platforms;
+        for (int i = 0; i < reply.platforms_size(); i++) {
+            platforms.push_back(Util::messageToPlatformInfo(&(reply.platforms(i))));
+        }
+        return platforms;
+    } else {
+        //TODO: specific exeption
+        throw std::exception();
+    }
+
 }
 
 std::vector<NetInfo*> Client::queryNets() {
