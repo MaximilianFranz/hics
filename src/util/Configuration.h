@@ -9,7 +9,7 @@
 
 class Configuration {
 private:
-    const std::string SETTINGS_PATH = "../../../src/settings";
+    const std::string SETTINGS_PATH = "../../../resources";
 
 public:
 

@@ -1,0 +1,1 @@
+add_library(util STATIC Configuration.cpp Configuration.h)

@@ -6,7 +6,7 @@
 
 
 std::string Configuration::get_model_path(std::string neuralNetIdentifier) {
-    return SETTINGS_PATH + "/" + neuralNetIdentifier + "/" + neuralNetIdentifier + ".json";;
+    return SETTINGS_PATH + "/models/" + neuralNetIdentifier + ".json";;
 }
 
 std::string Configuration::get_weights_path(std::string neuralNetIdentifier) {
