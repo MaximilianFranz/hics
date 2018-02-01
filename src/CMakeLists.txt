@@ -8,7 +8,7 @@ add_subdirectory(netbuilder)
 add_subdirectory(neuralnet)
 add_subdirectory(platform)
 
-set(SOURCE_FILES NotImplementedException.cpp NotImplementedException.h)
+set(SOURCE_FILES NotImplementedException.cpp NotImplementedException.h settings/Configuration.cpp settings/Configuration.h)
 add_library(hics STATIC ${SOURCE_FILES})
 
 add_executable(hics-exec main.cpp)
