@@ -23,6 +23,8 @@ public:
      */
     const std::vector<std::pair<PlatformInfo*, float>> &getCompDistribution() const;
 
+    void setCompDistribution(const std::vector<std::pair<PlatformInfo, float>> &compDistribution);
+
     /**\brief Constructor
      *
      * @param results top X
@@ -44,6 +46,8 @@ public:
      * @return
      */
     const std::vector<std::pair<std::string, float>> &getResults() const;
+
+    const ImageWrapper &getImage() const;
 
 };
 
