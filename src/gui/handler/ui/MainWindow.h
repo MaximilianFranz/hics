@@ -32,6 +32,8 @@ public:
      */
     void addWidgetToStack(QWidget* widget);
 
+    void removeWidgetFromStack(QWidget* widget);
+
     /**
      * @brief setCurrentWidget sets the given widget to the currently displayed one in mainWindowQStackedWidget, if it
      *        is stored in it.

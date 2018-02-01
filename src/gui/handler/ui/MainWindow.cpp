@@ -7,12 +7,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     mainWindowQStackedWidget = new QStackedWidget(this);
+    //ui->centralwidget = mainWindowQStackedWidget;
     this->setCentralWidget(mainWindowQStackedWidget);
     this->show();
 }
 
 void MainWindow::addWidgetToStack(QWidget* widget){
     mainWindowQStackedWidget->addWidget(widget);
+}
+
+void MainWindow::removeWidgetFromStack(QWidget* widget) {
+    mainWindowQStackedWidget->removeWidget(widget);
 }
 
 void MainWindow::setCurrentWidget(QWidget* widget){
