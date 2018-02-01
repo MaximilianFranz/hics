@@ -7,6 +7,3 @@ add_subdirectory(manager)
 add_subdirectory(netbuilder)
 add_subdirectory(neuralnet)
 add_subdirectory(platform)
-
-set(SOURCE_FILES NotImplementedException.cpp NotImplementedException.h)
-add_library(hics STATIC ${SOURCE_FILES})

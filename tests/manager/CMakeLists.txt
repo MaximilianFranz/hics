@@ -2,6 +2,6 @@ add_executable(managertests PreProcessorTest.cpp PreProcessorTest.h Classificati
 
 #Link against manager lib to get access to symbols
 #Link against catchtest to use the Catch-main function.
-target_link_libraries(managertests catchtest hics manager netbuilder platform executor)
+target_link_libraries(managertests catchtest manager netbuilder platform executor)
 
 add_test(NAME managertest COMMAND managertests)
