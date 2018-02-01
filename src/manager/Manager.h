@@ -29,8 +29,9 @@ public:
     /**
      * called by GUI to update the Manager when the classify is pressed
      */
-    void update();
+    virtual void update();
 
     void initGUI();
 
+    bool operator==(const ManagerObserver &managerObserver) override;
 };

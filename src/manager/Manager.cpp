@@ -19,7 +19,7 @@ void Manager::initGUI(){
     std::list<PlatformInfo*> newPlats(platforms.begin(), platforms.end());
 
     mainWindowHandler = new MainWindowHandler(newNets, newPlats, modes);
-    mainWindowHandler->attach(*this);
+    mainWindowHandler->attach(this);
 }
 
 void Manager::update(){
@@ -60,4 +60,8 @@ void Manager::update(){
     ClassificationResult* result = new ClassificationResult(newResults, request->getSelectedNeuralNet(), performanceData);
 
     mainWindowHandler->processClassificationResult(*result);
+}
+
+bool Manager::operator==(const ManagerObserver &managerObserver){
+    return this == &managerObserver;
 }

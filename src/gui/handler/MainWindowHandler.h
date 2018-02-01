@@ -33,7 +33,7 @@
  * @date    17.01.2018
  *
  */
-class MainWindowHandler : public QObject, MainWindowSubject {
+class MainWindowHandler : public QObject, public MainWindowSubject {
 
 Q_OBJECT
 
