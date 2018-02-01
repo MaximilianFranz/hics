@@ -70,6 +70,21 @@ std::vector<PlatformInfo*> Client::queryPlatform() {
 }
 
 std::vector<NetInfo*> Client::queryNets() {
+    NullMessage request;
+    NetInfoReply reply;
+    ClientContext context;
+
+    Status status = Client::stub_.operator*().queryNets(&context, request, &reply);
+
+    if (status.ok()) {
+        std::vector<NetInfo*> nets;
+        for (int i = 0; i < reply.nets_size(); i++) {
+            nets.push_back(Util::messageToNetInfo(&(reply.nets(i))));
+        }
+        return nets;
+    } else {
+        throw new std::exception();
+    }
 }
 
 //TODO: Cast methods from message objects to c++ and vice versa (see Util::)
