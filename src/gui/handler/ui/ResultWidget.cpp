@@ -51,7 +51,7 @@ void ResultWidget::displayResults(const ClassificationResult &classificationResu
 
         //If its not aggregated the individual result must be inside the QScrollArea
         if (!aggregated) {
-            container->addSpacing(25);
+            container->insertStretch(1);
             QVBoxLayout *resultLayout = createResultLayout(result);
             container->addLayout(resultLayout);
         }
@@ -77,6 +77,7 @@ void ResultWidget::displayResults(const ClassificationResult &classificationResu
 
 QVBoxLayout *ResultWidget::createImageLayout(const std::string &filePath) {
     QVBoxLayout *imageLayout = new QVBoxLayout();
+    imageLayout->insertStretch(0);
     //Displays the file path
     QLabel *filePathLabel = new QLabel(this);
 
@@ -93,6 +94,7 @@ QVBoxLayout *ResultWidget::createImageLayout(const std::string &filePath) {
     imageLabel->setPixmap(QPixmap::fromImage(image).scaled(150, 150, Qt::KeepAspectRatio));
     imageLayout->addWidget(imageLabel);
 
+    imageLayout->insertStretch(-1);
     return imageLayout;
 }
 
