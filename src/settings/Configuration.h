@@ -18,6 +18,7 @@ public:
     std::string get_weights_path(std::string neuralNetIdentifier);
 
     std::string get_labels_path(std::string neuralNetIdentifier);
+
 };
 
 
