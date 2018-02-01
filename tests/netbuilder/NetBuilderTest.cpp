@@ -18,7 +18,7 @@ const std::string MODEL_DIR = "../../../resources/models";
 
 TEST_CASE("Testing LabelLoader on alexnet labels") {
     //TODO: Change if models folder is moved to resources/
-    std::string path = "../../../resources/models/alexnet_labels.txt";
+    std::string path = "../../../resources/labels/alexnet_labels.txt";
     std::map<int, std::string> labelMap = LabelLoader::getLabelMap(path);
 
     REQUIRE(labelMap.at(1) == "goldfish, Carassius auratus");
@@ -27,7 +27,6 @@ TEST_CASE("Testing LabelLoader on alexnet labels") {
 
 TEST_CASE("Testing ModelCrawler file listing") {
     std::vector<std::string> filenames = ModelCrawler::getFilesInDir(MODEL_DIR);
-    REQUIRE(std::find(filenames.begin(), filenames.end(), MODEL_DIR + "/alexnet_labels.txt") != filenames.end());
     REQUIRE(std::find(filenames.begin(), filenames.end(), MODEL_DIR + "/alexnet.json") != filenames.end());
 }
 

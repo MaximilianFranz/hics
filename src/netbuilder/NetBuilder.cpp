@@ -65,6 +65,6 @@ std::vector<NetInfo *> NetBuilder::queryAvailableNets() {
 }
 
 std::map<int, std::string> NetBuilder::getLabelMap(NetInfo *net) {
-    std::string labelpath = MODEL_DIR + "/" + net->getIdentifier() + "_labels.txt";
+    std::string labelpath = MODEL_DIR + "/labels/" + net->getIdentifier() + "_labels.txt";
     return LabelLoader::getLabelMap(labelpath);
 }
