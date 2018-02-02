@@ -25,4 +25,6 @@ public:
     PlatformType getPlatformType() override;
 
     CpuPlatform();
+
+    CpuPlatform(PlatformInfo &info);
 };

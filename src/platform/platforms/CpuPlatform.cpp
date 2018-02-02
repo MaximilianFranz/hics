@@ -68,3 +68,5 @@ PlatformType CpuPlatform::getPlatformType() {
 }
 
 CpuPlatform::CpuPlatform() {}
+
+CpuPlatform::CpuPlatform(PlatformInfo &info) : Platform(info) {}
