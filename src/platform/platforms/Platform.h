@@ -22,6 +22,8 @@ class Platform {
 protected:
     Platform() {};
 
+    Platform(PlatformInfo &info) : platformInfo(info) {};
+
     PlatformInfo platformInfo;
 
 public:
