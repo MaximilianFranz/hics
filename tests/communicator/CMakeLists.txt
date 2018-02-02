@@ -4,6 +4,6 @@ add_executable(communicatortests UtilTest.h UtilTest.cpp)
 #Link against catchtest to use the Catch-main function.
 target_link_libraries(communicatortests catchtest hics communicator)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_BINARY_DIR}/src/communicator)
 
 add_test(NAME communicatortest COMMAND communicatortests)
