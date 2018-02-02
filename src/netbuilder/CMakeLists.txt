@@ -24,11 +24,9 @@ set(SOURCE_FILES
         loader/StringLoader.cpp
         loader/StringLoader.h
         loader/LabelLoader.cpp
-        loader/LabelLoader.h loader/ModelCrawler.cpp loader/ModelCrawler.h)
+        loader/LabelLoader.h
+        loader/ModelCrawler.cpp
+        loader/ModelCrawler.h)
 
 add_library(netbuilder STATIC ${SOURCE_FILES})
 target_link_libraries(netbuilder ${HDF5_LIBRARIES} neuralnet)
-
-add_executable(netbuilder-exec main.cpp)
-target_link_libraries(netbuilder-exec netbuilder)
-
