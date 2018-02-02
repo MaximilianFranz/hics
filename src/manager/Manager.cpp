@@ -4,6 +4,7 @@
 
 #include "Manager.h"
 #include "PreProcessor.h"
+#include "PerformanceCalculator.h"
 
 Manager::Manager(){
     executor = new Executor("standard");
@@ -19,6 +20,7 @@ void Manager::initGUI(){
 }
 
 void Manager::update(){
+
     ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
     PreProcessor processor;
     processor.setOutputSize(request->getSelectedNeuralNet().getImageDimension(),
@@ -28,14 +30,28 @@ void Manager::update(){
 
     //TODO ClassifiationRequest, GUI change Platforms to pointer
 
+    std::clock_t time = std::clock();
+
     auto imageResults = executor->classify(processedImages,
                                            request->getSelectedNeuralNet(),
                                            request->getSelectedOperationMode(),
                                            request->getSelectedPlatforms());
 
+    int compTime = (int)((std::clock() - time)/(CLOCKS_PER_SEC/1000));
+
+
+    /*std::vector<std::pair<PlatformInfo, float>> dist;
+    std::vector<std::vector<std::pair<PlatformInfo, float>>> wtf = {dist};
+    dist.emplace_back(info1, 1);*/
+
+    /*auto cpuHostInfo = PerformanceCalculator::HostInfo("local", 1, compTime);
+    std::vector<PerformanceCalculator::HostInfo> hosts = {cpuHostInfo};*/
+
+    //PerformanceData performance = PerformanceCalculator::calculatePerformance(wtf, hosts);
+
     //TODO delete this shit
     std::vector<std::pair<PlatformInfo, float>> plat;
-    PlatformInfo info1("CPU", PlatformType::CPU, "cpu", 100, 4);
+    PlatformInfo info1("CPU", PlatformType::CPU, "local", 100, 4);
     PlatformInfo info2("FPGA1", PlatformType::FPGA, "fpga1", 50, 3);
     PlatformInfo info3("GPU1", PlatformType::GPU, "gpu1", 34, 55);
     PlatformInfo info4("GPU2", PlatformType::GPU, "gpu2", 99, 211);
@@ -45,7 +61,7 @@ void Manager::update(){
     plat.push_back(std::pair<PlatformInfo, float>(info3, 1));
     plat.push_back(std::pair<PlatformInfo, float>(info4, 69));
 
-    PerformanceData performanceData(15, 999, plat);
+    PerformanceData performanceData(15, compTime, plat);
 
     std::vector<ImageResult> newResults;
 
