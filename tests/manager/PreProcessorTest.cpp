@@ -30,18 +30,30 @@ SECTION("check scaled image size") {
     REQUIRE(testImg.getDimensions()[0] == 3);
     REQUIRE(testImg.getDimensions()[1] == 256);
     REQUIRE(testImg.getDimensions()[2] == 256);
+    REQUIRE(testImg.getElement(0, 0, 0) == 0);
 
 
 }
 SECTION("check filled pixels") {
+    QColor red = Qt::GlobalColor::red;
     ImageWrapper testImg = processedVector[1];
+
+    double mean1 = 0;
+    //mimick calculation of mean. Just multiplying would not suffice due to floating point precision
+    for (long long i = 0; i < 256*128; i++) {
+        mean1 += (double)(qRed(red.rgb()))/(256*256);
+        mean1 += (double)(qGreen(red.rgb()))/(256*256);
+        mean1 += (double)(qBlue(red.rgb()))/(256*256);
+    }
+    mean1 = mean1 / 3;
+    double fCompare1 = (qRed(red.rgb())) - mean1;
 
     REQUIRE(testImg.getDimensions()[0] == 3);
     REQUIRE(testImg.getDimensions()[1] == 256);
     REQUIRE(testImg.getDimensions()[2] == 256);
-    REQUIRE(testImg.getElement(0, 0, 0) > 0);
-    REQUIRE(testImg.getElement(128, 127, 0) > 0);
-    REQUIRE_FALSE(testImg.getElement(128, 128, 0) > 0);
+    REQUIRE(testImg.getElement(0, 0, 2) == fCompare1);
+    REQUIRE(testImg.getElement(127, 128, 2) == fCompare1);
+    REQUIRE(testImg.getElement(128, 128, 2) == -mean1);
 
 }
 }
