@@ -2,6 +2,8 @@
 // Created by jallmenroeder on 07/01/18.
 //
 
+#include <ctime>
+
 #include "Manager.h"
 #include "PreProcessor.h"
 #include "PerformanceCalculator.h"
