@@ -25,4 +25,6 @@ public:
     std::vector<Platform*> getPlatforms();
 
     std::vector<PlatformInfo*> getPlatformInfos();
+
+    Platform* getPlatformById(std::string uuid);
 };

@@ -58,3 +58,9 @@ std::vector<PlatformInfo*> PlatformManager::getPlatformInfos() {
     return infos;
 }
 
+Platform* PlatformManager::getPlatformById(std::string uuid) {
+    for (auto p : platforms) {
+        if (p->getPlatformInfo().getPlatformId() == uuid)
+            return p;
+    }
+}
