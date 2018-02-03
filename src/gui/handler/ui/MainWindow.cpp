@@ -6,8 +6,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("HICS");
     mainWindowQStackedWidget = new QStackedWidget(this);
-    //ui->centralwidget = mainWindowQStackedWidget;
+
     this->setCentralWidget(mainWindowQStackedWidget);
     this->show();
 }
