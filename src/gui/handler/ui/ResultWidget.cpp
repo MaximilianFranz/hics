@@ -152,8 +152,8 @@ QString ResultWidget::shortLink(const std::string &link) {
     int slashIndex = output.lastIndexOf('/');
 
     //When lastIndexOf() returns -1 the char has not been found
-    if (slashIndex != -1) {
-        output.remove(0, slashIndex);
+    if ((slashIndex != -1) && (output.size() >= (slashIndex + 1))) {
+        output.remove(0, slashIndex + 1);
     }
 
     return output;
