@@ -63,4 +63,7 @@ Platform* PlatformManager::getPlatformById(std::string uuid) {
         if (p->getPlatformInfo().getPlatformId() == uuid)
             return p;
     }
+    // In case we don't find a platform for the given uuid, we return
+    // a nullptr, which means the result should be checked by the caller.
+    return nullptr;
 }
