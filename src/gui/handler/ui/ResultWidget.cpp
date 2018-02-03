@@ -10,12 +10,12 @@ ResultWidget::ResultWidget(QWidget *parent) :
     ui->imagesQScrollArea->setWidgetResizable(true);
 
     //The images (and their not aggregated results) need to be scrollable
-    ui->imagesQWidgetContainer->setLayout(ui->imagesQVBoxLayout);
+    ui->imagesQWidgetContainer->setLayout(ui->imagesQGridLayout);
 }
 
 ResultWidget::~ResultWidget() {
     delete ui;
-    clearLayout(ui->imagesQVBoxLayout);
+    clearLayout(ui->imagesQGridLayout);
 //    if (ui->mainQHBoxLayout->itemAt(2)->layout()) {
 //        clearLayout(ui->mainQHBoxLayout->itemAt(2)->layout());
 //        delete ui->mainQHBoxLayout->itemAt(2);
@@ -46,17 +46,19 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
         result = sortVector(result);
 
         //A container is needed if the results are not aggregated; it will hold the image layout and possibly its result
-        QHBoxLayout *container = new QHBoxLayout();
-        container->addLayout(imageLayout);
+        //QHBoxLayout *container = new QHBoxLayout();
+        //container->addLayout(imageLayout);
 
         //If its not aggregated the individual result must be inside the QScrollArea
         if (!aggregated) {
-            container->insertStretch(1);
+            //container->insertStretch(1);
             QVBoxLayout *resultLayout = createResultLayout(result);
-            container->addLayout(resultLayout);
+            //container->addLayout(resultLayout);
+            ui->imagesQGridLayout->addLayout(resultLayout, i, 1);
         }
 
-        ui->imagesQVBoxLayout->addLayout(container);
+        ui->imagesQGridLayout->addLayout(imageLayout, i, 0);
+        //ui->imagesQVBoxLayout->addLayout(container);
         //TODO check if the size of the displayed picture, text etc. is alright
     }
 
@@ -71,7 +73,7 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
     }
 
     //Inserts a vertical stretch under the images to ensure that the image layouts are not stretched out.
-    ui->imagesQVBoxLayout->insertStretch(-1);
+    //ui->imagesQVBoxLayout->insertStretch(-1);
 }
 
 
@@ -203,9 +205,9 @@ QPushButton *ResultWidget::getReturnQPushButton() {
     return ui->returnQPushButton;
 }
 
-QVBoxLayout *ResultWidget::getImagesQVBoxLayout() {
-    return ui->imagesQVBoxLayout;
-}
+//QVBoxLayout *ResultWidget::getImagesQVBoxLayout() {
+//    return ui->imagesQVBoxLayout;
+//}
 
 QHBoxLayout *ResultWidget::getMainQHBoxLayout() {
     return ui->mainQHBoxLayout;

@@ -39,16 +39,16 @@
           <height>578</height>
          </rect>
         </property>
-        <widget class="QWidget" name="verticalLayoutWidget">
+        <widget class="QWidget" name="gridLayoutWidget">
          <property name="geometry">
           <rect>
            <x>-1</x>
-           <y>-1</y>
-           <width>561</width>
-           <height>511</height>
+           <y>9</y>
+           <width>671</width>
+           <height>571</height>
           </rect>
          </property>
-         <layout class="QVBoxLayout" name="imagesQVBoxLayout"/>
+         <layout class="QGridLayout" name="imagesQGridLayout"/>
         </widget>
        </widget>
       </widget>

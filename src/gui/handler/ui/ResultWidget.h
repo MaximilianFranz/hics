@@ -75,7 +75,7 @@ public:
      * @brief getImagesQVBoxLayout returns the layout in which the images and their results are stored
      * @return imagesQVBoxLayout
      */
-    QVBoxLayout *getImagesQVBoxLayout();
+    //QVBoxLayout *getImagesQVBoxLayout();
 
     /**
      * @brief getMainQHBoxLayout returns the main layout of ResultWidget
