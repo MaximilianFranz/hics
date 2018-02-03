@@ -7,14 +7,14 @@
 #include "MainWindowHandlerTest.h"
 
 void MainWindowHandlerTest::initTestCase() {
-    NetInfo alexnet("AlexNet", 227, "alexnet");
-    NetInfo googlenet("GoogLeNet", 300, "googlenet");
+    NetInfo* alexnet = new NetInfo("AlexNet", 227, "alexnet");
+    NetInfo* googlenet = new NetInfo("GoogLeNet", 300, "googlenet");
     nets.push_back(alexnet);
     nets.push_back(googlenet);
 
-    PlatformInfo cpu("CPU", PlatformType::CPU, "cpu", 100, 5);
-    PlatformInfo fpga("FPGA", PlatformType::FPGA, "fpga", 5, 20);
-    PlatformInfo gpu("Titan XP", PlatformType::FPGA, "titanxp", 250, 100);
+    PlatformInfo* cpu = new PlatformInfo("CPU", PlatformType::CPU, "cpu", 100, 5);
+    PlatformInfo* fpga = new PlatformInfo("FPGA", PlatformType::FPGA, "fpga", 5, 20);
+    PlatformInfo* gpu = new PlatformInfo("Titan XP", PlatformType::FPGA, "titanxp", 250, 100);
     platforms.push_back(cpu);
     platforms.push_back(fpga);
     platforms.push_back(gpu);
@@ -75,7 +75,7 @@ void MainWindowHandlerTest::setUpClassificationResult() {
     imgResults.push_back(imgResult4);
     imgResults.push_back(imgResult5);
 
-    classificationResult = new ClassificationResult(imgResults, *(nets.begin()), performanceData);
+    classificationResult = new ClassificationResult(imgResults, **(nets.begin()), performanceData);
 }
 
 
@@ -105,7 +105,7 @@ void MainWindowHandlerTest::testStartClassification() {
 
 void MainWindowHandlerTest::testDisplayClassification() {
     setUpClassificationResult();
-    mainWindowHandler->processClassificationResult(*classificationResult);
+    mainWindowHandler->processClassificationResult(classificationResult);
     //TODO add getters for result widget and detail dialog
     //Get top result
 
@@ -124,7 +124,7 @@ void MainWindowHandlerTest::testReturnButton(){
              mainWindowHandler->getStartWidget());
     setUpClassificationResult();
 
-    mainWindowHandler->processClassificationResult(*classificationResult);
+    mainWindowHandler->processClassificationResult(classificationResult);
 
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
              mainWindowHandler->getResultWidget());

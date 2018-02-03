@@ -82,7 +82,7 @@ std::string ResultWidgetTest::getActualString(int index, int layoutIndex, bool a
 }
 
 void ResultWidgetTest::testNotAggregated() {
-    resultWidget->displayResults(*classificationResult);
+    resultWidget->displayResults(classificationResult);
     QCOMPARE(((QLabel *) (resultWidget->getImagesQVBoxLayout()
         ->itemAt(0)->layout()
         ->itemAt(2)->layout()
@@ -110,7 +110,7 @@ void ResultWidgetTest::testNotAggregated() {
 void ResultWidgetTest::testAggregated() {
     classificationResult->aggregateResults();
 
-    resultWidget->displayResults(*classificationResult);
+    resultWidget->displayResults(classificationResult);
 
     /*Index 2: Normaly SpacerItem but there is the aggregated result layout
      *Index 1: SpacerItem at index 0 */

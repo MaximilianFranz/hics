@@ -6,14 +6,14 @@
 #include <handler/ui/StartWidget.h>
 
 void StartWidgetTest::initTestCase() {
-    NetInfo alexnet("AlexNet", 227, "alexnet");
-    NetInfo googlenet("GoogLeNet", 300, "googlenet");
+    NetInfo* alexnet = new NetInfo("AlexNet", 227, "alexnet");
+    NetInfo* googlenet = new NetInfo("GoogLeNet", 300, "googlenet");
     nets.push_back(alexnet);
     nets.push_back(googlenet);
 
-    PlatformInfo cpu("CPU", PlatformType::CPU, "cpu", 100, 5);
-    PlatformInfo fpga("FPGA", PlatformType::FPGA, "fpga", 5, 20);
-    PlatformInfo gpu("Titan XP", PlatformType::FPGA, "titanxp", 250, 100);
+    PlatformInfo* cpu = new PlatformInfo("CPU", PlatformType::CPU, "cpu", 100, 5);
+    PlatformInfo* fpga = new PlatformInfo("FPGA", PlatformType::FPGA, "fpga", 5, 20);
+    PlatformInfo* gpu = new PlatformInfo("Titan XP", PlatformType::FPGA, "titanxp", 250, 100);
     platforms.push_back(cpu);
     platforms.push_back(fpga);
     platforms.push_back(gpu);
