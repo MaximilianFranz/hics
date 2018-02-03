@@ -167,7 +167,7 @@ QString ResultWidget::shortPercentage(const float percentage){
     if(output.at(0) == '0'){
         output.remove(0, 1);
     }
-    
+
     return output;
 }
 

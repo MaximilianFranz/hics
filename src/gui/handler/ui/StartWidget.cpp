@@ -3,6 +3,7 @@
 #include <QCheckBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtCore/QMap>
+#include <QtWidgets/QErrorMessage>
 #include "handler/ui/StartWidget.h"
 #include "ui_StartWidget.h"
 
@@ -160,13 +161,19 @@ void StartWidget::clearLayout(QLayout *layout){
     }
 }
 
+void StartWidget::displayErrorMessage(const QString message){
+    QErrorMessage* error = new QErrorMessage(this);
+    error->setWindowTitle("Error");
+    error->showMessage(message);
+}
+
 NetInfo StartWidget::getSelectedNeuralNet(){
     QString name = ui->neuralNetsQComboBox->currentText();
     std::map<QString, NetInfo*>::iterator it = neuralNetMap.find(name);
 
     if(it == neuralNetMap.end()){
         //TODO throw exception here
-
+        displayErrorMessage(QString("Please select a neural net for the classification."));
     }
 
     return *it->second;
@@ -195,7 +202,7 @@ std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
     }
 
     if(selectedPlatforms.empty()){
-        //TODO Error message -> you must selecte at least one platform
+        displayErrorMessage(QString("Please select at least one platform."));
         return selectedPlatforms;
     } else {
         return selectedPlatforms;
@@ -213,19 +220,6 @@ bool StartWidget::isAggregated(){
 std::map<QString, QImage> StartWidget::getSelectedImages(){
     std::map<QString, QImage> output;
 
-//    QMapIterator<QPair<QImage*, QString>, QHBoxLayout*> it(images);
-//    while(it.hasNext()){
-//        it.next();
-//
-//        if(it.value()->itemAt(2)){
-//            if(it.value()->itemAt(2)->widget()){
-//                //TODO maybe check for cast to QLabel
-//                QLabel* label = (QLabel*)(it.value()->itemAt(2)->widget());
-//                output.insert(std::pair<QString, QImage>(label->text(), *(it.key())));
-//            }
-//        }
-//    }
-
     QMapIterator<QPair<QImage*, QString>, QHBoxLayout*> it(images);
 
     while(it.hasNext()){
@@ -233,6 +227,9 @@ std::map<QString, QImage> StartWidget::getSelectedImages(){
         output.insert(std::pair<QString, QImage>(it.key().second, *(it.key().first)));
     }
 
+    if(output.empty()){
+        displayErrorMessage(QString("Please select at least one image for the classification."));
+    }
 
     return output;
 }

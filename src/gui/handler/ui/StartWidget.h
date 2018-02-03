@@ -56,6 +56,8 @@ public:
      */
     ~StartWidget();
 
+    void displayErrorMessage(const QString message);
+
     /**
      * @brief getSelectedNeuralNet returns the selected neural net by the user.
      * @return the selected neural net
