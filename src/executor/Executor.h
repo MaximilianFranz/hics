@@ -102,7 +102,7 @@ public:
      */
     std::vector<NetInfo*> queryNets() override;
 
-    Executor(std::string name) : name(name){};
+    Executor(std::string name);
 
     std::string getName() {
         return name;

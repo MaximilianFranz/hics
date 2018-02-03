@@ -1,13 +1,13 @@
 #include <NotImplementedException.h>
 #include "MainWindowHandler.h"
 
-MainWindowHandler::MainWindowHandler(std::list<NetInfo> &neuralNets, std::list<PlatformInfo> &platforms,
-                  std::list<OperationMode> &operationModes) {
+MainWindowHandler::MainWindowHandler(std::vector<NetInfo*> &neuralNets, std::vector<PlatformInfo*> &platforms,
+                  std::vector<OperationMode> &operationModes) {
 
     //Initialize the used UI's
     mainWindow = new MainWindow();
     startWidget = new StartWidget(neuralNets, platforms, operationModes, mainWindow);
-    resultWidget = new ResultWidget(mainWindow);
+    resultWidget = new ResultWidget();
     detailDialog = new DetailDialog(mainWindow);
 
     //mainWindow's QStackedWidget will be the main display
@@ -42,20 +42,31 @@ ClassificationRequest* MainWindowHandler::getClassificationRequestState(){
     return classificationRequestState;
 }
 
-void MainWindowHandler::processClassificationResult(const ClassificationResult &classificationResult){
+void MainWindowHandler::processClassificationResult(ClassificationResult *classificationResult){
+    disconnectAll();
+    mainWindow->removeWidgetFromStack(resultWidget);
+    delete resultWidget;
+    resultWidget = new ResultWidget;
+    connectAll();
     //Initialize the results in resultWidget
     resultWidget->displayResults(classificationResult);
+    mainWindow->addWidgetToStack(resultWidget);
     //Initialize the details in detailDialog
-    detailDialog->insertDetails(&classificationResult);
+    detailDialog->insertDetails(classificationResult);
     //Change the currently displayed widget to resultWidget
     mainWindow->setCurrentWidget(resultWidget);
 }
 
 void MainWindowHandler::processReturnQPushButton(){
     mainWindow->setCurrentWidget(startWidget);
+
     disconnectAll();
+    mainWindow->removeWidgetFromStack(resultWidget);
     delete resultWidget;
+
     resultWidget = new ResultWidget(mainWindow);
+    mainWindow->addWidgetToStack(resultWidget);
+
     delete detailDialog;
     detailDialog = new DetailDialog(mainWindow);
     connectAll();

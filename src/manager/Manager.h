@@ -5,7 +5,9 @@
 #pragma once
 
 
+#include <Executor.h>
 #include "ManagerObserver.h"
+#include "handler/MainWindowHandler.h"
 
 
 /**
@@ -13,8 +15,23 @@
  * Classification.
  */
 class Manager : public ManagerObserver {
+
+private:
+
+    Executor *executor = nullptr;
+
+    MainWindowHandler *mainWindowHandler = nullptr;
+
+public:
+
+    Manager();
+
     /**
      * called by GUI to update the Manager when the classify is pressed
      */
-    void update();
+    virtual void update();
+
+    void initGUI();
+
+    bool operator==(const ManagerObserver &managerObserver) override;
 };

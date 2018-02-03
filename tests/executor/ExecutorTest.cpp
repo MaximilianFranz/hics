@@ -80,10 +80,10 @@ SCENARIO("Testing Executor Module") {
 
     SECTION("Testing Placer") {
         PlatformPlacer p;
-        NetBuilder builder;
-        std::vector<NetInfo*> nets = builder.queryAvailableNets();
+        NetBuilder *builder = new NetBuilder();
+        std::vector<NetInfo*> nets = builder->queryAvailableNets();
         NetInfo alexnetinfo = *nets.at(0);
-        NeuralNet* alexnet = builder.buildNeuralNet(alexnetinfo);
+        NeuralNet* alexnet = builder->buildNeuralNet(alexnetinfo);
 
         std::vector<PlatformInfo*> platformsinfos_mock;
 
@@ -93,8 +93,8 @@ SCENARIO("Testing Executor Module") {
     }
 
     SECTION("Testing Complete execution of the net") {
-        Executor executor;
-        std::vector<NetInfo*> nets = executor.queryNets();
+        Executor *executor = new Executor;
+        std::vector<NetInfo*> nets = executor->queryNets();
         NetInfo alexnetinfo = *nets.at(0);
 
         std::string img_data_path = "../../../tests/resources/img_data.txt";
@@ -106,7 +106,7 @@ SCENARIO("Testing Executor Module") {
 
         std::vector<ImageResult*> results;
         std::vector<PlatformInfo*> info_mock;
-        results = executor.classify({img}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
+        results = executor->classify({img}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
 
         // Highest prob is weasel
         REQUIRE(results.front()->getResults().front().first == "weasel");
@@ -121,7 +121,7 @@ SCENARIO("Testing Executor Module") {
 
         std::map<QString, QImage> map;
         map.insert(std::pair<QString, QImage>(QString("laska"), img));
-        std::vector<ImageWrapper> images = p.processImages(map);
+        std::vector<ImageWrapper*> images = p.processImages(map);
 
 
         Executor executor;
@@ -130,7 +130,7 @@ SCENARIO("Testing Executor Module") {
 
         std::vector<ImageResult*> results;
         std::vector<PlatformInfo*> info_mock;
-        results = executor.classify({&images.front()}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
+        results = executor.classify({images.front()}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
 
         std::cout << results.front()->getResults().front().first << std::endl;
         std::cout << results.front()->getResults().front().second << std::endl;

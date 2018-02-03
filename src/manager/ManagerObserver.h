@@ -16,9 +16,7 @@ public:
     /**
      * Observer method for the manager to implement
      */
-    virtual void update(){
-        throw NotImplementedException();
-    }
+    virtual void update() = 0;
 
     /**
      * @brief Overloads operator==() function to compare two ManagerObserver's on their identity.
@@ -26,7 +24,5 @@ public:
      * @param managerObserver the to be compared ManagerObserver
      * @return true if they are equal, false if not.
      */
-    bool operator==(const ManagerObserver &managerObserver){
-        return this == &managerObserver;
-    }
+    virtual bool operator==(const ManagerObserver &managerObserver) = 0;
 };

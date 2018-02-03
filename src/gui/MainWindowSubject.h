@@ -23,16 +23,16 @@ class MainWindowSubject {
 
 private:
 
-    std::vector<ManagerObserver> observers;
+    std::vector<ManagerObserver*> observers;
 
 public:
-
+    //TODO add pointers
     /**
      * @brief A ManagerObserver can be attached to the observers list.
      *
      * @param manager is the to be attached ManagerObserver
      */
-    void attach(const ManagerObserver &manager) {
+    virtual void attach(ManagerObserver* manager) {
         observers.push_back(manager);
     }
 
@@ -41,8 +41,8 @@ public:
      *
      * @param manager is the to be detached ManagerObserver
      */
-    void detach(const ManagerObserver &manager){
-        std::vector<ManagerObserver>::iterator it;
+    virtual void detach(ManagerObserver* manager){
+        std::vector<ManagerObserver*>::iterator it;
         it = std::find(observers.begin(), observers.end(), manager);
         observers.erase(it);
     }
@@ -51,11 +51,11 @@ public:
      * @brief The notify method will call notify every attached ManagerObserver which means that it will call update()
      *        on each one.
      */
-    void notify(){
-        std::vector<ManagerObserver>::iterator it;
+    virtual void notify(){
+        std::vector<ManagerObserver*>::iterator it;
 
         for(it = observers.begin(); it != observers.end(); ++it){
-            it->update();
+            (*it)->update();
         }
     }
 
@@ -64,7 +64,7 @@ public:
      */
     MainWindowSubject() = default;
 
-    std::vector<ManagerObserver>& getObservers(){
+    std::vector<ManagerObserver*> getObservers(){
         return observers;
     }
 };

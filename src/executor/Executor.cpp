@@ -79,4 +79,12 @@ NetInfo Executor::createMockInfo() {
     return d;
 }
 
+Executor::Executor(std::string name)
+: name(name) {
+    this->placer = (new PlatformPlacer());
+    this->builder = (new NetBuilder());
+    NetInfo mock = createMockInfo();
+    this->net = new NeuralNet(nullptr, mock);
+}
+
 

@@ -24,15 +24,15 @@ ResultWidget::~ResultWidget() {
     //TODO delete aggregated results layout
 }
 
-void ResultWidget::displayResults(const ClassificationResult &classificationResult) {
+void ResultWidget::displayResults(ClassificationResult *classificationResult) {
 
     bool aggregated = false;
 
     //Checks if the results need to be displayed aggregated or not
-    if (classificationResult.getAggregatedResults().size() > 0)
+    if (classificationResult->getAggregatedResults().size() > 0)
         aggregated = true;
 
-    std::vector<ImageResult> results = classificationResult.getResults();
+    std::vector<ImageResult> results = classificationResult->getResults();
 
     for (unsigned int i = 0; i < results.size(); ++i) {
         ImageResult imageResult = results[i];
@@ -51,7 +51,7 @@ void ResultWidget::displayResults(const ClassificationResult &classificationResu
 
         //If its not aggregated the individual result must be inside the QScrollArea
         if (!aggregated) {
-            container->addSpacing(25);
+            container->insertStretch(1);
             QVBoxLayout *resultLayout = createResultLayout(result);
             container->addLayout(resultLayout);
         }
@@ -62,7 +62,7 @@ void ResultWidget::displayResults(const ClassificationResult &classificationResu
 
     //Display the aggregated result outside of the QScrollArea
     if (aggregated) {
-        std::vector<std::pair<std::string, float>> aggregatedResult = classificationResult.getAggregatedResults();
+        std::vector<std::pair<std::string, float>> aggregatedResult = classificationResult->getAggregatedResults();
         QVBoxLayout *aggregatedLayout = createResultLayout(aggregatedResult);
 
         /* Places the aggregated result between two horizontal spacers in mainQHBoxLayout (index = 2) to avoid the
@@ -77,7 +77,7 @@ void ResultWidget::displayResults(const ClassificationResult &classificationResu
 
 QVBoxLayout *ResultWidget::createImageLayout(const std::string &filePath) {
     QVBoxLayout *imageLayout = new QVBoxLayout();
-
+    imageLayout->insertStretch(0);
     //Displays the file path
     QLabel *filePathLabel = new QLabel(this);
 
@@ -91,9 +91,10 @@ QVBoxLayout *ResultWidget::createImageLayout(const std::string &filePath) {
     //Displays the image
     QLabel *imageLabel = new QLabel(this);
     QImage image(q_filePath);
-    imageLabel->setPixmap(QPixmap::fromImage(image).scaled(227, 227, Qt::KeepAspectRatio));
+    imageLabel->setPixmap(QPixmap::fromImage(image).scaled(150, 150, Qt::KeepAspectRatio));
     imageLayout->addWidget(imageLabel);
 
+    imageLayout->insertStretch(-1);
     return imageLayout;
 }
 
@@ -154,6 +155,11 @@ QString ResultWidget::shortLink(const std::string &link) {
     }
 
     return output;
+}
+
+QString ResultWidget::shortPercentage(const float percentage, int floatingPoint){
+    QString output = QString::number(percentage);
+    //TODO implement this
 }
 
 std::vector<std::pair<std::string, float>>

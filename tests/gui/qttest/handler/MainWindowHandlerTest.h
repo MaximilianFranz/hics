@@ -13,9 +13,9 @@ Q_OBJECT
 
 private:
 
-    std::list<NetInfo> nets;
-    std::list<PlatformInfo> platforms;
-    std::list<OperationMode> modes;
+    std::vector<NetInfo*> nets;
+    std::vector<PlatformInfo*> platforms;
+    std::vector<OperationMode> modes;
 
     MainWindowHandler *mainWindowHandler;
 

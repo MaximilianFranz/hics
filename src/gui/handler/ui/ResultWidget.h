@@ -57,7 +57,7 @@ public:
      *
      * @param classificationResult has the classification results
      */
-    void displayResults(const ClassificationResult &classificationResult);
+    void displayResults(ClassificationResult *classificationResult);
 
     /**
      * @brief Returns the QPushButton used to display the details
@@ -88,6 +88,8 @@ private:
     Ui::ResultWidget *ui;
 
     QString shortLink(const std::string &link);
+
+    QString shortPercentage(const float percentage, int floatingPoint);
 
     QVBoxLayout *createImageLayout(const std::string &filePath);
 

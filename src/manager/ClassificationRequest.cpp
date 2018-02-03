@@ -50,8 +50,14 @@ std::map<QString, QImage> ClassificationRequest::getUserImages() {
     return userImages;
 }
 
-std::vector<PlatformInfo> ClassificationRequest::getSelectedPlatforms() {
-    return platforms;
+std::vector<PlatformInfo*> ClassificationRequest::getSelectedPlatforms() {
+    std::vector<PlatformInfo*> output;
+    std::vector<PlatformInfo>::iterator it;
+
+    for(it = platforms.begin(); it != platforms.end(); ++it){
+        output.push_back(&(*it));
+    }
+    return output;
 }
 
 OperationMode ClassificationRequest::getSelectedOperationMode() {

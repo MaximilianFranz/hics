@@ -33,7 +33,7 @@
  * @date    17.01.2018
  *
  */
-class MainWindowHandler : public QObject, MainWindowSubject {
+class MainWindowHandler : public QObject, public MainWindowSubject {
 
 Q_OBJECT
 
@@ -63,8 +63,8 @@ public:
     * @param platforms the available platforms in the software
     * @param operationModes the available operation modes in the software
     */
-    MainWindowHandler(std::list<NetInfo> &neuralNets, std::list<PlatformInfo> &platforms,
-                      std::list<OperationMode> &operationModes);
+    MainWindowHandler(std::vector<NetInfo*> &neuralNets, std::vector<PlatformInfo*> &platforms,
+                      std::vector<OperationMode> &operationModes);
 
     ~MainWindowHandler();
 
@@ -78,7 +78,7 @@ public:
      * @brief processClassificationResult will display the provided data in the ClassificationResult in the GUI.
      * @param classificationResult contains the classification result and details which shall be displayed
      */
-    void processClassificationResult(const ClassificationResult &classificationResult);
+    void processClassificationResult(ClassificationResult *classificationResult);
 
     //TODO here could be the displayErrorMessage(Exception e) method
 

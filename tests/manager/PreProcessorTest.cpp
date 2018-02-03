@@ -2,6 +2,7 @@
 // Created by jallmenroeder on 16/01/18.
 //
 
+#include <QtGui/QColor>
 #include "PreProcessorTest.h"
 
 SCENARIO("Preprocess QImage", "[wrapper]") {
@@ -18,14 +19,14 @@ SCENARIO("Preprocess QImage", "[wrapper]") {
     PreProcessor prePro = PreProcessor();
     prePro.setOutputSize(256, 256);
 
-    std::vector<ImageWrapper> processedVector = prePro.processImages(map);
-    REQUIRE(processedVector[0].getFilepath() == "A");
-    REQUIRE(processedVector[1].getFilepath() == "B");
+    std::vector<ImageWrapper*> processedVector = prePro.processImages(map);
+    REQUIRE(processedVector[0]->getFilepath() == "A");
+    REQUIRE(processedVector[1]->getFilepath() == "B");
 
     //REQUIRE_FALSE(img2.pixelColor(0, 0).black() == QColor::Rgb);
 
 SECTION("check scaled image size") {
-    ImageWrapper testImg = processedVector[0];
+    ImageWrapper testImg = *processedVector[0];
 
     REQUIRE(testImg.getDimensions()[0] == 3);
     REQUIRE(testImg.getDimensions()[1] == 256);
@@ -36,7 +37,7 @@ SECTION("check scaled image size") {
 }
 SECTION("check filled pixels") {
     QColor red = Qt::GlobalColor::red;
-    ImageWrapper testImg = processedVector[1];
+    ImageWrapper testImg = *processedVector[1];
 
     double mean1 = 0;
     //mimick calculation of mean. Just multiplying would not suffice due to floating point precision
