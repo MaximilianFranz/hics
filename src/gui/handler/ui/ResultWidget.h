@@ -89,7 +89,7 @@ private:
 
     QString shortLink(const std::string &link);
 
-    QString shortPercentage(const float percentage, int floatingPoint);
+    QString shortPercentage(const float percentage);
 
     QVBoxLayout *createImageLayout(const std::string &filePath);
 

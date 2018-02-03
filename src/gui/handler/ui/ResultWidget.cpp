@@ -134,7 +134,7 @@ QVBoxLayout *ResultWidget::createResultLayout(std::vector<std::pair<std::string,
 
         QLabel *percentage = new QLabel(this);
         //TODO when percentage too long round the number
-        percentage->setText((QString::number(pair.second) + "%"));
+        percentage->setText((shortPercentage(pair.second)) + "%");
         percentage->setAlignment(Qt::AlignRight);
         labelLayout->addWidget(percentage);
 
@@ -159,9 +159,16 @@ QString ResultWidget::shortLink(const std::string &link) {
     return output;
 }
 
-QString ResultWidget::shortPercentage(const float percentage, int floatingPoint){
+QString ResultWidget::shortPercentage(const float percentage){
     QString output = QString::number(percentage);
-    //TODO implement this
+    output.remove(0, 2);
+    output.insert(2, '.');
+
+    if(output.at(0) == '0'){
+        output.remove(0, 1);
+    }
+    
+    return output;
 }
 
 std::vector<std::pair<std::string, float>>
