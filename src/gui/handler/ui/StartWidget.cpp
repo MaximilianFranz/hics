@@ -63,8 +63,8 @@ void StartWidget::processInputImageButton(){
     QStringList fileNames = QFileDialog::getOpenFileNames(
                             this,
                             "Select one or more files to open",
-                            "/home",
-                            "Images (*.png *.jpg)");
+                            directoryPath,
+                            "Images (*.png *.jpg *.jpeg)");
 
     //Create a QImage to every selected file path
     for(int i = 0; i<fileNames.size(); ++i){
@@ -73,6 +73,7 @@ void StartWidget::processInputImageButton(){
             //Display the image together with a check box and its file path
             QHBoxLayout* layout = addInputImage(image, fileNames.at(i));
             images.insert(image, layout);
+            directoryPath = QFileInfo(fileNames.at(i)).path();
         } else {
             delete image;
         }

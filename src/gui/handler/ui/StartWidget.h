@@ -156,6 +156,8 @@ private:
     std::map<QString, NetInfo*> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
     std::map<QString, PlatformInfo*> platformMap; /*!< used to return the selected platform by using the displayed QString */
 
+    QString directoryPath = "/home"; /*!< The last opened directory path of the QFileDialog */
+
     void addNeuralNets(std::vector<NetInfo*> &neuralNets);
 
     void addPlatforms(std::vector<PlatformInfo*> &platforms);
