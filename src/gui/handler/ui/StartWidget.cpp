@@ -48,7 +48,10 @@ QHBoxLayout* StartWidget::addInputImage(QImage* image, const QString &filePath){
     imageLabel->setPixmap(QPixmap::fromImage(*image).scaled(227, 227, Qt::KeepAspectRatio));
     layout->addWidget(imageLabel, 1);
 
-    label->setText(filePath);
+    label->setAlignment(Qt::AlignLeft);
+    QFontMetrics fontMetrics = QFontMetrics(QFont());
+    label->setText(fontMetrics.elidedText(filePath,Qt::TextElideMode::ElideLeft, 150));
+    label->setAlignment(Qt::AlignmentFlag::AlignCenter);
     layout->addWidget(label, 1);
 
     ui->inputImagesQVBoxLayout->addLayout(layout);
