@@ -123,7 +123,7 @@ public:
      * @brief getImagesMap returns the images map which hold all selected input images together with its layouts
      * @return the image map
      */
-    QMap<QImage*, QHBoxLayout*>* getImagesMap();
+    QMap<QPair<QImage*, QString>, QHBoxLayout*>* getImagesMap();
 
 public slots:
 
@@ -152,7 +152,7 @@ private:
 
     Ui::StartWidget *ui;
     QList<QHBoxLayout*> inputImagesLayouts; /*!< Layout order: QCheckBox, QPixmap (the image), QLabel (the file path) */
-    QMap<QImage*, QHBoxLayout*> images; /*!< Maps all loaded images to its layout */
+    QMap<QPair<QImage*, QString>, QHBoxLayout*> images; /*!< Maps all loaded images to its layout */
     std::map<QString, NetInfo*> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
     std::map<QString, PlatformInfo*> platformMap; /*!< used to return the selected platform by using the displayed QString */
 
