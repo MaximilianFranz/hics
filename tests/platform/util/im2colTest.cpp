@@ -91,12 +91,114 @@ TEST_CASE("Matrix multiplication using 1d vectors") {
     }
 }
 
-//TEST_CASE("col2im") {
+TEST_CASE("col2im for 3x3x1 images with 1 kernel") {
+    int image_size = 3;
+    int channels = 1;
+
+    int kernel_size = 2;
+    int number_of_kernels = 1;
+
+    int padding = 0;
+    int stride = 1;
+
+    int output_size = (image_size - kernel_size + 2 * padding) / stride + 1;
+
+    int multiplication_result_rows, multiplication_result_columns, convolution_result_size;
+    multiplication_result_columns = output_size * output_size;
+    multiplication_result_rows = number_of_kernels;
+    convolution_result_size = output_size * output_size * number_of_kernels;
+
+    SECTION("A") {
+        /*
+         * Wolfram Alpha query:
+         * {1,2,3,4}.{{1,2,4,5},{2,3,5,6},{4,5,7,8},{5,6,8,9}}
+         */
+        auto multiplication_result = std::vector<float>{37, 47, 67, 77};
+
+        auto convolution_result = std::vector<float>(static_cast<unsigned long>(convolution_result_size));
+
+        helper::col2im_simple_version_cpu(multiplication_result.data(),
+                                          channels, multiplication_result_rows, multiplication_result_columns,
+                                          kernel_size,
+                                          padding, stride,
+                                          convolution_result.data());
+
+        auto expected_convolution_result = std::vector<float>{37, 47, 67, 77};
+
+        REQUIRE(convolution_result.size() == convolution_result_size);
+        REQUIRE(expected_convolution_result.size() == convolution_result_size);
+        REQUIRE(expected_convolution_result == convolution_result);
+    }
+
+    SECTION("B") {
+        /*
+         * Wolfram Alpha query:
+         * {1,2,3,4}.{{1,2,4,5},{2,3,5,6},{4,5,7,8},{5,6,8,9}}
+         */
+        auto multiplication_result = std::vector<float>{37, 47, 67, 77};
+
+        auto convolution_result = std::vector<float>(static_cast<unsigned long>(convolution_result_size));
+
+        helper::col2im_simple_version_cpu(multiplication_result.data(),
+                                          channels, multiplication_result_rows, multiplication_result_columns,
+                                          kernel_size,
+                                          padding, stride,
+                                          convolution_result.data());
+
+        auto expected_convolution_result = std::vector<float>{37, 47, 67, 77};
+
+        REQUIRE(convolution_result.size() == convolution_result_size);
+        REQUIRE(expected_convolution_result.size() == convolution_result_size);
+        REQUIRE(expected_convolution_result == convolution_result);
+    }
+}
+
+TEST_CASE("col2im for 3x3x2 images with 1 kernel") {
+    int image_size = 3;
+    int channels = 2;
+
+    int kernel_size = 2;
+    int number_of_kernels = 1;
+
+    int padding = 0;
+    int stride = 1;
+
+    int output_size = (image_size - kernel_size + 2 * padding) / stride + 1;
+
+    int multiplication_result_rows, multiplication_result_columns, convolution_result_size;
+    multiplication_result_columns = output_size * output_size;
+    multiplication_result_rows = number_of_kernels;
+    convolution_result_size = output_size * output_size * number_of_kernels;
+
+    SECTION("A") {
+        /*
+         * Wolfram Alpha query:
+         * {1,2,3,4,5,6,7,8}.{{1,2,4,5},{2,3,5,6},{4,5,7,8},{5,6,8,9},{10,11,13,14},{11,12,14,15},{13,14,16,17},{14,15,17,18}}
+         */
+        auto multiplication_result = std::vector<float>{356, 392, 464, 500};
+
+        auto convolution_result = std::vector<float>(static_cast<unsigned long>(convolution_result_size));
+
+        helper::col2im_simple_version_cpu(multiplication_result.data(),
+                                          channels, multiplication_result_rows, multiplication_result_columns,
+                                          kernel_size,
+                                          padding, stride,
+                                          convolution_result.data());
+
+        auto expected_convolution_result = std::vector<float>{356, 392, 464, 500};
+
+        REQUIRE(convolution_result.size() == convolution_result_size);
+        REQUIRE(expected_convolution_result.size() == convolution_result_size);
+        REQUIRE(expected_convolution_result == convolution_result);
+    }
+}
+
+//TEST_CASE("col2im for 3x3x2 images with 3 kernels") {
 //    int image_size = 3;
-//    int channels = 1;
+//    int channels = 2;
 //
 //    int kernel_size = 2;
-//    int number_of_kernels = 1;
+//    int number_of_kernels = 3;
 //
 //    int padding = 0;
 //    int stride = 1;
@@ -109,7 +211,12 @@ TEST_CASE("Matrix multiplication using 1d vectors") {
 //    convolution_result_size = output_size * output_size * number_of_kernels;
 //
 //    SECTION("A") {
-//        auto multiplication_result = std::vector<float>{37, 47, 67, 77};
+//        /*
+//         * Wolfram Alpha query:
+//         * {{1,2,3,4,5,6,7,8},{9,10,11,12,13,14,15,16},{17,18,19,20,21,22,23,24}}.{{1,2,4,5},{2,3,5,6},{4,5,7,8},{5,6,8,9},{10,11,13,14},{11,12,14,15},{13,14,16,17},{14,15,17,18}}
+//         */
+//        auto multiplication_result = std::vector<float>{356, 392, 464, 500, 836, 936, 1136, 1236, 1316, 1480, 1808,
+//                                                        1972};
 //
 //        auto convolution_result = std::vector<float>(static_cast<unsigned long>(convolution_result_size));
 //
@@ -119,7 +226,8 @@ TEST_CASE("Matrix multiplication using 1d vectors") {
 //                                          padding, stride,
 //                                          convolution_result.data());
 //
-//        auto expected_convolution_result = std::vector<float>{37, 47, 67, 77};
+//        auto expected_convolution_result = std::vector<float>{356, 392, 464, 500, 836, 936, 1136, 1236, 1316, 1480,
+//                                                              1808, 1972};
 //
 //        REQUIRE(convolution_result.size() == convolution_result_size);
 //        REQUIRE(expected_convolution_result.size() == convolution_result_size);
