@@ -115,7 +115,7 @@ void MainWindowHandlerTest::testDisplayClassification() {
     //TODO add getters for result widget and detail dialog
     //Get top result
 
-    QCOMPARE(getLabelFromResultLayout(0, 1), (std::string)"Baukran");
+    QCOMPARE(getLabelFromResultLayout(1, 1), (std::string)"Baukran");
 
     QCOMPARE(mainWindowHandler->getDetailDialog()->getPowerConsumptionQLabel()->text().toStdString(), (std::string)"15");
     QCOMPARE(mainWindowHandler->getDetailDialog()->getComputationTimeQLabel()->text().toStdString(), (std::string)"999");

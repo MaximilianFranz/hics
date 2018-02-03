@@ -102,7 +102,7 @@ void ResultWidgetTest::testNotAggregated() {
     QCOMPARE(getActualString(6, 0, false), (std::string) "KIT");
     QCOMPARE(getActualString(6, 1, false), (std::string) "1.6%");
 
-    QCOMPARE(resultWidget->getImagesQGridLayout()->rowCount(), 6);
+    QCOMPARE(resultWidget->getImagesQGridLayout()->rowCount(), 5);
 }
 
 void ResultWidgetTest::testAggregated() {
