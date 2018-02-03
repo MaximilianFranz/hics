@@ -4,7 +4,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 add_executable(guitestsQt handler/ui/StartWidgetTest.cpp handler/ui/StartWidgetTest.h
                 handler/MainWindowHandlerTest.cpp handler/MainWindowHandlerTest.h
                 handler/ui/ResultWidgetTest.cpp handler/ui/ResultWidgetTest.h
-                handler/ui/DetailDialogTest.cpp handler/ui/DetailDialogTest.h)
+                handler/ui/DetailDialogTest.cpp handler/ui/DetailDialogTest.h
+                main.cpp)
 
 find_package(Qt5Test)
 
