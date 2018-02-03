@@ -1,8 +1,21 @@
 #pragma once
 
-#include "Dtype.h"
-
 namespace helper {
+
+    /**
+     * Multiplies two matrices that are both given as one-dimensional vector.
+     *
+     * @param matrix_left
+     * @param matrix_left_rows
+     * @param matrix_left_columns
+     * @param matrix_right
+     * @param matrix_right_rows
+     * @param matrix_right_columns
+     * @param result_matrix
+     */
+    void multiply_matrices_using_1d_vectors(const float *matrix_left, int matrix_left_rows, int matrix_left_columns,
+                                            const float *matrix_right, int matrix_right_rows, int matrix_right_columns,
+                                            float *result_matrix);
 
     /**
      * Performs the im2col algorithm on the CPU.
@@ -18,9 +31,14 @@ namespace helper {
      * @param data_column
      */
     template<typename Dtype>
-    void im2col_cpu(const Dtype *data_image, const int channels, const int height, const int width,
-                    const int kernel_size, const int padding, const int stride,
+    void im2col_cpu(const Dtype *data_image, int channels, int height, int width,
+                    int kernel_size, int padding, int stride,
                     Dtype *data_column);
+
+    template<typename Dtype>
+    void im2col_simple_version_cpu(const Dtype *data_image, int channels, int height, int width,
+                                   int kernel_size, int padding, int stride,
+                                   Dtype *data_column);
 
     /**
      * Initializes data with a value. Necessary for the col2im algorithm.
@@ -31,7 +49,7 @@ namespace helper {
      * @param object_to_fill    in the col2im algorithm, this would be the im (image).
      */
     template<typename Dtype>
-    void set(const int object_size, const Dtype fill_byte, Dtype *object_to_fill);
+    void set(int object_size, Dtype fill_byte, Dtype *object_to_fill);
 
 
     /**
@@ -48,7 +66,12 @@ namespace helper {
      * @param data_image
      */
     template<typename Dtype>
-    void col2im_cpu(const Dtype *data_column, const int channels, const int height, const int width,
-                    const int kernel_size, const int padding, const int stride,
+    void col2im_cpu(const Dtype *data_column, int channels, int height, int width,
+                    int kernel_size, int padding, int stride,
                     Dtype *data_image);
+
+    template<typename Dtype>
+    void col2im_simple_version_cpu(const Dtype *data_column, int channels, int height, int width,
+                                   int kernel_size, int padding, int stride,
+                                   Dtype *data_image);
 }

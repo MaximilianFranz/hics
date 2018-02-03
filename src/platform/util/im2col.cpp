@@ -6,9 +6,27 @@
  */
 
 #include <cstring>
+#include <algorithm>
 #include "im2col.h"
 
 namespace helper {
+
+    void multiply_matrices_using_1d_vectors(const float *matrix_left,
+                                            const int matrix_left_rows, const int matrix_left_columns,
+                                            const float *matrix_right,
+                                            const int matrix_right_rows, const int matrix_right_columns,
+                                            float *result_matrix) {
+        const auto result_matrix_columns = matrix_right_columns;
+        for (int m = 0; m < matrix_left_rows; m++) {
+            for (int n = 0; n < matrix_right_columns; n++) {
+                float value = 0.f;
+                for (int k = 0; k < matrix_right_rows; k++) {
+                    value += matrix_left[m * matrix_left_columns + k] * matrix_right[k * matrix_right_columns + n];
+                }
+                result_matrix[m * result_matrix_columns + n] = value;
+            }
+        }
+    }
 
     /**
     * Checks if a given index lies in the interval [0,boundary).
@@ -42,8 +60,6 @@ namespace helper {
     }
 
     // Explicit instantiation
-    template void set<int>(const int object_size, const int fill_byte, int *object_to_fill);
-
     template void set<float>(const int object_size, const float fill_byte, float *object_to_fill);
 
     template void set<double>(const int object_size, const double fill_byte, double *object_to_fill);
@@ -72,6 +88,21 @@ namespace helper {
      * 2 3 5 6
      * 4 5 7 8
      * 5 6 8 9
+     *
+     * Four to the right because: Kernel 2x2x1 = 4
+     * Four to the bottom because: ((3-2+2*0)/1+1)^2 = 2*2 = 4
+     *
+     * Another Example:
+     * input image is 227x227x3
+     * Kernel is 11x11x3
+     * stride is 4
+     *
+     * 363 to the right because 11*11*3
+     * 3025 to the bottom because ((227-11)/4+1)^2 = 55*55 = 3025
+     * => M = 3025x363
+     *
+     * Then perform Matrix multiply: M x W
+     * where Weight Matrix W = 363x96
      */
     template<typename Dtype>
     void im2col_cpu(const Dtype *data_image, const int channels, const int height, const int width,
@@ -89,14 +120,14 @@ namespace helper {
 
                     int input_row = -padding + kernel_row;
 
-                    for (int output_row = 0; output_row < output_h; ++output_row) {
+                    for (int output_rows = output_h; output_rows; output_rows--) {
                         if (!is_value_ge_zero_and_value_lt_boundary(input_row, height)) {
-                            for (int output_col = 0; output_col < output_w; ++output_col) {
+                            for (int output_cols = output_w; output_cols; output_cols--) {
                                 *(data_column++) = 0;
                             }
                         } else {
-                            int input_col = kernel_col - padding;
-                            for (int output_col = 0; output_col < output_w; ++output_col) {
+                            int input_col = -padding + kernel_col;
+                            for (int output_col = output_w; output_col; output_col--) {
                                 if (is_value_ge_zero_and_value_lt_boundary(input_col, width)) {
                                     *(data_column++) = data_image[input_row * width + input_col];
                                 } else {
@@ -113,12 +144,7 @@ namespace helper {
         }
     }
 
-    /*
     // Explicit instantiation
-    template void im2col_cpu<int>(const int *data_image, const int channels, const int height, const int width,
-                                  const int kernel_size, const int padding, const int stride,
-                                  int *data_column);
-
     template void im2col_cpu<float>(const float *data_image, const int channels, const int height, const int width,
                                     const int kernel_size, const int padding, const int stride,
                                     float *data_column);
@@ -126,9 +152,8 @@ namespace helper {
     template void im2col_cpu<double>(const double *data_image, const int channels, const int height, const int width,
                                      const int kernel_size, const int padding, const int stride,
                                      double *data_column);
-    */
 
-    
+
     template<typename Dtype>
     void col2im_cpu(const Dtype *data_column, const int channels, const int height, const int width,
                     const int kernel_size, const int padding, const int stride,
@@ -169,12 +194,7 @@ namespace helper {
         }
     }
 
-    /*
     // Explicit instantiation
-    template void col2im_cpu<int>(const int *data_column, const int channels, const int height, const int width,
-                                  const int kernel_size, const int padding, const int stride,
-                                  int *data_image);
-
     template void col2im_cpu<float>(const float *data_column, const int channels, const int height, const int width,
                                     const int kernel_size, const int padding, const int stride,
                                     float *data_image);
@@ -182,5 +202,102 @@ namespace helper {
     template void col2im_cpu<double>(const double *data_column, const int channels, const int height, const int width,
                                      const int kernel_size, const int padding, const int stride,
                                      double *data_image);
-    */
+
+
+    template<typename Dtype>
+    void im2col_simple_version_cpu(const Dtype *data_image, const int channels, const int height, const int width,
+                                   const int kernel_size, const int padding, const int stride,
+                                   Dtype *data_column) {
+
+        int kernel_h, kernel_w;
+        kernel_h = kernel_w = kernel_size;
+
+        int pad_h, pad_w;
+        pad_h = pad_w = padding;
+
+        int stride_h, stride_w;
+        stride_h = stride_w = stride;
+
+        const int output_h = (height - kernel_h + 2 * pad_h) / stride_h + 1;
+        const int output_w = (height - kernel_w + 2 * pad_w) / stride_w + 1;
+        int channels_col = channels * kernel_size * kernel_size;
+
+        for (int c = 0; c < channels_col; ++c) {
+            int w_offset = c % kernel_w;
+            int h_offset = (c / kernel_w) % kernel_h;
+            int c_im = c / (kernel_h * kernel_w);
+
+            for (int h = 0; h < output_h; ++h) {
+                for (int w = 0; w < output_w; ++w) {
+                    int h_pad = h * stride_h - pad_h + h_offset;
+                    int w_pad = w * stride_w - pad_w + w_offset;
+                    if (h_pad >= 0 && h_pad < height && w_pad >= 0 && w_pad < width) {
+                        data_column[(c * output_h + h) * output_w + w] =
+                                data_image[(c_im * height + h_pad) * width + w_pad];
+                    } else {
+                        data_column[(c * output_h + h) * output_w + w] = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    // Explicit instantiation
+    template void
+    im2col_simple_version_cpu<float>(const float *data_image, const int channels, const int height, const int width,
+                                     const int kernel_size, const int padding, const int stride,
+                                     float *data_column);
+
+    template void
+    im2col_simple_version_cpu<double>(const double *data_image, const int channels, const int height, const int width,
+                                      const int kernel_size, const int padding, const int stride,
+                                      double *data_column);
+
+
+    template<typename Dtype>
+    void col2im_simple_version_cpu(const Dtype *data_column, const int channels, const int height, const int width,
+                                   const int kernel_size, const int padding, const int stride,
+                                   Dtype *data_image) {
+        int kernel_h, kernel_w;
+        kernel_h = kernel_w = kernel_size;
+
+        int pad_h, pad_w;
+        pad_h = pad_w = padding;
+
+        int stride_h, stride_w;
+        stride_h = stride_w = stride;
+
+        int height_col = (height - kernel_h + 2 * pad_h) / stride_h + 1;
+        int width_col = (width - kernel_w + 2 * pad_w) / stride_w + 1;
+        int channels_col = kernel_h * kernel_w * channels;
+
+        std::fill(data_image, data_image + width * height * channels, 0);
+        for (int c = 0; c < channels_col; ++c) {
+            int w_offset = c % kernel_w;
+            int h_offset = (c / kernel_w) % kernel_h;
+            int c_im = c / (kernel_h * kernel_w);
+
+            for (int h = 0; h < height_col; ++h) {
+                for (int w = 0; w < width_col; ++w) {
+                    int h_pad = h * stride_h - pad_h + h_offset;
+                    int w_pad = w * stride_w - pad_w + w_offset;
+                    if (h_pad >= 0 && h_pad < height && w_pad >= 0 && w_pad < width) {
+                        data_image[(c_im * height + h_pad) * width + w_pad] +=
+                                data_column[(c * height_col + h) * width_col + w];
+                    }
+                }
+            }
+        }
+    }
+
+    // Explicit instantiation
+    template void
+    col2im_simple_version_cpu<float>(const float *data_column, const int channels, const int height, const int width,
+                                     const int kernel_size, const int padding, const int stride,
+                                     float *data_image);
+
+    template void
+    col2im_simple_version_cpu<double>(const double *data_column, const int channels, const int height, const int width,
+                                      const int kernel_size, const int padding, const int stride,
+                                      double *data_image);
 }
