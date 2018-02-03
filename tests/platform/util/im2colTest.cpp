@@ -90,7 +90,39 @@ TEST_CASE("Matrix multiplication using 1d vectors") {
 }
 
 TEST_CASE("col2im") {
+    int image_size = 3;
+    int channels = 1;
 
+    int kernel_size = 2;
+    int number_of_kernels = 1;
+
+    int padding = 0;
+    int stride = 1;
+
+    int output_size = (image_size - kernel_size + 2 * padding) / stride + 1;
+
+    int multiplication_result_rows, multiplication_result_columns, convolution_result_size;
+    multiplication_result_columns = output_size * output_size;
+    multiplication_result_rows = number_of_kernels;
+    convolution_result_size = output_size * output_size * number_of_kernels;
+
+    SECTION("A") {
+        auto multiplication_result = std::vector<float>{37, 47, 67, 77};
+
+        auto convolution_result = std::vector<float>(static_cast<unsigned long>(convolution_result_size));
+
+        helper::col2im_simple_version_cpu(multiplication_result.data(),
+                                          channels, multiplication_result_rows, multiplication_result_columns,
+                                          kernel_size,
+                                          padding, stride,
+                                          convolution_result.data());
+
+        auto expected_convolution_result = std::vector<float>{37, 47, 67, 77};
+
+        REQUIRE(convolution_result.size() == convolution_result_size);
+        REQUIRE(expected_convolution_result.size() == convolution_result_size);
+        REQUIRE(expected_convolution_result == convolution_result);
+    }
 }
 
 TEST_CASE("3x3x1 image and 3x3x1 kernel") {
