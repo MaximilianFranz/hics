@@ -5,7 +5,7 @@
 
 TEST_CASE("Matrix multiplication using 1d vectors") {
 
-    SECTION("3x3 * 3x3") {
+    SECTION("A") {
         int matrix_left_rows, matrix_left_columns, matrix_right_rows, matrix_right_columns;
         matrix_left_rows = 3;
         matrix_left_columns = matrix_right_rows = 3;
@@ -33,7 +33,7 @@ TEST_CASE("Matrix multiplication using 1d vectors") {
         REQUIRE(std::equal(expected_result.begin(), expected_result.end(), multiplication_result.begin()));
     }
 
-    SECTION("2x5 * 5x3") {
+    SECTION("B") {
         int matrix_left_rows, matrix_left_columns, matrix_right_rows, matrix_right_columns;
         matrix_left_rows = 2;
         matrix_left_columns = matrix_right_rows = 5;
@@ -61,7 +61,7 @@ TEST_CASE("Matrix multiplication using 1d vectors") {
         REQUIRE(std::equal(expected_result.begin(), expected_result.end(), multiplication_result.begin()));
     }
 
-    SECTION("") {
+    SECTION("C") {
         int matrix_left_rows, matrix_left_columns, matrix_right_rows, matrix_right_columns;
         matrix_left_rows = 1;
         matrix_left_columns = matrix_right_rows = 4;
@@ -105,7 +105,7 @@ TEST_CASE("3x3x1 image and 3x3x1 kernel") {
     auto column = std::vector<float>(static_cast<unsigned long>(elements_in_im2col_matrix));
     auto column_back_to_image = std::vector<float>(static_cast<unsigned long>(elements_in_im2col_matrix));
 
-    SECTION("") {
+    SECTION("A") {
         auto image = std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8, 9};
 
         helper::im2col_simple_version_cpu(image.data(), channels, image_size, image_size, kernel_size, padding,
@@ -120,7 +120,7 @@ TEST_CASE("3x3x1 image and 3x3x1 kernel") {
         REQUIRE(std::equal(column.begin(), column.end(), expected_im2col_result.begin()));
     }
 
-    SECTION("") {
+    SECTION("B") {
         auto image = std::vector<float>{1, 4, 7, 2, 5, 8, 3, 6, 9};
 
         helper::im2col_simple_version_cpu(image.data(), channels, image_size, image_size, kernel_size, padding,
@@ -162,7 +162,7 @@ TEST_CASE("3x3x1 image and 2x2x1 kernel") {
     auto elements_in_im2col_matrix = kernel_size * kernel_size * channels * output_size * output_size;
     auto column = std::vector<float>(static_cast<unsigned long>(elements_in_im2col_matrix));
 
-    SECTION("") {
+    SECTION("A") {
         auto image = std::vector<float>{1, 4, 7, 2, 5, 8, 3, 6, 9};
 
         helper::im2col_simple_version_cpu(image.data(), channels, image_size, image_size, kernel_size, padding,
@@ -177,7 +177,7 @@ TEST_CASE("3x3x1 image and 2x2x1 kernel") {
         REQUIRE(std::equal(column.begin(), column.end(), expected_im2col_result.begin()));
     }
 
-    SECTION("") {
+    SECTION("B") {
         auto image = std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8, 9};
 
         helper::im2col_simple_version_cpu(image.data(), channels, image_size, image_size, kernel_size, padding,
@@ -234,7 +234,7 @@ TEST_CASE("3x3x2 image and 2x2x2 kernel") {
     auto elements_in_im2col_matrix = kernel_size * kernel_size * channels * output_size * output_size;
     auto column = std::vector<float>(static_cast<unsigned long>(elements_in_im2col_matrix));
 
-    SECTION("") {
+    SECTION("A") {
         auto image = std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
 
         helper::im2col_simple_version_cpu(image.data(), channels, image_size, image_size, kernel_size, padding,
@@ -278,7 +278,7 @@ TEST_CASE("4x4x1 image and 2x2x1 kernel") {
     auto elements_in_im2col_matrix = kernel_size * kernel_size * channels * output_size * output_size;
     auto column = std::vector<float>(static_cast<unsigned long>(elements_in_im2col_matrix));
 
-    SECTION("") {
+    SECTION("A") {
         auto image = std::vector<float>{1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16};
 
         helper::im2col_simple_version_cpu(image.data(), channels, image_size, image_size, kernel_size, padding,
@@ -294,7 +294,7 @@ TEST_CASE("4x4x1 image and 2x2x1 kernel") {
         REQUIRE(std::equal(column.begin(), column.end(), expected_im2col_result.begin()));
     }
 
-    SECTION("") {
+    SECTION("B") {
         auto image = std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 
         helper::im2col_simple_version_cpu(image.data(), channels, image_size, image_size, kernel_size, padding,
@@ -323,7 +323,7 @@ TEST_CASE("4x4x1 image and 3x3x1 kernel") {
     auto elements_in_im2col_matrix = kernel_size * kernel_size * channels * output_size * output_size;
     auto column = std::vector<float>(static_cast<unsigned long>(elements_in_im2col_matrix));
 
-    SECTION("") {
+    SECTION("A") {
         auto image = std::vector<float>{1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16};
 
         helper::im2col_simple_version_cpu(image.data(), channels, image_size, image_size, kernel_size, padding,
@@ -339,7 +339,7 @@ TEST_CASE("4x4x1 image and 3x3x1 kernel") {
         REQUIRE(std::equal(column.begin(), column.end(), expected_im2col_result.begin()));
     }
 
-    SECTION("") {
+    SECTION("B") {
         auto image = std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 
         helper::im2col_simple_version_cpu(image.data(), channels, image_size, image_size, kernel_size, padding,
