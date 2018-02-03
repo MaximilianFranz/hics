@@ -67,7 +67,7 @@ void StartWidgetTest::testImageFunctions() {
     //Select 3 images
     QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 3);
 
-    QMapIterator<QImage *, QHBoxLayout *> it(*(startWidget->getImagesMap()));
+    QMapIterator<QPair<QImage *, QString>, QHBoxLayout *> it(*(startWidget->getImagesMap()));
 
     it.next();
     ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);

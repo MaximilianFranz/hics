@@ -103,16 +103,19 @@ void MainWindowHandlerTest::testStartClassification() {
 //    QCOMPARE(request->getUserImages().size(), (unsigned long) 1);
 }
 
+std::string MainWindowHandlerTest::getLabelFromResultLayout(int layoutPosition, int labelIndex){
+    return ((QLabel*)(mainWindowHandler->getResultWidget()->getImagesQGridLayout()
+        ->itemAtPosition(0, layoutPosition)->layout()
+        ->itemAt(labelIndex)->widget()))->text().toStdString();
+}
+
 void MainWindowHandlerTest::testDisplayClassification() {
     setUpClassificationResult();
     mainWindowHandler->processClassificationResult(classificationResult);
     //TODO add getters for result widget and detail dialog
     //Get top result
 
-    QCOMPARE(((QLabel *) (mainWindowHandler->getResultWidget()->getImagesQVBoxLayout()->itemAt(0)
-        ->layout()->itemAt(2)
-        ->layout()->itemAt(1)
-        ->widget()))->text().toStdString(), (std::string) "Baukran");
+    QCOMPARE(getLabelFromResultLayout(0, 1), (std::string)"Baukran");
 
     QCOMPARE(mainWindowHandler->getDetailDialog()->getPowerConsumptionQLabel()->text().toStdString(), (std::string)"15");
     QCOMPARE(mainWindowHandler->getDetailDialog()->getComputationTimeQLabel()->text().toStdString(), (std::string)"999");
@@ -134,7 +137,7 @@ void MainWindowHandlerTest::testReturnButton(){
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
              mainWindowHandler->getStartWidget());
 
-    QCOMPARE(mainWindowHandler->getResultWidget()->getImagesQVBoxLayout()->isEmpty(), true);
+    QCOMPARE(mainWindowHandler->getResultWidget()->getImagesQGridLayout()->isEmpty(), true);
     QCOMPARE(mainWindowHandler->getDetailDialog()->getComputationTimeQLabel()->text().toStdString(), (std::string)"0");
 }
 

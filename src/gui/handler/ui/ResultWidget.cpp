@@ -205,9 +205,9 @@ QPushButton *ResultWidget::getReturnQPushButton() {
     return ui->returnQPushButton;
 }
 
-//QVBoxLayout *ResultWidget::getImagesQVBoxLayout() {
-//    return ui->imagesQVBoxLayout;
-//}
+QGridLayout *ResultWidget::getImagesQGridLayout() {
+    return ui->imagesQGridLayout;
+}
 
 QHBoxLayout *ResultWidget::getMainQHBoxLayout() {
     return ui->mainQHBoxLayout;
