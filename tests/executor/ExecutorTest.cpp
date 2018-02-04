@@ -97,7 +97,7 @@ SCENARIO("Testing Executor Module") {
         std::vector<NetInfo*> nets = executor->queryNets();
         NetInfo alexnetinfo = *nets.at(0);
 
-        std::string img_data_path = "../../../tests/resources/img_data.txt";
+        std::string img_data_path = TEST_RES_DIR "img_data.txt";
 
         std::vector<float> image = getDataFromFile(img_data_path);
 
@@ -117,7 +117,7 @@ SCENARIO("Testing Executor Module") {
         PreProcessor p;
         p.setOutputSize(227,227);
 
-        QImage img("../../../tests/resources/tf_data_script/laska.png");
+        QImage img(TEST_RES_DIR "tf_data_script/laska.png");
 
         std::map<QString, QImage> map;
         map.insert(std::pair<QString, QImage>(QString("laska"), img));
