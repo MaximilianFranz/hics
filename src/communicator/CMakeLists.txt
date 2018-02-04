@@ -12,6 +12,8 @@ add_library(communicator STATIC
         ${GRPC_SRCS} ${GRPC_HDRS})
 
 add_executable(server-exec serverMain.cpp)
+add_executable(client-exec clientMain.cpp)
 
 target_link_libraries(communicator ${Protobuf_LIBRARIES})
 target_link_libraries(server-exec communicator executor platform neuralnet netbuilder protobuf grpc grpc++)
+target_link_libraries(client-exec communicator executor platform neuralnet netbuilder protobuf grpc grpc++)
