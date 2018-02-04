@@ -51,7 +51,7 @@ void Util::imageResultToMessage(const ImageResult *result, ImageResultMessage *r
     //convert computationDistribution
     for (auto distributionIt : result->getCompDistribution()) {
         PlatformDistributionMessage* newDistribution = resultPtr->add_platformdistribution();
-        platformInfoToMessage(&(distributionIt.first), newDistribution->mutable_platform());
+        platformInfoToMessage(distributionIt.first, newDistribution->mutable_platform());
         newDistribution->set_usage(distributionIt.second);
     }
 }
@@ -96,10 +96,10 @@ ImageResult *Util::messageToImageResult(const ImageResultMessage *imgMes) {
         results.emplace_back(imgMes->classification(i).name(), imgMes->classification(i).probability());
     }
 
-    std::vector<std::pair<PlatformInfo, float>> distribution;
+    std::vector<std::pair<PlatformInfo*, float>> distribution;
     for (int i = 0; i < imgMes->platformdistribution_size(); i++) {
         PlatformInfo* platform = messageToPlatformInfo(&(imgMes->platformdistribution(i).platform()));
-        distribution.emplace_back(*platform, imgMes->platformdistribution(i).usage());
+        distribution.emplace_back(platform, imgMes->platformdistribution(i).usage());
     }
 
     return new ImageResult(results, distribution, *img);

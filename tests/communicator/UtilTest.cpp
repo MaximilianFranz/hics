@@ -34,9 +34,9 @@ SCENARIO("Test") {
     labels.emplace_back("house", .025f);
     labels.emplace_back("garage", .0125f);
 
-    std::vector<std::pair<PlatformInfo, float>> dist;
-    dist.emplace_back(cpu, .6);
-    dist.emplace_back(gpu, .4);
+    std::vector<std::pair<PlatformInfo*, float>> dist;
+    dist.emplace_back(&cpu, .6);
+    dist.emplace_back(&gpu, .4);
     ImageResult imgRes = ImageResult(labels, dist, img);
 
     SECTION("PlatformInfo to message") {
@@ -174,8 +174,8 @@ SCENARIO("Test") {
 
         ImageResult* imageResult = Util::messageToImageResult(imgResMes);
 
-        REQUIRE(imageResult->getCompDistribution()[0].first.getPlatformId() == "0");
-        REQUIRE(imageResult->getCompDistribution()[1].first.getPlatformId() == "1");
+        REQUIRE(imageResult->getCompDistribution()[0].first->getPlatformId() == "0");
+        REQUIRE(imageResult->getCompDistribution()[1].first->getPlatformId() == "1");
         REQUIRE(imageResult->getCompDistribution()[0].second == .6f);
         REQUIRE(imageResult->getCompDistribution()[1].second == .4f);
 
