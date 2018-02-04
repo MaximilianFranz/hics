@@ -86,8 +86,9 @@ QVBoxLayout *ResultWidget::createImageLayout(const std::string &filePath) {
     //TODO maybe QString attribute unnecessary (auto cast std::string to QString?)
     QString q_filePath = QString::fromStdString(filePath);
 
-    //Removes the full path to the file and only returns the file name
-    filePathLabel->setText(shortLink(filePath));
+    //Removes the full path to the file and only returns the file name, shortens it if its larger than 150px
+    QFontMetrics fontMetrics = QFontMetrics(QFont());
+    filePathLabel->setText(fontMetrics.elidedText(shortLink(filePath),Qt::TextElideMode::ElideLeft, 150));
     imageLayout->addWidget(filePathLabel);
 
     //Displays the image
