@@ -28,11 +28,11 @@ SCENARIO("Test") {
     std::vector<NetInfo*> nets = {&alexNet, &googleNet};
 
     std::vector<std::pair<std::string, float>> labels;
-    labels.emplace_back("dog", .8);
-    labels.emplace_back("cat", .1);
-    labels.emplace_back("bird", .05);
-    labels.emplace_back("house", .025);
-    labels.emplace_back("house", .0125);
+    labels.emplace_back("dog", .8f);
+    labels.emplace_back("cat", .1f);
+    labels.emplace_back("bird", .05f);
+    labels.emplace_back("house", .025f);
+    labels.emplace_back("garage", .0125f);
 
     std::vector<std::pair<PlatformInfo, float>> dist;
     dist.emplace_back(cpu, .6);
@@ -117,6 +117,17 @@ SCENARIO("Test") {
         REQUIRE(imgResMes->platformdistribution(1).platform().platformid() == "1");
         REQUIRE(imgResMes->platformdistribution(0).usage() == .6f);
         REQUIRE(imgResMes->platformdistribution(1).usage() == .4f);
+
+        REQUIRE(imgResMes->classification(0).name() == "dog");
+        REQUIRE(imgResMes->classification(0).probability() == .8f);
+        REQUIRE(imgResMes->classification(1).name() == "cat");
+        REQUIRE(imgResMes->classification(1).probability() == .1f);
+        REQUIRE(imgResMes->classification(2).name() == "bird");
+        REQUIRE(imgResMes->classification(2).probability() == .05f);
+        REQUIRE(imgResMes->classification(3).name() == "house");
+        REQUIRE(imgResMes->classification(3).probability() == .025f);
+        REQUIRE(imgResMes->classification(4).name() == "garage");
+        REQUIRE(imgResMes->classification(4).probability() == .0125f);
     }
 
     SECTION("Message to Platform") {
@@ -130,6 +141,55 @@ SCENARIO("Test") {
         REQUIRE(plat->getPlatformId() == "0");
         REQUIRE(plat->getPowerConsumption() == 500);
         REQUIRE(plat->getFlops() == 20000);
+    }
+
+    SECTION("Message to NetInfo") {
+        auto netMes = new NetInfoMessage();
+
+        Util::netInfoToMessage(&alexNet, netMes);
+
+        NetInfo* alex = Util::messageToNetInfo(netMes);
+
+        REQUIRE(alex->getName() == alexNet.getName());
+        REQUIRE(alex->getImageDimension() == alexNet.getImageDimension());
+        REQUIRE(alex->getIdentifier() == alexNet.getIdentifier());
+    }
+
+    SECTION("Message to ImageWrapper") {
+        auto imgMes = new ImageWrapperMessage();
+
+        Util::imageWrapperToMessage(&img, imgMes);
+
+        ImageWrapper* image = Util::messageToImageWrapper(imgMes);
+
+        REQUIRE(image->getData() == img.getData());
+        REQUIRE(image->getDimensions() == img.getDimensions());
+        REQUIRE(image->getFilepath() == img.getFilepath());
+    }
+
+    SECTION("Message to ImageResult") {
+        auto imgResMes = new ImageResultMessage();
+
+        Util::imageResultToMessage(&imgRes, imgResMes);
+
+        ImageResult* imageResult = Util::messageToImageResult(imgResMes);
+
+        REQUIRE(imageResult->getCompDistribution()[0].first.getPlatformId() == "0");
+        REQUIRE(imageResult->getCompDistribution()[1].first.getPlatformId() == "1");
+        REQUIRE(imageResult->getCompDistribution()[0].second == .6f);
+        REQUIRE(imageResult->getCompDistribution()[1].second == .4f);
+
+        REQUIRE(imageResult->getImage().getFilepath() == img.getFilepath());
+        REQUIRE(imageResult->getResults()[0].first == "dog");
+        REQUIRE(imageResult->getResults()[1].first == "cat");
+        REQUIRE(imageResult->getResults()[2].first == "bird");
+        REQUIRE(imageResult->getResults()[3].first == "house");
+        REQUIRE(imageResult->getResults()[4].first == "garage");
+        REQUIRE(imageResult->getResults()[0].second == .8f);
+        REQUIRE(imageResult->getResults()[1].second == .1f);
+        REQUIRE(imageResult->getResults()[2].second == .05f);
+        REQUIRE(imageResult->getResults()[3].second == .025f);
+        REQUIRE(imageResult->getResults()[4].second == .0125f);
     }
 
 }
