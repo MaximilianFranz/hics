@@ -4,9 +4,13 @@
 
 
 
+#include <Executor.h>
 #include "ComputationServer.h"
 #include "Util.h"
 
+void ComputationServer::init() {
+    fpgaExecutor = new Executor();
+}
 
 Status ComputationServer::classify(::grpc::ServerContext *context, const ::ClassifyRequest *request,
                 ::ClassifyReply *reply) {

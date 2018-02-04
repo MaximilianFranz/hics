@@ -16,6 +16,7 @@ using grpc::Status;
 int main() {
     std::string server_address("0.0.0.0:50051");
     ComputationServer service;
+    service.init();
 
     ServerBuilder builder;
     // Listen on the given address without any authentication mechanism.

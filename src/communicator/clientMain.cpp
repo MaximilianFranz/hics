@@ -14,5 +14,9 @@ int main() {
 
     std::vector<NetInfo*> nets = client.queryNets();
 
-    std::cout << nets.size() << std::endl;
+    std::cout << nets[0]->getName() << std::endl;
+
+    /*std::vector<PlatformInfo*> platforms = client.queryPlatform();
+
+    std::cout << platforms.size() << std::endl;*/
 }
