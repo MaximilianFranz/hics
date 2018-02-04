@@ -7,9 +7,11 @@
 int main(int argc, char *argv[]) {
     int image_size = 3;
     int channels = 2;
+    channels = 1;
 
     int kernel_size = 2;
     int number_of_kernels = 3;
+    number_of_kernels = 1;
 
     int padding = 0;
     int stride = 1;
@@ -30,6 +32,7 @@ int main(int argc, char *argv[]) {
     im2col_matrix_columns = multiplication_result_columns = output_size * output_size;
 
     auto image = std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
+    image = std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8, 9};
 
     std::cout << "Input Image: " << std::endl;
     std::cout << "Anzahl der Channels: " << channels << std::endl;
@@ -99,12 +102,14 @@ int main(int argc, char *argv[]) {
     auto weight_matrix_size = weight_matrix_rows * weight_matrix_columns;
     auto weight_matrix = std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
                                             22, 23, 24};
+    weight_matrix = std::vector<float>{1, 2, 3, 4};
 
     // TODO weight matrix muss glaube ich erst mit 1x1 Kernel abgelaufen werden, damit sie als Spalte geschrieben wird
     // TODO und danach muss das Ergebnis noch transponiert werden, damit die Einträge als Zeile geschrieben werden
 
     auto expected_weight_matrix = std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
                                                      20, 21, 22, 23, 24};
+    expected_weight_matrix = std::vector<float>{1, 2, 3, 4};
 
     assert(weight_matrix.size() == static_cast<unsigned long>(weight_matrix_size));
     assert(expected_weight_matrix.size() == static_cast<unsigned long>(weight_matrix_size));
@@ -148,9 +153,13 @@ int main(int argc, char *argv[]) {
      */
     auto expected_multiplication_result = std::vector<float>{356, 392, 464, 500, 836, 936, 1136, 1236, 1316, 1480, 1808,
                                                              1972};
+    /*
+     * {1,2,3,4}.{{1,2,4,5},{2,3,5,6},{4,5,7,8},{5,6,8,9}}
+     */
+    expected_multiplication_result = std::vector<float>{37, 47, 67, 77};
 
     assert(multiplication_result.size() == static_cast<unsigned long>(multiplication_result_size));
-    assert(expected_multiplication_result.size() == static_cast<unsigned long>(multiplication_result_size));
+    // TODO assert(expected_multiplication_result.size() == static_cast<unsigned long>(multiplication_result_size));
 
     counter = 0;
     for (std::vector<float>::const_iterator i = multiplication_result.begin(); i != multiplication_result.end(); ++i) {
@@ -180,8 +189,8 @@ int main(int argc, char *argv[]) {
         counter++;
     }
 
-    assert(std::equal(expected_multiplication_result.begin(), expected_multiplication_result.end(),
-                      multiplication_result.begin()));
+    // TODO assert(std::equal(expected_multiplication_result.begin(), expected_multiplication_result.end(),
+    //multiplication_result.begin()));
 
     std::cout << std::endl;
     std::cout << std::endl;
@@ -207,7 +216,7 @@ int main(int argc, char *argv[]) {
                                       padding, stride,
                                       convolution_result.data());
 
-    auto expected_convolution_result = std::vector<float>{}; // TODO
+    auto expected_convolution_result = std::vector<float>{37, 47, 67, 77}; // TODO
 
     assert(convolution_result.size() == static_cast<unsigned long>(convolution_result_size));
     assert(expected_convolution_result.size() == static_cast<unsigned long>(convolution_result_size));
