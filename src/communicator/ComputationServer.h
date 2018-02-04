@@ -18,7 +18,7 @@ using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
 
-class Server : public Communicator::Service {
+class ComputationServer : public Communicator::Service {
 private:
     ComputationHost* fpgaExecutor;
     Status classify(::grpc::ServerContext *context, const ::ClassifyRequest *request,

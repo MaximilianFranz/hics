@@ -6,9 +6,12 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_library(communicator STATIC
         Client.cpp Client.h
-        Server.cpp Server.h
+        ComputationServer.cpp ComputationServer.h
         Util.cpp Util.h
         ${PROTO_SRCS} ${PROTO_HDRS}
         ${GRPC_SRCS} ${GRPC_HDRS})
 
+add_executable(server-exec serverMain.cpp)
+
 target_link_libraries(communicator ${Protobuf_LIBRARIES})
+target_link_libraries(server-exec communicator executor platform neuralnet netbuilder protobuf grpc grpc++)

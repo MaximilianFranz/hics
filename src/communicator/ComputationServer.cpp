@@ -2,11 +2,11 @@
 // Created by jallmenroeder on 07/01/18.
 //
 
-#include "Server.h"
+#include "ComputationServer.h"
 #include "Util.h"
 
 
-Status Server::classify(::grpc::ServerContext *context, const ::ClassifyRequest *request,
+Status ComputationServer::classify(::grpc::ServerContext *context, const ::ClassifyRequest *request,
                 ::ClassifyReply *reply) {
     std::vector<ImageWrapper*> images;
 
@@ -48,7 +48,7 @@ Status Server::classify(::grpc::ServerContext *context, const ::ClassifyRequest 
 }
 
 Status
-Server::queryPlatforms(grpc::ServerContext *context, const NullMessage *request, PlatformReply *reply) {
+ComputationServer::queryPlatforms(grpc::ServerContext *context, const NullMessage *request, PlatformReply *reply) {
     std::vector<PlatformInfo*> platforms = fpgaExecutor->queryPlatform();
 
     for (auto platformIt : platforms) {
@@ -59,7 +59,7 @@ Server::queryPlatforms(grpc::ServerContext *context, const NullMessage *request,
 }
 
 Status
-Server::queryNets(grpc::ServerContext *context, const NullMessage *request, NetInfoReply *reply) {
+ComputationServer::queryNets(grpc::ServerContext *context, const NullMessage *request, NetInfoReply *reply) {
     std::vector<NetInfo*> nets = fpgaExecutor->queryNets();
 
     for (auto netIt : nets) {
@@ -70,15 +70,15 @@ Server::queryNets(grpc::ServerContext *context, const NullMessage *request, NetI
 }
 
 Status
-Server::queryPlatformsRequest(::grpc::ServerContext *context, const ::NullMessage *request, ::PlatformReply *reply) {
-    return Server::queryPlatforms(context, request, reply);
+ComputationServer::queryPlatformsRequest(::grpc::ServerContext *context, const ::NullMessage *request, ::PlatformReply *reply) {
+    return ComputationServer::queryPlatforms(context, request, reply);
 }
 
-Status Server::queryNetsRequest(::grpc::ServerContext *context, const ::NullMessage *request, ::NetInfoReply *reply) {
-    return Server::queryNets(context, request, reply);
+Status ComputationServer::queryNetsRequest(::grpc::ServerContext *context, const ::NullMessage *request, ::NetInfoReply *reply) {
+    return ComputationServer::queryNets(context, request, reply);
 }
 
 Status
-Server::classifyRequest(::grpc::ServerContext *context, const ::ClassifyRequest *request, ::ClassifyReply *response) {
-    return Service::classifyRequest(context, request, response);
+ComputationServer::classifyRequest(::grpc::ServerContext *context, const ::ClassifyRequest *request, ::ClassifyReply *response) {
+    return ComputationServer::classify(context, request, response);
 }
