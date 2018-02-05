@@ -151,12 +151,12 @@ std::vector<float> getDataFromFile(std::string path) {
 }
 
 TEST_CASE("test with real data from AlexNet") {
-    std::string img_data_path = "../../../tests/resources/img_data.txt";
-    std::string conv1_bias_path = "../../../tests/resources/conv1_bias.txt";
-    std::string conv1_weights_path = "../../../tests/resources/conv1_weight.txt";
-    std::string conv1_result_path = "../../../tests/resources/conv1_data_alexnet.txt";
-    std::string conv2_result_path = "../../../tests/resources/conv2_data_out.txt";
-    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+    std::string img_data_path = TEST_RES_DIR "img_data.txt";
+    std::string conv1_bias_path = TEST_RES_DIR "conv1_bias.txt";
+    std::string conv1_weights_path = TEST_RES_DIR "conv1_weight.txt";
+    std::string conv1_result_path = TEST_RES_DIR "conv1_data_alexnet.txt";
+    std::string conv2_result_path = TEST_RES_DIR "conv2_data_out.txt";
+    std::string weightspath = RES_DIR "weights/alexnet_weights.h5";
 
     std::vector<float> weights = getDataFromFile(conv1_weights_path);
     std::vector<float> bias = getDataFromFile(conv1_bias_path);
@@ -204,7 +204,7 @@ TEST_CASE("test with real data from AlexNet") {
     ActivationFunction *relu = p->createActivationFunction(LayerType::ACTIVATION_RELU);
     relu->execute(in, relu1_out);
 
-    std::string relu1_result_path = "../../../tests/resources/relu1_data_out.txt";
+    std::string relu1_result_path = TEST_RES_DIR "relu1_data_out.txt";
     std::vector<float> relu1_result = getDataFromFile(relu1_result_path);
 
     DataWrapper relu1_expected(outDim, relu1_result);
@@ -224,7 +224,7 @@ TEST_CASE("test with real data from AlexNet") {
     ResponseNormalizationFunction *lrn = p->createResponseNormalizationFunction(LayerType::NORMALIZATION_LOCALRESPONSE);
     lrn->execute(in, lrn1_out, 2, 0.00002, 0.75, 1.0);
 
-    std::string lrn1_result_path = "../../../tests/resources/lrn1_data_out.txt";
+    std::string lrn1_result_path = TEST_RES_DIR "lrn1_data_out.txt";
     std::vector<float> lrn1_result = getDataFromFile(lrn1_result_path);
 
     DataWrapper lrn1_expected(outDim, lrn1_result);
@@ -243,7 +243,7 @@ TEST_CASE("test with real data from AlexNet") {
     PoolingFunction *maxpool = p->createPoolingFunction(LayerType::POOLING_MAX);
     maxpool->execute(in, maxpool1_out, 2, 3, 0);
 
-    std::string maxpool1_result_path = "../../../tests/resources/maxpool_data_out.txt";
+    std::string maxpool1_result_path = TEST_RES_DIR "maxpool_data_out.txt";
     std::vector<float> maxpool1_result = getDataFromFile(maxpool1_result_path);
 
     DataWrapper maxpool1_expected({96, 27, 27}, maxpool1_result);
@@ -392,11 +392,11 @@ TEST_CASE("FullyConnected") {
 }
 
 TEST_CASE("FullyConnected one with real data") {
-    std::string fc1_in = "../../../tests/resources/fc1_data_in_flat.txt";
-    std::string fc1_out = "../../../tests/resources/fc1_data_out.txt";
-    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
-    std::string weightFile = "../../../tests/resources/fc1_weights.txt";
-    std::string biasFile = "../../../tests/resources/fc1_bias.txt";
+    std::string fc1_in = TEST_RES_DIR "fc1_data_in_flat.txt";
+    std::string fc1_out = TEST_RES_DIR "fc1_data_out.txt";
+    std::string weightspath = RES_DIR "weights/alexnet_weights.h5";
+    std::string weightFile = TEST_RES_DIR "fc1_weights.txt";
+    std::string biasFile = TEST_RES_DIR "fc1_bias.txt";
 
     std::vector<float> result = getDataFromFile(fc1_out);
     std::vector<float> input = getDataFromFile(fc1_in);
@@ -438,9 +438,9 @@ TEST_CASE("FullyConnected one with real data") {
 }
 
 TEST_CASE("FullyConnected two with real data") {
-    std::string fc2_in = "../../../tests/resources/fc7_in.txt";
-    std::string fc2_out = "../../../tests/resources/fc7_out.txt";
-    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+    std::string fc2_in = TEST_RES_DIR "fc7_in.txt";
+    std::string fc2_out = TEST_RES_DIR "fc7_out.txt";
+    std::string weightspath = RES_DIR "weights/alexnet_weights.h5";
 
     std::vector<float> result = getDataFromFile(fc2_out);
     std::vector<float> input = getDataFromFile(fc2_in);
@@ -481,9 +481,9 @@ TEST_CASE("FullyConnected two with real data") {
 
 
 TEST_CASE("FullyConnected three with real data") {
-    std::string fc3_in = "../../../tests/resources/fc7_out.txt";
-    std::string fc3_out = "../../../tests/resources/fc8_out.txt";
-    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+    std::string fc3_in = TEST_RES_DIR "fc7_out.txt";
+    std::string fc3_out = TEST_RES_DIR "fc8_out.txt";
+    std::string weightspath = RES_DIR "weights/alexnet_weights.h5";
 
     std::vector<float> result = getDataFromFile(fc3_out);
     std::vector<float> input = getDataFromFile(fc3_in);
@@ -515,9 +515,9 @@ TEST_CASE("FullyConnected three with real data") {
 }
 
 TEST_CASE("Softmax with real data") {
-    std::string sm_in = "../../../tests/resources/fc8_out.txt";
-    std::string sm_out = "../../../tests/resources/sm_out.txt";
-    std::string weightspath = "../../../src/netbuilder/loader/weightloader/alexnet_weights.h5";
+    std::string sm_in = TEST_RES_DIR "fc8_out.txt";
+    std::string sm_out = TEST_RES_DIR "sm_out.txt";
+    std::string weightspath = RES_DIR "weights/alexnet_weights.h5";
 
     std::vector<float> result = getDataFromFile(sm_out);
     std::vector<float> input = getDataFromFile(sm_in);
