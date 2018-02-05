@@ -18,7 +18,7 @@ class Manager : public ManagerObserver {
 
 private:
 
-    Executor *executor = nullptr;
+    ComputationHost *executor = nullptr;
 
     MainWindowHandler *mainWindowHandler = nullptr;
 
