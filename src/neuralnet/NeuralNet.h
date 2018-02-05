@@ -89,6 +89,9 @@ public:
      */
     const Layer *getLastLayer() const;
 
+    /**
+     * Desctructs this instance of NeuralNet an all layers in it.
+     */
     virtual ~NeuralNet();
 
 };

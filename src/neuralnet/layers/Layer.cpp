@@ -95,12 +95,8 @@ DataWrapper *Layer::getOutputWrapper() const {
     return outputWrapper;
 }
 
-void Layer::setOutputWrapper(DataWrapper *outputWrapper) {
-    Layer::outputWrapper = outputWrapper;
-}
-
 void Layer::deleteGarbage() {
-    if(this->type != LayerType::INPUT) {
+    if(this->type != LayerType::INPUT && this->computed) {
         delete previousLayer->getOutputWrapper();
     }
 }
