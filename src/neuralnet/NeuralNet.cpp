@@ -88,3 +88,10 @@ NeuralNet::~NeuralNet() {
     }
 
 }
+
+void NeuralNet::reset() {
+    for (auto l : layers) {
+        l->reset();
+    }
+
+}

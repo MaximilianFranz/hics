@@ -64,7 +64,9 @@ Executor::Executor() {
 ImageResult *Executor::classifyImage(ImageWrapper *image) {
     runDataForward(getImageData(image));
     auto outputData = net->getLastLayer()->getOutputWrapper();
-    return interpreter->getResult(outputData, image, placer);
+    auto imageResult = interpreter->getResult(outputData, image, placer);
+    net->reset();
+    return imageResult;
 
 }
 
@@ -112,6 +114,13 @@ Executor::Executor(std::string name)
     this->builder = (new NetBuilder());
     NetInfo mock = createMockInfo();
     this->net = new NeuralNet(nullptr, mock);
+}
+
+Executor::~Executor() {
+    delete net;
+    delete builder;
+    delete placer;
+    delete interpreter;
 }
 
 

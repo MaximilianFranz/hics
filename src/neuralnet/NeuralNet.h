@@ -68,6 +68,11 @@ public:
     bool isPlacementComplete();
 
     /**
+     * Resets the status of the Net and all layers after computation is complete.
+     */
+    void reset();
+
+    /**
      * TODO: Replace with NetIterator and get proper inheritance to work!
      *
      * @return an iterator

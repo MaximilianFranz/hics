@@ -129,4 +129,6 @@ public:
     std::string getName() {
         return name;
     }
+
+    virtual ~Executor();
 };

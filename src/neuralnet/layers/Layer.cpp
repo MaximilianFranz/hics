@@ -41,7 +41,6 @@ bool Layer::isLayerFunctionSet() {
 void Layer::reset() {
     this->functionSet = false;
     this->computed = false;
-    deleteGarbage(); //TODO: Does this fail if pointers already deleted?
 }
 
 
@@ -102,8 +101,7 @@ void Layer::deleteGarbage() {
 }
 
 Layer::~Layer() {
-    delete inputWrapper;
-    delete outputWrapper;
+    deleteGarbage();
 }
 
 
