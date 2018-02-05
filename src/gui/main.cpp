@@ -17,9 +17,9 @@ int main(int argc, char *argv[])
 
 //    QStackedLayout* stacked = new QStackedLayout();
 //
-//    ResultWidget* resultWidget = new ResultWidget();
+        //ResultWidget* resultWidget = new ResultWidget();
 ////
-//    NetInfo net("AlexNet", 227, "alexnet");
+        //NetInfo net("AlexNet", 227, "alexnet");
 ////    PlatformInfo platform("CPU", PlatformType::CPU, "id", 100, 4);
 ////    OperationMode mode(HighPower);
 ////    OperationMode mode2(LowPower);
@@ -71,8 +71,6 @@ int main(int argc, char *argv[])
 //    ImageResult imgResult4(results, imageWrapper);
 //    ImageResult imgResult5(results, imageWrapper);
 //
-//
-//
 //    std::vector<ImageResult> imgResults;
 //    imgResults.push_back(imgResult1);
 //    imgResults.push_back(imgResult2);
@@ -80,12 +78,13 @@ int main(int argc, char *argv[])
 //    imgResults.push_back(imgResult4);
 //    imgResults.push_back(imgResult5);
 //
-//    ClassificationResult classificationResult(imgResults, net, performanceData);
+//    ClassificationResult* classificationResult = new ClassificationResult(imgResults, net, performanceData);
 //    stacked->addWidget(resultWidget);
 //    stacked->removeWidget(resultWidget);
 //    delete resultWidget;
 //    resultWidget = new ResultWidget();
 //    resultWidget->displayResults(classificationResult);
+//    resultWidget->show();
 //
 //    stacked->addWidget(resultWidget);//    stacked->update();
 //    stacked->setCurrentWidget(resultWidget);

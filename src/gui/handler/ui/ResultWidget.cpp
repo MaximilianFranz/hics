@@ -8,7 +8,7 @@ ResultWidget::ResultWidget(QWidget *parent) :
     ui(new Ui::ResultWidget) {
     ui->setupUi(this);
     ui->imagesQScrollArea->setWidgetResizable(true);
-
+    ui->imagesQScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     //The images (and their not aggregated results) need to be scrollable
     ui->imagesQWidgetContainer->setLayout(ui->imagesQGridLayout);
 }
