@@ -67,9 +67,8 @@ public:
     Wrapper(const Wrapper& wrapper);
 
     //TODO: Implement this correctly if needed!
-//    Wrapper& operator= (const Wrapper& other);
+    //Wrapper& operator= (const Wrapper& other);
 
-    virtual ~Wrapper();
 
     /**
      * Get number of dimensions the data in this Wrapper has.

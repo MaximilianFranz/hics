@@ -31,7 +31,7 @@
 
 class ImageWrapper : public Wrapper {
 private:
-    std::string filepath;
+    std::string filepath; //! filepath to the image this ImageWrapper represents
 
 public:
     /**
@@ -59,4 +59,5 @@ public:
      * @return path to the image on the hard drive
      */
     const std::string getFilepath() const;
+
 };

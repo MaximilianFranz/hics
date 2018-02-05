@@ -29,20 +29,13 @@
 
 DataWrapper::DataWrapper(std::vector<int> dimensions, std::vector<float> &data)
     : Wrapper(dimensions, data) {
-
+    // DataWrapper is the simplest form of Wrapper
 }
 
 DataWrapper::DataWrapper(std::vector<int> dimensions)
         : Wrapper(dimensions) {
-
-}
-
-DataWrapper::~DataWrapper() {
-//    delete[](&data);
-//    delete[](&dimensions);
-//    delete[](&numElements);
+    // DataWrapper is the simplest form of Wrapper
 }
 
 DataWrapper::DataWrapper(const DataWrapper &wrapper) : Wrapper(wrapper) {
-
 }

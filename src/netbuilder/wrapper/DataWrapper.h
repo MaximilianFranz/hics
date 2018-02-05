@@ -42,11 +42,18 @@ public:
      */
     DataWrapper(std::vector<int> dimensions, std::vector<float> &data);
 
-
+    /**
+     * Construct empty DataWrapper
+     *
+     * @param dimensions
+     */
     DataWrapper(std::vector<int> dimensions);
 
-    virtual ~DataWrapper();
-
+    /**
+     * Construct DataWrapper from another Wrapper.
+     *
+     * @param wrapper
+     */
     DataWrapper(const DataWrapper& wrapper);
 
 };

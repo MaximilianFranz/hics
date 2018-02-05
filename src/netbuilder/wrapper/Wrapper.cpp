@@ -114,12 +114,6 @@ Wrapper::Wrapper(const Wrapper &wrapper)
 //    throw NotImplementedException();
 //}
 
-Wrapper::~Wrapper() {
-    // No Destructor yet
-//    delete[](&data);
-//    delete[](&dimensions);
-//    delete[](&numElements);
-}
 
 
 
