@@ -101,7 +101,7 @@ void Layer::setOutputWrapper(DataWrapper *outputWrapper) {
 
 void Layer::deleteGarbage() {
     if(this->type != LayerType::INPUT) {
-        // TODO Maybe implement Garbe-collection manually
+        delete previousLayer->getOutputWrapper();
     }
 }
 

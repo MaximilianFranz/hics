@@ -88,6 +88,8 @@ public:
      * @return last Layer of the network, which is the output.
      */
     const Layer *getLastLayer() const;
+
+
 };
 
 

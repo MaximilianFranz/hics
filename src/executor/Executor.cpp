@@ -56,8 +56,8 @@ std::vector<NetInfo*> Executor::queryNets() {
 Executor::Executor() {
     this->placer = (new PlatformPlacer());
     this->builder = (new NetBuilder());
-    NetInfo mock = createMockInfo();
-    this->net = new NeuralNet(nullptr, mock);
+    //Creat empty neuralnet to avoid seg faults
+    this->net = new NeuralNet(nullptr, createMockInfo());
 
 }
 
@@ -92,11 +92,13 @@ void Executor::runDataForward(DataWrapper *data) {
     do {
         Layer *layer = it->getElement();
         layer->forward();
+        layer->deleteGarbage(); //TODO: Move this into forward() of all layers
         it->next();
+
     } while (it->hasNext());
 }
 
-NetInfo Executor::createMockInfo() {
+const NetInfo Executor::createMockInfo() {
      NetInfo d("empty", 0, "empty");
     return d;
 }

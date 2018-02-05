@@ -85,7 +85,7 @@ private:
     */
     DataWrapper *getImageData(ImageWrapper *imageWrapper);
 
-    NetInfo createMockInfo();
+    const NetInfo createMockInfo();
 
 public:
 
