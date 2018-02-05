@@ -105,5 +105,10 @@ void Layer::deleteGarbage() {
     }
 }
 
+Layer::~Layer() {
+    delete inputWrapper;
+    delete outputWrapper;
+}
+
 
 

@@ -81,3 +81,10 @@ NeuralNet::NeuralNet(InputLayer *input, NetInfo info) : info(info) {
 const Layer *NeuralNet::getLastLayer() const {
     return layers[layers.size() - 1];
 }
+
+NeuralNet::~NeuralNet() {
+    for (auto l : layers) {
+        delete l;
+    }
+
+}

@@ -191,5 +191,6 @@ public:
 
     void deleteGarbage();
 
+    virtual ~Layer();
 };
 

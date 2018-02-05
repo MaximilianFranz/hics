@@ -72,6 +72,9 @@ void Executor::setupIfChanged(NetInfo *netInfo, OperationMode mode, std::vector<
 
     //Check if currently built net is correct!
     if(netInfo->getIdentifier() != this->net->getInfo().getIdentifier()) { //TODO: Overide == operator in NetInfo
+        // free memory
+        delete net;
+        // create new NeuralNet as requested
         net = builder->buildNeuralNet(*netInfo);
     }
 

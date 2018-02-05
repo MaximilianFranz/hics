@@ -89,6 +89,7 @@ public:
      */
     const Layer *getLastLayer() const;
 
+    virtual ~NeuralNet();
 
 };
 
