@@ -43,7 +43,7 @@ int main() {
     std::vector<NetInfo*> nets = client.queryNets();
     NetInfo alexnetinfo = *nets.at(0);
 
-    std::string img_data_path = "../../../tests/resources/img_data.txt";
+    std::string img_data_path = TEST_RES_DIR "img_data.txt";
 
     std::vector<float> image = getDataFromFile(img_data_path);
 
