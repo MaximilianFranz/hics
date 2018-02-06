@@ -644,7 +644,7 @@ TEST_CASE("Testing im2Col with real data") {
             REQUIRE(std::abs(matmul_result.at(i) - result_expected.at(i)) < 0.01);
         }
     }
-
+    /*
     SECTION("Conv Layer 2") {
         std::string input_path = "../../../tests/resources/img_data.txt";
         std::string weights_path = "../../../tests/resources/conv2_weight.txt";
@@ -832,4 +832,5 @@ TEST_CASE("Testing im2Col with real data") {
             REQUIRE(std::abs(matmul_result.at(i) - result_expected.at(i)) < 0.01);
         }
     }
+    */
 }
