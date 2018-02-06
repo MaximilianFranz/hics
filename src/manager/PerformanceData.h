@@ -17,7 +17,7 @@ class PerformanceData {
 private:
     int PowerConsumption;                                           /*!< power consumption of the computation in ws */
     int ComputationTime;                                            /*!< computation time of the classification in ms*/
-    std::vector<std::pair<PlatformInfo, float>> platformUsage;      /*!< maps each platform to its percentage of the
+    std::vector<std::pair<PlatformInfo*, float>> platformUsage;      /*!< maps each platform to its percentage of the
  *                                                                       computation*/
 
 public:
@@ -28,7 +28,7 @@ public:
      * @param platformUsage
      */
     PerformanceData(int PowerConsumption, int ComputationTime,
-                    const std::vector<std::pair<PlatformInfo, float>> &platformUsage);
+                    const std::vector<std::pair<PlatformInfo*, float>> &platformUsage);
 
     /**
      *
@@ -46,5 +46,5 @@ public:
      *
      * @return
      */
-    const std::vector<std::pair<PlatformInfo, float>> &getPlatformUsage() const;
+    const std::vector<std::pair<PlatformInfo*, float>> &getPlatformUsage() const;
 };
