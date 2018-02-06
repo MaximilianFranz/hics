@@ -12,7 +12,7 @@ PerformanceCalculator::calculatePerformance(std::vector<hostPlatformDistribution
     //Set the usage percentages from relative to host to relative to whole classification
     int computationTime = 0;
     int powerConsumption = 0;
-    std::vector<std::pair<PlatformInfo, float>> overallDistribution;
+    std::vector<std::pair<PlatformInfo*, float>> overallDistribution;
 
     for (int i = 0; i < platformDist.size(); i++) {
         auto host = platformDist.begin() + i;
