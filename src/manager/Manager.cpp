@@ -3,6 +3,7 @@
 //
 
 #include <ctime>
+#include <iostream>
 
 #include "Manager.h"
 #include "PreProcessor.h"
@@ -42,6 +43,12 @@ void Manager::update() {
 
     std::vector<ImageWrapper*> processedImages = processor.processImages(request->getUserImages());
 
+    std::vector<std::vector<ImageResult*>> allResults;
+
+    std::vector<int> compTime;
+
+    
+
     //TODO ClassifiationRequest, GUI change Platforms to pointer
 
     std::vector<std::pair<ComputationHost*, int>> hostDistribution =
@@ -61,8 +68,6 @@ void Manager::update() {
 
     std::clock_t time = std::clock();
 
-    std::vector<std::vector<ImageResult*>> allResults;
-
     for (int i = 0; i < computationHosts.size(); i++) {
         allResults.push_back(computationHosts[i]->classify(batches[i],
                                                            request->getSelectedNeuralNet(),
@@ -70,31 +75,34 @@ void Manager::update() {
                                                            request->getSelectedPlatforms()));
     }
 
-    int compTime = (int)((std::clock() - time)/(CLOCKS_PER_SEC/1000));
+    compTime.push_back((int)((std::clock() - time)/(CLOCKS_PER_SEC/1000)));
 
 
-    /*std::vector<std::pair<PlatformInfo, float>> dist;
-    std::vector<std::vector<std::pair<PlatformInfo, float>>> wtf = {dist};
-    dist.emplace_back(info1, 1);*/
+    auto hosts = std::vector<PerformanceCalculator::HostInfo*>();
 
-    /*auto cpuHostInfo = PerformanceCalculator::HostInfo("local", 1, compTime);
-    std::vector<PerformanceCalculator::HostInfo> hosts = {cpuHostInfo};*/
+    for (int i = 0; i < computationHosts.size(); i++) {
+        auto newHost = new PerformanceCalculator::HostInfo(computationHosts[i]->getName(),
+                                                             float(processedImages.size())/float(batches[i].size()),
+                                                             compTime[i]);
+        for (int j = 0; j < batches[i].size(); j++) {
+            hosts.push_back(newHost);
+        }
+    }
 
-    //PerformanceData performance = PerformanceCalculator::calculatePerformance(wtf, hosts);
+    std::vector<std::vector<std::pair<PlatformInfo*, float>>> calculateInfo;
 
-    //TODO delete this shit
-    std::vector<std::pair<PlatformInfo, float>> plat;
-    PlatformInfo info1("CPU", PlatformType::CPU, "local", 100, 4);
-    PlatformInfo info2("FPGA1", PlatformType::FPGA, "fpga1", 50, 3);
-    PlatformInfo info3("GPU1", PlatformType::GPU, "gpu1", 34, 55);
-    PlatformInfo info4("GPU2", PlatformType::GPU, "gpu2", 99, 211);
+    for (int i = 0; i < batches.size(); i++) {
+        //TODO: wait for implementation of getCompDistribution
+        std::vector<std::pair<PlatformInfo*, float>> distr = allResults[i].front()->getCompDistribution();
+        std::cout << i << ": " << distr.front().first->getDescription() << std::endl;
+        std::cout << "platforms: " << distr.size() << std::endl;
+        calculateInfo.push_back(distr);
 
-    plat.push_back(std::pair<PlatformInfo, float>(info1, 20));
-    plat.push_back(std::pair<PlatformInfo, float>(info2, 10));
-    plat.push_back(std::pair<PlatformInfo, float>(info3, 1));
-    plat.push_back(std::pair<PlatformInfo, float>(info4, 69));
+        /*std::vector<std::pair<PlatformInfo *, float>> distr;
+        distr.emplace_back()*/
+    }
 
-    PerformanceData performanceData(15, compTime, plat);
+    PerformanceData performanceData = PerformanceCalculator::calculatePerformance(calculateInfo, hosts);
 
     std::vector<ImageResult> newResults;
 
