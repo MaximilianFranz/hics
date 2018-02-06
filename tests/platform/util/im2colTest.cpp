@@ -493,8 +493,10 @@ TEST_CASE("Testing im2Col with real data") {
     std::string conv1_weights_path = "../../../tests/resources/conv1_weight.txt";
     std::string conv1_result_path = "../../../tests/resources/conv1_data_alexnet.txt";
     std::string img_data_path = "../../../tests/resources/img_data.txt";
+    std::string conv1_bias_path = "../../../tests/resources/conv1_bias.txt";
 
     std::vector<float> weights = getDataFromFile_im2col(conv1_weights_path);
+    std::vector<float> bias = getDataFromFile_im2col(conv1_bias_path);
     std::vector<float> img = getDataFromFile_im2col(img_data_path);
     std::vector<float> result_excpected = getDataFromFile_im2col(conv1_result_path);
 
@@ -510,8 +512,9 @@ TEST_CASE("Testing im2Col with real data") {
                                                patch_result.data(), 363, 3025,
                                                matmul_result.data());
 
+    helper::add_bias(matmul_result.data(), bias.data(), 96, 55, 96);
 
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 6025; i++) {
         REQUIRE(std::abs(matmul_result.at(i) - result_excpected.at(i)) < 0.01);
     }
 
