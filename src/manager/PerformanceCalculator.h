@@ -8,7 +8,7 @@
 #include "PerformanceData.h"
 #include <PlatformInfo.h>
 
-typedef std::vector<std::pair<PlatformInfo, float>> hostPlatformDistribution;
+typedef std::vector<std::pair<PlatformInfo*, float>> hostPlatformDistribution;
 
 /**
  * Calculates the performance of a classification according to the time each platform took to calculate.
@@ -30,5 +30,5 @@ public:
      * @return              total performance data
      */
     static PerformanceData calculatePerformance(std::vector<hostPlatformDistribution> &platformDist,
-                                              std::vector<HostInfo> &hostDistribution);
+                                              std::vector<HostInfo*> &hostDistribution);
 };
