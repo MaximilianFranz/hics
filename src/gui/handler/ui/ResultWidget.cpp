@@ -69,7 +69,9 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
 
         /* Places the aggregated result between two horizontal spacers in mainQHBoxLayout (index = 2) to avoid the
          * stretching of the result layout. */
-        ui->mainQHBoxLayout->insertLayout(1, aggregatedLayout);
+        ui->mainQHBoxLayout->insertStretch(1);
+        ui->mainQHBoxLayout->insertLayout(2, aggregatedLayout);
+        ui->mainQHBoxLayout->insertStretch(3);
     }
 
     //Inserts a vertical stretch under the images to ensure that the image layouts are not stretched out.
@@ -128,8 +130,11 @@ QVBoxLayout *ResultWidget::createResultLayout(std::vector<std::pair<std::string,
         //For every result insert a layout which has the result's name left and its percentage on the right side
         QHBoxLayout *labelLayout = new QHBoxLayout();
 
+        QFontMetrics fontMetrics = QFontMetrics(QFont());
+
         QLabel *name = new QLabel(this);
-        name->setText(QString::fromStdString(pair.first));
+        //TODO dynamically elide text (size)
+        name->setText(fontMetrics.elidedText(shortLink(pair.first),Qt::TextElideMode::ElideMiddle, 350));
         name->setAlignment(Qt::AlignLeft);
         labelLayout->addWidget(name);
 

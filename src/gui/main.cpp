@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 //
 //
     std::vector<std::pair<std::string, float>> results;
-    std::pair<std::string, float> pair1("Leopard", 0.0029);
+    std::pair<std::string, float> pair1("Leopard, LeopardLeopardLeopardLeopardLeopardLeopardLeopardLeopardLeopardLeopardLeopard", 0.0029);
     std::pair<std::string, float> pair2("Haus", 0.17);
     std::pair<std::string, float> pair3("Tiger", 0.09);
     std::pair<std::string, float> pair4("KIT", 0.016);
@@ -78,6 +78,7 @@ int main(int argc, char *argv[])
     imgResults.push_back(imgResult5);
 
     ClassificationResult* classificationResult = new ClassificationResult(imgResults, net, performanceData);
+    classificationResult->aggregateResults();
     resultWidget->displayResults(classificationResult);
     resultWidget->show();
 //
