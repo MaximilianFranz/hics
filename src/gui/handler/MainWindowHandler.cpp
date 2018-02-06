@@ -1,8 +1,8 @@
 #include <NotImplementedException.h>
 #include "MainWindowHandler.h"
 
-MainWindowHandler::MainWindowHandler(std::vector<NetInfo*> &neuralNets, std::vector<PlatformInfo*> &platforms,
-                  std::vector<OperationMode> &operationModes) {
+MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::vector<PlatformInfo *> &platforms,
+                                     std::vector<OperationMode> &operationModes) {
 
     //Initialize the used UI's
     mainWindow = new MainWindow();
@@ -19,8 +19,8 @@ MainWindowHandler::MainWindowHandler(std::vector<NetInfo*> &neuralNets, std::vec
     connectAll();
 }
 
-void MainWindowHandler::setClassificationRequestState(){
-    if(classificationRequestState){
+void MainWindowHandler::setClassificationRequestState() {
+    if (classificationRequestState) {
         delete classificationRequestState;
     }
 
@@ -30,19 +30,21 @@ void MainWindowHandler::setClassificationRequestState(){
     bool aggregate = startWidget->isAggregated();
     std::map<QString, QImage> userImgs = startWidget->getSelectedImages();
 
-    classificationRequestState = new ClassificationRequest(neuralNet, platforms, mode, aggregate, userImgs);
+    if (!platforms.empty() && !userImgs.empty()) {
+        classificationRequestState = new ClassificationRequest(neuralNet, platforms, mode, aggregate, userImgs);
 
-    //Notify all observers that the state has changed
-    notify();
+        //Notify all observers that the state has changed
+        notify();
 
-    //TODO here maybe display loading screen/bar
+        //TODO here maybe display loading screen/bar
+    }
 }
 
-ClassificationRequest* MainWindowHandler::getClassificationRequestState(){
+ClassificationRequest *MainWindowHandler::getClassificationRequestState() {
     return classificationRequestState;
 }
 
-void MainWindowHandler::processClassificationResult(ClassificationResult *classificationResult){
+void MainWindowHandler::processClassificationResult(ClassificationResult *classificationResult) {
     disconnectAll();
     mainWindow->removeWidgetFromStack(resultWidget);
     delete resultWidget;
@@ -57,7 +59,7 @@ void MainWindowHandler::processClassificationResult(ClassificationResult *classi
     mainWindow->setCurrentWidget(resultWidget);
 }
 
-void MainWindowHandler::processReturnQPushButton(){
+void MainWindowHandler::processReturnQPushButton() {
     mainWindow->setCurrentWidget(startWidget);
 
     disconnectAll();
@@ -72,13 +74,14 @@ void MainWindowHandler::processReturnQPushButton(){
     connectAll();
 }
 
-void MainWindowHandler::processDetailQPushButton(){
+void MainWindowHandler::processDetailQPushButton() {
     detailDialog->show();
 }
 
-void MainWindowHandler::connectAll(){
+void MainWindowHandler::connectAll() {
     //Starts the classification
-    connect(startWidget->getClassificationQPushButton(), SIGNAL(clicked(bool)), this, SLOT(setClassificationRequestState()));
+    connect(startWidget->getClassificationQPushButton(), SIGNAL(clicked(bool)), this,
+            SLOT(setClassificationRequestState()));
 
     //Deletes resultWidget
     connect(resultWidget->getReturnQPushButton(), SIGNAL(clicked(bool)), this, SLOT(processReturnQPushButton()));
@@ -90,21 +93,22 @@ void MainWindowHandler::connectAll(){
     connect(resultWidget, SIGNAL(destroyed()), this, SLOT(processReturnQPushButton())); //TODO Check if this works
 }
 
-void MainWindowHandler::disconnectAll(){
-    disconnect(startWidget->getClassificationQPushButton(), SIGNAL(clicked()), this, SLOT(setClassificationRequestState()));
+void MainWindowHandler::disconnectAll() {
+    disconnect(startWidget->getClassificationQPushButton(), SIGNAL(clicked()), this,
+               SLOT(setClassificationRequestState()));
     disconnect(resultWidget->getReturnQPushButton(), SIGNAL(clicked()), this, SLOT(processReturnQPushButton()));
     disconnect(resultWidget->getDetailsQPushButton(), SIGNAL(clicked()), this, SLOT(processDetailQPushButton()));
     disconnect(resultWidget, SIGNAL(destroyed()), this, SLOT(processReturnQPushButton()));
 }
 
-MainWindowHandler::~MainWindowHandler(){
+MainWindowHandler::~MainWindowHandler() {
     disconnectAll();
     delete detailDialog;
     delete resultWidget;
     delete startWidget;
     delete mainWindow;
 
-    if(classificationRequestState){
+    if (classificationRequestState) {
         delete classificationRequestState;
     }
 }
@@ -113,11 +117,11 @@ MainWindow *MainWindowHandler::getMainWindow() const {
     return mainWindow;
 }
 
-StartWidget* MainWindowHandler::getStartWidget() const {
+StartWidget *MainWindowHandler::getStartWidget() const {
     return startWidget;
 }
 
-ResultWidget* MainWindowHandler::getResultWidget() const {
+ResultWidget *MainWindowHandler::getResultWidget() const {
     return resultWidget;
 }
 

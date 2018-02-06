@@ -66,9 +66,8 @@ void ResultWidgetTest::cleanup() {
 std::string ResultWidgetTest::getActualString(int index, int layoutIndex, bool aggregated) {
     std::string output = "";
     if (!aggregated) {
-        output = ((QLabel *) (resultWidget->getImagesQVBoxLayout()
-            ->itemAt(0)->layout() /*!< First container layout*/
-            ->itemAt(2)->layout() /*!< Result layout */
+        output = ((QLabel *) (resultWidget->getImagesQGridLayout()
+            ->itemAtPosition(0, 1)->layout() /*!< ResultLayout in the first row*/
             ->itemAt(index)->layout() /*!< Result row*/
             ->itemAt(layoutIndex)->widget()))->text().toStdString(); /*!< layoutIndex 0 == Label name, 1 == percentage*/
     } else {
@@ -83,9 +82,8 @@ std::string ResultWidgetTest::getActualString(int index, int layoutIndex, bool a
 
 void ResultWidgetTest::testNotAggregated() {
     resultWidget->displayResults(classificationResult);
-    QCOMPARE(((QLabel *) (resultWidget->getImagesQVBoxLayout()
-        ->itemAt(0)->layout()
-        ->itemAt(2)->layout()
+    QCOMPARE(((QLabel *) (resultWidget->getImagesQGridLayout()
+        ->itemAtPosition(0, 1)->layout()
         ->itemAt(1)->widget()))
                  ->text().toStdString(), (std::string) "Baukran");
 
@@ -104,7 +102,7 @@ void ResultWidgetTest::testNotAggregated() {
     QCOMPARE(getActualString(6, 0, false), (std::string) "KIT");
     QCOMPARE(getActualString(6, 1, false), (std::string) "1.6%");
 
-    QCOMPARE(resultWidget->getImagesQVBoxLayout()->count(), 6);
+    QCOMPARE(resultWidget->getImagesQGridLayout()->rowCount(), 5);
 }
 
 void ResultWidgetTest::testAggregated() {
@@ -134,7 +132,6 @@ void ResultWidgetTest::testAggregated() {
     QCOMPARE(getActualString(6, 0, true), (std::string) "KIT");
     QCOMPARE(getActualString(6, 1, true), (std::string) "1.6%");
 
-    //Container layout (image + not_aggr result) has only size 1 == no not_aggr result
-    QCOMPARE(resultWidget->getImagesQVBoxLayout()
-                 ->itemAt(0)->layout()->count(), 1);
+    //imagesQGridLayout has only 1 column == no not_aggr result
+    QCOMPARE(resultWidget->getImagesQGridLayout()->columnCount(), 1);
 }

@@ -14,6 +14,7 @@
 #include <OperationMode.h>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QCheckBox>
+#include <QtCore/QDir>
 
 namespace Ui {
 class StartWidget;
@@ -55,6 +56,8 @@ public:
      * The destructor to delete all allocated memory on the heap.
      */
     ~StartWidget();
+
+    void displayErrorMessage(const QString message);
 
     /**
      * @brief getSelectedNeuralNet returns the selected neural net by the user.
@@ -123,7 +126,7 @@ public:
      * @brief getImagesMap returns the images map which hold all selected input images together with its layouts
      * @return the image map
      */
-    QMap<QImage*, QHBoxLayout*>* getImagesMap();
+    QMap<QPair<QImage*, QString>, QHBoxLayout*>* getImagesMap();
 
 public slots:
 
@@ -152,9 +155,11 @@ private:
 
     Ui::StartWidget *ui;
     QList<QHBoxLayout*> inputImagesLayouts; /*!< Layout order: QCheckBox, QPixmap (the image), QLabel (the file path) */
-    QMap<QImage*, QHBoxLayout*> images; /*!< Maps all loaded images to its layout */
+    QMap<QPair<QImage*, QString>, QHBoxLayout*> images; /*!< Maps all loaded images to its layout */
     std::map<QString, NetInfo*> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
     std::map<QString, PlatformInfo*> platformMap; /*!< used to return the selected platform by using the displayed QString */
+
+    QString directoryPath = QDir::homePath(); /*!< The last opened directory path of the QFileDialog */
 
     void addNeuralNets(std::vector<NetInfo*> &neuralNets);
 

@@ -8,14 +8,14 @@ ResultWidget::ResultWidget(QWidget *parent) :
     ui(new Ui::ResultWidget) {
     ui->setupUi(this);
     ui->imagesQScrollArea->setWidgetResizable(true);
-
+    ui->imagesQScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     //The images (and their not aggregated results) need to be scrollable
-    ui->imagesQWidgetContainer->setLayout(ui->imagesQVBoxLayout);
+    ui->imagesQWidgetContainer->setLayout(ui->imagesQGridLayout);
 }
 
 ResultWidget::~ResultWidget() {
     delete ui;
-    clearLayout(ui->imagesQVBoxLayout);
+    clearLayout(ui->imagesQGridLayout);
 //    if (ui->mainQHBoxLayout->itemAt(2)->layout()) {
 //        clearLayout(ui->mainQHBoxLayout->itemAt(2)->layout());
 //        delete ui->mainQHBoxLayout->itemAt(2);
@@ -46,17 +46,19 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
         result = sortVector(result);
 
         //A container is needed if the results are not aggregated; it will hold the image layout and possibly its result
-        QHBoxLayout *container = new QHBoxLayout();
-        container->addLayout(imageLayout);
+        //QHBoxLayout *container = new QHBoxLayout();
+        //container->addLayout(imageLayout);
 
         //If its not aggregated the individual result must be inside the QScrollArea
         if (!aggregated) {
-            container->insertStretch(1);
+            //container->insertStretch(1);
             QVBoxLayout *resultLayout = createResultLayout(result);
-            container->addLayout(resultLayout);
+            //container->addLayout(resultLayout);
+            ui->imagesQGridLayout->addLayout(resultLayout, i, 1);
         }
 
-        ui->imagesQVBoxLayout->addLayout(container);
+        ui->imagesQGridLayout->addLayout(imageLayout, i, 0);
+        //ui->imagesQVBoxLayout->addLayout(container);
         //TODO check if the size of the displayed picture, text etc. is alright
     }
 
@@ -67,11 +69,13 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
 
         /* Places the aggregated result between two horizontal spacers in mainQHBoxLayout (index = 2) to avoid the
          * stretching of the result layout. */
+        ui->mainQHBoxLayout->insertStretch(1);
         ui->mainQHBoxLayout->insertLayout(2, aggregatedLayout);
+        ui->mainQHBoxLayout->insertStretch(3);
     }
 
     //Inserts a vertical stretch under the images to ensure that the image layouts are not stretched out.
-    ui->imagesQVBoxLayout->insertStretch(-1);
+    //ui->imagesQVBoxLayout->insertStretch(-1);
 }
 
 
@@ -84,8 +88,9 @@ QVBoxLayout *ResultWidget::createImageLayout(const std::string &filePath) {
     //TODO maybe QString attribute unnecessary (auto cast std::string to QString?)
     QString q_filePath = QString::fromStdString(filePath);
 
-    //Removes the full path to the file and only returns the file name
-    filePathLabel->setText(shortLink(filePath));
+    //Removes the full path to the file and only returns the file name, shortens it if its larger than 150px
+    QFontMetrics fontMetrics = QFontMetrics(QFont());
+    filePathLabel->setText(fontMetrics.elidedText(shortLink(filePath),Qt::TextElideMode::ElideLeft, 150));
     imageLayout->addWidget(filePathLabel);
 
     //Displays the image
@@ -125,14 +130,17 @@ QVBoxLayout *ResultWidget::createResultLayout(std::vector<std::pair<std::string,
         //For every result insert a layout which has the result's name left and its percentage on the right side
         QHBoxLayout *labelLayout = new QHBoxLayout();
 
+        QFontMetrics fontMetrics = QFontMetrics(QFont());
+
         QLabel *name = new QLabel(this);
-        name->setText(QString::fromStdString(pair.first));
+        //TODO dynamically elide text (size)
+        name->setText(fontMetrics.elidedText(shortLink(pair.first),Qt::TextElideMode::ElideMiddle, 350));
         name->setAlignment(Qt::AlignLeft);
         labelLayout->addWidget(name);
 
         QLabel *percentage = new QLabel(this);
         //TODO when percentage too long round the number
-        percentage->setText((QString::number(pair.second) + "%"));
+        percentage->setText((shortPercentage(pair.second)) + "%");
         percentage->setAlignment(Qt::AlignRight);
         labelLayout->addWidget(percentage);
 
@@ -150,16 +158,23 @@ QString ResultWidget::shortLink(const std::string &link) {
     int slashIndex = output.lastIndexOf('/');
 
     //When lastIndexOf() returns -1 the char has not been found
-    if (slashIndex != -1) {
-        output.remove(0, slashIndex);
+    if ((slashIndex != -1) && (output.size() >= (slashIndex + 1))) {
+        output.remove(0, slashIndex + 1);
     }
 
     return output;
 }
 
-QString ResultWidget::shortPercentage(const float percentage, int floatingPoint){
+QString ResultWidget::shortPercentage(const float percentage){
     QString output = QString::number(percentage);
-    //TODO implement this
+    output.remove(0, 2);
+    output.insert(2, '.');
+
+    if(output.at(0) == '0'){
+        output.remove(0, 1);
+    }
+
+    return output;
 }
 
 std::vector<std::pair<std::string, float>>
@@ -203,8 +218,8 @@ QPushButton *ResultWidget::getReturnQPushButton() {
     return ui->returnQPushButton;
 }
 
-QVBoxLayout *ResultWidget::getImagesQVBoxLayout() {
-    return ui->imagesQVBoxLayout;
+QGridLayout *ResultWidget::getImagesQGridLayout() {
+    return ui->imagesQGridLayout;
 }
 
 QHBoxLayout *ResultWidget::getMainQHBoxLayout() {

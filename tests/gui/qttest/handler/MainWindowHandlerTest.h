@@ -13,8 +13,8 @@ Q_OBJECT
 
 private:
 
-    std::vector<NetInfo*> nets;
-    std::vector<PlatformInfo*> platforms;
+    std::vector<NetInfo *> nets;
+    std::vector<PlatformInfo *> platforms;
     std::vector<OperationMode> modes;
 
     MainWindowHandler *mainWindowHandler;
@@ -24,6 +24,8 @@ private:
     void setUpClassificationResult();
 
 private slots:
+
+    std::string getLabelFromResultLayout(int layoutPosition, int labelIndex);
 
     void initTestCase();
 

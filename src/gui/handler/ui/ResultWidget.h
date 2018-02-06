@@ -72,10 +72,10 @@ public:
     QPushButton *getReturnQPushButton();
 
     /**
-     * @brief getImagesQVBoxLayout returns the layout in which the images and their results are stored
-     * @return imagesQVBoxLayout
+     * @brief getImagesQGridLayout returns the layout in which the images and their results are stored
+     * @return imagesQGridLayout
      */
-    QVBoxLayout *getImagesQVBoxLayout();
+    QGridLayout *getImagesQGridLayout();
 
     /**
      * @brief getMainQHBoxLayout returns the main layout of ResultWidget
@@ -89,7 +89,7 @@ private:
 
     QString shortLink(const std::string &link);
 
-    QString shortPercentage(const float percentage, int floatingPoint);
+    QString shortPercentage(const float percentage);
 
     QVBoxLayout *createImageLayout(const std::string &filePath);
 

@@ -1,3 +1,4 @@
+#include <QSizePolicy>
 #include "handler/ui/MainWindow.h"
 #include "ui_MainWindow.h"
 
@@ -6,8 +7,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("HICS");
+    this->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
     mainWindowQStackedWidget = new QStackedWidget(this);
-    //ui->centralwidget = mainWindowQStackedWidget;
+
     this->setCentralWidget(mainWindowQStackedWidget);
     this->show();
 }

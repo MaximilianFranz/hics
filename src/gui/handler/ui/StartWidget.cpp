@@ -1,6 +1,9 @@
 #include <QFileDialog>
 #include <QPixmap>
 #include <QCheckBox>
+#include <QtWidgets/QHBoxLayout>
+#include <QtCore/QMap>
+#include <QtWidgets/QErrorMessage>
 #include "handler/ui/StartWidget.h"
 #include "ui_StartWidget.h"
 
@@ -28,11 +31,11 @@ StartWidget::~StartWidget()
     delete ui;
 
     //Delete all allocated QImages
-    QMapIterator<QImage*, QHBoxLayout*> it(images);
+    QMapIterator<QPair<QImage*, QString>, QHBoxLayout*> it(images);
     while (it.hasNext()) {
         it.next();
         clearLayout(it.value());
-        delete it.key();
+        delete it.key().first;
     }
 }
 
@@ -48,7 +51,10 @@ QHBoxLayout* StartWidget::addInputImage(QImage* image, const QString &filePath){
     imageLabel->setPixmap(QPixmap::fromImage(*image).scaled(227, 227, Qt::KeepAspectRatio));
     layout->addWidget(imageLabel, 1);
 
-    label->setText(filePath);
+    label->setAlignment(Qt::AlignLeft);
+    QFontMetrics fontMetrics = QFontMetrics(QFont());
+    label->setText(fontMetrics.elidedText(filePath,Qt::TextElideMode::ElideLeft, 150));
+    label->setAlignment(Qt::AlignmentFlag::AlignCenter);
     layout->addWidget(label, 1);
 
     ui->inputImagesQVBoxLayout->addLayout(layout);
@@ -60,8 +66,8 @@ void StartWidget::processInputImageButton(){
     QStringList fileNames = QFileDialog::getOpenFileNames(
                             this,
                             "Select one or more files to open",
-                            "/home",
-                            "Images (*.png *.jpg)");
+                            directoryPath,
+                            "Images (*.png *.jpg *.jpeg)");
 
     //Create a QImage to every selected file path
     for(int i = 0; i<fileNames.size(); ++i){
@@ -69,7 +75,8 @@ void StartWidget::processInputImageButton(){
         if(image->load(fileNames.at(i))){
             //Display the image together with a check box and its file path
             QHBoxLayout* layout = addInputImage(image, fileNames.at(i));
-            images.insert(image, layout);
+            images.insert(QPair<QImage*, QString>(image, fileNames.at(i)), layout);
+            directoryPath = QFileInfo(fileNames.at(i)).path();
         } else {
             delete image;
         }
@@ -77,7 +84,7 @@ void StartWidget::processInputImageButton(){
 }
 
 void StartWidget::processConfirmDeletionButton(){
-    QMapIterator<QImage*, QHBoxLayout*> it(images);
+    QMapIterator<QPair<QImage*, QString>, QHBoxLayout*> it(images);
 
     //Get every QImage's check box inside the layout and delete the image and layout if it is checked
     while (it.hasNext()) {
@@ -88,7 +95,7 @@ void StartWidget::processConfirmDeletionButton(){
             if(checkBox->isChecked()){
                 clearLayout(it.value());
                 delete it.value();
-                delete it.key();
+                delete it.key().first;
                 images.remove(it.key());
             }
         }
@@ -96,7 +103,7 @@ void StartWidget::processConfirmDeletionButton(){
 }
 
 void StartWidget::processAbortDeletionQPushButton(){
-    QMapIterator<QImage*, QHBoxLayout*> it(images);
+    QMapIterator<QPair<QImage*, QString>, QHBoxLayout*> it(images);
 
     //Uncheck every image check box
     while(it.hasNext()){
@@ -154,13 +161,19 @@ void StartWidget::clearLayout(QLayout *layout){
     }
 }
 
+void StartWidget::displayErrorMessage(const QString message){
+    QErrorMessage* error = new QErrorMessage(this);
+    error->setWindowTitle("Error");
+    error->showMessage(message);
+}
+
 NetInfo StartWidget::getSelectedNeuralNet(){
     QString name = ui->neuralNetsQComboBox->currentText();
     std::map<QString, NetInfo*>::iterator it = neuralNetMap.find(name);
 
     if(it == neuralNetMap.end()){
         //TODO throw exception here
-
+        displayErrorMessage(QString("Please select a neural net for the classification."));
     }
 
     return *it->second;
@@ -189,7 +202,7 @@ std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
     }
 
     if(selectedPlatforms.empty()){
-        //TODO Error message -> you must selecte at least one platform
+        displayErrorMessage(QString("Please select at least one platform."));
         return selectedPlatforms;
     } else {
         return selectedPlatforms;
@@ -207,17 +220,15 @@ bool StartWidget::isAggregated(){
 std::map<QString, QImage> StartWidget::getSelectedImages(){
     std::map<QString, QImage> output;
 
-    QMapIterator<QImage*, QHBoxLayout*> it(images);
+    QMapIterator<QPair<QImage*, QString>, QHBoxLayout*> it(images);
+
     while(it.hasNext()){
         it.next();
+        output.insert(std::pair<QString, QImage>(it.key().second, *(it.key().first)));
+    }
 
-        if(it.value()->itemAt(2)){
-            if(it.value()->itemAt(2)->widget()){
-                //TODO maybe check for cast to QLabel
-                QLabel* label = (QLabel*)(it.value()->itemAt(2)->widget());
-                output.insert(std::pair<QString, QImage>(label->text(), *(it.key())));
-            }
-        }
+    if(output.empty()){
+        displayErrorMessage(QString("Please select at least one image for the classification."));
     }
 
     return output;
@@ -244,7 +255,7 @@ QCheckBox* StartWidget::getAggregateResultsQCheckBox(){
     return ui->aggregateResultsQCheckBox;
 }
 
-QMap<QImage*, QHBoxLayout*>* StartWidget::getImagesMap(){
+QMap<QPair<QImage*, QString>, QHBoxLayout*>* StartWidget::getImagesMap(){
     return &images;
 };
 
