@@ -35,3 +35,10 @@ const std::vector<std::pair<PlatformInfo*, float>> &ImageResult::getCompDistribu
     return compDistribution;
 }
 
+void ImageResult::setCompDistribution(const std::vector<std::pair<PlatformInfo*, float>> &compDistribution) {
+    ImageResult::compDistribution = compDistribution;
+}
+
+const ImageWrapper &ImageResult::getImage() const {
+    return image;
+}
