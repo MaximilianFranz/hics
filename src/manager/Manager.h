@@ -17,8 +17,7 @@
 class Manager : public ManagerObserver {
 
 private:
-
-    ComputationHost *executor = nullptr;
+    std::vector<ComputationHost*> computationHosts;
 
     MainWindowHandler *mainWindowHandler = nullptr;
 
@@ -34,4 +33,11 @@ public:
     void initGUI();
 
     bool operator==(const ManagerObserver &managerObserver) override;
+
+    /**
+     * Intersects the available neural nets of each computation host, to only hand neural nets available on every
+     * host to the Gui.
+     * @return
+     */
+    static std::vector<NetInfo*> netIntersection(std::vector<std::vector<NetInfo*>> &allNets);
 };

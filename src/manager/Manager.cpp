@@ -8,20 +8,32 @@
 #include "PreProcessor.h"
 #include "PerformanceCalculator.h"
 
-Manager::Manager(){
-    executor = new Executor("standard");
+Manager::Manager() {
+    ComputationHost* executor = new Executor("standard");
+    computationHosts.push_back(executor);
 }
 
-void Manager::initGUI(){
-    auto nets = executor->queryNets();
-    auto platforms = executor->queryPlatform();
+void Manager::initGUI() {
+    std::vector<std::vector<NetInfo*>> allNets;
+    for (auto host : computationHosts) {
+        allNets.push_back(host->queryNets());
+    }
+
+    auto nets = netIntersection(allNets);
+
+    auto platforms = std::vector<PlatformInfo*>();
+    /*for (auto host : computationHosts) {
+        auto newPlatforms = host->queryPlatform();
+        platforms.begin(newPlatforms.begin(), newPlatforms.end());
+    }
+    */
     std::vector<OperationMode> modes{OperationMode::HighPower, OperationMode::LowPower, OperationMode::EnergyEfficient};
 
     mainWindowHandler = new MainWindowHandler(nets, platforms, modes);
     mainWindowHandler->attach(this);
 }
 
-void Manager::update(){
+void Manager::update() {
 
     ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
     PreProcessor processor;
@@ -34,7 +46,7 @@ void Manager::update(){
 
     std::clock_t time = std::clock();
 
-    auto imageResults = executor->classify(processedImages,
+    auto imageResults = computationHosts[0]->classify(processedImages,
                                            request->getSelectedNeuralNet(),
                                            request->getSelectedOperationMode(),
                                            request->getSelectedPlatforms());
@@ -81,4 +93,24 @@ void Manager::update(){
 
 bool Manager::operator==(const ManagerObserver &managerObserver){
     return this == &managerObserver;
+}
+
+std::vector<NetInfo *> Manager::netIntersection(std::vector<std::vector<NetInfo*>> &allNets) {
+    auto nets = allNets[0];
+
+    for (auto netIt = allNets.begin() + 1; netIt != allNets.end(); netIt++) {
+        auto newNets = netIt.operator*();
+        for (auto net : nets) {
+            if (std::find_if(newNets.begin(), newNets.end(), [&net](NetInfo* newNet) {
+                return newNet->getIdentifier() == net->getIdentifier();
+            }) == newNets.end()) {
+
+                nets.erase(std::remove_if(nets.begin(), nets.end(), [&net](NetInfo* newNet) {
+                    return newNet->getIdentifier() == net->getIdentifier();
+                }));
+            }
+        }
+    }
+
+    return nets;
 }
