@@ -88,19 +88,20 @@ void MainWindowHandlerTest::testConstructor() {
 }
 
 void MainWindowHandlerTest::testStartClassification() {
-//    mainWindowHandler->getStartWidget()->processInputImageButton();
-//    QTest::keyClick(mainWindowHandler->getStartWidget()->getNeuralNetsQComboBox(), Qt::Key_Down);
-//    ((QCheckBox*)(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->itemAt(1)->widget()))->setChecked(true);
-//
-//    QTest::mouseClick(mainWindowHandler->getStartWidget()->getClassificationQPushButton(), Qt::LeftButton);
-//
-//    ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
-//    QCOMPARE(request->getAggregateResults(), false);
-//
-//    QCOMPARE(request->getSelectedNeuralNet().getIdentifier(), (std::string)"googlenet");
-//    QCOMPARE(request->getSelectedOperationMode(), OperationMode::HighPower); //TODO change this when operation mode implemented
-//    QCOMPARE(request->getSelectedPlatforms().at(0).getPlatformId(), (std::string)"fpga");
-//    QCOMPARE(request->getUserImages().size(), (unsigned long) 1);
+    QSKIP("testStartClassification works, skipping to avoid QFileSelector popup", SkipSingle);
+    mainWindowHandler->getStartWidget()->processInputImageButton();
+    QTest::keyClick(mainWindowHandler->getStartWidget()->getNeuralNetsQComboBox(), Qt::Key_Down);
+    ((QCheckBox*)(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->itemAt(1)->widget()))->setChecked(true);
+
+    QTest::mouseClick(mainWindowHandler->getStartWidget()->getClassificationQPushButton(), Qt::LeftButton);
+
+    ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
+    QCOMPARE(request->getAggregateResults(), false);
+
+    QCOMPARE(request->getSelectedNeuralNet().getIdentifier(), (std::string)"googlenet");
+    QCOMPARE(request->getSelectedOperationMode(), OperationMode::HighPower); //TODO change this when operation mode implemented
+    QCOMPARE(request->getSelectedPlatforms().at(0)->getPlatformId(), (std::string)"fpga");
+    QCOMPARE(request->getUserImages().size(), (unsigned long) 1);
 }
 
 std::string MainWindowHandlerTest::getLabelFromResultLayout(int layoutPosition, int labelIndex){
