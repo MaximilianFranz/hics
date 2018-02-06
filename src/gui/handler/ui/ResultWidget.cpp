@@ -69,7 +69,7 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
 
         /* Places the aggregated result between two horizontal spacers in mainQHBoxLayout (index = 2) to avoid the
          * stretching of the result layout. */
-        ui->mainQHBoxLayout->insertLayout(2, aggregatedLayout);
+        ui->mainQHBoxLayout->insertLayout(1, aggregatedLayout);
     }
 
     //Inserts a vertical stretch under the images to ensure that the image layouts are not stretched out.
