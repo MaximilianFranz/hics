@@ -19,16 +19,16 @@ void DetailDialogTest::initTestCase() {
 
     std::vector<int> dimensions{100, 100};
     ImageWrapper imageWrapper(dimensions, "/home/pselab/Dokumente/repo/hics/tests/resources/tf_data_script/dog.png");
-    std::vector<std::pair<PlatformInfo, float>> plat;
+    std::vector<std::pair<PlatformInfo*, float>> plat;
     PlatformInfo info1("CPU", PlatformType::CPU, "cpu", 100, 4);
     PlatformInfo info2("FPGA1", PlatformType::FPGA, "fpga1", 50, 3);
     PlatformInfo info3("GPU1", PlatformType::GPU, "gpu1", 34, 55);
     PlatformInfo info4("GPU2", PlatformType::GPU, "gpu2", 99, 211);
 
-    plat.push_back(std::pair<PlatformInfo, float>(info1, 20));
-    plat.push_back(std::pair<PlatformInfo, float>(info2, 10));
-    plat.push_back(std::pair<PlatformInfo, float>(info3, 1));
-    plat.push_back(std::pair<PlatformInfo, float>(info4, 69));
+    plat.push_back(std::pair<PlatformInfo*, float>(&info1, 20));
+    plat.push_back(std::pair<PlatformInfo*, float>(&info2, 10));
+    plat.push_back(std::pair<PlatformInfo*, float>(&info3, 1));
+    plat.push_back(std::pair<PlatformInfo*, float>(&info4, 69));
 
     PerformanceData performanceData(15, 999, plat);
     ImageResult imgResult1(results, imageWrapper);
