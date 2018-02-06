@@ -12,8 +12,8 @@ SCENARIO("aggregateResult for trivial test case") {
     NetInfo net = NetInfo("AlexNet", 3, "alexnet");
     PlatformInfo plat = PlatformInfo();
 
-    std::vector<std::pair<PlatformInfo, float>> usage;
-    usage.emplace_back(std::pair<PlatformInfo, float>(plat, 1));
+    std::vector<std::pair<PlatformInfo*, float>> usage;
+    usage.emplace_back(std::pair<PlatformInfo*, float>(&plat, 1));
 
     PerformanceData perfData = PerformanceData(1000, 20, usage);
 

@@ -8,7 +8,7 @@
 
 PerformanceData
 PerformanceCalculator::calculatePerformance(std::vector<hostPlatformDistribution> &platformDist,
-                                          std::vector<HostInfo> &hostDistribution) {
+                                          std::vector<HostInfo*> &hostDistribution) {
     //Set the usage percentages from relative to host to relative to whole classification
     int computationTime = 0;
     int powerConsumption = 0;
@@ -17,7 +17,7 @@ PerformanceCalculator::calculatePerformance(std::vector<hostPlatformDistribution
     for (int i = 0; i < platformDist.size(); i++) {
         auto host = platformDist.begin() + i;
         for (auto platform : host.operator*()) {
-            platform.second = platform.second * hostDistribution[i].usage;
+            platform.second = platform.second * hostDistribution[i]->usage;
             overallDistribution.push_back(platform);
         }
         host++;
@@ -25,11 +25,11 @@ PerformanceCalculator::calculatePerformance(std::vector<hostPlatformDistribution
     //find the slowest host, this is the total computation time
     //add the power each Host took to add up the power consumption
     for (auto host : hostDistribution) {
-        computationTime = std::max(computationTime, host.time);
+        computationTime = std::max(computationTime, host->time);
 
-        auto hostData = HostPlacer::readComputationHostInfo(host.jsonName);
+        auto hostData = HostPlacer::readComputationHostInfo(host->jsonName);
         float powerPerTime = float(hostData.powerConsumption) / float(hostData.timeConsumption);
-        powerConsumption += powerPerTime * host.time;
+        powerConsumption += powerPerTime * host->time;
     }
 
     return PerformanceData(powerConsumption, computationTime, overallDistribution);

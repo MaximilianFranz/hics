@@ -3,25 +3,38 @@
 //
 
 #include <ctime>
+#include <iostream>
 
 #include "Manager.h"
 #include "PreProcessor.h"
 #include "PerformanceCalculator.h"
+#include "HostPlacer.h"
 
-Manager::Manager(){
-    executor = new Executor("standard");
+Manager::Manager() {
+    ComputationHost* executor = new Executor("local");
+    computationHosts.push_back(executor);
 }
 
-void Manager::initGUI(){
-    auto nets = executor->queryNets();
-    auto platforms = executor->queryPlatform();
+void Manager::initGUI() {
+    std::vector<std::vector<NetInfo*>> allNets;
+    for (auto host : computationHosts) {
+        allNets.push_back(host->queryNets());
+    }
+
+    auto nets = netIntersection(allNets);
+
+    auto platforms = std::vector<PlatformInfo*>();
+    for (auto host : computationHosts) {
+        auto newPlatforms = host->queryPlatform();
+        platforms.insert(platforms.end(), newPlatforms.begin(), newPlatforms.end());
+    }
     std::vector<OperationMode> modes{OperationMode::HighPower, OperationMode::LowPower, OperationMode::EnergyEfficient};
 
     mainWindowHandler = new MainWindowHandler(nets, platforms, modes);
     mainWindowHandler->attach(this);
 }
 
-void Manager::update(){
+void Manager::update() {
 
     ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
     PreProcessor processor;
@@ -30,45 +43,73 @@ void Manager::update(){
 
     std::vector<ImageWrapper*> processedImages = processor.processImages(request->getUserImages());
 
+    std::vector<std::vector<ImageResult*>> allResults;
+
+    std::vector<int> compTime;
+
+    
+
     //TODO ClassifiationRequest, GUI change Platforms to pointer
+
+    std::vector<std::pair<ComputationHost*, int>> hostDistribution =
+            HostPlacer::place(computationHosts, (int)processedImages.size(), request->getSelectedOperationMode());
+
+    auto batches = std::vector<std::vector<ImageWrapper*>>(computationHosts.size());
+    int hostIndex = 0;
+    int imageIndex = 0;
+    for (auto imageIt : processedImages) {
+        if (imageIndex < hostDistribution[hostIndex].second) {
+            batches[hostIndex].push_back(imageIt);
+            imageIndex++;
+        } else {
+            hostIndex++;
+        }
+    }
 
     std::clock_t time = std::clock();
 
-    auto imageResults = executor->classify(processedImages,
-                                           request->getSelectedNeuralNet(),
-                                           request->getSelectedOperationMode(),
-                                           request->getSelectedPlatforms());
+    for (int i = 0; i < computationHosts.size(); i++) {
+        allResults.push_back(computationHosts[i]->classify(batches[i],
+                                                           request->getSelectedNeuralNet(),
+                                                           request->getSelectedOperationMode(),
+                                                           request->getSelectedPlatforms()));
+    }
 
-    int compTime = (int)((std::clock() - time)/(CLOCKS_PER_SEC/1000));
+    compTime.push_back((int)((std::clock() - time)/(CLOCKS_PER_SEC/1000)));
 
 
-    /*std::vector<std::pair<PlatformInfo, float>> dist;
-    std::vector<std::vector<std::pair<PlatformInfo, float>>> wtf = {dist};
-    dist.emplace_back(info1, 1);*/
+    auto hosts = std::vector<PerformanceCalculator::HostInfo*>();
 
-    /*auto cpuHostInfo = PerformanceCalculator::HostInfo("local", 1, compTime);
-    std::vector<PerformanceCalculator::HostInfo> hosts = {cpuHostInfo};*/
+    for (int i = 0; i < computationHosts.size(); i++) {
+        auto newHost = new PerformanceCalculator::HostInfo(computationHosts[i]->getName(),
+                                                             float(processedImages.size())/float(batches[i].size()),
+                                                             compTime[i]);
+        for (int j = 0; j < batches[i].size(); j++) {
+            hosts.push_back(newHost);
+        }
+    }
 
-    //PerformanceData performance = PerformanceCalculator::calculatePerformance(wtf, hosts);
+    std::vector<std::vector<std::pair<PlatformInfo*, float>>> calculateInfo;
 
-    //TODO delete this shit
-    std::vector<std::pair<PlatformInfo, float>> plat;
-    PlatformInfo info1("CPU", PlatformType::CPU, "local", 100, 4);
-    PlatformInfo info2("FPGA1", PlatformType::FPGA, "fpga1", 50, 3);
-    PlatformInfo info3("GPU1", PlatformType::GPU, "gpu1", 34, 55);
-    PlatformInfo info4("GPU2", PlatformType::GPU, "gpu2", 99, 211);
+    for (int i = 0; i < batches.size(); i++) {
+        //TODO: wait for implementation of getCompDistribution
+        std::vector<std::pair<PlatformInfo*, float>> distr = allResults[i].front()->getCompDistribution();
+        std::cout << i << ": " << distr.front().first->getDescription() << std::endl;
+        std::cout << "platforms: " << distr.size() << std::endl;
+        calculateInfo.push_back(distr);
 
-    plat.push_back(std::pair<PlatformInfo, float>(info1, 20));
-    plat.push_back(std::pair<PlatformInfo, float>(info2, 10));
-    plat.push_back(std::pair<PlatformInfo, float>(info3, 1));
-    plat.push_back(std::pair<PlatformInfo, float>(info4, 69));
+        /*std::vector<std::pair<PlatformInfo *, float>> distr;
+        distr.emplace_back()*/
+    }
 
-    PerformanceData performanceData(15, compTime, plat);
+    PerformanceData performanceData = PerformanceCalculator::calculatePerformance(calculateInfo, hosts);
 
     std::vector<ImageResult> newResults;
 
-    for(auto i : imageResults){
-        newResults.push_back(*i);
+    for (auto hostResults : allResults){
+            for (auto singleResult : hostResults) {
+                newResults.push_back(*singleResult);
+            }
     }
 
     ClassificationResult* result = new ClassificationResult(newResults, request->getSelectedNeuralNet(), performanceData);
@@ -81,4 +122,24 @@ void Manager::update(){
 
 bool Manager::operator==(const ManagerObserver &managerObserver){
     return this == &managerObserver;
+}
+
+std::vector<NetInfo *> Manager::netIntersection(std::vector<std::vector<NetInfo*>> &allNets) {
+    auto nets = allNets[0];
+
+    for (auto netIt = allNets.begin() + 1; netIt != allNets.end(); netIt++) {
+        auto newNets = netIt.operator*();
+        for (auto net : nets) {
+            if (std::find_if(newNets.begin(), newNets.end(), [&net](NetInfo* newNet) {
+                return newNet->getIdentifier() == net->getIdentifier();
+            }) == newNets.end()) {
+
+                nets.erase(std::remove_if(nets.begin(), nets.end(), [&net](NetInfo* newNet) {
+                    return newNet->getIdentifier() == net->getIdentifier();
+                }));
+            }
+        }
+    }
+
+    return nets;
 }
