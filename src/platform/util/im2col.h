@@ -74,4 +74,7 @@ namespace helper {
     void col2im_simple_version_cpu(const Dtype *data_column, int channels, int height, int width,
                                    int kernel_size, int padding, int stride,
                                    Dtype *data_image);
+
+    template<typename Dtype>
+    void add_bias(Dtype *data_matrix, const Dtype *bias, int channels, int output_size, int output_channel);
 }

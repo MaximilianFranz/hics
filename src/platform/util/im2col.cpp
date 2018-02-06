@@ -290,6 +290,21 @@ namespace helper {
         }
     }
 
+    template<typename Dtype>
+    void add_bias(Dtype *data_matrix, const Dtype *bias, int channels, int output_size, int output_channel) {
+            int rowsize = output_size*output_size;
+
+            for (int kernel = 0; kernel < channels; kernel++) {
+                for (int rit = 0; rit < rowsize; rit++) {
+                    data_matrix[kernel*rowsize + rit] = data_matrix[kernel*rowsize + rit] + bias[kernel];
+                }
+            }
+    }
+
+    template void
+    add_bias<float>(float *data_matrix, const float *bias, int channels, int output_size, int output_channel);
+
+
     // Explicit instantiation
     template void
     col2im_simple_version_cpu<float>(const float *data_column, const int channels, const int height, const int width,
