@@ -37,11 +37,11 @@ void MainWindowHandlerTest::cleanup() {
 
 void MainWindowHandlerTest::setUpClassificationResult() {
     std::vector<std::pair<std::string, float>> results;
-    std::pair<std::string, float> pair1("Leopard", 2.9);
-    std::pair<std::string, float> pair2("Haus", 17);
-    std::pair<std::string, float> pair3("Tiger", 9);
-    std::pair<std::string, float> pair4("KIT", 1.6);
-    std::pair<std::string, float> pair5("Baukran", 68.4);
+    std::pair<std::string, float> pair1("Leopard", 0.029);
+    std::pair<std::string, float> pair2("Haus", 0.17);
+    std::pair<std::string, float> pair3("Tiger", 0.09);
+    std::pair<std::string, float> pair4("KIT", 0.016);
+    std::pair<std::string, float> pair5("Baukran", 0.684);
     results.push_back(pair1);
     results.push_back(pair2);
     results.push_back(pair3);
@@ -51,15 +51,15 @@ void MainWindowHandlerTest::setUpClassificationResult() {
     std::vector<int> dimensions{100, 100};
     ImageWrapper imageWrapper(dimensions, "/home/pselab/Dokumente/repo/hics/tests/resources/tf_data_script/dog.png");
     std::vector<std::pair<PlatformInfo*, float>> plat;
-    PlatformInfo info1("CPU", PlatformType::CPU, "cpu", 100, 4);
-    PlatformInfo info2("FPGA1", PlatformType::FPGA, "fpga1", 50, 3);
-    PlatformInfo info3("GPU1", PlatformType::GPU, "gpu1", 34, 55);
-    PlatformInfo info4("GPU2", PlatformType::GPU, "gpu2", 99, 211);
+    PlatformInfo* info1 = new PlatformInfo("CPU", PlatformType::CPU, "cpu", 100, 4);
+    PlatformInfo* info2 = new PlatformInfo("FPGA1", PlatformType::FPGA, "fpga1", 50, 3);
+    PlatformInfo* info3 = new PlatformInfo("GPU1", PlatformType::GPU, "gpu1", 34, 55);
+    PlatformInfo* info4 = new PlatformInfo("GPU2", PlatformType::GPU, "gpu2", 99, 211);
 
-    plat.push_back(std::pair<PlatformInfo*, float>(&info1, 20));
-    plat.push_back(std::pair<PlatformInfo*, float>(&info2, 10));
-    plat.push_back(std::pair<PlatformInfo*, float>(&info3, 1));
-    plat.push_back(std::pair<PlatformInfo*, float>(&info4, 69));
+    plat.push_back(std::pair<PlatformInfo*, float>(info1, 20));
+    plat.push_back(std::pair<PlatformInfo*, float>(info2, 10));
+    plat.push_back(std::pair<PlatformInfo*, float>(info3, 1));
+    plat.push_back(std::pair<PlatformInfo*, float>(info4, 69));
 
     PerformanceData performanceData(15, 999, plat);
     ImageResult imgResult1(results, imageWrapper);

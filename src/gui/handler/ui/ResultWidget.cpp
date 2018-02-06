@@ -168,8 +168,11 @@ QString ResultWidget::shortLink(const std::string &link) {
 QString ResultWidget::shortPercentage(const float percentage){
     QString output = QString::number(percentage);
     output.remove(0, 2);
-    output.insert(2, '.');
 
+    if(output.size()>2) {
+        output.insert(2, '.');
+    }
+    
     if(output.at(0) == '0'){
         output.remove(0, 1);
     }
