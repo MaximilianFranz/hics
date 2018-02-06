@@ -22,11 +22,10 @@ void Manager::initGUI() {
     auto nets = netIntersection(allNets);
 
     auto platforms = std::vector<PlatformInfo*>();
-    /*for (auto host : computationHosts) {
+    for (auto host : computationHosts) {
         auto newPlatforms = host->queryPlatform();
-        platforms.begin(newPlatforms.begin(), newPlatforms.end());
+        platforms.insert(platforms.end(), newPlatforms.begin(), newPlatforms.end());
     }
-    */
     std::vector<OperationMode> modes{OperationMode::HighPower, OperationMode::LowPower, OperationMode::EnergyEfficient};
 
     mainWindowHandler = new MainWindowHandler(nets, platforms, modes);
