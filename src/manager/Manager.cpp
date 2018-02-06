@@ -7,9 +7,10 @@
 #include "Manager.h"
 #include "PreProcessor.h"
 #include "PerformanceCalculator.h"
+#include "HostPlacer.h"
 
 Manager::Manager() {
-    ComputationHost* executor = new Executor("standard");
+    ComputationHost* executor = new Executor("local");
     computationHosts.push_back(executor);
 }
 
@@ -43,12 +44,31 @@ void Manager::update() {
 
     //TODO ClassifiationRequest, GUI change Platforms to pointer
 
+    std::vector<std::pair<ComputationHost*, int>> hostDistribution =
+            HostPlacer::place(computationHosts, (int)processedImages.size(), request->getSelectedOperationMode());
+
+    auto batches = std::vector<std::vector<ImageWrapper*>>(computationHosts.size());
+    int hostIndex = 0;
+    int imageIndex = 0;
+    for (auto imageIt : processedImages) {
+        if (imageIndex < hostDistribution[hostIndex].second) {
+            batches[hostIndex].push_back(imageIt);
+            imageIndex++;
+        } else {
+            hostIndex++;
+        }
+    }
+
     std::clock_t time = std::clock();
 
-    auto imageResults = computationHosts[0]->classify(processedImages,
-                                           request->getSelectedNeuralNet(),
-                                           request->getSelectedOperationMode(),
-                                           request->getSelectedPlatforms());
+    std::vector<std::vector<ImageResult*>> allResults;
+
+    for (int i = 0; i < computationHosts.size(); i++) {
+        allResults.push_back(computationHosts[i]->classify(batches[i],
+                                                           request->getSelectedNeuralNet(),
+                                                           request->getSelectedOperationMode(),
+                                                           request->getSelectedPlatforms()));
+    }
 
     int compTime = (int)((std::clock() - time)/(CLOCKS_PER_SEC/1000));
 
@@ -78,8 +98,10 @@ void Manager::update() {
 
     std::vector<ImageResult> newResults;
 
-    for(auto i : imageResults){
-        newResults.push_back(*i);
+    for (auto hostResults : allResults){
+            for (auto singleResult : hostResults) {
+                newResults.push_back(*singleResult);
+            }
     }
 
     ClassificationResult* result = new ClassificationResult(newResults, request->getSelectedNeuralNet(), performanceData);
