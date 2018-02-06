@@ -570,13 +570,13 @@ TEST_CASE("4x4x1 image and 3x3x1 kernel") {
 //}
 
 template<typename T>
-std::vector<T> split_im2col(const std::string& line) {
+std::vector<T> split_im2col(const std::string &line) {
     std::istringstream is(line);
     return std::vector<T>(std::istream_iterator<T>(is), std::istream_iterator<T>());
 }
 
 std::vector<float> getDataFromFile_im2col(std::string path) {
-    char* resolved_path;
+    char *resolved_path;
     // Getting the real path from execution dir.
     // We pass NULL and let realpath allocate the string which means we have to free() it later.
     resolved_path = realpath(path.c_str(), NULL);
@@ -598,32 +598,238 @@ std::vector<float> getDataFromFile_im2col(std::string path) {
 }
 
 TEST_CASE("Testing im2Col with real data") {
-    std::string conv1_weights_path = "../../../tests/resources/conv1_weight.txt";
-    std::string conv1_result_path = "../../../tests/resources/conv1_data_alexnet.txt";
-    std::string img_data_path = "../../../tests/resources/img_data.txt";
-    std::string conv1_bias_path = "../../../tests/resources/conv1_bias.txt";
+    SECTION("Conv Layer 1") {
+        std::string input_path = "../../../tests/resources/img_data.txt";
+        std::string weights_path = "../../../tests/resources/conv1_weight.txt";
+        std::string convolution_result_path = "../../../tests/resources/conv1_data_alexnet.txt";
+        std::string bias_path = "../../../tests/resources/conv1_bias.txt";
 
-    std::vector<float> weights = getDataFromFile_im2col(conv1_weights_path);
-    std::vector<float> bias = getDataFromFile_im2col(conv1_bias_path);
-    std::vector<float> img = getDataFromFile_im2col(img_data_path);
-    std::vector<float> result_excpected = getDataFromFile_im2col(conv1_result_path);
+        std::vector<float> input = getDataFromFile_im2col(input_path);
+        std::vector<float> weights = getDataFromFile_im2col(weights_path);
+        std::vector<float> bias = getDataFromFile_im2col(bias_path);
+        std::vector<float> result_expected = getDataFromFile_im2col(convolution_result_path);
 
-    std::vector<float> patch_result(363*3025);
+        int input_size = 227;
+        int channels = 3;
+        int kernel_size = 11;
+        int number_of_kernels = 96;
+        int padding = 0;
+        int stride = 4;
 
-    std::vector<float> matmul_result(55*55*96);
+        int output_size = (input_size - kernel_size + 2 * padding) / stride + 1;
 
-    helper::im2col_simple_version_cpu(img.data(), 3, 227, 227, 11, 0,
-                                      4,
-                                      patch_result.data());
+        int weights_columns, patch_rows;
+        weights_columns = patch_rows = kernel_size * kernel_size * channels;
+        int patch_columns = output_size * output_size;
 
-    helper::multiply_matrices_using_1d_vectors(weights.data(), 96, 363,
-                                               patch_result.data(), 363, 3025,
-                                               matmul_result.data());
 
-    helper::add_bias(matmul_result.data(), bias.data(), 96, 55, 96);
+        std::vector<float> patch_result(static_cast<unsigned long>(patch_rows * patch_columns));
+        auto matrix_multiplication_result_size = number_of_kernels * output_size * output_size;
+        std::vector<float> matmul_result(static_cast<unsigned long>(matrix_multiplication_result_size));
 
-    for (int i = 0; i < 6025; i++) {
-        REQUIRE(std::abs(matmul_result.at(i) - result_excpected.at(i)) < 0.01);
+        helper::im2col_simple_version_cpu(input.data(),
+                                          channels, input_size, input_size,
+                                          kernel_size,
+                                          padding,
+                                          stride,
+                                          patch_result.data());
+
+        helper::multiply_matrices_using_1d_vectors(weights.data(), number_of_kernels, weights_columns,
+                                                   patch_result.data(), patch_rows, patch_columns,
+                                                   matmul_result.data());
+
+        helper::add_bias(matmul_result.data(), bias.data(), number_of_kernels, patch_columns);
+
+        for (int i = 0; i < matrix_multiplication_result_size; i++) {
+            REQUIRE(std::abs(matmul_result.at(i) - result_expected.at(i)) < 0.01);
+        }
     }
 
+    SECTION("Conv Layer 2") {
+        std::string input_path = "../../../tests/resources/img_data.txt";
+        std::string weights_path = "../../../tests/resources/conv2_weight.txt";
+        std::string convolution_result_path = "../../../tests/resources/conv2_data_alexnet.txt";
+        std::string bias_path = "../../../tests/resources/conv2_bias.txt";
+
+        std::vector<float> input = getDataFromFile_im2col(input_path);
+        std::vector<float> weights = getDataFromFile_im2col(weights_path);
+        std::vector<float> bias = getDataFromFile_im2col(bias_path);
+        std::vector<float> result_expected = getDataFromFile_im2col(convolution_result_path);
+
+        int input_size = 27;
+        int channels = 48;
+        int kernel_size = 5;
+        int number_of_kernels = 256;
+        int padding = 2;
+        int stride = 1;
+
+        int output_size = (input_size - kernel_size + 2 * padding) / stride + 1;
+
+        int weights_columns, patch_rows;
+        weights_columns = patch_rows = kernel_size * kernel_size * channels;
+        int patch_columns = output_size * output_size;
+
+
+        std::vector<float> patch_result(static_cast<unsigned long>(patch_rows * patch_columns));
+        auto matrix_multiplication_result_size = number_of_kernels * output_size * output_size;
+        std::vector<float> matmul_result(static_cast<unsigned long>(matrix_multiplication_result_size));
+
+        helper::im2col_simple_version_cpu(input.data(),
+                                          channels, input_size, input_size,
+                                          kernel_size,
+                                          padding,
+                                          stride,
+                                          patch_result.data());
+
+        helper::multiply_matrices_using_1d_vectors(weights.data(), number_of_kernels, weights_columns,
+                                                   patch_result.data(), patch_rows, patch_columns,
+                                                   matmul_result.data());
+
+        helper::add_bias(matmul_result.data(), bias.data(), number_of_kernels, patch_columns);
+
+        for (int i = 0; i < matrix_multiplication_result_size; i++) {
+            REQUIRE(std::abs(matmul_result.at(i) - result_expected.at(i)) < 0.01);
+        }
+    }
+
+    SECTION("Conv Layer 3") {
+        std::string input_path = "../../../tests/resources/conv2_data_out.txt";
+        std::string weights_path = "../../../tests/resources/conv3_weight.txt";
+        std::string convolution_result_path = "../../../tests/resources/conv3_data_alexnet.txt";
+        std::string bias_path = "../../../tests/resources/conv3_bias.txt";
+
+        std::vector<float> input = getDataFromFile_im2col(input_path);
+        std::vector<float> weights = getDataFromFile_im2col(weights_path);
+        std::vector<float> bias = getDataFromFile_im2col(bias_path);
+        std::vector<float> result_expected = getDataFromFile_im2col(convolution_result_path);
+
+        int input_size = 13;
+        int channels = 256;
+        int kernel_size = 3;
+        int number_of_kernels = 384;
+        int padding = 1;
+        int stride = 1;
+
+        int output_size = (input_size - kernel_size + 2 * padding) / stride + 1;
+
+        int weights_columns, patch_rows;
+        weights_columns = patch_rows = kernel_size * kernel_size * channels;
+        int patch_columns = output_size * output_size;
+
+
+        std::vector<float> patch_result(static_cast<unsigned long>(patch_rows * patch_columns));
+        auto matrix_multiplication_result_size = number_of_kernels * output_size * output_size;
+        std::vector<float> matmul_result(static_cast<unsigned long>(matrix_multiplication_result_size));
+
+        helper::im2col_simple_version_cpu(input.data(),
+                                          channels, input_size, input_size,
+                                          kernel_size,
+                                          padding,
+                                          stride,
+                                          patch_result.data());
+
+        helper::multiply_matrices_using_1d_vectors(weights.data(), number_of_kernels, weights_columns,
+                                                   patch_result.data(), patch_rows, patch_columns,
+                                                   matmul_result.data());
+
+        helper::add_bias(matmul_result.data(), bias.data(), number_of_kernels, patch_columns);
+
+        for (int i = 0; i < matrix_multiplication_result_size; i++) {
+            REQUIRE(std::abs(matmul_result.at(i) - result_expected.at(i)) < 0.01);
+        }
+    }
+
+    SECTION("Conv Layer 4") {
+        std::string input_path = "../../../tests/resources/img_data.txt";
+        std::string weights_path = "../../../tests/resources/conv4_weight.txt";
+        std::string convolution_result_path = "../../../tests/resources/conv4_data_alexnet.txt";
+        std::string bias_path = "../../../tests/resources/conv4_bias.txt";
+
+        std::vector<float> input = getDataFromFile_im2col(input_path);
+        std::vector<float> weights = getDataFromFile_im2col(weights_path);
+        std::vector<float> bias = getDataFromFile_im2col(bias_path);
+        std::vector<float> result_expected = getDataFromFile_im2col(convolution_result_path);
+
+        int input_size = 13;
+        int channels = 384;
+        int kernel_size = 3;
+        int number_of_kernels = 384;
+        int padding = 1;
+        int stride = 1;
+
+        int output_size = (input_size - kernel_size + 2 * padding) / stride + 1;
+
+        int weights_columns, patch_rows;
+        weights_columns = patch_rows = kernel_size * kernel_size * channels;
+        int patch_columns = output_size * output_size;
+
+
+        std::vector<float> patch_result(static_cast<unsigned long>(patch_rows * patch_columns));
+        auto matrix_multiplication_result_size = number_of_kernels * output_size * output_size;
+        std::vector<float> matmul_result(static_cast<unsigned long>(matrix_multiplication_result_size));
+
+        helper::im2col_simple_version_cpu(input.data(),
+                                          channels, input_size, input_size,
+                                          kernel_size,
+                                          padding,
+                                          stride,
+                                          patch_result.data());
+
+        helper::multiply_matrices_using_1d_vectors(weights.data(), number_of_kernels, weights_columns,
+                                                   patch_result.data(), patch_rows, patch_columns,
+                                                   matmul_result.data());
+
+        helper::add_bias(matmul_result.data(), bias.data(), number_of_kernels, patch_columns);
+
+        for (int i = 0; i < matrix_multiplication_result_size; i++) {
+            REQUIRE(std::abs(matmul_result.at(i) - result_expected.at(i)) < 0.01);
+        }
+    }
+
+    SECTION("Conv Layer 5") {
+        std::string input_path = "../../../tests/resources/img_data.txt";
+        std::string weights_path = "../../../tests/resources/conv5_weight.txt";
+        std::string convolution_result_path = "../../../tests/resources/conv5_data_alexnet.txt";
+        std::string bias_path = "../../../tests/resources/conv5_bias.txt";
+
+        std::vector<float> input = getDataFromFile_im2col(input_path);
+        std::vector<float> weights = getDataFromFile_im2col(weights_path);
+        std::vector<float> bias = getDataFromFile_im2col(bias_path);
+        std::vector<float> result_expected = getDataFromFile_im2col(convolution_result_path);
+
+        int input_size = 13;
+        int channels = 384;
+        int kernel_size = 3;
+        int number_of_kernels = 256;
+        int padding = 1;
+        int stride = 1;
+
+        int output_size = (input_size - kernel_size + 2 * padding) / stride + 1;
+
+        int weights_columns, patch_rows;
+        weights_columns = patch_rows = kernel_size * kernel_size * channels;
+        int patch_columns = output_size * output_size;
+
+
+        std::vector<float> patch_result(static_cast<unsigned long>(patch_rows * patch_columns));
+        auto matrix_multiplication_result_size = number_of_kernels * output_size * output_size;
+        std::vector<float> matmul_result(static_cast<unsigned long>(matrix_multiplication_result_size));
+
+        helper::im2col_simple_version_cpu(input.data(),
+                                          channels, input_size, input_size,
+                                          kernel_size,
+                                          padding,
+                                          stride,
+                                          patch_result.data());
+
+        helper::multiply_matrices_using_1d_vectors(weights.data(), number_of_kernels, weights_columns,
+                                                   patch_result.data(), patch_rows, patch_columns,
+                                                   matmul_result.data());
+
+        helper::add_bias(matmul_result.data(), bias.data(), number_of_kernels, patch_columns);
+
+        for (int i = 0; i < matrix_multiplication_result_size; i++) {
+            REQUIRE(std::abs(matmul_result.at(i) - result_expected.at(i)) < 0.01);
+        }
+    }
 }
