@@ -291,18 +291,16 @@ namespace helper {
     }
 
     template<typename Dtype>
-    void add_bias(Dtype *data_matrix, const Dtype *bias, int channels, int output_size, int output_channel) {
-            int rowsize = output_size*output_size;
-
-            for (int kernel = 0; kernel < channels; kernel++) {
-                for (int rit = 0; rit < rowsize; rit++) {
-                    data_matrix[kernel*rowsize + rit] = data_matrix[kernel*rowsize + rit] + bias[kernel];
-                }
+    void add_bias(Dtype *data_matrix, const Dtype *bias, int rows, int columns) {
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                data_matrix[row * columns + column] = data_matrix[row * columns + column] + bias[row];
             }
+        }
     }
 
     template void
-    add_bias<float>(float *data_matrix, const float *bias, int channels, int output_size, int output_channel);
+    add_bias<float>(float *data_matrix, const float *bias, int rows, int columns);
 
 
     // Explicit instantiation

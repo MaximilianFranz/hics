@@ -76,5 +76,5 @@ namespace helper {
                                    Dtype *data_image);
 
     template<typename Dtype>
-    void add_bias(Dtype *data_matrix, const Dtype *bias, int channels, int output_size, int output_channel);
+    void add_bias(Dtype *data_matrix, const Dtype *bias, int number_of_rows, int number_of_columns);
 }
