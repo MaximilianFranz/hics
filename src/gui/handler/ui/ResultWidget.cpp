@@ -148,11 +148,11 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
         //TODO when percentage too long round the number
         percentage->setText(QString::number(pair.second*100) + "%");
         percentage->setAlignment(Qt::AlignRight);
-        percentage->setStyleSheet("background: qlineargradient"
-                                      "(x1:0, y1:0, x2:1, y2:0,"
-                                      " stop:0 rgba(0, 0, 0, 0),"
-                                      " stop:" + QString::number(1-pair.second) +" rgba(0, 0, 0, 0),"
-                                      " stop:1 rgba(255, 0, 0, 0.6))");
+
+        percentage->setStyleSheet("background:rgba(0, 0, 0, 0); border-right:"
+                                  + QString::number(percentage->width()*pair.second)
+                                  + "px solid rgba(255, 0, 0, 0.6)");
+
         labelLayout->addWidget(percentage);
 
         layout->addLayout(labelLayout);
