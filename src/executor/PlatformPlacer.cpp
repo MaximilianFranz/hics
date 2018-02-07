@@ -107,10 +107,21 @@ void PlatformPlacer::placeNetWith(Platform *perfomance, Platform *fallback) {
 
     int layerCount = fallbackCount  + perfomanceCount;
     // Calculate simple distribution.
-    compDistribution.push_back(std::pair<PlatformInfo*, float>(&perfomance->getPlatformInfo(),
-                                                               perfomanceCount / layerCount));
-    compDistribution.push_back(std::pair<PlatformInfo*, float>(&fallback->getPlatformInfo(),
-                                                               fallbackCount / layerCount));
+
+
+    // Add second platform only if two different platforms have been used.
+    if (perfomance->getPlatformInfo().getPlatformId() == fallback->getPlatformInfo().getPlatformId()) {
+        // Same platform used everywhere
+        compDistribution.push_back(std::pair<PlatformInfo*, float>(&perfomance->getPlatformInfo(),
+                                                                   layerCount / layerCount));
+    }
+    else {
+        // Different platforms used
+        compDistribution.push_back(std::pair<PlatformInfo*, float>(&perfomance->getPlatformInfo(),
+                                                                   perfomanceCount / layerCount));
+        compDistribution.push_back(std::pair<PlatformInfo*, float>(&fallback->getPlatformInfo(),
+                                                                   fallbackCount / layerCount));
+    }
 
 }
 
