@@ -13,7 +13,6 @@ StartWidget::StartWidget(std::vector<NetInfo*> &neuralNets, std::vector<Platform
     ui(new Ui::StartWidget)
 {
     ui->setupUi(this);
-
     ui->userImagesQWidgetContainer->setLayout(ui->inputImagesQVBoxLayout); //Make input images scrollable
 
     addNeuralNets(neuralNets);
@@ -55,6 +54,9 @@ QHBoxLayout* StartWidget::addInputImage(QImage* image, const QString &filePath){
     QFontMetrics fontMetrics = QFontMetrics(QFont());
     label->setText(fontMetrics.elidedText(filePath,Qt::TextElideMode::ElideLeft, 150));
     label->setAlignment(Qt::AlignmentFlag::AlignCenter);
+    label->setToolTip(filePath);
+    label->setToolTipDuration(-1);
+
     layout->addWidget(label, 1);
 
     ui->inputImagesQVBoxLayout->addLayout(layout);
