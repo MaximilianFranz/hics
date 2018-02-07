@@ -91,8 +91,8 @@ int main(int argc, char *argv[])
 //    d->show();
 ////
 //
-  Manager manager;
-   manager.initGUI();
+//  Manager manager;
+//   manager.initGUI();
 
 
 

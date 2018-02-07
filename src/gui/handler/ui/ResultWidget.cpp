@@ -38,7 +38,7 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
         ImageResult imageResult = results[i];
 
         //Creates a layout which display the file path and its image on top of each other
-        QVBoxLayout *imageLayout = createImageLayout(imageResult.getImagePath());
+        QFrame *imageLayout = createImageLayout(imageResult.getImagePath());
 
         std::vector<std::pair<std::string, float>> result = imageResult.getResults();
 
@@ -52,12 +52,13 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
         //If its not aggregated the individual result must be inside the QScrollArea
         if (!aggregated) {
             //container->insertStretch(1);
-            QVBoxLayout *resultLayout = createResultLayout(result);
+            QFrame *resultLayout = createResultLayout(result);
             //container->addLayout(resultLayout);
-            ui->imagesQGridLayout->addLayout(resultLayout, i, 1);
+            //ui->imagesQGridLayout->addLayout(resultLayout, i, 1);
+            ui->imagesQGridLayout->addWidget(resultLayout, i, 1);
         }
 
-        ui->imagesQGridLayout->addLayout(imageLayout, i, 0);
+        ui->imagesQGridLayout->addWidget(imageLayout, i, 0);
         //ui->imagesQVBoxLayout->addLayout(container);
         //TODO check if the size of the displayed picture, text etc. is alright
     }
@@ -65,12 +66,12 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
     //Display the aggregated result outside of the QScrollArea
     if (aggregated) {
         std::vector<std::pair<std::string, float>> aggregatedResult = classificationResult->getAggregatedResults();
-        QVBoxLayout *aggregatedLayout = createResultLayout(aggregatedResult);
+        QFrame *aggregatedLayout = createResultLayout(aggregatedResult);
 
         /* Places the aggregated result between two horizontal spacers in mainQHBoxLayout (index = 2) to avoid the
          * stretching of the result layout. */
         ui->mainQHBoxLayout->insertStretch(1);
-        ui->mainQHBoxLayout->insertLayout(2, aggregatedLayout);
+        ui->mainQHBoxLayout->insertWidget(2, aggregatedLayout);
         ui->mainQHBoxLayout->insertStretch(3);
     }
 
@@ -79,8 +80,11 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
 }
 
 
-QVBoxLayout *ResultWidget::createImageLayout(const std::string &filePath) {
-    QVBoxLayout *imageLayout = new QVBoxLayout();
+QFrame *ResultWidget::createImageLayout(const std::string &filePath) {
+    QFrame* frame = new QFrame(this);
+    frame->setFrameShape(QFrame::Box);
+    
+    QVBoxLayout *imageLayout = new QVBoxLayout(frame);
     imageLayout->insertStretch(0);
     //Displays the file path
     QLabel *filePathLabel = new QLabel(this);
@@ -100,11 +104,13 @@ QVBoxLayout *ResultWidget::createImageLayout(const std::string &filePath) {
     imageLayout->addWidget(imageLabel);
 
     imageLayout->insertStretch(-1);
-    return imageLayout;
+    return frame;
 }
 
-QVBoxLayout *ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result) {
-    QVBoxLayout *layout = new QVBoxLayout();
+QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result) {
+    QFrame* frame = new QFrame(this);
+    frame->setFrameShape(QFrame::Box);
+    QVBoxLayout *layout = new QVBoxLayout(frame);
 
     //Stretch the layout from the top
     layout->insertStretch(0);
@@ -149,7 +155,7 @@ QVBoxLayout *ResultWidget::createResultLayout(std::vector<std::pair<std::string,
 
     //Stretch the layout from the bottom
     layout->insertStretch(-1);
-    return layout;
+    return frame;
 }
 
 QString ResultWidget::shortLink(const std::string &link) {

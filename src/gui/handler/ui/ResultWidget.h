@@ -89,9 +89,9 @@ private:
 
     QString shortLink(const std::string &link);
 
-    QVBoxLayout *createImageLayout(const std::string &filePath);
+    QFrame *createImageLayout(const std::string &filePath);
 
-    QVBoxLayout *createResultLayout(std::vector<std::pair<std::string, float>> &result);
+    QFrame *createResultLayout(std::vector<std::pair<std::string, float>> &result);
 
     std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
 
