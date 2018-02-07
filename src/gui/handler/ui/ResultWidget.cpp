@@ -91,7 +91,7 @@ QFrame *ResultWidget::createImageLayout(const std::string &filePath) {
 
     //TODO maybe QString attribute unnecessary (auto cast std::string to QString?)
     QString q_filePath = QString::fromStdString(filePath);
-    
+
     filePathLabel->setToolTip(q_filePath);
     filePathLabel->setToolTipDuration(-1);
 
@@ -145,6 +145,9 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
         //TODO dynamically elide text (size)
         name->setText(fontMetrics.elidedText(shortLink(pair.first),Qt::TextElideMode::ElideMiddle, 350));
         name->setAlignment(Qt::AlignLeft);
+
+        name->setTextInteractionFlags(Qt::TextSelectableByMouse);
+
         labelLayout->addWidget(name);
 
         QLabel *percentage = new QLabel(this);
@@ -155,6 +158,8 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
         percentage->setStyleSheet("background:rgba(0, 0, 0, 0); border-right:"
                                   + QString::number(percentage->width()*pair.second)
                                   + "px solid rgba(255, 0, 0, 0.6)");
+
+        percentage->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
         labelLayout->addWidget(percentage);
 
