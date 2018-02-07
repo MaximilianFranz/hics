@@ -26,8 +26,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#ifdef __APPLE__
 
+#include <OpenCL/opencl.h>
+#else
 #include "CL/opencl.h"
+#endif
 
 namespace aocl_utils {
 
