@@ -24,7 +24,9 @@ set(SOURCE_FILES
         layerfunctions/convolution/FpgaConvolutionFunction.cpp layerfunctions/convolution/FpgaConvolutionFunction.h
         util/im2col.cpp util/im2col.h)
 add_library(platform STATIC ${SOURCE_FILES})
-target_link_libraries(platform netbuilder OpenCL::OpenCL)
+#target_link_libraries(platform netbuilder OpenCL::OpenCL)
+target_link_libraries(platform netbuilder ${OpenCL_LIBRARIES})
+include_directories(${OpenCL_INCLUDE_DIRS})
 
 add_executable(platform-exec util/main.cpp)
 target_link_libraries(platform-exec platform)
