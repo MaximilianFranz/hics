@@ -6,9 +6,6 @@
 #include "util/im2col.h"
 
 
-// Size of the matrices - K, M, N (squared)
-#define SIZE 1024
-
 // Threadblock sizes (e.g. for kernels myGEMM1 or myGEMM2)
 #define TS 32
 
@@ -131,10 +128,12 @@ FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
         : context(c), device(d) {
 
     queue = clCreateCommandQueue(context, device, 0, NULL);
-    program = CreateProgram(LoadKernel(RES_DIR "kernels/gemm3.cl"), context);
-    char cmdline[1024];
-    snprintf(cmdline, 1024, "-DTS=%d -DWPT=%d -DRTS=%d", TS, WPT, TS/WPT);
-    clBuildProgram(program, 0, NULL, cmdline, NULL, NULL);
+    program = CreateProgram(LoadKernel(RES_DIR "kernels/gemm1.cl"), context);
+//    char cmdline[1024];
+//    snprintf(cmdline, 1024, "-DTS=%d -DWPT=%d -DRTS=%d", TS, WPT, TS/WPT);
+//    clBuildProgram(program, 0, NULL, cmdline, NULL, NULL);
+    clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
+
 
     // Check for compilation errors
     size_t logSize;
@@ -145,7 +144,7 @@ FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
     if (logSize > 10) { printf(">>> Compiler message: %s\n", messages); }
     free(messages);
 
-    kernel = clCreateKernel(program, "myGEMM3", NULL);
+    kernel = clCreateKernel(program, "myGEMM1", NULL);
 
 }
 
@@ -158,64 +157,11 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
                                       int filterSize,
                                       int numFilters,
                                       int zeroPadding) {
-    auto b = weights.getBiasArray();
-    auto w = weights.getDataArray();
-    auto i = input.getDataArray();
-    auto o = output.getDataArray();
 
-
-    // TODO: we assume filterSize is always odd, verify if that is true
-    int halfFilterSize = (filterSize -1 ) / 2;
     int numPlanes = input.getDimensions()[0];
     int numRows = input.getDimensions()[1];
-    int numCols = input.getDimensions()[2];
 
-
-    for (int f = 0; f < numFilters; f++) {
-        int skip = halfFilterSize - zeroPadding;
-        for (int inRow = skip; inRow < numRows - skip; inRow += stride) {
-            for (int inCol = skip; inCol < numCols - skip; inCol += stride) {
-                float sum = 0;
-                for (int plane = 0; plane < numPlanes; plane++) {
-                    for (int fRow = -halfFilterSize; fRow <= halfFilterSize; fRow++) {
-
-                        if (inRow + fRow < 0 || inRow + fRow >= numRows) {
-                            // Skip regions which are outside of the image, the values are 0 and don't change sum
-                            continue;
-                        }
-
-                        for (int fCol = -halfFilterSize; fCol <= halfFilterSize; fCol++) {
-
-                            if (inCol + fCol < 0 || inCol + fCol  >= numCols) {
-                                // Skip regions which are outside of the image, the values are 0 and don't change sum
-                                continue;
-                            }
-
-                            int c = fCol + halfFilterSize;
-                            int r = fRow + halfFilterSize;
-                            int wIndex = c + r*filterSize + plane*filterSize*filterSize + f*numPlanes*filterSize*filterSize;
-                            float weight = w[wIndex];
-
-                            int iIndex = (inCol + fCol) + (inRow + fRow)*numCols +  plane*numCols*numRows;
-                            float data = i[iIndex];
-
-                            sum += weight*data;
-                        }
-
-                    }
-
-                }
-                // Add bias
-                sum += b[f];
-                // Store result and advance pointer
-                *o = sum;
-                o++;
-
-            }
-        }
-    }
-
-
+    /* im2col */
     int input_size = numRows;
     int channels = numPlanes;
     int kernel_size = filterSize;
@@ -230,12 +176,9 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
 
 
     std::vector<float> patch_result(static_cast<unsigned long>(patch_rows * patch_columns));
-//    auto matrix_multiplication_result_size = number_of_kernels * output_size * output_size;
-//    std::vector<float> matmul_result(static_cast<unsigned long>(matrix_multiplication_result_size));
 
     auto in = input.getData();
     auto we = weights.getData();
-    auto bi = weights.getBias();
     helper::im2col_simple_version_cpu(in.data(),
                                       channels, input_size, input_size,
                                       kernel_size,
@@ -243,54 +186,19 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
                                       stride,
                                       patch_result.data());
 
-//    helper::multiply_matrices_using_1d_vectors(we.data(), number_of_kernels, weights_columns,
-//                                               patch_result.data(), patch_rows, patch_columns,
-//                                               matmul_result.data());
-//
-//    helper::add_bias(matmul_result.data(), bi.data(), number_of_kernels, patch_columns);
 
+    float* A = we.data();
+    float* B = patch_result.data();
+    float *C = output.getDataArray();
 
-
-    float* A = helper::transpose_and_pad(32, weights_columns, number_of_kernels, we.data());
-    float* B = helper::transpose_and_pad(32, patch_columns, patch_rows, patch_result.data());
     // Weights
     const float* W = weights.getBiasArray();
 
 
 
-    //int K = weights_columns;
-    int K = 384;
+    int K = weights_columns;
     int M = number_of_kernels;
-    int N = 3040;
-    //int N = patch_columns;
-
-//    float* C2 = (float*)malloc(M*N*sizeof(float*));
-//
-//    for (int m=0; m<M; m++) {
-//        for (int n=0; n<N; n++) {
-//            float acc = 0.0f;
-//            for (int k=0; k<K; k++) {
-//                acc += A[k*M + m] * B[n*K + k];
-//            }
-//            acc = acc + W[m];
-////            acc = acc;
-//
-//            C2[n*M + m] = acc;
-//        }
-//    }
-//
-//    for (int i = 0; i < matmul_result.size(); i++) {
-//        if (! C2[i] == matmul_result[i]) {
-//            std::cerr << "Something went wrong at " << i << std::endl;
-//        }
-//    }
-
-
-/* OpenCL */
-
-
-    // Create the matrices and initialize them with random values
-    float* C = (float*)malloc(M*N*sizeof(float*));
+    int N = patch_columns;
 
 
 
@@ -316,10 +224,10 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     clSetKernelArg(kernel, 5, sizeof(cl_mem), (void*)&bufC);
     clSetKernelArg(kernel, 6, sizeof(cl_mem), (void*)&bufW);
 
-    const size_t local[2] = { TS, TS/WPT };
-    const size_t global[2] = { M, N/WPT };
+//    const size_t local[2] = { TS, TS };
+    const size_t global[2] = { M, N };
     cl_event event;
-    cl_int result = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, global, local, 0, NULL, &event);
+    cl_int result = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, global, NULL, 0, NULL, &event);
     CheckError(result);
 
     // Wait for calculations to be finished
@@ -328,39 +236,6 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     // Copy the output matrix C back to the CPU memory
     clEnqueueReadBuffer(queue, bufC, CL_TRUE, 0, M*N*sizeof(float), C, 0, NULL, NULL);
 
-    float * convPadded = helper::transpose_and_pad(32, 3025, 363,  output.getDataArray());
-
-    for (int i=0; i<M*N; i++) {
-        float cpu = convPadded[i];
-        float gemm = C[i];
-        if (cpu != gemm) {
-            std::cerr << "comparing final result failed at " << i << std::endl;
-        }
-    }
-
-//    C2 = (float*)malloc(M*N*sizeof(float*));
-//
-//    for (int m=0; m<M; m++) {
-//        for (int n=0; n<N; n++) {
-//            float acc = 0.0f;
-//            for (int k=0; k<K; k++) {
-//                acc += A[k*M + m] * B[n*K + k];
-//            }
-//            acc = acc + W[m];
-//
-//            C2[n*M + m] = acc;
-//        }
-//    }
-//
-//    for (int i = 0; i < M*N; i++) {
-//        float c1 = C[i];
-//        float c2 = C2[i];
-//        if (c1 != c2) {
-//            std::cerr << "Failed at i " << i << std::endl;
-//        }
-//    }
-//    std::cout << "Finished comparing matrices" << std::endl;
-
     // Free the OpenCL memory objects
     clReleaseMemObject(bufA);
     clReleaseMemObject(bufB);
@@ -368,9 +243,9 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     clReleaseMemObject(bufW);
 
     // Free the host memory objects
-    free(A);
-    free(B);
-    free(C);
+//    free(A);
+//    free(B);
+//    free(C);
 
  }
 
