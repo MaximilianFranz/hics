@@ -5,6 +5,7 @@
 #include <ctime>
 #include <iostream>
 #include <Client.h>
+#include <thread>
 
 #include "Manager.h"
 #include "PreProcessor.h"
@@ -12,14 +13,15 @@
 #include "HostPlacer.h"
 
 Manager::Manager() {
-    ComputationHost* executor = new Executor("local");
-    computationHosts.push_back(executor);
-   /* ComputationHost* executor1 = new Executor("fpga");
-    computationHosts.push_back(executor1);*/
 
     ComputationHost* client = new Client("fpga", grpc::CreateChannel(
             "localhost:50051", grpc::InsecureChannelCredentials()));
     computationHosts.push_back(client);
+
+    ComputationHost* executor = new Executor("local");
+    computationHosts.push_back(executor);
+   /* ComputationHost* executor1 = new Executor("fpga");
+    computationHosts.push_back(executor1);*/
 }
 
 void Manager::initGUI() {
@@ -45,7 +47,7 @@ void Manager::update() {
 
     ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
 
-    PreProcessor processor;
+    PreProcessor processor = PreProcessor();
     processor.setOutputSize(request->getSelectedNeuralNet().getImageDimension(),
                             request->getSelectedNeuralNet().getImageDimension());
 
@@ -103,21 +105,25 @@ void Manager::update() {
         }
     }
 
-    std::clock_t time = std::clock();
+    std::chrono::steady_clock::time_point time, timeAfter;
+    std::chrono::milliseconds diff = std::chrono::milliseconds();
 
     for (int i = 0; i < computationHosts.size(); i++) {
         if (batches[i].size() > 0) {
+            time = std::chrono::steady_clock::now();
             allResults.push_back(computationHosts[i]->classify(batches[i],
                                                                request->getSelectedNeuralNet(),
                                                                request->getSelectedOperationMode(),
                                                                hostPlatforms[i]));
-            compTime.push_back((int)((std::clock() - time)/(CLOCKS_PER_SEC/1000)));
-            time = std::clock();
+            timeAfter = std::chrono::steady_clock::now();
+            diff = std::chrono::duration_cast<std::chrono::milliseconds>(timeAfter - time);
+            compTime.push_back((int)diff.count());
+        } else {
+            //dummy value for hosts that did not compute anything
+            allResults.push_back(std::vector<ImageResult *>());
+            compTime.push_back(1);
         }
-        //dummy value for hosts that did not compute anything
-        compTime.push_back(1);
     }
-
 
 
     auto hosts = std::vector<PerformanceCalculator::HostInfo*>();
