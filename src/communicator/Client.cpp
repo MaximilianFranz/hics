@@ -5,6 +5,11 @@
 #include "Client.h"
 #include "Util.h"
 
+Client::Client(std::shared_ptr<Channel> channel) : stub_(Communicator::NewStub(channel)) {}
+Client::Client(std::string name, std::shared_ptr<Channel> channel) : stub_(Communicator::NewStub(channel)) {
+    ComputationHost::name = name;
+}
+
 std::vector<ImageResult*> Client::classify(std::vector<ImageWrapper *> images, NetInfo net, OperationMode mode,
                                            std::vector<PlatformInfo *> selectedPlatforms) {
     ClassifyRequest request;
@@ -86,5 +91,3 @@ std::vector<NetInfo*> Client::queryNets() {
         throw new std::exception();
     }
 }
-
-//TODO: Cast methods from message objects to c++ and vice versa (see Util::)

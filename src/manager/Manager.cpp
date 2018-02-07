@@ -4,6 +4,7 @@
 
 #include <ctime>
 #include <iostream>
+#include <Client.h>
 
 #include "Manager.h"
 #include "PreProcessor.h"
@@ -13,6 +14,9 @@
 Manager::Manager() {
     ComputationHost* executor = new Executor("local");
     computationHosts.push_back(executor);
+    ComputationHost* client = new Client("fpga", grpc::CreateChannel(
+            "localhost:50051", grpc::InsecureChannelCredentials()));
+    computationHosts.push_back(client);
 }
 
 void Manager::initGUI() {
@@ -37,6 +41,7 @@ void Manager::initGUI() {
 void Manager::update() {
 
     ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
+
     PreProcessor processor;
     processor.setOutputSize(request->getSelectedNeuralNet().getImageDimension(),
                             request->getSelectedNeuralNet().getImageDimension());
@@ -63,28 +68,33 @@ void Manager::update() {
             imageIndex++;
         } else {
             hostIndex++;
+            imageIndex = 0;
+            batches[hostIndex].push_back(imageIt);
         }
     }
 
     std::clock_t time = std::clock();
 
     for (int i = 0; i < computationHosts.size(); i++) {
-        allResults.push_back(computationHosts[i]->classify(batches[i],
-                                                           request->getSelectedNeuralNet(),
-                                                           request->getSelectedOperationMode(),
-                                                           request->getSelectedPlatforms()));
+        if (batches[i].size() > 0) {
+            allResults.push_back(computationHosts[i]->classify(batches[i],
+                                                               request->getSelectedNeuralNet(),
+                                                               request->getSelectedOperationMode(),
+                                                               request->getSelectedPlatforms()));
+            compTime.push_back((int)((std::clock() - time)/(CLOCKS_PER_SEC/1000)));
+            time = std::clock();
+        }
     }
 
-    compTime.push_back((int)((std::clock() - time)/(CLOCKS_PER_SEC/1000)));
 
 
     auto hosts = std::vector<PerformanceCalculator::HostInfo*>();
 
     for (int i = 0; i < computationHosts.size(); i++) {
-        auto newHost = new PerformanceCalculator::HostInfo(computationHosts[i]->getName(),
-                                                             float(processedImages.size())/float(batches[i].size()),
-                                                             compTime[i]);
-        for (int j = 0; j < batches[i].size(); j++) {
+        if (batches[i].size() > 0) {
+            auto newHost = new PerformanceCalculator::HostInfo(computationHosts[i]->getName(),
+                                                               float(batches[i].size()) / float(processedImages.size()),
+                                                               compTime[i]);
             hosts.push_back(newHost);
         }
     }
@@ -93,13 +103,10 @@ void Manager::update() {
 
     for (int i = 0; i < batches.size(); i++) {
         //TODO: wait for implementation of getCompDistribution
-        std::vector<std::pair<PlatformInfo*, float>> distr = allResults[i].front()->getCompDistribution();
-        std::cout << i << ": " << distr.front().first->getDescription() << std::endl;
-        std::cout << "platforms: " << distr.size() << std::endl;
-        calculateInfo.push_back(distr);
-
-        /*std::vector<std::pair<PlatformInfo *, float>> distr;
-        distr.emplace_back()*/
+        if (batches[i].size() > 0) {
+            std::vector<std::pair<PlatformInfo *, float>> distr = allResults[imageIndex].front()->getCompDistribution();
+            calculateInfo.push_back(distr);
+        }
     }
 
     PerformanceData performanceData = PerformanceCalculator::calculatePerformance(calculateInfo, hosts);
