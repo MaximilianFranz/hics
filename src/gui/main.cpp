@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
     imgResults.push_back(imgResult5);
 
     ClassificationResult* classificationResult = new ClassificationResult(imgResults, net, performanceData);
-    classificationResult->aggregateResults();
+    //classificationResult->aggregateResults();
     resultWidget->displayResults(classificationResult);
     resultWidget->show();
 //
