@@ -84,22 +84,24 @@ void Manager::update() {
     }
 
     //Remove a computationHost if none of its Platforms are selected
-    for (int i = 0; i < computationHosts.size(); i++) {
+    std::vector<ComputationHost*> availableHosts = computationHosts;
+    for (int i = 0; i < availableHosts.size(); i++) {
         if (hostPlatforms[i].empty()) {
-            ComputationHost* currentHost = computationHosts[i];
-            computationHosts.erase(std::find_if(computationHosts.begin(),
-                                                  computationHosts.end(),
-                                                  [&currentHost](ComputationHost* temp) {
-                                                      return temp->getName() == currentHost->getName();
-                                                  }));
+            ComputationHost* currentHost = availableHosts[i];
+            availableHosts.erase(std::find_if(availableHosts.begin(),
+                                              availableHosts.end(),
+                                              [&currentHost](ComputationHost* temp) {
+                                                  return temp->getName() == currentHost->getName();
+                                              }));
+            hostPlatforms.erase(hostPlatforms.begin() + i);
         }
     }
     //TODO ClassifiationRequest, GUI change Platforms to pointer
 
     std::vector<std::pair<ComputationHost*, int>> hostDistribution =
-            HostPlacer::place(computationHosts, (int)processedImages.size(), request->getSelectedOperationMode());
+            HostPlacer::place(availableHosts, (int)processedImages.size(), request->getSelectedOperationMode());
 
-    auto batches = std::vector<std::vector<ImageWrapper*>>(computationHosts.size());
+    auto batches = std::vector<std::vector<ImageWrapper*>>(availableHosts.size());
     int hostIndex = 0;
     int imageIndex = 0;
     for (auto imageIt : processedImages) {
@@ -113,19 +115,19 @@ void Manager::update() {
         }
     }
 
-    auto allResults = std::vector<std::vector<ImageResult*>>(computationHosts.size());
+    auto allResults = std::vector<std::vector<ImageResult*>>(availableHosts.size());
 
     std::chrono::steady_clock::time_point time, timeAfter;
     std::chrono::milliseconds diff = std::chrono::milliseconds();
 
-    auto compTime = std::vector<int>(computationHosts.size());
+    auto compTime = std::vector<int>(availableHosts.size());
 
     std::vector<std::thread> classifyThreads;
 
-    for (int i = 0; i < computationHosts.size(); i++) {
+    for (int i = 0; i < availableHosts.size(); i++) {
         if (!batches[i].empty()) {
             time = std::chrono::steady_clock::now();
-            std::thread t(runClassification, computationHosts[i],
+            std::thread t(runClassification, availableHosts[i],
                                             std::ref(allResults[i]),
                                             batches[i],
                                             request->getSelectedNeuralNet(),
@@ -152,8 +154,8 @@ void Manager::update() {
 
     auto hosts = std::vector<PerformanceCalculator::HostInfo*>();
 
-    for (int i = 0; i < computationHosts.size(); i++) {
-        auto newHost = new PerformanceCalculator::HostInfo(computationHosts[i]->getName(),
+    for (int i = 0; i < availableHosts.size(); i++) {
+        auto newHost = new PerformanceCalculator::HostInfo(availableHosts[i]->getName(),
                                                            float(batches[i].size()) / float(processedImages.size()),
                                                            compTime[i]);
         hosts.push_back(newHost);
