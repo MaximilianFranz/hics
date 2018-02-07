@@ -23,6 +23,8 @@ std::vector<PlatformInfo *> PlatformPlacer::queryPlatforms() {
 // Is it useful to use more than two platforms (perfomance specific and fallback?)
 void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::vector<PlatformInfo *> platforms) {
 
+    compDistribution.clear();
+
     this->currentMode = mode;
     this->net = net;
     this->currentPlatformsInfos = platforms;
