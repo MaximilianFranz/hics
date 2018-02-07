@@ -14,6 +14,9 @@
 Manager::Manager() {
     ComputationHost* executor = new Executor("local");
     computationHosts.push_back(executor);
+   /* ComputationHost* executor1 = new Executor("fpga");
+    computationHosts.push_back(executor1);*/
+
     ComputationHost* client = new Client("fpga", grpc::CreateChannel(
             "localhost:50051", grpc::InsecureChannelCredentials()));
     computationHosts.push_back(client);
@@ -52,6 +55,33 @@ void Manager::update() {
 
     std::vector<int> compTime;
 
+    //Check which platforms of each host were selected
+    auto hostPlatforms = std::vector<std::vector<PlatformInfo*>>(computationHosts.size());
+    std::vector<PlatformInfo*> selectedPlatforms = request->getSelectedPlatforms();
+    for (int i = 0; i < computationHosts.size(); i++) {
+        for (auto hostPlatIt : computationHosts[i]->queryPlatform()) {
+            auto platIt = std::find_if(selectedPlatforms.begin(), selectedPlatforms.end(),
+                                       [&hostPlatIt](PlatformInfo* temp) {
+                                           return temp->getPlatformId() == hostPlatIt->getPlatformId();
+                                       });
+            if (platIt != selectedPlatforms.end()) {
+                hostPlatforms[i].push_back(*platIt);
+            }
+        }
+    }
+
+    //Remove a computationHost if none of its Platforms are selected
+    for (int i = 0; i < computationHosts.size(); i++) {
+        if (hostPlatforms[i].empty()) {
+            ComputationHost* currentHost = computationHosts[i];
+            computationHosts.erase(std::find_if(computationHosts.begin(),
+                                                  computationHosts.end(),
+                                                  [&currentHost](ComputationHost* temp) {
+                                                      return temp->getName() == currentHost->getName();
+                                                  }));
+        }
+    }
+
     
 
     //TODO ClassifiationRequest, GUI change Platforms to pointer
@@ -80,10 +110,12 @@ void Manager::update() {
             allResults.push_back(computationHosts[i]->classify(batches[i],
                                                                request->getSelectedNeuralNet(),
                                                                request->getSelectedOperationMode(),
-                                                               request->getSelectedPlatforms()));
+                                                               hostPlatforms[i]));
             compTime.push_back((int)((std::clock() - time)/(CLOCKS_PER_SEC/1000)));
             time = std::clock();
         }
+        //dummy value for hosts that did not compute anything
+        compTime.push_back(1);
     }
 
 
@@ -91,20 +123,26 @@ void Manager::update() {
     auto hosts = std::vector<PerformanceCalculator::HostInfo*>();
 
     for (int i = 0; i < computationHosts.size(); i++) {
-        if (batches[i].size() > 0) {
-            auto newHost = new PerformanceCalculator::HostInfo(computationHosts[i]->getName(),
-                                                               float(batches[i].size()) / float(processedImages.size()),
-                                                               compTime[i]);
-            hosts.push_back(newHost);
-        }
+        auto newHost = new PerformanceCalculator::HostInfo(computationHosts[i]->getName(),
+                                                           float(batches[i].size()) / float(processedImages.size()),
+                                                           compTime[i]);
+        hosts.push_back(newHost);
     }
 
     std::vector<std::vector<std::pair<PlatformInfo*, float>>> calculateInfo;
 
+    //Add the ComputationDistribution of each host to the calculateInfo
+    imageIndex = 0;
     for (int i = 0; i < batches.size(); i++) {
-        //TODO: wait for implementation of getCompDistribution
-        if (batches[i].size() > 0) {
+        if (!batches[i].empty()) {
             std::vector<std::pair<PlatformInfo *, float>> distr = allResults[imageIndex].front()->getCompDistribution();
+            calculateInfo.push_back(distr);
+            imageIndex += batches[i].size();
+        } else {
+            std::vector<std::pair<PlatformInfo*, float>> distr;
+            for (auto hostPlatIt : hostPlatforms[i]) {
+                distr.emplace_back(hostPlatIt, 0);
+            }
             calculateInfo.push_back(distr);
         }
     }

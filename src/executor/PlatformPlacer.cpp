@@ -30,8 +30,11 @@ void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::
 
     switch (mode) {
         case OperationMode::EnergyEfficient : placeEnergyEfficient();
+            break;
         case OperationMode::LowPower : placeLowPower();
+            break;
         case OperationMode::HighPower : placeHighPerformance();
+            break;
         default: ; //TODO: Default impl.
     }
 
