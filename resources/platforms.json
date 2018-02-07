@@ -2,17 +2,18 @@
   "platforms": [
     {
       "type" : "CPU",
-      "description" : "XEON",
+      "description" : "Intel(R) Core(TM) i5-4590 CPU",
       "uuid" : "b2028294-081f-11e8-aea8-b7fc73961889",
       "power_consumption" : 1500.5,
       "flops" : 500
     },
     {
       "type" : "FPGA",
-      "description" : "de1soc",
+      "description" : "Altera de1soc FPGA",
       "uuid" : "bf11cc38-081f-11e8-bba2-abd6db15b36e",
       "power_consumption" : 500,
       "flops" : 1400
     }
   ]
 }
+
