@@ -3,7 +3,6 @@
 //
 
 #include <ctime>
-#include <iostream>
 #include <Client.h>
 #include <thread>
 
@@ -146,11 +145,6 @@ void Manager::update() {
     for (int i = 0; i < classifyThreads.size(); i++) {
         classifyThreads[i].join();
     }
-
-    for (int t : compTime) {
-        std::cout << t << std::endl;
-    }
-
 
     auto hosts = std::vector<PerformanceCalculator::HostInfo*>();
 
