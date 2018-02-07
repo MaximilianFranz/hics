@@ -12,6 +12,21 @@
 #include "PerformanceCalculator.h"
 #include "HostPlacer.h"
 
+
+void runClassification(ComputationHost* host,
+                       std::vector<ImageResult*>& allResults,
+                       std::vector<ImageWrapper*> img,
+                       NetInfo net,
+                       OperationMode mode,
+                       std::vector<PlatformInfo*> selecedPlatforms,
+                       std::chrono::steady_clock::time_point startTime,
+                       int& allTimes) {
+    allResults = host->classify(img, net, mode, selecedPlatforms);
+    std::chrono::steady_clock::time_point timeAfter = std::chrono::steady_clock::now();
+    auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(timeAfter - startTime);
+    allTimes = (int)diff.count();
+}
+
 Manager::Manager() {
 
     ComputationHost* client = new Client("fpga", grpc::CreateChannel(
@@ -53,10 +68,6 @@ void Manager::update() {
 
     std::vector<ImageWrapper*> processedImages = processor.processImages(request->getUserImages());
 
-    std::vector<std::vector<ImageResult*>> allResults;
-
-    std::vector<int> compTime;
-
     //Check which platforms of each host were selected
     auto hostPlatforms = std::vector<std::vector<PlatformInfo*>>(computationHosts.size());
     std::vector<PlatformInfo*> selectedPlatforms = request->getSelectedPlatforms();
@@ -83,9 +94,6 @@ void Manager::update() {
                                                   }));
         }
     }
-
-    
-
     //TODO ClassifiationRequest, GUI change Platforms to pointer
 
     std::vector<std::pair<ComputationHost*, int>> hostDistribution =
@@ -105,24 +113,40 @@ void Manager::update() {
         }
     }
 
+    auto allResults = std::vector<std::vector<ImageResult*>>(computationHosts.size());
+
     std::chrono::steady_clock::time_point time, timeAfter;
     std::chrono::milliseconds diff = std::chrono::milliseconds();
 
+    auto compTime = std::vector<int>(computationHosts.size());
+
+    std::vector<std::thread> classifyThreads;
+
     for (int i = 0; i < computationHosts.size(); i++) {
-        if (batches[i].size() > 0) {
+        if (!batches[i].empty()) {
             time = std::chrono::steady_clock::now();
-            allResults.push_back(computationHosts[i]->classify(batches[i],
-                                                               request->getSelectedNeuralNet(),
-                                                               request->getSelectedOperationMode(),
-                                                               hostPlatforms[i]));
-            timeAfter = std::chrono::steady_clock::now();
-            diff = std::chrono::duration_cast<std::chrono::milliseconds>(timeAfter - time);
-            compTime.push_back((int)diff.count());
+            std::thread t(runClassification, computationHosts[i],
+                                            std::ref(allResults[i]),
+                                            batches[i],
+                                            request->getSelectedNeuralNet(),
+                                            request->getSelectedOperationMode(),
+                                            hostPlatforms[i],
+                                            time,
+                                            std::ref(compTime[i]));
+            classifyThreads.push_back(std::move(t));
         } else {
             //dummy value for hosts that did not compute anything
-            allResults.push_back(std::vector<ImageResult *>());
-            compTime.push_back(1);
+            allResults[i] = std::vector<ImageResult *>();
+            compTime[i] = 1;
         }
+    }
+
+    for (int i = 0; i < classifyThreads.size(); i++) {
+        classifyThreads[i].join();
+    }
+
+    for (int t : compTime) {
+        std::cout << t << std::endl;
     }
 
 
