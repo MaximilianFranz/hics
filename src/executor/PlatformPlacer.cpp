@@ -9,6 +9,7 @@
 #include <layers/functionlayers/SoftMaxLossLayer.h>
 #include <layers/functionlayers/MaxPoolingLayer.h>
 #include <NotImplementedException.h>
+#include <algorithm>
 #include "PlatformPlacer.h"
 
 PlatformPlacer::PlatformPlacer() {
@@ -27,6 +28,16 @@ void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::
     this->currentPlatformsInfos = platforms;
     //TODO: Get only platforms previously selected!
     this->currentPlatforms = platformManager->getPlatforms();
+    std::vector<Platform*> newCurrent;
+    for (auto x : currentPlatforms) {
+        PlatformInfo* xInfo = &(x->getPlatformInfo());
+        if (std::find_if(platforms.begin(), platforms.end(), [&xInfo](PlatformInfo* temp) {
+            return temp->getPlatformId() == xInfo->getPlatformId();
+        }) != platforms.end()) {
+            newCurrent.push_back(x);
+        }
+    }
+    currentPlatforms = newCurrent;
 
     switch (mode) {
         case OperationMode::EnergyEfficient : placeEnergyEfficient();

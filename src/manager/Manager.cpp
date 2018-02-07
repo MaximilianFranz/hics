@@ -132,12 +132,10 @@ void Manager::update() {
     std::vector<std::vector<std::pair<PlatformInfo*, float>>> calculateInfo;
 
     //Add the ComputationDistribution of each host to the calculateInfo
-    imageIndex = 0;
     for (int i = 0; i < batches.size(); i++) {
         if (!batches[i].empty()) {
-            std::vector<std::pair<PlatformInfo *, float>> distr = allResults[imageIndex].front()->getCompDistribution();
+            std::vector<std::pair<PlatformInfo *, float>> distr = allResults[i].front()->getCompDistribution();
             calculateInfo.push_back(distr);
-            imageIndex += batches[i].size();
         } else {
             std::vector<std::pair<PlatformInfo*, float>> distr;
             for (auto hostPlatIt : hostPlatforms[i]) {
