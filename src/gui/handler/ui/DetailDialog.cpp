@@ -23,7 +23,7 @@ void DetailDialog::insertDetails(const ClassificationResult *result) {
         std::pair<PlatformInfo*, float> pair = platformUsage[i];
         //TODO change the percentage displaying so, that the float value is transformed to a percentage
         platformText +=
-            QString::fromStdString(pair.first->getDescription()) + ": " + QString::number(pair.second) + "%, ";
+            QString::fromStdString(pair.first->getDescription()) + ": " + QString::number(pair.second*100) + "%, ";
     }
 
     //Remove the last white space and comma from the QString
