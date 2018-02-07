@@ -145,7 +145,8 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
         //TODO dynamically elide text (size)
         name->setText(fontMetrics.elidedText(shortLink(pair.first),Qt::TextElideMode::ElideMiddle, 350));
         name->setAlignment(Qt::AlignLeft);
-
+        name->setToolTip(QString::fromStdString(pair.first));
+        name->setToolTipDuration(-1);
         name->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
         labelLayout->addWidget(name);
