@@ -13,7 +13,6 @@ StartWidget::StartWidget(std::vector<NetInfo*> &neuralNets, std::vector<Platform
     ui(new Ui::StartWidget)
 {
     ui->setupUi(this);
-
     ui->userImagesQWidgetContainer->setLayout(ui->inputImagesQVBoxLayout); //Make input images scrollable
 
     addNeuralNets(neuralNets);
@@ -55,6 +54,9 @@ QHBoxLayout* StartWidget::addInputImage(QImage* image, const QString &filePath){
     QFontMetrics fontMetrics = QFontMetrics(QFont());
     label->setText(fontMetrics.elidedText(filePath,Qt::TextElideMode::ElideLeft, 150));
     label->setAlignment(Qt::AlignmentFlag::AlignCenter);
+    label->setToolTip(filePath);
+    label->setToolTipDuration(-1);
+
     layout->addWidget(label, 1);
 
     ui->inputImagesQVBoxLayout->addLayout(layout);
@@ -69,9 +71,11 @@ void StartWidget::processInputImageButton(){
                             directoryPath,
                             "Images (*.png *.jpg *.jpeg)");
 
+    fileNames = removeDuplicateSelectedImages(fileNames);
     //Create a QImage to every selected file path
     for(int i = 0; i<fileNames.size(); ++i){
         QImage* image = new QImage();
+        //if(images.fileNames.at(i))
         if(image->load(fileNames.at(i))){
             //Display the image together with a check box and its file path
             QHBoxLayout* layout = addInputImage(image, fileNames.at(i));
@@ -81,6 +85,29 @@ void StartWidget::processInputImageButton(){
             delete image;
         }
     }
+}
+
+QStringList StartWidget::removeDuplicateSelectedImages(const QStringList &filePaths){
+    QStringList output = filePaths;
+    QMapIterator<QPair<QImage*, QString>, QHBoxLayout*>it(images);
+    std::vector<QString> duplicateFilePaths;
+
+    //Check if a selected image has already been loaded into the application
+    while(it.hasNext()){
+        it.next();
+
+        for(int i = 0; i<filePaths.size(); ++i){
+            if(it.key().second == filePaths.at(i)){
+                duplicateFilePaths.push_back(filePaths.at(i));
+            }
+        }
+    }
+
+    for(int i = 0; i<duplicateFilePaths.size(); ++i){
+        output.removeAt(output.indexOf(duplicateFilePaths.at(i)));
+    }
+
+    return output;
 }
 
 void StartWidget::processConfirmDeletionButton(){

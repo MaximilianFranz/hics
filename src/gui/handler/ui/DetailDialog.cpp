@@ -7,14 +7,20 @@ DetailDialog::DetailDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DetailDialog) {
     ui->setupUi(this);
+    this->setWindowTitle("Details");
 }
 
 void DetailDialog::insertDetails(const ClassificationResult *result) {
     //Display the computation time.
-    ui->computationTimeQLabel->setText(QString::number(result->getPerformance().getComputationTime()));
+    ui->computationTimeQLabel->setText(QString::number(result->getPerformance().getComputationTime())
+                                       + " "
+                                       + COMPUTATION_TIME_UNIT);
 
     //Display the power consumption
-    ui->powerConsumptionQLabel->setText(QString::number(result->getPerformance().getPowerConsumption()));
+    ui->powerConsumptionQLabel->setText(QString::number(result->getPerformance().getPowerConsumption())
+                                        + " "
+                                        + POWER_CONSUMPTION_UNIT);
+
     std::vector<std::pair<PlatformInfo*, float>> platformUsage = result->getPerformance().getPlatformUsage();
 
     //Add the used platforms and their usage to a QString
@@ -22,7 +28,7 @@ void DetailDialog::insertDetails(const ClassificationResult *result) {
     for (int i = 0; i < platformUsage.size(); ++i) {
         std::pair<PlatformInfo*, float> pair = platformUsage[i];
         platformText +=
-            QString::fromStdString(pair.first->getDescription()) + ": " + QString::number(pair.second) + "%, ";
+            QString::fromStdString(pair.first->getDescription()) + ": " + QString::number(pair.second*100) + "%, ";
     }
 
     //Remove the last white space and comma from the QString

@@ -17,7 +17,7 @@
 #include <QtCore/QDir>
 
 namespace Ui {
-class StartWidget;
+    class StartWidget;
 }
 
 /**
@@ -32,9 +32,8 @@ class StartWidget;
  *
  * @author Patrick Deubel
  */
-class StartWidget : public QWidget
-{
-    Q_OBJECT
+class StartWidget : public QWidget {
+Q_OBJECT
 
 public:
 
@@ -49,8 +48,8 @@ public:
      * @param operationModes are the available operation modes
      * @param parent is a possible parent widget
      */
-    explicit StartWidget(std::vector<NetInfo*> &neuralNets, std::vector<PlatformInfo*> &platforms,
-                                      std::vector<OperationMode> &operationModes, QWidget *parent = 0);
+    explicit StartWidget(std::vector<NetInfo *> &neuralNets, std::vector<PlatformInfo *> &platforms,
+                         std::vector<OperationMode> &operationModes, QWidget *parent = 0);
 
     /**
      * The destructor to delete all allocated memory on the heap.
@@ -83,10 +82,10 @@ public:
      */
     OperationMode getSelectedOperationMode();
 
-        /**
-         * @brief isAggregated checks if the user selected to aggregate the results or not
-         * @return true if the results shall be aggregated, false if not
-         */
+    /**
+     * @brief isAggregated checks if the user selected to aggregate the results or not
+     * @return true if the results shall be aggregated, false if not
+     */
     bool isAggregated();
 
     /**
@@ -96,37 +95,37 @@ public:
      *
      * @return the classificationQPushButton
      */
-    QPushButton* getClassificationQPushButton();
+    QPushButton *getClassificationQPushButton();
 
     /**
      * @brief getOperationModesQComboBox returns the QComboBox containing the operation modes
      * @return the combo box containing the operation modes
      */
-    QComboBox* getOperationModesQComboBox();
+    QComboBox *getOperationModesQComboBox();
 
     /**
      * @brief getNeuralNetsQComboBox returns the QComboBox containing the available neural nets
      * @return the combo box containing the available neural nets
      */
-    QComboBox* getNeuralNetsQComboBox();
+    QComboBox *getNeuralNetsQComboBox();
 
     /**
      * @brief getPlatformsQVBoxLayout return a vertical layout containing the available platforms for the classification
      * @return the layout containing all available platforms as checkboxes
      */
-    QVBoxLayout* getPlatformsQVBoxLayout();
+    QVBoxLayout *getPlatformsQVBoxLayout();
 
     /**
      * @brief getAggregateResultsQCheckBox returns the QCheckBox which indicates if the results shall be aggregated or not.
      * @return the check box where the user can select to aggregate the results or not
      */
-    QCheckBox* getAggregateResultsQCheckBox();
+    QCheckBox *getAggregateResultsQCheckBox();
 
     /**
      * @brief getImagesMap returns the images map which hold all selected input images together with its layouts
      * @return the image map
      */
-    QMap<QPair<QImage*, QString>, QHBoxLayout*>* getImagesMap();
+    QMap<QPair<QImage *, QString>, QHBoxLayout *> *getImagesMap();
 
 public slots:
 
@@ -154,20 +153,22 @@ public slots:
 private:
 
     Ui::StartWidget *ui;
-    QList<QHBoxLayout*> inputImagesLayouts; /*!< Layout order: QCheckBox, QPixmap (the image), QLabel (the file path) */
-    QMap<QPair<QImage*, QString>, QHBoxLayout*> images; /*!< Maps all loaded images to its layout */
-    std::map<QString, NetInfo*> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
-    std::map<QString, PlatformInfo*> platformMap; /*!< used to return the selected platform by using the displayed QString */
+    QList<QHBoxLayout *> inputImagesLayouts; /*!< Layout order: QCheckBox, QPixmap (the image), QLabel (the file path) */
+    QMap<QPair<QImage *, QString>, QHBoxLayout *> images; /*!< Maps all loaded images to its layout */
+    std::map<QString, NetInfo *> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
+    std::map<QString, PlatformInfo *> platformMap; /*!< used to return the selected platform by using the displayed QString */
 
     QString directoryPath = QDir::homePath(); /*!< The last opened directory path of the QFileDialog */
 
-    void addNeuralNets(std::vector<NetInfo*> &neuralNets);
+    void addNeuralNets(std::vector<NetInfo *> &neuralNets);
 
-    void addPlatforms(std::vector<PlatformInfo*> &platforms);
+    void addPlatforms(std::vector<PlatformInfo *> &platforms);
 
     void addOperationModes(std::vector<OperationMode> &operationModes);
 
-    QHBoxLayout* addInputImage(QImage* image, const QString &filePath);
+    QStringList removeDuplicateSelectedImages(const QStringList &filePaths);
+
+    QHBoxLayout *addInputImage(QImage *image, const QString &filePath);
 
     void clearLayout(QLayout *layout);
 };
