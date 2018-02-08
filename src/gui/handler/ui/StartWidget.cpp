@@ -49,6 +49,9 @@ StartWidget::StartWidget(std::vector<NetInfo*> &neuralNets, std::vector<Platform
     connect(ui->selectInputImagesQPushButton, SIGNAL(clicked()), this, SLOT(processInputImageButton()));
     connect(ui->confirmDeletionQPushButton, SIGNAL(clicked()), this, SLOT(processConfirmDeletionButton()));
     connect(ui->abortDeletionQPushButton, SIGNAL(clicked()), this, SLOT(processAbortDeletionQPushButton()));
+
+    resizeTimer.setSingleShot(true);
+    connect(&resizeTimer, SIGNAL(timeout()), SLOT(widgetResized()));
 }
 
 StartWidget::~StartWidget()
@@ -76,9 +79,12 @@ QHBoxLayout* StartWidget::addInputImage(QImage* image, const QString &filePath){
     imageLabel->setPixmap(QPixmap::fromImage(*image).scaled(227, 227, Qt::KeepAspectRatio));
     layout->addWidget(imageLabel, 1);
 
-    label->setAlignment(Qt::AlignLeft);
+    //label->setAlignment(Qt::AlignLeft);
+    int pathSize = ((label->size().width() - OFFSET_FILEPATH_DISPLAY) > 0)
+                   ? (label->size().width() - OFFSET_FILEPATH_DISPLAY)
+                   : label->size().width();
     QFontMetrics fontMetrics = QFontMetrics(QFont());
-    label->setText(fontMetrics.elidedText(filePath,Qt::TextElideMode::ElideLeft, 150));
+    label->setText(fontMetrics.elidedText(filePath,Qt::TextElideMode::ElideLeft, pathSize));
     label->setAlignment(Qt::AlignmentFlag::AlignCenter);
     label->setToolTip(filePath);
     label->setToolTipDuration(-1);
@@ -268,6 +274,26 @@ OperationMode StartWidget::getSelectedOperationMode(){
 
 bool StartWidget::isAggregated(){
     return ui->aggregateResultsQCheckBox->isChecked();
+}
+
+void StartWidget::resizeEvent(QResizeEvent *event) {
+    resizeTimer.start(500);
+    QWidget::resizeEvent(event);
+}
+
+void StartWidget::widgetResized() {
+    //TODO resize file labels
+    QMapIterator<QPair<QImage*, QString>, QHBoxLayout*>it (images);
+
+    while(it.hasNext()){
+        it.next();
+        QLabel* filePathLabel = (QLabel*)(it.value()->itemAt(2)->widget());
+        int newSize = ((filePathLabel->size().width() - OFFSET_FILEPATH_DISPLAY) > 0)
+                      ? (filePathLabel->size().width() - OFFSET_FILEPATH_DISPLAY)
+                      : filePathLabel->size().width();
+        QFontMetrics fontMetrics = QFontMetrics(QFont());
+        filePathLabel->setText(fontMetrics.elidedText(it.key().second, Qt::TextElideMode::ElideLeft, newSize));
+    }
 }
 
 std::map<QString, QImage> StartWidget::getSelectedImages(){

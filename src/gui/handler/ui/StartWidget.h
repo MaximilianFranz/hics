@@ -41,6 +41,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QCheckBox>
 #include <QtCore/QDir>
+#include <QtCore/QTimer>
 
 namespace Ui {
     class StartWidget;
@@ -176,6 +177,14 @@ public slots:
      */
     void processAbortDeletionQPushButton();
 
+protected:
+
+    void resizeEvent(QResizeEvent * event);
+
+private slots:
+
+    void widgetResized();
+
 private:
 
     Ui::StartWidget *ui;
@@ -185,6 +194,9 @@ private:
     std::map<QString, PlatformInfo *> platformMap; /*!< used to return the selected platform by using the displayed QString */
 
     QString directoryPath = QDir::homePath(); /*!< The last opened directory path of the QFileDialog */
+    QTimer resizeTimer;
+
+    const int OFFSET_FILEPATH_DISPLAY = 20;
 
     void addNeuralNets(std::vector<NetInfo *> &neuralNets);
 
