@@ -9,6 +9,7 @@
 #include <layers/functionlayers/SoftMaxLossLayer.h>
 #include <layers/functionlayers/MaxPoolingLayer.h>
 #include <NotImplementedException.h>
+#include <algorithm>
 #include "PlatformPlacer.h"
 
 PlatformPlacer::PlatformPlacer() {
@@ -22,16 +23,31 @@ std::vector<PlatformInfo *> PlatformPlacer::queryPlatforms() {
 // Is it useful to use more than two platforms (perfomance specific and fallback?)
 void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::vector<PlatformInfo *> platforms) {
 
+    compDistribution.clear();
+
     this->currentMode = mode;
     this->net = net;
     this->currentPlatformsInfos = platforms;
     //TODO: Get only platforms previously selected!
     this->currentPlatforms = platformManager->getPlatforms();
+    std::vector<Platform*> newCurrent;
+    for (auto x : currentPlatforms) {
+        PlatformInfo* xInfo = &(x->getPlatformInfo());
+        if (std::find_if(platforms.begin(), platforms.end(), [&xInfo](PlatformInfo* temp) {
+            return temp->getPlatformId() == xInfo->getPlatformId();
+        }) != platforms.end()) {
+            newCurrent.push_back(x);
+        }
+    }
+    currentPlatforms = newCurrent;
 
     switch (mode) {
         case OperationMode::EnergyEfficient : placeEnergyEfficient();
+            break;
         case OperationMode::LowPower : placeLowPower();
+            break;
         case OperationMode::HighPower : placeHighPerformance();
+            break;
         default: ; //TODO: Default impl.
     }
 
@@ -107,20 +123,13 @@ void PlatformPlacer::placeNetWith(Platform *perfomance, Platform *fallback) {
 
     int layerCount = fallbackCount  + perfomanceCount;
     // Calculate simple distribution.
-
-
-    // Add second platform only if two different platforms have been used.
-    if (perfomance->getPlatformInfo().getPlatformId() == fallback->getPlatformInfo().getPlatformId()) {
-        // Same platform used everywhere
-        compDistribution.push_back(std::pair<PlatformInfo*, float>(&perfomance->getPlatformInfo(),
-                                                                   layerCount / layerCount));
-    }
-    else {
-        // Different platforms used
-        compDistribution.push_back(std::pair<PlatformInfo*, float>(&perfomance->getPlatformInfo(),
-                                                                   perfomanceCount / layerCount));
-        compDistribution.push_back(std::pair<PlatformInfo*, float>(&fallback->getPlatformInfo(),
-                                                                   fallbackCount / layerCount));
+    if (fallback->getPlatformInfo().getPlatformId() != perfomance->getPlatformInfo().getPlatformId()) {
+        compDistribution.push_back(std::pair<PlatformInfo *, float>(&perfomance->getPlatformInfo(),
+                                                                    perfomanceCount / layerCount));
+        compDistribution.push_back(std::pair<PlatformInfo *, float>(&fallback->getPlatformInfo(),
+                                                                    fallbackCount / layerCount));
+    } else {
+        compDistribution.emplace_back(std::pair<PlatformInfo *, float>(&perfomance->getPlatformInfo(), 1));
     }
 
 }

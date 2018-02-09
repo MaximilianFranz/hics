@@ -58,9 +58,11 @@ HostPlacer::placeLowPower(std::vector<std::pair<ComputationHost *, HostPlacer::P
                                         });
     //Give him all images
     auto *distribution = new std::vector<std::pair<ComputationHost *, int>>();
-    (*distribution).emplace_back(std::pair<ComputationHost *, int>(lowest.operator*().first, numOfImg));
+    //(*distribution).emplace_back(std::pair<ComputationHost *, int>(lowest.operator*().first, numOfImg));
     for (auto hostIt : hosts) {
-        if (hostIt.first != lowest.operator*().first) {
+        if (hostIt.first->getName() == lowest.operator*().first->getName()) {
+            (*distribution).emplace_back(lowest.operator*().first, numOfImg);
+        } else {
             (*distribution).emplace_back(hostIt.first, 0);
         }
     }

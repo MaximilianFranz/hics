@@ -178,6 +178,7 @@ SCENARIO("Test") {
         REQUIRE(imageResult->getCompDistribution()[1].first->getPlatformId() == "1");
         REQUIRE(imageResult->getCompDistribution()[0].second == .6f);
         REQUIRE(imageResult->getCompDistribution()[1].second == .4f);
+        REQUIRE(imageResult->getCompDistribution().size() == 2);
 
         REQUIRE(imageResult->getImage().getFilepath() == img.getFilepath());
         REQUIRE(imageResult->getResults()[0].first == "dog");

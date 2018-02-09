@@ -1,9 +1,6 @@
 //
 // Created by jallmenroeder on 06/02/18.
 //
-#pragma once
-
-
 #include <NetInfo.h>
 #include <Manager.h>
 #include <iostream>

@@ -9,7 +9,7 @@
 #include "Util.h"
 
 void ComputationServer::init() {
-    fpgaExecutor = new Executor();
+    fpgaExecutor = new Executor("fpga");
 }
 
 Status ComputationServer::classify(::grpc::ServerContext *context, const ::ClassifyRequest *request,
