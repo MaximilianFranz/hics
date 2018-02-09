@@ -1,9 +1,11 @@
-#include "im2colTest.h"
-
 #include <iostream>
-#include <util/im2col.h>
 #include <fstream>
 #include <iterator>
+#include <cmath>
+
+#include <util/im2col.h>
+
+#include "im2colTest.h"
 
 TEST_CASE("Matrix multiplication using 1d vectors") {
 
