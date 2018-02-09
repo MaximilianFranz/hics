@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+service Communicator {
+    rpc classifyRequest(ClassifyRequest) returns(ClassifyReply) {}
+    rpc queryPlatformsRequest(NullMessage) returns(PlatformReply) {}
+    rpc queryNetsRequest(NullMessage) returns(NetInfoReply) {}
+}
+
+message LabelMessage {
+    string name = 1;
+    float probability = 2;
+}
+
+message NetInfoMessage {
+    string name = 1;
+    int32 imageDimension = 2;
+    string identifier = 3;
+}
+
+message PlatformInfoMessage {
+    string description = 1;
+    enum platformType {
+        CPU = 0;
+        FPGA = 1;
+        GPU = 2;
+    }
+    platformType type = 2;
+    string platformId = 3;
+    int32 powerConsumption = 4;
+    int32 flops = 5;
+}
+
+message ImageWrapperMessage {
+    string filepath = 1;
+    repeated int32 dimensions = 2;
+    repeated float data = 3;
+}
+
+message PlatformDistributionMessage {
+    PlatformInfoMessage platform = 1;
+    float usage = 2;
+}
+
+message ImageResultMessage {
+    ImageWrapperMessage image = 1;
+    repeated LabelMessage classification = 2;
+    repeated PlatformDistributionMessage platformDistribution = 3;
+}
+
+message ClassifyRequest {
+    NetInfoMessage net = 1;
+    enum operationMode {
+        HighPower = 0;
+        LowPower = 1;
+        EnergyEfficient = 2;
+    }
+    operationMode mode = 2;
+    repeated ImageWrapperMessage images = 3;
+    repeated PlatformInfoMessage selectedPlatforms = 4;
+}
+
+message ClassifyReply {
+    repeated ImageResultMessage results = 1;
+}
+
+message PlatformReply {
+    repeated PlatformInfoMessage platforms = 1;
+}
+
+message NetInfoReply {
+    repeated NetInfoMessage nets = 1;
+}
+
+message NullMessage {}

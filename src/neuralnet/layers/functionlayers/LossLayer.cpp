@@ -1,0 +1,22 @@
+//
+// Created by Maximilian Franz on 07.01.18.
+//
+
+#include "LossLayer.h"
+
+
+std::vector<int> LossLayer::calcOutputDimensions() {
+    return inputDimensions; // LossLayer don't change output size.
+}
+
+void LossLayer::setFunction(LossFunction *function) {
+    this->function = function;
+    this->functionSet = true;
+}
+
+void LossLayer::forward() {
+    outputWrapper = new DataWrapper(getOutputDimensions());
+    this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper);
+    computed = true;
+}
+

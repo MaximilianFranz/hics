@@ -1,0 +1,3 @@
+[submodule "resources/weights"]
+	path = resources/weights
+	url = https://michaelbiebl.de/hics.git
