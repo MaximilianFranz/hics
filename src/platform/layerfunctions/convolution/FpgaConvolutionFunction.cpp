@@ -132,7 +132,15 @@ FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
     cl_int status = 0;
     queue = clCreateCommandQueue(context, device, 0, &status);
     aocl_utils::checkError(status, "Failed to create command queue");
+
+    // TODO: Remove this ifdef once we have GPU platform
+#ifdef ALTERA
+    std::string binary_file = aocl_utils::getBoardBinaryFile("gemm1", device);
+    program = aocl_utils::createProgramFromBinary(context, binary_file.c_str(), &device, 1);
+#else
     program = CreateProgram(LoadKernel(RES_DIR "kernels/gemm1.cl"), context);
+#endif
+
 //    char cmdline[1024];
 //    snprintf(cmdline, 1024, "-DTS=%d -DWPT=%d -DRTS=%d", TS, WPT, TS/WPT);
 //    clBuildProgram(program, 0, NULL, cmdline, NULL, NULL);
