@@ -26,6 +26,18 @@ include_directories(${HDF5_INCLUDE_DIRS})
 find_package(Protobuf REQUIRED)
 find_package(Grpc REQUIRED)
 
+option(PLATFORM_ALTERA "Build project for FPGA platform." OFF)
+
+if(PLATFORM_ALTERA)
+    # TODO: use aocl to determine those values dynamically
+    set(OpenCL_LIBRARIES "-L/home/pselab/intelFPGA/16.1/hld/board/de1soc/arm32/lib -L/home/pselab/intelFPGA/16.1/hld/host/arm32/lib -L/home/pselab/intelFPGA/16.1/hld/host/arm32/lib -Wl,--no-as-needed -lalteracl -lalterammdpcie -lelf")
+    set(OpenCL_INCLUDE_DIRS "/home/pselab/intelFPGA/16.1/hld/host/include")
+    add_definitions(-DALTERA)
+else()
+    # Required by the CL platform
+    find_package(OpenCL REQUIRED)
+endif()
+
 # This allows us to use direct includes instead of using relative paths
 include_directories(src/communicator)
 include_directories(src/exceptions)

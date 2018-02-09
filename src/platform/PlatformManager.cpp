@@ -9,6 +9,7 @@
 #include <json.hpp>
 
 #include "platforms/CpuPlatform.h"
+#include "platforms/FpgaPlatform.h"
 #include "platforms/Platform.h"
 #include "PlatformManager.h"
 
@@ -31,7 +32,8 @@ PlatformManager::PlatformManager() {
             PlatformInfo pi(desc, PlatformType::CPU, uuid, power, flops);
             platforms.push_back(new CpuPlatform(pi));
         } else if (type == "FPGA") {
-            // TODO: needs FPGA implementation and CL context
+            PlatformInfo pi(desc, PlatformType::FPGA, uuid, power, flops);
+            platforms.push_back(new FpgaPlatform(pi));
         } else if (type == "GPU") {
             // TODO: needs GPU implementtion and CL context
         }
