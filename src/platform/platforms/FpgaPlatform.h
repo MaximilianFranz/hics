@@ -15,6 +15,7 @@ class FpgaPlatform : public Platform {
 private:
     cl_context context;
     cl_device_id device;
+    ConvolutionFunction *c = nullptr;
     void init();
 
 public:

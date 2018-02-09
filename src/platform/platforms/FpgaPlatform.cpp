@@ -22,7 +22,10 @@ ActivationFunction *FpgaPlatform::createActivationFunction(LayerType type) {
 }
 
 ConvolutionFunction *FpgaPlatform::createConvolutionFunction() {
-    return new FpgaConvolutionFunction(context, device);
+    if (c == nullptr) {
+        c = new FpgaConvolutionFunction(context, device);
+    }
+    return c;
 }
 
 LossFunction *FpgaPlatform::createLossFunction(LayerType type) {
