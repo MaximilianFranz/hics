@@ -1,8 +1,16 @@
 #pragma once
 
+#include "CL/opencl.h"
+
 #include "Platform.h"
 
+
 class FpgaPlatform : public Platform {
+private:
+    cl_context context;
+    cl_device_id device;
+    void init();
+
 public:
     ActivationFunction *createActivationFunction(LayerType type) override;
 
@@ -23,4 +31,6 @@ public:
     FpgaPlatform();
 
     FpgaPlatform(PlatformInfo &info);
+
+    ~FpgaPlatform();
 };

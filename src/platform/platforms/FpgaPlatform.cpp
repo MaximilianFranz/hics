@@ -7,6 +7,7 @@
 #include <layerfunctions/pooling/CpuMaxPoolingFunction.h>
 #include <layerfunctions/activation/CpuReLUFunction.h>
 #include <layerfunctions/convolution/FpgaConvolutionFunction.h>
+#include <iostream>
 
 #include "FpgaPlatform.h"
 
@@ -21,7 +22,7 @@ ActivationFunction *FpgaPlatform::createActivationFunction(LayerType type) {
 }
 
 ConvolutionFunction *FpgaPlatform::createConvolutionFunction() {
-    return new FpgaConvolutionFunction();
+    return new FpgaConvolutionFunction(context, device);
 }
 
 LossFunction *FpgaPlatform::createLossFunction(LayerType type) {
@@ -63,6 +64,24 @@ PlatformType FpgaPlatform::getPlatformType() {
     return PlatformType::CPU;
 }
 
-FpgaPlatform::FpgaPlatform() {}
+FpgaPlatform::FpgaPlatform() {
+    init();
+}
 
-FpgaPlatform::FpgaPlatform(PlatformInfo &info) : Platform(info) {}
+FpgaPlatform::FpgaPlatform(PlatformInfo &info) : Platform(info) {
+    init();
+}
+
+void FpgaPlatform::init() {
+
+    cl_platform_id platform = 0;
+    clGetPlatformIDs(1, &platform, NULL);
+    device = 0;
+    // TODO: Switch filter platforms, error checking
+    clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 1, &device, NULL);
+    context = clCreateContext(NULL, 1, &device, NULL, NULL, NULL);
+}
+
+FpgaPlatform::~FpgaPlatform() {
+    clReleaseContext(context);
+}
