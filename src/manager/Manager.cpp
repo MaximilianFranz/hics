@@ -30,7 +30,14 @@ Manager::Manager() {
 
     ComputationHost* client = new Client("fpga", grpc::CreateChannel(
             "localhost:50051", grpc::InsecureChannelCredentials()));
-    computationHosts.push_back(client);
+    try {
+        client->queryNets();
+        computationHosts.push_back(client);
+    } catch (...) {
+        // If the client doesn't respond, it's most likely offline or not reachable
+        // TODO: make this more dynamic and allow for clients to show up any time
+        delete client;
+    }
 
     ComputationHost* executor = new Executor("local");
     computationHosts.push_back(executor);
