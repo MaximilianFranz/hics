@@ -20,10 +20,11 @@ set(SOURCE_FILES
         layerfunctions/FullyConnectedFunction.h
         layerfunctions/CpuFullyConnectedFunction.h layerfunctions/CpuFullyConnectedFunction.cpp
         platforms/FpgaPlatform.cpp platforms/FpgaPlatform.h
+        ../../thirdparty/AOCL_Utils.cpp ../../thirdparty/AOCL_Utils.h
         layerfunctions/convolution/FpgaConvolutionFunction.cpp layerfunctions/convolution/FpgaConvolutionFunction.h
         util/im2col.cpp util/im2col.h)
 add_library(platform STATIC ${SOURCE_FILES})
-target_link_libraries(platform netbuilder)
+target_link_libraries(platform netbuilder OpenCL::OpenCL)
 
 add_executable(platform-exec util/main.cpp)
 target_link_libraries(platform-exec platform)

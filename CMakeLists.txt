@@ -26,6 +26,9 @@ include_directories(${HDF5_INCLUDE_DIRS})
 find_package(Protobuf REQUIRED)
 find_package(Grpc REQUIRED)
 
+# Required by the CL platform
+find_package(OpenCL REQUIRED)
+
 # This allows us to use direct includes instead of using relative paths
 include_directories(src/communicator)
 include_directories(src/exceptions)
