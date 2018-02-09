@@ -28,6 +28,34 @@ namespace helper {
         }
     }
 
+    float *transpose_and_pad(int pad, int sizeX, int sizeY, float* input) {
+        int newX = sizeX;
+        int newY = sizeY;
+
+        if (sizeX % pad != 0) {
+            newY = ((sizeX / pad) + 1) * pad;
+        }
+        if (sizeY % pad != 0) {
+            newX = ((sizeY / pad) + 1) * pad;
+        }
+
+        float* out = (float*)malloc(newX*newY*sizeof(float*));
+        memset(out, 0, newX*newY*sizeof(float));
+
+
+        for (int y = 0; y < sizeY; y++) {
+            for (int x = 0; x < sizeX; x++) {
+                float val = input[y*sizeX + x];
+                int index = x * newX + y;
+                out[index] = val;
+            }
+        }
+
+        return out;
+
+    };
+
+
     /**
     * Checks if a given index lies in the interval [0,boundary).
     *

@@ -21,6 +21,10 @@ std::vector<float> WeightWrapper::getBias() {
     return bias;
 }
 
+const std::vector<float> WeightWrapper::getBias() const {
+    return bias;
+}
+
 const std::vector<int> &WeightWrapper::getBiasDimension() const {
     return biasDimension;
 }
