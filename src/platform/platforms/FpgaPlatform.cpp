@@ -1,4 +1,3 @@
-#include <NotImplementedException.h>
 #include <IllegalArgumentException.h>
 
 #include <layerfunctions/loss/CpuSoftMaxLossFunction.h>
@@ -8,6 +7,8 @@
 #include <layerfunctions/activation/CpuReLUFunction.h>
 #include <layerfunctions/convolution/FpgaConvolutionFunction.h>
 #include <iostream>
+
+#include "AOCL_Utils.h"
 
 #include "FpgaPlatform.h"
 
@@ -77,14 +78,24 @@ FpgaPlatform::FpgaPlatform(PlatformInfo &info) : Platform(info) {
 
 void FpgaPlatform::init() {
 
+    cl_int status = 0;
     cl_platform_id platform = 0;
-    clGetPlatformIDs(1, &platform, NULL);
+
+    status = clGetPlatformIDs(1, &platform, NULL);
+    aocl_utils::checkError(status, "Query for platform ids failed");
+
     device = 0;
     // TODO: Switch filter platforms, error checking
-    clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 1, &device, NULL);
-    context = clCreateContext(NULL, 1, &device, NULL, NULL, NULL);
+    status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 1, &device, NULL);
+    aocl_utils::checkError(status, "Query for device ids failed");
+
+    context = clCreateContext(NULL, 1, &device, NULL, NULL, &status);
+    aocl_utils::checkError(status, "Failed to create context");
 }
 
 FpgaPlatform::~FpgaPlatform() {
     clReleaseContext(context);
 }
+
+// Make AOCL_Utils happy
+void cleanup() {};

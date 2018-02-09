@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "AOCL_Utils.h"
+
 #include "FpgaConvolutionFunction.h"
 #include "util/im2col.h"
 
@@ -127,13 +129,15 @@ cl_program CreateProgram (const std::string& source,
 FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
         : context(c), device(d) {
 
-    queue = clCreateCommandQueue(context, device, 0, NULL);
+    cl_int status = 0;
+    queue = clCreateCommandQueue(context, device, 0, &status);
+    aocl_utils::checkError(status, "Failed to create command queue");
     program = CreateProgram(LoadKernel(RES_DIR "kernels/gemm1.cl"), context);
 //    char cmdline[1024];
 //    snprintf(cmdline, 1024, "-DTS=%d -DWPT=%d -DRTS=%d", TS, WPT, TS/WPT);
 //    clBuildProgram(program, 0, NULL, cmdline, NULL, NULL);
-    clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
-
+    status = clBuildProgram(program, 0, NULL, "", NULL, NULL);
+    aocl_utils::checkError(status, "Failed to build program");
 
     // Check for compilation errors
     size_t logSize;
