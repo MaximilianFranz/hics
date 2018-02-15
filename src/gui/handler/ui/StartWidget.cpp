@@ -277,8 +277,9 @@ bool StartWidget::isAggregated(){
 }
 
 void StartWidget::resizeEvent(QResizeEvent *event) {
-    resizeTimer.start(500);
-    QWidget::resizeEvent(event);
+//    resizeTimer.start(500);
+//    QWidget::resizeEvent(event);
+    widgetResized();
 }
 
 void StartWidget::widgetResized() {

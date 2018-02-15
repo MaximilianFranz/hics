@@ -41,7 +41,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QCheckBox>
 #include <QtCore/QDir>
-#include <QtCore/QTimer>
+#include <QTimer>
 
 namespace Ui {
     class StartWidget;
