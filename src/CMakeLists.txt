@@ -7,3 +7,7 @@ add_subdirectory(manager)
 add_subdirectory(netbuilder)
 add_subdirectory(neuralnet)
 add_subdirectory(platform)
+
+add_executable(main main.cpp)
+
+target_link_libraries(main gui executor netbuilder platform manager neuralnet)
