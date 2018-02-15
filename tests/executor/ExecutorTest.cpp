@@ -80,14 +80,15 @@ SCENARIO("Testing Executor Module") {
 
     SECTION("Testing Placer") {
         PlatformPlacer p;
+        Executor e;
         NetBuilder *builder = new NetBuilder();
         std::vector<NetInfo*> nets = builder->queryAvailableNets();
         NetInfo alexnetinfo = *nets.at(0);
         NeuralNet* alexnet = builder->buildNeuralNet(alexnetinfo);
 
-        std::vector<PlatformInfo*> platformsinfos_mock;
+        std::vector<PlatformInfo*> platforminfos = e.queryPlatform();
 
-        p.placeComputations(alexnet, OperationMode::EnergyEfficient, platformsinfos_mock);
+        p.placeComputations(alexnet, OperationMode::EnergyEfficient, platforminfos);
         REQUIRE(alexnet->isPlacementComplete());
 
     }
@@ -105,8 +106,8 @@ SCENARIO("Testing Executor Module") {
         ImageWrapper *img = new ImageWrapper(imgDim, image, "filepath");
 
         std::vector<ImageResult*> results;
-        std::vector<PlatformInfo*> info_mock;
-        results = executor->classify({img}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
+        std::vector<PlatformInfo*> info = executor->queryPlatform();
+        results = executor->classify({img}, alexnetinfo, OperationMode::EnergyEfficient, info);
 
         // Highest prob is weasel
         REQUIRE(results.front()->getResults().front().first == "weasel");
@@ -123,19 +124,16 @@ SCENARIO("Testing Executor Module") {
         map.insert(std::pair<QString, QImage>(QString("laska"), img));
         std::vector<ImageWrapper*> images = p.processImages(map);
 
-
         Executor executor;
         std::vector<NetInfo*> nets = executor.queryNets();
         NetInfo alexnetinfo = *nets.at(0);
 
         std::vector<ImageResult*> results;
-        std::vector<PlatformInfo*> info_mock;
-        results = executor.classify({images.front()}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
+        std::vector<PlatformInfo*> infos = executor.queryPlatform();
+        results = executor.classify({images.front()}, alexnetinfo, OperationMode::EnergyEfficient, infos);
 
         std::cout << results.front()->getResults().front().first << std::endl;
         std::cout << results.front()->getResults().front().second << std::endl;
-
-
 
     }
 }
