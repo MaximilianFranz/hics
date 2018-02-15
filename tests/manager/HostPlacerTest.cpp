@@ -31,10 +31,10 @@ SCENARIO("Read values from JSON") {
         std::vector<std::pair<ComputationHost *, int >> distribution =
                 HostPlacer::place(hosts, 5, OperationMode::LowPower);
         REQUIRE(distribution.size() == 2);
-        REQUIRE(distribution.begin().operator*().first->getName() == "fpga");
-        REQUIRE(distribution.begin().operator*().second == 5);
-        REQUIRE((distribution.begin()+1).operator*().first->getName() == "local");
-        REQUIRE((distribution.begin()+1).operator*().second == 0);
+        REQUIRE(distribution.begin().operator*().first->getName() == "local");
+        REQUIRE(distribution.begin().operator*().second == 0);
+        REQUIRE((distribution.begin()+1).operator*().first->getName() == "fpga");
+        REQUIRE((distribution.begin()+1).operator*().second == 5);
     }
 
     SECTION("Test placeHighPower with two hosts") {
