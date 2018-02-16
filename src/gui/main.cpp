@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
     nets.push_back(googlenet);
 
     ClassificationResult* classificationResult = new ClassificationResult(imgResults, *(nets.begin()), performanceData);
+    classificationResult->aggregateResults();
 
     ResultWidget* result = new ResultWidget();
     result->displayResults(classificationResult);

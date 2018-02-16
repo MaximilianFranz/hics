@@ -55,44 +55,47 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
     bool aggregated = false;
 
     //Checks if the results need to be displayed aggregated or not
-    if (classificationResult->getAggregatedResults().size() > 0)
+    if (!classificationResult->getAggregatedResults().empty())
         aggregated = true;
 
     std::vector<ImageResult> results = classificationResult->getResults();
 
     for (unsigned int i = 0; i < results.size(); ++i) {
         ImageResult imageResult = results[i];
+        auto *imageDisplay = new ImageDisplay();
+        imageDisplays.push_back(imageDisplay);
+        imageDisplay->imageResult = &results[i];
+
+        auto *resultDisplay = new ResultDisplay();
+        resultDisplays.push_back(resultDisplay);
+        resultDisplay->imageResult = &results[i];
 
         //Creates a layout which display the file path and its image on top of each other
-        QFrame *imageLayout = createImageLayout(imageResult.getImagePath());
+        QFrame *imageLayout = createImageLayout(imageResult.getImagePath(), imageDisplay);
 
         std::vector<std::pair<std::string, float>> result = imageResult.getResults();
 
+        //TODO remove sorting since results should already be sorted
         //Sorts the results so that the result with the highest float percentage gets displayed first
         result = sortVector(result);
 
-        //A container is needed if the results are not aggregated; it will hold the image layout and possibly its result
-        //QHBoxLayout *container = new QHBoxLayout();
-        //container->addLayout(imageLayout);
-
         //If its not aggregated the individual result must be inside the QScrollArea
         if (!aggregated) {
-            //container->insertStretch(1);
-            QFrame *resultLayout = createResultLayout(result);
-            //container->addLayout(resultLayout);
-            //ui->imagesQGridLayout->addLayout(resultLayout, i, 1);
+            QFrame *resultLayout = createResultLayout(result, resultDisplay);
             ui->imagesQGridLayout->addWidget(resultLayout, i, 1);
         }
 
         ui->imagesQGridLayout->addWidget(imageLayout, i, 0);
-        //ui->imagesQVBoxLayout->addLayout(container);
         //TODO check if the size of the displayed picture, text etc. is alright
     }
 
     //Display the aggregated result outside of the QScrollArea
     if (aggregated) {
+        auto *resultDisplay = new ResultDisplay();
+        resultDisplays.push_back(resultDisplay);
+
         std::vector<std::pair<std::string, float>> aggregatedResult = classificationResult->getAggregatedResults();
-        QFrame *aggregatedLayout = createResultLayout(aggregatedResult);
+        QFrame *aggregatedLayout = createResultLayout(aggregatedResult, resultDisplay);
 
         /* Places the aggregated result between two horizontal spacers in mainQHBoxLayout (index = 2) to avoid the
          * stretching of the result layout. */
@@ -100,18 +103,16 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
         ui->mainQHBoxLayout->insertWidget(2, aggregatedLayout);
         ui->mainQHBoxLayout->insertStretch(3);
     }
-
-    //Inserts a vertical stretch under the images to ensure that the image layouts are not stretched out.
-    //ui->imagesQVBoxLayout->insertStretch(-1);
 }
 
 
-QFrame *ResultWidget::createImageLayout(const std::string &filePath) {
-    QFrame* frame = new QFrame(this);
+QFrame *ResultWidget::createImageLayout(const std::string &filePath, ImageDisplay *imageDisplay) {
+    QFrame *frame = new QFrame(this);
     frame->setFrameShape(QFrame::Box);
 
-    QVBoxLayout *imageLayout = new QVBoxLayout(frame);
+    auto *imageLayout = new QVBoxLayout(frame);
     imageLayout->insertStretch(0);
+
     //Displays the file path
     QLabel *filePathLabel = new QLabel(this);
 
@@ -123,7 +124,7 @@ QFrame *ResultWidget::createImageLayout(const std::string &filePath) {
 
     //Removes the full path to the file and only returns the file name, shortens it if its larger than 150px
     QFontMetrics fontMetrics = QFontMetrics(QFont());
-    filePathLabel->setText(fontMetrics.elidedText(shortLink(filePath),Qt::TextElideMode::ElideLeft, 150));
+    filePathLabel->setText(fontMetrics.elidedText(shortLink(filePath), Qt::TextElideMode::ElideLeft, 150));
     imageLayout->addWidget(filePathLabel);
 
     //Displays the image
@@ -133,13 +134,18 @@ QFrame *ResultWidget::createImageLayout(const std::string &filePath) {
     imageLayout->addWidget(imageLabel);
 
     imageLayout->insertStretch(-1);
+
+    imageDisplay->filePath = filePath;
+    imageDisplay->filePathDisplay = filePathLabel;
+    imageDisplay->imageDisplay = imageLabel;
+
     return frame;
 }
 
-QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result) {
-    QFrame* frame = new QFrame(this);
+QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result, ResultDisplay* resultDisplay) {
+    QFrame *frame = new QFrame(this);
     frame->setFrameShape(QFrame::Box);
-    QVBoxLayout *layout = new QVBoxLayout(frame);
+    auto *layout = new QVBoxLayout(frame);
 
     //Stretch the layout from the top
     layout->insertStretch(0);
@@ -157,6 +163,7 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
         topResult->setStyleSheet("QLabel { color : red; }");
         topResult->setText(QString::fromStdString(result.at(0).first));
         layout->addWidget(topResult);
+        resultDisplay->topResult = std::pair<std::string, QLabel*>(result.at(0).first, topResult);
     }
 
     for (int i = 0; i < size; ++i) {
@@ -169,7 +176,7 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
 
         QLabel *name = new QLabel(this);
         //TODO dynamically elide text (size)
-        name->setText(fontMetrics.elidedText(shortLink(pair.first),Qt::TextElideMode::ElideMiddle, 350));
+        name->setText(fontMetrics.elidedText(shortLink(pair.first), Qt::TextElideMode::ElideMiddle, 350));
         name->setAlignment(Qt::AlignLeft);
         name->setToolTip(QString::fromStdString(pair.first));
         name->setToolTipDuration(-1);
@@ -179,11 +186,11 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
 
         QLabel *percentage = new QLabel(this);
         //TODO when percentage too long round the number
-        percentage->setText(QString::number(pair.second*100) + "%");
+        percentage->setText(QString::number(pair.second * 100) + "%");
         percentage->setAlignment(Qt::AlignRight);
 
         percentage->setStyleSheet("background:rgba(0, 0, 0, 0); border-right:"
-                                  + QString::number(percentage->width()*pair.second)
+                                  + QString::number(percentage->width() * pair.second)
                                   + "px solid rgba(255, 0, 0, 0.6)");
 
         percentage->setTextInteractionFlags(Qt::TextSelectableByMouse);
@@ -191,7 +198,16 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
         labelLayout->addWidget(percentage);
 
         layout->addLayout(labelLayout);
+
+        auto *classificationLabel = new ClassificationLabel();
+        classificationLabel->name = pair.first;
+        classificationLabel->nameDisplay = name;
+        classificationLabel->percentage = pair.second;
+        classificationLabel->percentageDisplay = percentage;
+
+        resultDisplay->results.push_back(classificationLabel);
     }
+
 
     //Stretch the layout from the bottom
     layout->insertStretch(-1);

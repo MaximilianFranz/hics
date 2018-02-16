@@ -30,6 +30,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <ClassificationResult.h>
+#include <QtWidgets/QLabel>
 
 namespace Ui {
     class ResultWidget;
@@ -111,13 +112,42 @@ public:
 
 private:
 
+    struct ClassificationLabel /*!< Maps the classification label and its percentage to the objects which are displaying them*/
+    {
+        std::string name; /*!< Classification label*/
+        QLabel *nameDisplay; /*!< Displayed object*/
+
+        float percentage; /*< Percentage label*/
+        QLabel *percentageDisplay; /*!< Displayed object */
+    };
+
+    struct ImageDisplay
+    {
+        ImageResult *imageResult;
+
+        std::string filePath;
+        QLabel *filePathDisplay;
+        QLabel *imageDisplay;
+    };
+
+    struct ResultDisplay
+    {
+        ImageResult *imageResult;
+
+        std::pair<std::string, QLabel *> topResult;
+        std::vector<ClassificationLabel *> results;
+    };
+
     Ui::ResultWidget *ui;
+
+    std::vector<ResultDisplay *> resultDisplays;
+    std::vector<ImageDisplay *> imageDisplays;
 
     QString shortLink(const std::string &link);
 
-    QFrame *createImageLayout(const std::string &filePath);
+    QFrame *createImageLayout(const std::string &filePath, ImageDisplay *imageDisplay);
 
-    QFrame *createResultLayout(std::vector<std::pair<std::string, float>> &result);
+    QFrame *createResultLayout(std::vector<std::pair<std::string, float>> &result, ResultDisplay *resultDisplay);
 
     std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
 
