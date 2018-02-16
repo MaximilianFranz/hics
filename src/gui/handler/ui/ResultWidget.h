@@ -110,6 +110,11 @@ public:
      */
     QHBoxLayout *getMainQHBoxLayout();
 
+protected:
+
+    void resizeEvent(QResizeEvent * event);
+
+
 private:
 
     struct ClassificationLabel /*!< Maps the classification label and its percentage to the objects which are displaying them*/
@@ -152,4 +157,8 @@ private:
     std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
 
     void clearLayout(QLayout *layout);
+
+    void resize();
+
+    const QString PERCENTAGE_BAR_COLOR = "rgba(255, 0, 0, 0.6)";
 };

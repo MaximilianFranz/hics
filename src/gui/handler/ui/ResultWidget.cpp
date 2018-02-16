@@ -47,7 +47,7 @@ ResultWidget::~ResultWidget() {
 //        delete ui->mainQHBoxLayout->itemAt(2);
 //    }
 
-    //TODO delete aggregated results layout
+    //TODO delete all allocated memory
 }
 
 void ResultWidget::displayResults(ClassificationResult *classificationResult) {
@@ -145,10 +145,8 @@ QFrame *ResultWidget::createImageLayout(const std::string &filePath, ImageDispla
 QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result, ResultDisplay* resultDisplay) {
     QFrame *frame = new QFrame(this);
     frame->setFrameShape(QFrame::Box);
-    auto *layout = new QVBoxLayout(frame);
+    auto *layout = new QGridLayout(frame);
 
-    //Stretch the layout from the top
-    layout->insertStretch(0);
     int size = result.size();
 
     //TODO Maybe unnecessary since only Top5 ist stores in the ClassificaionResult
@@ -162,27 +160,24 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
         QLabel *topResult = new QLabel(this);
         topResult->setStyleSheet("QLabel { color : red; }");
         topResult->setText(QString::fromStdString(result.at(0).first));
-        layout->addWidget(topResult);
+        layout->addWidget(topResult, 0, 0, 0, -1, Qt::AlignTop);
         resultDisplay->topResult = std::pair<std::string, QLabel*>(result.at(0).first, topResult);
     }
 
     for (int i = 0; i < size; ++i) {
         std::pair<std::string, float> pair = result[i];
 
-        //For every result insert a layout which has the result's name left and its percentage on the right side
-        QHBoxLayout *labelLayout = new QHBoxLayout();
-
         QFontMetrics fontMetrics = QFontMetrics(QFont());
 
         QLabel *name = new QLabel(this);
-        //TODO dynamically elide text (size)
+        //TODO Change 350 either to const attribute or a calculated ratio
         name->setText(fontMetrics.elidedText(shortLink(pair.first), Qt::TextElideMode::ElideMiddle, 350));
         name->setAlignment(Qt::AlignLeft);
         name->setToolTip(QString::fromStdString(pair.first));
         name->setToolTipDuration(-1);
         name->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
-        labelLayout->addWidget(name);
+        layout->addWidget(name, i+1, 0);
 
         QLabel *percentage = new QLabel(this);
         //TODO when percentage too long round the number
@@ -191,13 +186,11 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
 
         percentage->setStyleSheet("background:rgba(0, 0, 0, 0); border-right:"
                                   + QString::number(percentage->width() * pair.second)
-                                  + "px solid rgba(255, 0, 0, 0.6)");
+                                  + "px solid " + PERCENTAGE_BAR_COLOR);
 
         percentage->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
-        labelLayout->addWidget(percentage);
-
-        layout->addLayout(labelLayout);
+        layout->addWidget(percentage, i+1, 1);
 
         auto *classificationLabel = new ClassificationLabel();
         classificationLabel->name = pair.first;
@@ -208,9 +201,6 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
         resultDisplay->results.push_back(classificationLabel);
     }
 
-
-    //Stretch the layout from the bottom
-    layout->insertStretch(-1);
     return frame;
 }
 
@@ -258,6 +248,33 @@ void ResultWidget::clearLayout(QLayout *layout) {
             delete item->widget();
         }
     }
+}
+
+void ResultWidget::resize() {
+    for(unsigned int i = 0; i < resultDisplays.size(); ++i){
+        std::vector<ClassificationLabel*> classLabel = resultDisplays[i]->results;
+        for(unsigned int j = 0; j < classLabel.size(); ++j){
+            int widthSum = classLabel[j]->percentageDisplay->width() + classLabel[j]->nameDisplay->width();
+            int labelSize = (int) ((widthSum/3)*2); //TODO make ratio const attribute for easy change
+            int percentageSize = widthSum - labelSize;
+
+            QFontMetrics fontMetrics = QFontMetrics(QFont());
+
+            classLabel[j]->nameDisplay->setText(fontMetrics.elidedText(QString::fromStdString(classLabel[j]->name),
+                                                                       Qt::TextElideMode::ElideMiddle,
+                                                                       labelSize));
+            classLabel[j]->percentageDisplay->setStyleSheet("background:rgba(0, 0, 0, 0); border-right:"
+                                                            + QString::number(percentageSize * classLabel[j]->percentage)
+                                                            + "px solid " + PERCENTAGE_BAR_COLOR);
+        }
+    }
+}
+
+void ResultWidget::resizeEvent(QResizeEvent *event) {
+    //TODO Resize the displayed images
+    //TODO fix resizing labels on startup. Currently width stays at 100 unless the widget gets resized
+    resize();
+    QWidget::resizeEvent(event);
 }
 
 QPushButton *ResultWidget::getDetailsQPushButton() {
