@@ -171,7 +171,7 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
 
         QLabel *name = new QLabel(this);
         //TODO Change 350 either to const attribute or a calculated ratio
-        name->setText(fontMetrics.elidedText(shortLink(pair.first), Qt::TextElideMode::ElideMiddle, 350));
+        name->setText(QString::fromStdString(pair.first));
         name->setAlignment(Qt::AlignLeft);
         name->setToolTip(QString::fromStdString(pair.first));
         name->setToolTipDuration(-1);
@@ -187,7 +187,6 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
         percentage->setStyleSheet("background:rgba(0, 0, 0, 0); border-right:"
                                   + QString::number(percentage->width() * pair.second)
                                   + "px solid " + PERCENTAGE_BAR_COLOR);
-
         percentage->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
         layout->addWidget(percentage, i+1, 1);
@@ -254,11 +253,13 @@ void ResultWidget::resize() {
     for(unsigned int i = 0; i < resultDisplays.size(); ++i){
         std::vector<ClassificationLabel*> classLabel = resultDisplays[i]->results;
         for(unsigned int j = 0; j < classLabel.size(); ++j){
-            int widthSum = classLabel[j]->percentageDisplay->width() + classLabel[j]->nameDisplay->width();
+            //TODO fix resizing when widget is resized, currently sizeHint stays the same even when resizing, thus the widget does not get resized dynamically
+            int widthSum = classLabel[j]->percentageDisplay->sizeHint().width() + classLabel[j]->nameDisplay->sizeHint().width();
             int labelSize = (int) ((widthSum/3)*2); //TODO make ratio const attribute for easy change
             int percentageSize = widthSum - labelSize;
 
             QFontMetrics fontMetrics = QFontMetrics(QFont());
+            classLabel[j]->nameDisplay->setStyleSheet("background:red");
 
             classLabel[j]->nameDisplay->setText(fontMetrics.elidedText(QString::fromStdString(classLabel[j]->name),
                                                                        Qt::TextElideMode::ElideMiddle,
@@ -272,7 +273,6 @@ void ResultWidget::resize() {
 
 void ResultWidget::resizeEvent(QResizeEvent *event) {
     //TODO Resize the displayed images
-    //TODO fix resizing labels on startup. Currently width stays at 100 unless the widget gets resized
     resize();
     QWidget::resizeEvent(event);
 }
