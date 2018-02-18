@@ -37,6 +37,9 @@ class FullyConnectedLayer : public Layer {
 protected:
     FullyConnectedFunction* function;
     WeightWrapper* weights;
+
+    DataWrapper* stretchInput(DataWrapper* input);
+
 public:
 
     /**
@@ -63,8 +66,6 @@ public:
 
 
     void setFunction(FullyConnectedFunction* function);
-
-    bool verifyWeights();
 
     std::vector<int> calcOutputDimensions() override;
 };

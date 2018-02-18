@@ -47,43 +47,18 @@ void FullyConnectedLayer::setWeights(WeightWrapper *weights) {
     this->weights = weights;
 }
 
-
-//TODO: Implement checks if the weights fit the layer!
-bool FullyConnectedLayer::verifyWeights() {
-    return false;
-}
-
 void FullyConnectedLayer::setFunction(FullyConnectedFunction *function) {
     this->function = function;
     functionSet = true;
 }
 
 void FullyConnectedLayer::forward() {
-    if (inputDimensions.size() != 1) {
+    if (inputDimensions.size() == 3) {
         //stretch out the tf way
-        DataWrapper *input = previousLayer->getOutputWrapper();
-        int channels =  input->getDimensions().at(D3_Z_DIM);
-        int y =  input->getDimensions().at(D3_Y_DIM);
-        int x =  input->getDimensions().at(D3_X_DIM);
-        int numElements = static_cast<int>(input->getNumElements()); //Input to FC are small
-        float *inputData = previousLayer->getOutputWrapper()->getDataArray();
-        std::vector<float> strechtInputData(numElements);
-        int i = 0;
-        //TODO: Optimize perfomance of this!
-        //Don't ask how I got to this solution.
-        for (int yit = y-1; yit >= 0; yit--) {
-            for (int xit = x - 1; xit >= 0; xit--) {
-                for (int cit = 0 ; cit < channels; cit++) {
-                    strechtInputData[i] = previousLayer->getOutputWrapper()->getElement({cit, yit, xit});
-                    i++;
-                }
-            }
-        }
+        DataWrapper *stretchedInput = stretchInput(previousLayer->getOutputWrapper());
 
-
-        DataWrapper *stretchInput = new DataWrapper({numElements}, strechtInputData);
         outputWrapper = new DataWrapper(getOutputDimensions());
-        this->function->execute(*stretchInput,*outputWrapper, *weights);
+        this->function->execute(*stretchedInput, *outputWrapper, *weights);
 
     }
     else {
@@ -93,6 +68,32 @@ void FullyConnectedLayer::forward() {
 
         computed = true;
     }
+}
+
+DataWrapper *FullyConnectedLayer::stretchInput(DataWrapper *input) {
+    int channels =  input->getDimensions().at(D3_Z_DIM);
+    int y =  input->getDimensions().at(D3_Y_DIM);
+    int x =  input->getDimensions().at(D3_X_DIM);
+    int numElements = static_cast<int>(input->getNumElements()); //Input to FC are small
+
+    float *inputData = previousLayer->getOutputWrapper()->getDataArray();
+    std::vector<float> strechtedInputData(numElements);
+
+    int i = 0;
+    // Iterate over x and y from left to right and bottom to top.
+    for (int yit = y - 1; yit >= 0; yit--) {
+        for (int xit = x - 1; xit >= 0; xit--) {
+            // Iterate over channels from front to back
+            for (int cit = 0 ; cit < channels; cit++) {
+                strechtedInputData[i] = inputData[cit*x*y + yit*x + xit];
+ //               strechtedInputData[i] = input->getElement({cit, yit, xit});
+                i++;
+            }
+        }
+    }
+
+    DataWrapper *stretchInput = new DataWrapper({numElements}, strechtedInputData);
+    return stretchInput;
 }
 
 
