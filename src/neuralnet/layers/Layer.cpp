@@ -25,7 +25,6 @@
  */
 
 #include "Layer.h"
-#include "NotImplementedException.h"
 
 bool Layer::isComputed() {
     return computed;

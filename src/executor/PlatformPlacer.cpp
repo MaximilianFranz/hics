@@ -24,14 +24,15 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <algorithm>
+
 #include <layers/weightlayers/ConvolutionLayer.h>
 #include <layers/weightlayers/FullyConnectedLayer.h>
 #include <layers/functionlayers/ReLUActivationLayer.h>
 #include <layers/functionlayers/LocalResponseNormLayer.h>
 #include <layers/functionlayers/SoftMaxLossLayer.h>
 #include <layers/functionlayers/MaxPoolingLayer.h>
-#include <NotImplementedException.h>
-#include <algorithm>
+
 #include "PlatformPlacer.h"
 
 PlatformPlacer::PlatformPlacer() {

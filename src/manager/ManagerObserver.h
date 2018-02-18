@@ -26,8 +26,6 @@
 
 #pragma once
 
-#include <NotImplementedException.h>
-
 /**
  * This interface is implemented by the manager to observe the GUI. It follows the observer-pattern structure.
  */

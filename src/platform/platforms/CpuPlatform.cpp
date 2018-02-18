@@ -24,7 +24,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <NotImplementedException.h>
 #include <IllegalArgumentException.h>
 
 #include <layerfunctions/convolution/CpuConvolutionFunction.h>

@@ -24,7 +24,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <NotImplementedException.h>
 #include "MainWindowHandler.h"
 
 MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::vector<PlatformInfo *> &platforms,
