@@ -36,17 +36,16 @@ std::vector<int> PoolingLayer::calcOutputDimensions() {
     return outDim;
 }
 
-void PoolingLayer::setFunction(PoolingFunction *function) {
-    this->function = function;
-    this->functionSet = true;
-
-}
-
-
 void PoolingLayer::forward() {
     outputWrapper = new DataWrapper(getOutputDimensions());
     this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper, stride, filterSize, zeroPadding);
     computed = true;
+}
+
+void PoolingLayer::setFunction(PoolingFunction *function) {
+    this->function = function;
+    this->functionSet = true;
+
 }
 
 int PoolingLayer::getFilterSize() const {

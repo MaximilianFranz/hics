@@ -65,7 +65,6 @@ Layer *Layer::getNextLayer() const {
     return nextLayer;
 }
 
-
 const std::vector<int> &Layer::getInputDimensions() const {
     return inputDimensions;
 }

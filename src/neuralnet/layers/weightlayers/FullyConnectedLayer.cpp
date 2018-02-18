@@ -37,19 +37,10 @@ FullyConnectedLayer::FullyConnectedLayer(std::vector<int> inputDimensions, Weigh
     this->type = FULLYCONNECTED;
 }
 
-//TODO: Verify. This should
+// Takes the outputDimensions based on the dimensions of the weights.
 std::vector<int> FullyConnectedLayer::calcOutputDimensions() {
-    std::vector<int> dim = {weights->getDimensions()[0]}; //For some reason the convention does not hold here!
+    std::vector<int> dim = {weights->getDimensions()[0]};
     return dim;
-}
-
-void FullyConnectedLayer::setWeights(WeightWrapper *weights) {
-    this->weights = weights;
-}
-
-void FullyConnectedLayer::setFunction(FullyConnectedFunction *function) {
-    this->function = function;
-    functionSet = true;
 }
 
 void FullyConnectedLayer::forward() {
@@ -69,6 +60,8 @@ void FullyConnectedLayer::forward() {
         computed = true;
     }
 }
+
+// HELPER methods
 
 DataWrapper *FullyConnectedLayer::stretchInput(DataWrapper *input) {
     int channels =  input->getDimensions().at(D3_Z_DIM);
@@ -96,4 +89,14 @@ DataWrapper *FullyConnectedLayer::stretchInput(DataWrapper *input) {
     return stretchInput;
 }
 
+// SETTER methods
+
+void FullyConnectedLayer::setWeights(WeightWrapper *weights) {
+    this->weights = weights;
+}
+
+void FullyConnectedLayer::setFunction(FullyConnectedFunction *function) {
+    this->function = function;
+    functionSet = true;
+}
 
