@@ -627,10 +627,10 @@ std::vector<float> getDataFromFile_im2col(std::string path) {
 
 TEST_CASE("Testing im2Col with real data") {
     SECTION("Conv Layer 1") {
-        std::string input_path = "../../../tests/resources/img_data.txt";
-        std::string weights_path = "../../../tests/resources/conv1_weight.txt";
-        std::string convolution_result_path = "../../../tests/resources/conv1_data_alexnet.txt";
-        std::string bias_path = "../../../tests/resources/conv1_bias.txt";
+        std::string input_path = TEST_RES_DIR "img_data.txt";
+        std::string weights_path = TEST_RES_DIR "conv1_weight.txt";
+        std::string convolution_result_path = TEST_RES_DIR "conv1_data_alexnet.txt";
+        std::string bias_path = TEST_RES_DIR "conv1_bias.txt";
 
         std::vector<float> input = getDataFromFile_im2col(input_path);
         std::vector<float> weights = getDataFromFile_im2col(weights_path);
@@ -674,10 +674,10 @@ TEST_CASE("Testing im2Col with real data") {
     }
     /*
     SECTION("Conv Layer 2") {
-        std::string input_path = "../../../tests/resources/img_data.txt";
-        std::string weights_path = "../../../tests/resources/conv2_weight.txt";
-        std::string convolution_result_path = "../../../tests/resources/conv2_data_alexnet.txt";
-        std::string bias_path = "../../../tests/resources/conv2_bias.txt";
+        std::string input_path = TEST_RES_DIR "img_data.txt";
+        std::string weights_path = TEST_RES_DIR "conv2_weight.txt";
+        std::string convolution_result_path = TEST_RES_DIR "conv2_data_alexnet.txt";
+        std::string bias_path = TEST_RES_DIR "conv2_bias.txt";
 
         std::vector<float> input = getDataFromFile_im2col(input_path);
         std::vector<float> weights = getDataFromFile_im2col(weights_path);
@@ -721,10 +721,10 @@ TEST_CASE("Testing im2Col with real data") {
     }
 
     SECTION("Conv Layer 3") {
-        std::string input_path = "../../../tests/resources/conv2_data_out.txt";
-        std::string weights_path = "../../../tests/resources/conv3_weight.txt";
-        std::string convolution_result_path = "../../../tests/resources/conv3_data_alexnet.txt";
-        std::string bias_path = "../../../tests/resources/conv3_bias.txt";
+        std::string input_path = TEST_RES_DIR "conv2_data_out.txt";
+        std::string weights_path = TEST_RES_DIR "conv3_weight.txt";
+        std::string convolution_result_path = TEST_RES_DIR "conv3_data_alexnet.txt";
+        std::string bias_path = TEST_RES_DIR "conv3_bias.txt";
 
         std::vector<float> input = getDataFromFile_im2col(input_path);
         std::vector<float> weights = getDataFromFile_im2col(weights_path);
@@ -768,10 +768,10 @@ TEST_CASE("Testing im2Col with real data") {
     }
 
     SECTION("Conv Layer 4") {
-        std::string input_path = "../../../tests/resources/img_data.txt";
-        std::string weights_path = "../../../tests/resources/conv4_weight.txt";
-        std::string convolution_result_path = "../../../tests/resources/conv4_data_alexnet.txt";
-        std::string bias_path = "../../../tests/resources/conv4_bias.txt";
+        std::string input_path = TEST_RES_DIR "img_data.txt";
+        std::string weights_path = TEST_RES_DIR "conv4_weight.txt";
+        std::string convolution_result_path = TEST_RES_DIR "conv4_data_alexnet.txt";
+        std::string bias_path = TEST_RES_DIR "conv4_bias.txt";
 
         std::vector<float> input = getDataFromFile_im2col(input_path);
         std::vector<float> weights = getDataFromFile_im2col(weights_path);
@@ -815,10 +815,10 @@ TEST_CASE("Testing im2Col with real data") {
     }
 
     SECTION("Conv Layer 5") {
-        std::string input_path = "../../../tests/resources/img_data.txt";
-        std::string weights_path = "../../../tests/resources/conv5_weight.txt";
-        std::string convolution_result_path = "../../../tests/resources/conv5_data_alexnet.txt";
-        std::string bias_path = "../../../tests/resources/conv5_bias.txt";
+        std::string input_path = TEST_RES_DIR "img_data.txt";
+        std::string weights_path = TEST_RES_DIR "conv5_weight.txt";
+        std::string convolution_result_path = TEST_RES_DIR "conv5_data_alexnet.txt";
+        std::string bias_path = TEST_RES_DIR "conv5_bias.txt";
 
         std::vector<float> input = getDataFromFile_im2col(input_path);
         std::vector<float> weights = getDataFromFile_im2col(weights_path);
