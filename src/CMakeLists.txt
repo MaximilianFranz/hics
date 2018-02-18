@@ -8,6 +8,6 @@ add_subdirectory(netbuilder)
 add_subdirectory(neuralnet)
 add_subdirectory(platform)
 
-add_executable(main main.cpp)
+add_executable(hics main.cpp)
 
-target_link_libraries(main gui executor netbuilder platform manager neuralnet)
+target_link_libraries(hics gui executor netbuilder platform manager neuralnet)
