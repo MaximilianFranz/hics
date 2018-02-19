@@ -132,13 +132,14 @@ QFrame *ResultWidget::createImageLayout(const std::string &filePath, ImageDispla
     QImage image(q_filePath);
     imageLabel->setPixmap(QPixmap::fromImage(image).scaled(150, 150, Qt::KeepAspectRatio));
     imageLayout->addWidget(imageLabel);
-
     imageLayout->insertStretch(-1);
 
     imageDisplay->filePath = filePath;
     imageDisplay->filePathDisplay = filePathLabel;
     imageDisplay->imageDisplay = imageLabel;
 
+    //Don't allow resizing of the images
+    frame->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
     return frame;
 }
 
@@ -277,6 +278,9 @@ void ResultWidget::resize() {
                                                                 + PERCENTAGE_BAR_COLOR);
             }
         }
+    }
+
+    for (ImageDisplay* i : imageDisplays){
     }
 }
 
