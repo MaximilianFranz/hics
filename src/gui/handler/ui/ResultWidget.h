@@ -161,4 +161,7 @@ private:
     void resize();
 
     const QString PERCENTAGE_BAR_COLOR = "rgba(255, 0, 0, 0.6)";
+
+    const int NUMERATOR_TEXT_PERCENTAGE_RATIO = 2;
+    const int DENOMINATOR_TEXT_PERCENTAGE_RATIO = 3;
 };

@@ -142,46 +142,39 @@ QFrame *ResultWidget::createImageLayout(const std::string &filePath, ImageDispla
     return frame;
 }
 
-QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result, ResultDisplay* resultDisplay) {
+QFrame *
+ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result, ResultDisplay *resultDisplay) {
     QFrame *frame = new QFrame(this);
     frame->setFrameShape(QFrame::Box);
     auto *layout = new QGridLayout(frame);
 
-    int size = result.size();
-
-    //TODO Maybe unnecessary since only Top5 ist stores in the ClassificaionResult
-    //Only the Top-5 shall be displayed.
-    if (size > 5) {
-        size = 5;
-    }
-
     //Display the Top result in red and above the others
-    if (size != 0) {
+    if (result.size() > 0) {
         QLabel *topResult = new QLabel(this);
         topResult->setStyleSheet("QLabel { color : red; }");
         topResult->setText(QString::fromStdString(result.at(0).first));
         layout->addWidget(topResult, 0, 0, 0, -1, Qt::AlignTop);
-        resultDisplay->topResult = std::pair<std::string, QLabel*>(result.at(0).first, topResult);
+        resultDisplay->topResult = std::pair<std::string, QLabel *>(result.at(0).first, topResult);
     }
 
-    for (int i = 0; i < size; ++i) {
+    for (unsigned long i = 0; i < result.size(); ++i) {
         std::pair<std::string, float> pair = result[i];
 
         QFontMetrics fontMetrics = QFontMetrics(QFont());
 
         QLabel *name = new QLabel(this);
-        //TODO Change 350 either to const attribute or a calculated ratio
+
         name->setText(QString::fromStdString(pair.first));
         name->setAlignment(Qt::AlignLeft);
         name->setToolTip(QString::fromStdString(pair.first));
         name->setToolTipDuration(-1);
         name->setTextInteractionFlags(Qt::TextSelectableByMouse);
-
-        layout->addWidget(name, i+1, 0);
+        layout->addWidget(name, (int) (i + 1), 0);
 
         QLabel *percentage = new QLabel(this);
         //TODO when percentage too long round the number
         percentage->setText(QString::number(pair.second * 100) + "%");
+
         percentage->setAlignment(Qt::AlignRight);
 
         percentage->setStyleSheet("background:rgba(0, 0, 0, 0); border-right:"
@@ -189,7 +182,10 @@ QFrame *ResultWidget::createResultLayout(std::vector<std::pair<std::string, floa
                                   + "px solid " + PERCENTAGE_BAR_COLOR);
         percentage->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
-        layout->addWidget(percentage, i+1, 1);
+        layout->addWidget(percentage, (int) (i + 1), 1);
+
+        name->setGeometry(QRect(0, 0, name->sizeHint().width(),
+                                name->sizeHint().height())); /*!< Resizes the label to match the displayed text */
 
         auto *classificationLabel = new ClassificationLabel();
         classificationLabel->name = pair.first;
@@ -250,23 +246,36 @@ void ResultWidget::clearLayout(QLayout *layout) {
 }
 
 void ResultWidget::resize() {
-    for(unsigned int i = 0; i < resultDisplays.size(); ++i){
-        std::vector<ClassificationLabel*> classLabel = resultDisplays[i]->results;
-        for(unsigned int j = 0; j < classLabel.size(); ++j){
-            //TODO fix resizing when widget is resized, currently sizeHint stays the same even when resizing, thus the widget does not get resized dynamically
-            int widthSum = classLabel[j]->percentageDisplay->sizeHint().width() + classLabel[j]->nameDisplay->sizeHint().width();
-            int labelSize = (int) ((widthSum/3)*2); //TODO make ratio const attribute for easy change
-            int percentageSize = widthSum - labelSize;
+    //Resize every Result
+    for (ResultDisplay* i : resultDisplays) {
+        std::vector<ClassificationLabel *> classLabel = i->results;
+        int sum = -1;
 
-            QFontMetrics fontMetrics = QFontMetrics(QFont());
-            classLabel[j]->nameDisplay->setStyleSheet("background:red");
+        //For every Top-5 the maximum width is used to display the percentages for every entry in the same ratio
+        for (ClassificationLabel* j : classLabel) {
+            int widthSum = j->nameDisplay->width() + j->percentageDisplay->width();
+            if (widthSum > sum) {
+                sum = widthSum;
+            }
+        }
 
-            classLabel[j]->nameDisplay->setText(fontMetrics.elidedText(QString::fromStdString(classLabel[j]->name),
-                                                                       Qt::TextElideMode::ElideMiddle,
-                                                                       labelSize));
-            classLabel[j]->percentageDisplay->setStyleSheet("background:rgba(0, 0, 0, 0); border-right:"
-                                                            + QString::number(percentageSize * classLabel[j]->percentage)
-                                                            + "px solid " + PERCENTAGE_BAR_COLOR);
+        if (sum > 0) {
+            auto nameTextSize = (int) ((sum / DENOMINATOR_TEXT_PERCENTAGE_RATIO) *
+                                       NUMERATOR_TEXT_PERCENTAGE_RATIO);
+            int percentageTextSize = sum - nameTextSize;
+
+            for (ClassificationLabel* j : classLabel) {
+                QFontMetrics fontMetrics = QFontMetrics(QFont());
+
+                j->nameDisplay->setText(fontMetrics.elidedText(QString::fromStdString(j->name),
+                                                                           Qt::TextElideMode::ElideMiddle,
+                                                                           nameTextSize));
+                j->percentageDisplay->setStyleSheet("background:rgba(0, 0, 0, 0); border-right:"
+                                                                + QString::number
+                                                                    (percentageTextSize * j->percentage)
+                                                                + "px solid "
+                                                                + PERCENTAGE_BAR_COLOR);
+            }
         }
     }
 }
