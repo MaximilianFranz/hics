@@ -185,6 +185,10 @@ public:
      */
     DataWrapper *getOutputWrapper() const;
 
+    void reset();
+
+    bool readyToCompute();
+    
     /**
      * Remove obsolete DataWrapper instances
      *
@@ -197,5 +201,6 @@ public:
      * Destructor of Layer
      */
     virtual ~Layer();
+
 };
 
