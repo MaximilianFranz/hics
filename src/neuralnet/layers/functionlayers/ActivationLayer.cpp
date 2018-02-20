@@ -27,26 +27,24 @@
 #include "ActivationLayer.h"
 
 
-std::vector<int> ActivationLayer::calcOutputDimensions() {
-    return inputDimensions; //Activation does not change the dimensions of the input.
-}
 
 ActivationLayer::ActivationLayer(std::vector<int> &inputDimensions) {
     this->inputDimensions = inputDimensions;
     this->outputDimensions = calcOutputDimensions();
 }
 
-void ActivationLayer::setFunction(ActivationFunction *function) {
-    this->function = function;
-    functionSet = true;
+std::vector<int> ActivationLayer::calcOutputDimensions() {
+    return inputDimensions; //Activation does not change the dimensions of the input.
 }
 
-//TODO: Use pointers instead of reference?
 void ActivationLayer::forward() {
     outputWrapper = new DataWrapper(getOutputDimensions());
     this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper);
     this->computed = true;
 }
 
-
+void ActivationLayer::setFunction(ActivationFunction *function) {
+    this->function = function;
+    functionSet = true;
+}
 

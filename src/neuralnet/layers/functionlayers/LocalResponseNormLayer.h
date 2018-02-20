@@ -45,13 +45,13 @@ protected:
 public:
     LocalResponseNormLayer(std::vector<int> inputDimensions, float radius, float alpha, float beta, float bias);
 
-    void forward() override;
-
-    void setFunction(ResponseNormalizationFunction *function);
-
     std::vector<int> calcOutputDimensions() override;
 
-    //GETTER
+    void forward() override;
+
+    //GETTER and SETTER
+
+    void setFunction(ResponseNormalizationFunction *function);
 
     float getRadius() const;
 

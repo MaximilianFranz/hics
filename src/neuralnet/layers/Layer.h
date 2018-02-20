@@ -55,8 +55,8 @@ protected:
     DataWrapper* inputWrapper; //! == previousLayer.getOutputWrapper()
     DataWrapper* outputWrapper; //! == nextLayer.getInputWrapper()
 
-    bool computed;
-    bool functionSet;
+    bool computed = false;
+    bool functionSet = false;
 
     LayerType type;
     std::vector<int> inputDimensions;
@@ -99,24 +99,10 @@ public:
     virtual void setComputed(bool status);
 
     /**
-     * Returns whether this Layer is ready to be computed.
-     *
-     * A Layer is ready iff the function has been set and previous layers are computed.
-     *
-     * @return
-     */
-    virtual bool readyToCompute();
-
-    /**
      *
      * @return
      */
     virtual bool isLayerFunctionSet();
-
-    /**
-     * Resets the status of this layer, so that it can be reconfigured.
-     */
-    virtual void reset();
 
     /**
      * Initializes the default values of this layer
@@ -200,6 +186,17 @@ public:
     DataWrapper *getOutputWrapper() const;
 
     /**
+     * Resets the status of this Layer
+     */
+    void reset();
+
+    /**
+     * Checks whether this layer is ready to be executed
+     * @return whether layer is ready for forward() call
+     */
+    bool readyToCompute();
+
+    /**
      * Remove obsolete DataWrapper instances
      *
      * Call only after forward() has been comuted
@@ -211,5 +208,6 @@ public:
      * Destructor of Layer
      */
     virtual ~Layer();
+
 };
 

@@ -40,12 +40,13 @@ protected:
     int zeroPadding;
     int stride;
 public:
-    void forward() override;
 
+    std::vector<int> calcOutputDimensions() override;
+
+    void forward() override;
 
     void setFunction(PoolingFunction* function);
 
-    std::vector<int> calcOutputDimensions() override;
 
     // GETTER
 

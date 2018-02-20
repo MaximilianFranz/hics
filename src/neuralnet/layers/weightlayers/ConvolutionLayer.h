@@ -46,7 +46,15 @@ protected:
     int stride;
     int numGroups;
 
+    // HELPER methods
+
     std::vector<int> splitDim(std::vector<int> in, int factor, int index);
+
+    WeightWrapper *getSecondHalf(WeightWrapper *weights);
+
+    DataWrapper *getSecondHalf(DataWrapper *input);
+
+    void forwardSplit();
 
 public:
 
@@ -94,9 +102,6 @@ public:
 
     void setFunction(ConvolutionFunction* function);
 
-    bool verifyWeights();
-
-
     // GETTER
 
     int getNumFilters() const;
@@ -109,6 +114,8 @@ public:
 
     int getNumGroups() const;
 
+
 };
+
 
 

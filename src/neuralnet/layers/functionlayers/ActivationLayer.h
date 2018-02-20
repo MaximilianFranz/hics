@@ -41,9 +41,9 @@ public:
     // TODO: This is not technically correct, because ActivationsLayer should not be instantiated.
     explicit ActivationLayer(std::vector<int> &inputDimensions);
 
-    void forward() override;
-
     std::vector<int> calcOutputDimensions() override;
+
+    void forward() override;
 
     void setFunction(ActivationFunction* function);
 };

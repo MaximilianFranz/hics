@@ -45,7 +45,7 @@ void Layer::reset() {
 
 
 bool Layer::readyToCompute() {
-    return previousLayer->isComputed();
+    return previousLayer->isComputed() && functionSet;
 }
 
 void Layer::init() {
@@ -64,7 +64,6 @@ Layer *Layer::getPreviousLayer() const {
 Layer *Layer::getNextLayer() const {
     return nextLayer;
 }
-
 
 const std::vector<int> &Layer::getInputDimensions() const {
     return inputDimensions;

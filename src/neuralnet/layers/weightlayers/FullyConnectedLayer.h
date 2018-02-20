@@ -37,6 +37,17 @@ class FullyConnectedLayer : public Layer {
 protected:
     FullyConnectedFunction* function;
     WeightWrapper* weights;
+
+    // TODO: Move to a util class (and make it modular?)
+    /**
+     * Stretches out the given input in the format the
+     * AlexNet requires as input to FullyConnected layers.
+     *
+     * @param input
+     * @return
+     */
+    DataWrapper* stretchInput(DataWrapper* input);
+
 public:
 
     /**
@@ -57,6 +68,8 @@ public:
      */
     FullyConnectedLayer(std::vector<int> inputDimensions, WeightWrapper *weights);
 
+    std::vector<int> calcOutputDimensions() override;
+
     void forward() override;
 
     void setWeights(WeightWrapper* weights);
@@ -64,9 +77,6 @@ public:
 
     void setFunction(FullyConnectedFunction* function);
 
-    bool verifyWeights();
-
-    std::vector<int> calcOutputDimensions() override;
 };
 
 

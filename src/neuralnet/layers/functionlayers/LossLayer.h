@@ -33,11 +33,11 @@ class LossLayer : public Layer {
 protected:
     LossFunction* function;
 public:
-    void setFunction(LossFunction* function);
+    std::vector<int> calcOutputDimensions() override;
 
     void forward() override;
 
-    std::vector<int> calcOutputDimensions() override;
+    void setFunction(LossFunction* function);
 
 };
 

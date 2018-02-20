@@ -42,6 +42,18 @@ LocalResponseNormLayer::LocalResponseNormLayer(std::vector<int> inputDimensions,
     this->init(); // TODO never call virtual functions in constructor
 }
 
+std::vector<int> LocalResponseNormLayer::calcOutputDimensions() {
+    // Normalization does not change input dimensions
+    return inputDimensions;
+}
+
+void LocalResponseNormLayer::forward() {
+    outputWrapper = new DataWrapper(getOutputDimensions());
+    this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper, radius, alpha, beta, bias);
+}
+
+// GETTER and SETTER methods
+
 float LocalResponseNormLayer::getRadius() const {
     return radius;
 }
@@ -63,13 +75,4 @@ void LocalResponseNormLayer::setFunction(ResponseNormalizationFunction *function
     functionSet = true;
 }
 
-
-void LocalResponseNormLayer::forward() {
-    outputWrapper = new DataWrapper(getOutputDimensions());
-    this->function->execute(*previousLayer->getOutputWrapper(), *outputWrapper, radius, alpha, beta, bias);
-}
-
-std::vector<int> LocalResponseNormLayer::calcOutputDimensions() {
-    return inputDimensions;
-}
 
