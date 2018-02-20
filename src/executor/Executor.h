@@ -44,9 +44,9 @@ private:
     OperationMode currentMode;
     std::vector<PlatformInfo*> currentPlatforms;
 
-    NetBuilder *builder;
-    PlatformPlacer *placer;
-    Interpreter *interpreter;
+    NetBuilder *builder = nullptr;
+    PlatformPlacer *placer = nullptr;
+    Interpreter *interpreter = nullptr;
 
     std::string name;
 
@@ -85,7 +85,7 @@ private:
     */
     DataWrapper *getImageData(ImageWrapper *imageWrapper);
 
-    NetInfo createMockInfo();
+    const NetInfo createMockInfo();
 
 public:
 
@@ -129,4 +129,6 @@ public:
     std::string getName() {
         return name;
     }
+
+    virtual ~Executor();
 };

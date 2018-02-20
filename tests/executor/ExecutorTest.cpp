@@ -134,6 +134,8 @@ SCENARIO("Testing Executor Module") {
         // Highest prob is weasel
         REQUIRE(results.front()->getResults().front().first == "weasel");
 
+        delete executor;
+
     }
 
     SECTION("Testing PreProcessor and Execution") {

@@ -38,7 +38,7 @@ std::vector<int> InputLayer::calcOutputDimensions() {
 }
 
 void InputLayer::forward() {
-    this->outputWrapper = inputWrapper; //In inputWrapper the input must be explicitly set!
+    this->outputWrapper = new DataWrapper(*inputWrapper); //In inputWrapper the input must be explicitly set!
 }
 
 

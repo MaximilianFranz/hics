@@ -56,15 +56,17 @@ std::vector<NetInfo*> Executor::queryNets() {
 Executor::Executor() {
     this->placer = (new PlatformPlacer());
     this->builder = (new NetBuilder());
-    NetInfo mock = createMockInfo();
-    this->net = new NeuralNet(nullptr, mock);
+    //Creat empty neuralnet to avoid seg faults
+    this->net = new NeuralNet(nullptr, createMockInfo());
 
 }
 
 ImageResult *Executor::classifyImage(ImageWrapper *image) {
     runDataForward(getImageData(image));
     auto outputData = net->getLastLayer()->getOutputWrapper();
-    return interpreter->getResult(outputData, image, placer);
+    auto imageResult = interpreter->getResult(outputData, image, placer);
+    net->reset();
+    return imageResult;
 
 }
 
@@ -72,6 +74,9 @@ void Executor::setupIfChanged(NetInfo *netInfo, OperationMode mode, std::vector<
 
     //Check if currently built net is correct!
     if(netInfo->getIdentifier() != this->net->getInfo().getIdentifier()) { //TODO: Overide == operator in NetInfo
+        // free memory
+        delete net;
+        // create new NeuralNet as requested
         net = builder->buildNeuralNet(*netInfo);
     }
 
@@ -92,11 +97,13 @@ void Executor::runDataForward(DataWrapper *data) {
     do {
         Layer *layer = it->getElement();
         layer->forward();
+        layer->deleteGarbage(); //TODO: Move this into forward() of all layers
         it->next();
+
     } while (it->hasNext());
 }
 
-NetInfo Executor::createMockInfo() {
+const NetInfo Executor::createMockInfo() {
      NetInfo d("empty", 0, "empty");
     return d;
 }
@@ -107,6 +114,16 @@ Executor::Executor(std::string name)
     this->builder = (new NetBuilder());
     NetInfo mock = createMockInfo();
     this->net = new NeuralNet(nullptr, mock);
+}
+
+Executor::~Executor() {
+    delete net;
+    delete builder;
+    delete placer;
+    // Check if interpreter was set before deletion
+    if (interpreter != nullptr) {
+        delete interpreter;
+    }
 }
 
 

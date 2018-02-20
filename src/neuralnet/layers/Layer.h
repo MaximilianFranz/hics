@@ -181,15 +181,35 @@ public:
      */
     const std::vector<int> &getInputDimensions() const;
 
+    /**
+     * Getter for the pointer to inputWrapper
+     * @return
+     */
     DataWrapper *getInputWrapper() const;
 
+    /**
+     * Set inputWrapper explicitly
+     * @param inputWrapper
+     */
     void setInputWrapper(DataWrapper *inputWrapper);
 
+    /**
+     * Getter for outputWrapper
+     * @return outputWrapper
+     */
     DataWrapper *getOutputWrapper() const;
 
-    void setOutputWrapper(DataWrapper *outputWrapper);
-
+    /**
+     * Remove obsolete DataWrapper instances
+     *
+     * Call only after forward() has been comuted
+     *
+     */
     void deleteGarbage();
 
+    /**
+     * Destructor of Layer
+     */
+    virtual ~Layer();
 };
 

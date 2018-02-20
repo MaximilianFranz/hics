@@ -68,6 +68,11 @@ public:
     bool isPlacementComplete();
 
     /**
+     * Resets the status of the Net and all layers after computation is complete.
+     */
+    void reset();
+
+    /**
      * TODO: Replace with NetIterator and get proper inheritance to work!
      *
      * @return an iterator
@@ -88,6 +93,12 @@ public:
      * @return last Layer of the network, which is the output.
      */
     const Layer *getLastLayer() const;
+
+    /**
+     * Desctructs this instance of NeuralNet an all layers in it.
+     */
+    virtual ~NeuralNet();
+
 };
 
 

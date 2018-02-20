@@ -41,7 +41,6 @@ bool Layer::isLayerFunctionSet() {
 void Layer::reset() {
     this->functionSet = false;
     this->computed = false;
-    deleteGarbage(); //TODO: Does this fail if pointers already deleted?
 }
 
 
@@ -95,14 +94,14 @@ DataWrapper *Layer::getOutputWrapper() const {
     return outputWrapper;
 }
 
-void Layer::setOutputWrapper(DataWrapper *outputWrapper) {
-    Layer::outputWrapper = outputWrapper;
+void Layer::deleteGarbage() {
+    if(this->type != LayerType::INPUT && this->computed) {
+        delete previousLayer->getOutputWrapper();
+    }
 }
 
-void Layer::deleteGarbage() {
-    if(this->type != LayerType::INPUT) {
-        // TODO Maybe implement Garbe-collection manually
-    }
+Layer::~Layer() {
+    deleteGarbage();
 }
 
 

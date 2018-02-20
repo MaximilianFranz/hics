@@ -82,4 +82,5 @@ public:
     const std::vector<float> getBias() const;
 
     const std::vector<int> &getBiasDimension() const;
+
 };
