@@ -40,14 +40,21 @@ ResultWidget::ResultWidget(QWidget *parent) :
 }
 
 ResultWidget::~ResultWidget() {
-    delete ui;
+    //Delete all allocated image layouts, result layouts
     clearLayout(ui->imagesQGridLayout);
-//    if (ui->mainQHBoxLayout->itemAt(2)->layout()) {
-//        clearLayout(ui->mainQHBoxLayout->itemAt(2)->layout());
-//        delete ui->mainQHBoxLayout->itemAt(2);
-//    }
 
-    //TODO delete all allocated memory
+    //Delete the aggregated result layout, if it exists
+    clearLayout(ui->mainQHBoxLayout);
+
+    for (ImageDisplay* i : imageDisplays) delete i;
+
+    for (ResultDisplay* i : resultDisplays){
+        for(ClassificationLabel* j : i->results) delete j;
+        delete i;
+    }
+
+    //Delete the predefined ui
+    delete ui;
 }
 
 void ResultWidget::displayResults(ClassificationResult *classificationResult) {
@@ -285,7 +292,6 @@ void ResultWidget::resize() {
 }
 
 void ResultWidget::resizeEvent(QResizeEvent *event) {
-    //TODO Resize the displayed images
     resize();
     QWidget::resizeEvent(event);
 }
