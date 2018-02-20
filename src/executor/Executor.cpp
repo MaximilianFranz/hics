@@ -26,21 +26,32 @@
 
 #include "Executor.h"
 
-std::vector<ImageResult*> Executor::classify(std::vector<ImageWrapper*> images, NetInfo netinfo, OperationMode mode,
-                                            std::vector<PlatformInfo*> selectedPlatforms) {
 
+Executor::Executor(std::string name)
+        : Executor()
+          {
+    this->name = name;
+}
+
+Executor::Executor() {
+    this->placer = (new PlatformPlacer());
+    this->builder = (new NetBuilder());
+    this->net = new NeuralNet(nullptr, createMockInfo());
+}
+
+std::vector<ImageResult*> Executor::classify(std::vector<ImageWrapper*> images,
+                                             NetInfo netinfo,
+                                             OperationMode mode,
+                                            std::vector<PlatformInfo*> selectedPlatforms) {
+    // Configure NeuralNet and Placer if settings have changed
     setupIfChanged(&netinfo, mode, selectedPlatforms);
-    auto labelMap = builder->getLabelMap(&netinfo);
-    interpreter = new Interpreter(labelMap);
 
     std::vector<ImageResult*> results;
-
     //Run classification for each image separately
     for (auto image : images) {
         ImageResult *r = classifyImage(image);
         results.push_back(r);
     }
-
     return results;
 }
 
@@ -50,15 +61,6 @@ std::vector<PlatformInfo*> Executor::queryPlatform() {
 
 std::vector<NetInfo*> Executor::queryNets() {
     return builder->queryAvailableNets();
-}
-
-//TODO: Find nice way to avoid nullpointer on this->net
-Executor::Executor() {
-    this->placer = (new PlatformPlacer());
-    this->builder = (new NetBuilder());
-    //Creat empty neuralnet to avoid seg faults
-    this->net = new NeuralNet(nullptr, createMockInfo());
-
 }
 
 ImageResult *Executor::classifyImage(ImageWrapper *image) {
@@ -78,6 +80,8 @@ void Executor::setupIfChanged(NetInfo *netInfo, OperationMode mode, std::vector<
         delete net;
         // create new NeuralNet as requested
         net = builder->buildNeuralNet(*netInfo);
+        auto labelMap = builder->getLabelMap(netInfo);
+        interpreter = new Interpreter(labelMap);
     }
 
     //Check if new placement is required
@@ -93,27 +97,19 @@ DataWrapper *Executor::getImageData(ImageWrapper *imageWrapper) {
 
 void Executor::runDataForward(DataWrapper *data) {
     SimpleNetIterator* it = net->createIterator();
-    it->getElement()->setInputWrapper(data); // SET INPUT TO FIRST LAYER EXPLICITLY!
+    // SET INPUT TO FIRST LAYER EXPLICITLY!
+    it->getElement()->setInputWrapper(data);
     do {
         Layer *layer = it->getElement();
         layer->forward();
-        layer->deleteGarbage(); //TODO: Move this into forward() of all layers
+        layer->deleteGarbage();
         it->next();
-
     } while (it->hasNext());
 }
 
 const NetInfo Executor::createMockInfo() {
      NetInfo d("empty", 0, "empty");
     return d;
-}
-
-Executor::Executor(std::string name)
-: name(name) {
-    this->placer = (new PlatformPlacer());
-    this->builder = (new NetBuilder());
-    NetInfo mock = createMockInfo();
-    this->net = new NeuralNet(nullptr, mock);
 }
 
 Executor::~Executor() {
@@ -125,5 +121,4 @@ Executor::~Executor() {
         delete interpreter;
     }
 }
-
 

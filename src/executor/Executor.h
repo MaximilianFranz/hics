@@ -40,6 +40,7 @@ class PlatformPlacer;
 
 class Executor : public ComputationHost {
 private:
+    // Status members
     NeuralNet *net;
     OperationMode currentMode;
     std::vector<PlatformInfo*> currentPlatforms;
@@ -85,9 +86,22 @@ private:
     */
     DataWrapper *getImageData(ImageWrapper *imageWrapper);
 
+    /**
+     * Helper method to create an empty NetInfo object
+     * @return empty NetInfo
+     */
     const NetInfo createMockInfo();
 
 public:
+
+    /**
+     * Constructor assigning a name to this instance of Executor.
+     *
+     * The name is required to identify the Executor among the ComputationHosts in the Manager.
+     *
+     * @param name of this Executor
+     */
+    Executor(std::string name);
 
     /**
      * Default constructor ensuring that PlatformPlacer and NetBuilder are available
@@ -105,7 +119,7 @@ public:
      * @param net                   a NetInfo specifying which net ought to be used to classfiy
      * @param mode                  ENUM specifying which mode has been chosen
      * @param selectedPlatforms     list of PlatformInfo specifying which platforms to use for computation
-     * @return list of classfied Images with the top-5 results in an ImageResult!
+     * @return                      list of classified Images with the top-5 results in an ImageResult!
      */
     std::vector<ImageResult*> classify(std::vector<ImageWrapper*> images, NetInfo net, OperationMode mode,
                                       std::vector<PlatformInfo*> selectedPlatforms) override;
@@ -123,8 +137,6 @@ public:
      * @return list of NetInfo of the available neural net models.
      */
     std::vector<NetInfo*> queryNets() override;
-
-    Executor(std::string name);
 
     std::string getName() {
         return name;

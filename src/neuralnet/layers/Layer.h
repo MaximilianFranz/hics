@@ -194,7 +194,7 @@ public:
      * Checks whether this layer is ready to be executed
      * @return whether layer is ready for forward() call
      */
-    bool readyToCompute();
+    virtual bool readyToCompute();
 
     /**
      * Remove obsolete DataWrapper instances
