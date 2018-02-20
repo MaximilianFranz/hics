@@ -185,10 +185,17 @@ public:
      */
     DataWrapper *getOutputWrapper() const;
 
+    /**
+     * Resets the status of this Layer
+     */
     void reset();
 
+    /**
+     * Checks whether this layer is ready to be executed
+     * @return whether layer is ready for forward() call
+     */
     bool readyToCompute();
-    
+
     /**
      * Remove obsolete DataWrapper instances
      *

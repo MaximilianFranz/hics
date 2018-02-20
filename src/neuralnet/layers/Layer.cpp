@@ -45,7 +45,7 @@ void Layer::reset() {
 
 
 bool Layer::readyToCompute() {
-    return previousLayer->isComputed();
+    return previousLayer->isComputed() && functionSet;
 }
 
 void Layer::init() {
