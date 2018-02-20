@@ -10,7 +10,7 @@ InputLayer* LayerMaker::createInputLayer(LayerConstructionParams lcp){
     return input;
 }
 
-//TODO: Do line-breaks everywhere like this!
+
 ConvolutionLayer* LayerMaker::createConvLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights){
     ConvolutionLayer* conv = new ConvolutionLayer(lcp.numFilters,
                                                   lcp.filterSize,
@@ -23,13 +23,18 @@ ConvolutionLayer* LayerMaker::createConvLayer(LayerConstructionParams lcp, std::
 }
 
 MaxPoolingLayer* LayerMaker::createMaxPoolLayer(LayerConstructionParams lcp, std::vector<int> inputDims) {
-    MaxPoolingLayer* maxPool = new MaxPoolingLayer(inputDims, lcp.stride, lcp.filterSize, lcp.paddingSize);
+    MaxPoolingLayer* maxPool = new MaxPoolingLayer(inputDims,
+                                                   lcp.stride,
+                                                   lcp.filterSize,
+                                                   lcp.paddingSize);
     return maxPool;
 }
 
 LocalResponseNormLayer* LayerMaker::createLocalResponseNormLayer(LayerConstructionParams lcp, std::vector<int> inputDims) {
-    LocalResponseNormLayer* localresp = new LocalResponseNormLayer(inputDims, lcp.normParams["radius"],
-                                                                   lcp.normParams["alpha"], lcp.normParams["beta"],
+    LocalResponseNormLayer* localresp = new LocalResponseNormLayer(inputDims,
+                                                                   lcp.normParams["radius"],
+                                                                   lcp.normParams["alpha"],
+                                                                   lcp.normParams["beta"],
                                                                    lcp.normParams["bias"]);
     return localresp;
 }
@@ -39,14 +44,14 @@ ReLUActivationLayer* LayerMaker::createReLuActivationLayer(LayerConstructionPara
     return relu;
 }
 
-// Always return pointers to large objects because otherwise they would be copied every time.
 SoftMaxLossLayer* LayerMaker::createSoftmaxLossLayer(LayerConstructionParams lcp, std::vector<int> inputDims) {
-    SoftMaxLossLayer* softmax = new SoftMaxLossLayer(inputDims); // Create Layer with "new", so that scope handling is manual
+    SoftMaxLossLayer* softmax = new SoftMaxLossLayer(inputDims);
     return softmax;
 }
 
 FullyConnectedLayer* LayerMaker::createFCLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights) {
-    FullyConnectedLayer* fullycon = new FullyConnectedLayer(inputDims, weights);
+    FullyConnectedLayer* fullycon = new FullyConnectedLayer(inputDims,
+                                                            weights);
     return fullycon;
 }
 
