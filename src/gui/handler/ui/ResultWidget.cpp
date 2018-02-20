@@ -286,9 +286,6 @@ void ResultWidget::resize() {
             }
         }
     }
-
-    for (ImageDisplay* i : imageDisplays){
-    }
 }
 
 void ResultWidget::resizeEvent(QResizeEvent *event) {

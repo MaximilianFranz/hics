@@ -72,7 +72,7 @@ public:
      *
      * Delets the ui and all its child widgets, as well as all allocated memory in ResultWidget.
      */
-    ~ResultWidget();
+    ~ResultWidget() override;
 
     /**
      * @brief displayResults() takes a ClassificationResult and displays its results in the ResultWidget
@@ -112,10 +112,11 @@ public:
 
 protected:
 
-    void resizeEvent(QResizeEvent * event);
-
+    void resizeEvent(QResizeEvent * event) override;
 
 private:
+
+    /* Structs*/
 
     struct ClassificationLabel /*!< Maps the classification label and its percentage to the objects which are displaying them*/
     {
@@ -143,25 +144,28 @@ private:
         std::vector<ClassificationLabel *> results;
     };
 
+    /* Attributes*/
+
     Ui::ResultWidget *ui;
+
+    const QString PERCENTAGE_BAR_COLOR = "rgba(255, 0, 0, 0.6)";
+    const int NUMERATOR_TEXT_PERCENTAGE_RATIO = 2;
+    const int DENOMINATOR_TEXT_PERCENTAGE_RATIO = 3;
 
     std::vector<ResultDisplay *> resultDisplays;
     std::vector<ImageDisplay *> imageDisplays;
 
-    QString shortLink(const std::string &link);
+    /* Methods*/
 
     QFrame *createImageLayout(const std::string &filePath, ImageDisplay *imageDisplay);
 
     QFrame *createResultLayout(std::vector<std::pair<std::string, float>> &result, ResultDisplay *resultDisplay);
+
+    QString shortLink(const std::string &link);
 
     std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
 
     void clearLayout(QLayout *layout);
 
     void resize();
-
-    const QString PERCENTAGE_BAR_COLOR = "rgba(255, 0, 0, 0.6)";
-
-    const int NUMERATOR_TEXT_PERCENTAGE_RATIO = 2;
-    const int DENOMINATOR_TEXT_PERCENTAGE_RATIO = 3;
 };
