@@ -44,9 +44,9 @@ private:
     OperationMode currentMode;
     std::vector<PlatformInfo*> currentPlatforms;
 
-    NetBuilder *builder;
-    PlatformPlacer *placer;
-    Interpreter *interpreter;
+    NetBuilder *builder = nullptr;
+    PlatformPlacer *placer = nullptr;
+    Interpreter *interpreter = nullptr;
 
     std::string name;
 
