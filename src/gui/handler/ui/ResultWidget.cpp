@@ -161,7 +161,7 @@ ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &res
         QLabel *topResult = new QLabel(this);
         topResult->setStyleSheet("QLabel { color : red; }");
         topResult->setText(QString::fromStdString(result.at(0).first));
-        layout->addWidget(topResult, 0, 0, 0, -1, Qt::AlignTop);
+        layout->addWidget(topResult, 0, 0, 1, 1);
         resultDisplay->topResult = std::pair<std::string, QLabel *>(result.at(0).first, topResult);
     }
 
