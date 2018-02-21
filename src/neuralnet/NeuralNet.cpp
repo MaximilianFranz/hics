@@ -56,7 +56,7 @@ bool NeuralNet::isComputationComplete() {
 
 bool NeuralNet::isPlacementComplete() {
     for (Layer* l : layers) {
-        if (!l->isLayerFunctionSet()) {
+        if (!l->isPlatformSet()) {
             return false;
         }
     }
