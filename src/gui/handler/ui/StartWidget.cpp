@@ -63,19 +63,20 @@ StartWidget::~StartWidget()
     while (it.hasNext()) {
         it.next();
         clearLayout(it.value());
+        delete it.value();
         delete it.key().first;
     }
 }
 
 QHBoxLayout* StartWidget::addInputImage(QImage* image, const QString &filePath){
-    QHBoxLayout* layout = new QHBoxLayout();
-    QCheckBox* checkBox = new QCheckBox(this);
-    QLabel* label = new QLabel(this);
+    auto layout = new QHBoxLayout();
+    auto checkBox = new QCheckBox(this);
+    auto label = new QLabel(this);
 
     layout->addWidget(checkBox, 0);
 
     //Paint the QImage into a QLabel so that it can be displayed
-    QLabel* imageLabel = new QLabel(this);
+    auto imageLabel = new QLabel(this);
     imageLabel->setPixmap(QPixmap::fromImage(*image).scaled(227, 227, Qt::KeepAspectRatio));
     layout->addWidget(imageLabel, 1);
 
@@ -105,8 +106,8 @@ void StartWidget::processInputImageButton(){
 
     fileNames = removeDuplicateSelectedImages(fileNames);
     //Create a QImage to every selected file path
-    for(int i = 0; i<fileNames.size(); ++i){
-        QImage* image = new QImage();
+    for(int i = 0; i < fileNames.size(); ++i){
+        auto image = new QImage();
         //if(images.fileNames.at(i))
         if(image->load(fileNames.at(i))){
             //Display the image together with a check box and its file path
@@ -192,7 +193,7 @@ void StartWidget::addPlatforms(std::vector<PlatformInfo*> &platforms){
         QString name = QString::fromStdString((*it)->getDescription());
 
         platformMap.insert(std::pair<QString, PlatformInfo*>(name, *it));
-        QCheckBox* checkbox = new QCheckBox(name, this);
+        auto checkbox = new QCheckBox(name, this);
         ui->platformsQVBoxLayout->addWidget(checkbox);
     }
 }
@@ -221,14 +222,14 @@ void StartWidget::clearLayout(QLayout *layout){
 }
 
 void StartWidget::displayErrorMessage(const QString message){
-    QErrorMessage* error = new QErrorMessage(this);
+    auto error = new QErrorMessage(this);
     error->setWindowTitle("Error");
     error->showMessage(message);
 }
 
 NetInfo StartWidget::getSelectedNeuralNet(){
     QString name = ui->neuralNetsQComboBox->currentText();
-    std::map<QString, NetInfo*>::iterator it = neuralNetMap.find(name);
+    auto it = neuralNetMap.find(name);
 
     if(it == neuralNetMap.end()){
         //TODO throw exception here
@@ -252,7 +253,7 @@ std::vector<PlatformInfo> StartWidget::getSelectedPlatforms(){
                     try{
                         PlatformInfo* platform = platformMap.at(checkBox->text());
                         selectedPlatforms.push_back(*platform);
-                    } catch (std::out_of_range e) {
+                    } catch (std::out_of_range &e) {
                         e.what();
                     }
                 }
@@ -288,7 +289,7 @@ void StartWidget::widgetResized() {
 
     while(it.hasNext()){
         it.next();
-        QLabel* filePathLabel = (QLabel*)(it.value()->itemAt(2)->widget());
+        auto filePathLabel = (QLabel*)(it.value()->itemAt(2)->widget());
         int newSize = ((filePathLabel->size().width() - OFFSET_FILEPATH_DISPLAY) > 0)
                       ? (filePathLabel->size().width() - OFFSET_FILEPATH_DISPLAY)
                       : filePathLabel->size().width();
