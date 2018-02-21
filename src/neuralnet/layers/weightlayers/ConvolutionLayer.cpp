@@ -196,6 +196,7 @@ void ConvolutionLayer::forwardSplit() {
     //clean up additionally created DataWrappers after execution.
     delete secondHalfIn;
     delete secondHalfOut;
+    delete secondHalfWeights;
     delete firstHalfIn;
     delete firstHalfOut;
 
