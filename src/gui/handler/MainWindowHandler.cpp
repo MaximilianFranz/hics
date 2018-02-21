@@ -45,9 +45,8 @@ MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::ve
 }
 
 void MainWindowHandler::setClassificationRequestState() {
-    if (classificationRequestState) {
-        delete classificationRequestState;
-    }
+    delete classificationRequestState;
+    classificationRequestState = nullptr;
 
     NetInfo neuralNet = startWidget->getSelectedNeuralNet();
     std::vector<PlatformInfo> platforms = startWidget->getSelectedPlatforms();
@@ -132,10 +131,7 @@ MainWindowHandler::~MainWindowHandler() {
     delete resultWidget;
     delete startWidget;
     delete mainWindow;
-
-    if (classificationRequestState) {
-        delete classificationRequestState;
-    }
+    delete classificationRequestState;
 }
 
 MainWindow *MainWindowHandler::getMainWindow() const {
