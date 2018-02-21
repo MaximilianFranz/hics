@@ -34,46 +34,55 @@ Client::Client(std::string name, std::shared_ptr<Channel> channel) : stub_(Commu
 
 std::vector<ImageResult*> Client::classify(std::vector<ImageWrapper *> images, NetInfo net, OperationMode mode,
                                            std::vector<PlatformInfo *> selectedPlatforms) {
-    ClassifyRequest request;
-    ClassifyReply reply;
-    ClientContext context;
 
+    std::vector<ImageResult* > results;
     for (ImageWrapper* img : images) {
+        ClassifyRequest request;
+        ClassifyReply reply;
+        ClientContext context;
+
         //Create new ImageWrapperMessage to call classify via grpc
-        ImageWrapperMessage* imgMes = request.add_images();
+        ImageWrapperMessage *imgMes = request.add_images();
         Util::imageWrapperToMessage(img, imgMes);
-    }
 
-    //create and add netInfo message object
-    NetInfoMessage* netMes = request.mutable_net();
-    Util::netInfoToMessage(&net, netMes);
+        //create and add netInfo message object
+        NetInfoMessage *netMes = request.mutable_net();
+        Util::netInfoToMessage(&net, netMes);
 
-    //set operation mode
-    switch (mode) {
-        case OperationMode::EnergyEfficient     : request.set_mode(ClassifyRequest::EnergyEfficient);
-        case OperationMode::HighPower           : request.set_mode(ClassifyRequest::HighPower);
-        case OperationMode::LowPower            : request.set_mode(ClassifyRequest::LowPower);
-    }
-
-    //create and add all platforms
-    for (PlatformInfo* platform : selectedPlatforms) {
-        PlatformInfoMessage* platMes = request.add_selectedplatforms();
-        Util::platformInfoToMessage(platform, platMes);
-    }
-    //Client::stub_.operator*().classify(context, request, reply);
-    Status status = Client::stub_.operator*().classifyRequest(&context, request, &reply);
-
-    if (status.ok()) {
-        std::vector<ImageResult*> results;
-        for (int i = 0; i < reply.results_size(); i++) {
-            results.push_back(Util::messageToImageResult(&(reply.results(i))));
+        //set operation mode
+        switch (mode) {
+            case OperationMode::EnergyEfficient     :
+                request.set_mode(ClassifyRequest::EnergyEfficient);
+            case OperationMode::HighPower           :
+                request.set_mode(ClassifyRequest::HighPower);
+            case OperationMode::LowPower            :
+                request.set_mode(ClassifyRequest::LowPower);
         }
-        return results;
-    } else {
-        //TODO: specific excepion
-        throw std::exception();
+
+        //create and add all platforms
+        for (PlatformInfo *platform : selectedPlatforms) {
+            PlatformInfoMessage *platMes = request.add_selectedplatforms();
+            Util::platformInfoToMessage(platform, platMes);
+        }
+        //Client::stub_.operator*().classify(context, request, reply);
+        Status status = Client::stub_.operator*().classifyRequest(&context, request, &reply);
+
+        if (status.ok()) {
+            for (int i = 0; i < reply.results_size(); i++) {
+                results.push_back(Util::messageToImageResult(&(reply.results(i))));
+            }
+        } else {
+            //TODO: specific excepion
+            throw std::exception();
+        }
     }
 
+    //aggregate the computation distribution because the images came in single
+    std::vector<std::pair<PlatformInfo*, float>> newDist = Util::aggregateReplyDistribution(results);
+    for (ImageResult* result : results) {
+        result->setCompDistribution(newDist);
+    }
+    return results;
 }
 
 std::vector<PlatformInfo*> Client::queryPlatform() {
