@@ -228,8 +228,8 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     float* B = patch_result.data();
     float *C = output.getDataArray();
 
-    // Weights
-    const float* W = weights.getBiasArray();
+    // Bias
+    const float* D = weights.getBiasArray();
 
 
 
@@ -243,13 +243,13 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     cl_mem bufA = clCreateBuffer(context, CL_MEM_READ_ONLY,  M*K*sizeof(float), NULL, NULL);
     cl_mem bufB = clCreateBuffer(context, CL_MEM_READ_ONLY,  K*N*sizeof(float), NULL, NULL);
     cl_mem bufC = clCreateBuffer(context, CL_MEM_READ_WRITE, M*N*sizeof(float), NULL, NULL);
-    cl_mem bufW = clCreateBuffer(context, CL_MEM_READ_ONLY,  M*sizeof(float), NULL, NULL);
+    cl_mem bufD = clCreateBuffer(context, CL_MEM_READ_ONLY,  M*sizeof(float), NULL, NULL);
 
     // Copy matrices to the GPU
     clEnqueueWriteBuffer(queue, bufA, CL_TRUE, 0, M*K*sizeof(float), A, 0, NULL, NULL);
     clEnqueueWriteBuffer(queue, bufB, CL_TRUE, 0, K*N*sizeof(float), B, 0, NULL, NULL);
     clEnqueueWriteBuffer(queue, bufC, CL_TRUE, 0, M*N*sizeof(float), C, 0, NULL, NULL);
-    clEnqueueWriteBuffer(queue, bufW, CL_TRUE, 0, M*sizeof(float), W, 0, NULL, NULL);
+    clEnqueueWriteBuffer(queue, bufD, CL_TRUE, 0, M*sizeof(float), D, 0, NULL, NULL);
 
 
     // Configure the myGEMM kernel and set its arguments
@@ -259,7 +259,7 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     clSetKernelArg(kernel, 3, sizeof(cl_mem), (void*)&bufA);
     clSetKernelArg(kernel, 4, sizeof(cl_mem), (void*)&bufB);
     clSetKernelArg(kernel, 5, sizeof(cl_mem), (void*)&bufC);
-    clSetKernelArg(kernel, 6, sizeof(cl_mem), (void*)&bufW);
+    clSetKernelArg(kernel, 6, sizeof(cl_mem), (void*)&bufD);
 
 //    const size_t local[2] = { TS, TS };
     const size_t global[2] = { M, N };
@@ -277,7 +277,7 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     clReleaseMemObject(bufA);
     clReleaseMemObject(bufB);
     clReleaseMemObject(bufC);
-    clReleaseMemObject(bufW);
+    clReleaseMemObject(bufD);
 
     // Free the host memory objects
 //    free(A);
