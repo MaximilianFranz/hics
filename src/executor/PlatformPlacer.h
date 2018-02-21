@@ -37,10 +37,9 @@
 
 class PlatformPlacer {
 private:
-    OperationMode currentMode;          //! The OperationMode applied to the last configuration
-    std::vector<PlatformInfo*> currentPlatforms; //! The selected platforms infos in the last configurations
+    std::vector<PlatformInfo*> currentPlatforms; //! The selected platformInfos in the last configurations
 
-    std::vector<std::pair<PlatformInfo*, float>> compDistribution;
+    std::vector<std::pair<PlatformInfo*, float>> compDistribution; //! Distribution of computation to different platforms
 
     PlatformManager* platformManager;   //! The platformManager is the access point to get available platforms
     NeuralNet *net;                     //! the net that has been configured in the last excectuion

@@ -39,16 +39,11 @@ PlatformPlacer::PlatformPlacer() {
     this->platformManager = &PlatformManager::getInstance();
 }
 
-std::vector<PlatformInfo *> PlatformPlacer::queryPlatforms() {
-    return this->platformManager->getPlatformInfos();
-}
-
 // Is it useful to use more than two platforms (perfomance specific and fallback?)
 void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::vector<PlatformInfo *> platforms) {
 
     compDistribution.clear();
 
-    this->currentMode = mode;
     this->net = net;
     this->currentPlatforms = platforms;
     //TODO: Get only platforms previously selected!
@@ -60,10 +55,21 @@ void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::
             break;
         case OperationMode::HighPower : placeHighPerformance();
             break;
-        default: ; //TODO: Default impl.
+        default: placeEnergyEfficient();
     }
 
 }
+
+std::vector<PlatformInfo*> PlatformPlacer::queryPlatforms() {
+    return this->platformManager->getPlatformInfos();
+}
+
+const std::vector<std::pair<PlatformInfo *, float>> &PlatformPlacer::getCompDistribution() const {
+    return compDistribution;
+}
+
+
+// PRIVATE METHODS
 
 PlatformInfo* PlatformPlacer::getDefaultPlatform() {
     for (auto pl : currentPlatforms) {
@@ -129,10 +135,7 @@ void PlatformPlacer::placeEnergyEfficient() {
     PlatformInfo *fallback = getDefaultPlatform();
     PlatformInfo *performance = getDefaultPlatform();
 
-    //TODO:
-//    float currentBest = (performance->getPlatformInfo().getFlops() / performance->getPlatformInfo().getPowerConsumption());
-
-    float currentBest = 5;
+    float currentBest = (performance->getFlops() / performance->getPowerConsumption());
 
     for (auto p : currentPlatforms) {
         float flops = p->getFlops();
@@ -154,9 +157,7 @@ void PlatformPlacer::placeHighPerformance() {
             performance = p;
         }
     }
+
     placeNetWith(performance, fallback);
 }
 
-const std::vector<std::pair<PlatformInfo *, float>> &PlatformPlacer::getCompDistribution() const {
-    return compDistribution;
-}
