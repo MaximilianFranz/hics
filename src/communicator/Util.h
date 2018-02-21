@@ -44,4 +44,5 @@ namespace Util {
     PlatformInfo* messageToPlatformInfo(const PlatformInfoMessage* platMes);
     ImageResult* messageToImageResult(const ImageResultMessage* imgMes);
     NetInfo* messageToNetInfo(const NetInfoMessage* net);
+    std::vector<std::pair<PlatformInfo*, float>> aggregateReplyDistribution(std::vector<ImageResult*> results);
 };
