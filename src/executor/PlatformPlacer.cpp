@@ -50,19 +50,8 @@ void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::
 
     this->currentMode = mode;
     this->net = net;
-    this->currentPlatformsInfos = platforms;
+    this->currentPlatforms = platforms;
     //TODO: Get only platforms previously selected!
-    this->currentPlatforms = platformManager->getPlatforms();
-    std::vector<Platform*> newCurrent;
-    for (auto x : currentPlatforms) {
-        PlatformInfo* xInfo = &(x->getPlatformInfo());
-        if (std::find_if(platforms.begin(), platforms.end(), [&xInfo](PlatformInfo* temp) {
-            return temp->getPlatformId() == xInfo->getPlatformId();
-        }) != platforms.end()) {
-            newCurrent.push_back(x);
-        }
-    }
-    currentPlatforms = newCurrent;
 
     switch (mode) {
         case OperationMode::EnergyEfficient : placeEnergyEfficient();
@@ -76,41 +65,9 @@ void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::
 
 }
 
-//void PlatformPlacer::default_setLayerFunctionForLayer(Layer *pLayer) {
-//    auto *pl = getDefaultPlatform();
-//    if(pLayer->getType() == LayerType::CONVOLUTION) {
-//        auto *c = dynamic_cast<ConvolutionLayer*>(pLayer);
-//        c->setFunction(pl->createConvolutionFunction());
-//    }
-//    else if(pLayer->getType() == LayerType::FULLYCONNECTED) {
-//        auto *c = dynamic_cast<FullyConnectedLayer*>(pLayer);
-//        c->setFunction(pl->createFullyConnectedFunction());
-//    }
-//    else if(pLayer->getType() == LayerType::ACTIVATION_RELU) {
-//        auto *c = dynamic_cast<ReLUActivationLayer*>(pLayer);
-//        c->setFunction(pl->createActivationFunction(LayerType::ACTIVATION_RELU));
-//    }
-//    else if(pLayer->getType() == LayerType::NORMALIZATION_LOCALRESPONSE) {
-//        auto *c = dynamic_cast<LocalResponseNormLayer*>(pLayer);
-//        c->setFunction(pl->createResponseNormalizationFunction(LayerType::NORMALIZATION_LOCALRESPONSE));
-//    }
-//    else if(pLayer->getType() == LayerType::LOSS_SOFTMAX) {
-//        auto *c = dynamic_cast<SoftMaxLossLayer*>(pLayer);
-//        c->setFunction(pl->createLossFunction(LayerType::LOSS_SOFTMAX));
-//    }
-//    else if(pLayer->getType() == LayerType::POOLING_MAX) {
-//        auto *c = dynamic_cast<MaxPoolingLayer*>(pLayer);
-//        c->setFunction(pl->createPoolingFunction(LayerType::POOLING_MAX));
-//    }
-//    else {
-//        // Nothing todo for Naive Layers
-//    }
-//
-//}
-
-Platform* PlatformPlacer::getDefaultPlatform() {
+PlatformInfo* PlatformPlacer::getDefaultPlatform() {
     for (auto pl : currentPlatforms) {
-        if(pl->getPlatformType() == PlatformType::CPU) {
+        if(pl->getType() == PlatformType::CPU) {
             return pl; //We assume for now that there always is a CPU platform!
         }
     }
@@ -119,26 +76,23 @@ Platform* PlatformPlacer::getDefaultPlatform() {
 
 //TODO: can we give a layer a attribute that specifies it's difficutly?
 // So that we don't hard-code which layers are "difficult"
-void PlatformPlacer::placeNetWith(Platform *perfomance, Platform *fallback) {
+void PlatformPlacer::placeNetWith(PlatformInfo *perfomanceInfo, PlatformInfo *fallbackInfo) {
     int perfomanceCount = 0;
     int fallbackCount = 0;
+
+    
+    Platform *perfomance = platformManager->getPlatformById(perfomanceInfo->getPlatformId());
+    Platform *fallback = platformManager->getPlatformById(fallbackInfo->getPlatformId());
+
     SimpleNetIterator *it = net->createIterator();
     do {
         Layer *currentLayer = it->getElement();
         if (currentLayer->getType() == LayerType::CONVOLUTION || currentLayer->getType() == LayerType::FULLYCONNECTED) {
-            placeLayerWith(perfomance, currentLayer);
+            currentLayer->setPlatform(perfomance);
             perfomanceCount++;
-        } else if (currentLayer->getType() == LayerType::INPUT || currentLayer->getType() == LayerType::CONCAT){
-
-            fallbackCount++; //Naive layers are computed on CPU
-            it->next();
-            continue; // Nothing to do
-
         } else {
-
-            placeLayerWith(fallback, currentLayer);
+            currentLayer->setPlatform(fallback);
             fallbackCount++;
-
         }
         it->next();
 
@@ -146,13 +100,13 @@ void PlatformPlacer::placeNetWith(Platform *perfomance, Platform *fallback) {
 
     int layerCount = fallbackCount  + perfomanceCount;
     // Calculate simple distribution.
-    if (fallback->getPlatformInfo().getPlatformId() != perfomance->getPlatformInfo().getPlatformId()) {
-        compDistribution.push_back(std::pair<PlatformInfo *, float>(&perfomance->getPlatformInfo(),
+    if (fallbackInfo->getPlatformId() != perfomanceInfo->getPlatformId()) {
+        compDistribution.push_back(std::pair<PlatformInfo *, float>(perfomanceInfo,
                                                                     perfomanceCount / layerCount));
-        compDistribution.push_back(std::pair<PlatformInfo *, float>(&fallback->getPlatformInfo(),
+        compDistribution.push_back(std::pair<PlatformInfo *, float>(fallbackInfo,
                                                                     fallbackCount / layerCount));
     } else {
-        compDistribution.emplace_back(std::pair<PlatformInfo *, float>(&perfomance->getPlatformInfo(), 1));
+        compDistribution.emplace_back(std::pair<PlatformInfo *, float>(perfomanceInfo, 1));
     }
 
 }
@@ -160,11 +114,11 @@ void PlatformPlacer::placeNetWith(Platform *perfomance, Platform *fallback) {
 
 //TODO: CHANGE ALL placeXYMode() to use PlatformInfo and get respective platforms from PfManager
 void PlatformPlacer::placeLowPower() {
-    Platform *fallback = getDefaultPlatform();
-    Platform *performance = getDefaultPlatform();
+    PlatformInfo *fallback = getDefaultPlatform();
+    PlatformInfo *performance = fallback;
 
     for (auto p : currentPlatforms) {
-        if (p->getPlatformInfo().getPowerConsumption() < performance->getPlatformInfo().getPowerConsumption()) {
+        if (p->getPowerConsumption() < performance->getPowerConsumption()) {
             performance = p;
         }
     }
@@ -172,8 +126,8 @@ void PlatformPlacer::placeLowPower() {
 }
 
 void PlatformPlacer::placeEnergyEfficient() {
-    Platform *fallback = getDefaultPlatform();
-    Platform *performance = getDefaultPlatform();
+    PlatformInfo *fallback = getDefaultPlatform();
+    PlatformInfo *performance = getDefaultPlatform();
 
     //TODO:
 //    float currentBest = (performance->getPlatformInfo().getFlops() / performance->getPlatformInfo().getPowerConsumption());
@@ -181,8 +135,8 @@ void PlatformPlacer::placeEnergyEfficient() {
     float currentBest = 5;
 
     for (auto p : currentPlatforms) {
-        float flops = p->getPlatformInfo().getFlops();
-        float power = p->getPlatformInfo().getPowerConsumption();
+        float flops = p->getFlops();
+        float power = p->getPowerConsumption();
         if (flops / power > currentBest) {
             performance = p;
             currentBest = flops / power;
@@ -192,46 +146,15 @@ void PlatformPlacer::placeEnergyEfficient() {
 }
 
 void PlatformPlacer::placeHighPerformance() {
-    Platform *fallback = getDefaultPlatform();
-    Platform *performance = getDefaultPlatform();
+    PlatformInfo *fallback = getDefaultPlatform();
+    PlatformInfo *performance = getDefaultPlatform();
 
     for (auto p : currentPlatforms) {
-        if (p->getPlatformInfo().getFlops() > performance->getPlatformInfo().getFlops()) {
+        if (p->getFlops() > performance->getFlops()) {
             performance = p;
         }
     }
     placeNetWith(performance, fallback);
-
-}
-
-// TODO: Change architecture such that layers get platforms via a setPlatform()
-// method and create the function they need within the layer
-void PlatformPlacer::placeLayerWith(Platform *pl, Layer *pLayer) {
-
-    if(pLayer->getType() == LayerType::CONVOLUTION) {
-        auto *c = dynamic_cast<ConvolutionLayer*>(pLayer);
-        c->setFunction(pl->createConvolutionFunction());
-    }
-    else if(pLayer->getType() == LayerType::FULLYCONNECTED) {
-        auto *c = dynamic_cast<FullyConnectedLayer*>(pLayer);
-        c->setFunction(pl->createFullyConnectedFunction());
-    }
-    else if(pLayer->getType() == LayerType::ACTIVATION_RELU) {
-        auto *c = dynamic_cast<ReLUActivationLayer*>(pLayer);
-        c->setFunction(pl->createActivationFunction(LayerType::ACTIVATION_RELU));
-    }
-    else if(pLayer->getType() == LayerType::NORMALIZATION_LOCALRESPONSE) {
-        auto *c = dynamic_cast<LocalResponseNormLayer*>(pLayer);
-        c->setFunction(pl->createResponseNormalizationFunction(LayerType::NORMALIZATION_LOCALRESPONSE));
-    }
-    else if(pLayer->getType() == LayerType::LOSS_SOFTMAX) {
-        auto *c = dynamic_cast<SoftMaxLossLayer*>(pLayer);
-        c->setFunction(pl->createLossFunction(LayerType::LOSS_SOFTMAX));
-    }
-    else if(pLayer->getType() == LayerType::POOLING_MAX) {
-        auto *c = dynamic_cast<MaxPoolingLayer*>(pLayer);
-        c->setFunction(pl->createPoolingFunction(LayerType::POOLING_MAX));
-    }
 }
 
 const std::vector<std::pair<PlatformInfo *, float>> &PlatformPlacer::getCompDistribution() const {

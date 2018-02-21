@@ -38,8 +38,7 @@
 class PlatformPlacer {
 private:
     OperationMode currentMode;          //! The OperationMode applied to the last configuration
-    std::vector<PlatformInfo*> currentPlatformsInfos; //! The selected platforms infos in the last configurations
-    std::vector<Platform*> currentPlatforms;  //! The corresponding platforms used in the last configuration
+    std::vector<PlatformInfo*> currentPlatforms; //! The selected platforms infos in the last configurations
 
     std::vector<std::pair<PlatformInfo*, float>> compDistribution;
 
@@ -50,7 +49,7 @@ private:
      *
      * @return the CPU Platform for testing purposes
      */
-    Platform * getDefaultPlatform();
+    PlatformInfo * getDefaultPlatform();
 
     /**
      * Chooses platforms for low power mode and configures net accordingly
@@ -73,12 +72,8 @@ private:
      * Perfomance platform is used for computationally difficult tasks and fallback is usually CPU used for
      * all other tasks, where
      */
-    void placeNetWith(Platform* perfomance, Platform* fallback);
+    void placeNetWith(PlatformInfo* perfomance, PlatformInfo* fallback);
 
-    /**
-     * Chooses platforms for low power mode and configures net accordingly
-     */
-    void placeLayerWith(Platform* platform, Layer* layer);
 
 public:
     /**
