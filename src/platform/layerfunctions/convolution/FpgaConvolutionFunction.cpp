@@ -279,6 +279,9 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     clReleaseMemObject(bufC);
     clReleaseMemObject(bufD);
 
+    // Free the OpenCL event objects
+    clReleaseEvent(event);
+
     // Free the host memory objects
 //    free(A);
 //    free(B);
