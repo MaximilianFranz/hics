@@ -43,8 +43,9 @@ void ActivationLayer::forward() {
     this->computed = true;
 }
 
-void ActivationLayer::setFunction(ActivationFunction *function) {
-    this->function = function;
-    functionSet = true;
+void ActivationLayer::setPlatform(Platform *platform) {
+    this->function = platform->createActivationFunction(this->type);
+    this->functionSet = true;
 }
+
 

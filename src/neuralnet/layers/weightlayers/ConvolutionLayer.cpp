@@ -233,4 +233,9 @@ int ConvolutionLayer::getNumGroups() const {
     return numGroups;
 }
 
+void ConvolutionLayer::setPlatform(Platform *platform) {
+    this->function = platform->createConvolutionFunction();
+    this->functionSet = true;
+}
+
 

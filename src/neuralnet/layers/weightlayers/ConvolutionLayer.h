@@ -98,6 +98,8 @@ public:
 
     void forward() override;
 
+    void setPlatform(Platform *platform) override;
+
     void setWeights(WeightWrapper* weights);
 
     void setFunction(ConvolutionFunction* function);

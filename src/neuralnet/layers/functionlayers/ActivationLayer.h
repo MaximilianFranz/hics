@@ -36,7 +36,7 @@
  */
 class ActivationLayer : public Layer {
 protected:
-    ActivationFunction* function;
+    ActivationFunction* function = nullptr;
 public:
     // TODO: This is not technically correct, because ActivationsLayer should not be instantiated.
     explicit ActivationLayer(std::vector<int> &inputDimensions);
@@ -45,7 +45,8 @@ public:
 
     void forward() override;
 
-    void setFunction(ActivationFunction* function);
+    void setPlatform(Platform *platform) override;
+
 };
 
 

@@ -42,12 +42,6 @@ void PoolingLayer::forward() {
     computed = true;
 }
 
-void PoolingLayer::setFunction(PoolingFunction *function) {
-    this->function = function;
-    this->functionSet = true;
-
-}
-
 int PoolingLayer::getFilterSize() const {
     return filterSize;
 }
@@ -58,4 +52,9 @@ int PoolingLayer::getZeroPadding() const {
 
 int PoolingLayer::getStride() const {
     return stride;
+}
+
+void PoolingLayer::setPlatform(Platform *platform) {
+    this->function = platform->createPoolingFunction(this->type);
+    this->functionSet = true;
 }

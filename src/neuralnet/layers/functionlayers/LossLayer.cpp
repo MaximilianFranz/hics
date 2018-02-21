@@ -37,8 +37,8 @@ void LossLayer::forward() {
     computed = true;
 }
 
-void LossLayer::setFunction(LossFunction *function) {
-    this->function = function;
+void LossLayer::setPlatform(Platform *platform) {
+    this->function = platform->createLossFunction(this->type);
     this->functionSet = true;
 }
 

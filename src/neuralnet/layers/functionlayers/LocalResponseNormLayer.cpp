@@ -71,8 +71,8 @@ float LocalResponseNormLayer::getBias() const {
     return bias;
 }
 
-void LocalResponseNormLayer::setFunction(ResponseNormalizationFunction *function) {
-    this->function = function;
-    functionSet = true;
+void LocalResponseNormLayer::setPlatform(Platform *platform) {
+    this->function = platform->createResponseNormalizationFunction(this->type);
+    this->functionSet = true;
 }
 

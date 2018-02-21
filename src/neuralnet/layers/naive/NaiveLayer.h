@@ -35,7 +35,8 @@
  * they are simple forms of control-flow layers
  */
 class NaiveLayer : public Layer{
-
+public:
+    void setPlatform(Platform *platform) override;
 };
 
 

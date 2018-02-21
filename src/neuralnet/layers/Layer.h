@@ -29,20 +29,10 @@
 #include <string>
 #include <wrapper/DataWrapper.h>
 #include <wrapper/WeightWrapper.h>
+#include <platforms/Platform.h>
 
-/**
- * ENUM to identify layers by their type.
- */
-enum LayerType {
-    ACTIVATION_RELU,
-    NORMALIZATION_LOCALRESPONSE,
-    LOSS_SOFTMAX,
-    POOLING_MAX,
-    CONVOLUTION,
-    FULLYCONNECTED,
-    INPUT,
-    CONCAT
-};
+#include "LayerType.h"
+
 
 /**
  * Abstract class Layer defines the public interface for all layers contained in a NeuralNet.
@@ -83,6 +73,13 @@ public:
     virtual void forward() = 0;
 
     /**
+     * Set platform which is used to generate the corresponding function
+     *
+     * @param platform to be used as a LayerFunction factory
+     */
+    virtual void setPlatform(Platform *platform) = 0;
+
+    /**
      * Returns whether this Layer has been computed
      *
      * @return
@@ -102,7 +99,7 @@ public:
      *
      * @return
      */
-    virtual bool isLayerFunctionSet();
+    virtual bool isPlatformSet();
 
     /**
      * Initializes the default values of this layer
@@ -111,7 +108,7 @@ public:
      *             computed is false
      *
      */
-    virtual void init();
+    void init();
 
     /**
      * Set previous layer by giving a pointer

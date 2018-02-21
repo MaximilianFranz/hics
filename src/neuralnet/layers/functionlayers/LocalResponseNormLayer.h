@@ -51,7 +51,7 @@ public:
 
     //GETTER and SETTER
 
-    void setFunction(ResponseNormalizationFunction *function);
+    void setPlatform(Platform *platform) override;
 
     float getRadius() const;
 
