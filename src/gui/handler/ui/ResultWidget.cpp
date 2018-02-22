@@ -98,6 +98,11 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
 
     //Display the aggregated result outside of the QScrollArea
     if (aggregated) {
+        for(ResultDisplay* result : resultDisplays){
+            delete result;
+        }
+        resultDisplays.clear();
+
         auto *resultDisplay = new ResultDisplay();
         resultDisplays.push_back(resultDisplay);
 
