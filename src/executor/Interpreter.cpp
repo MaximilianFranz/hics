@@ -35,11 +35,28 @@ Interpreter::Interpreter(std::map<int, std::string> &labelMap)
 
 }
 
-//TODO: Faster way to match the top 5 results back to their original positing in output
+//TODO: Case for less then 5 elements in output
 ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *originalImage, PlatformPlacer* placer) {
     std::vector<float> sortOut = output->getData();
     std::sort(sortOut.begin(), sortOut.end(), compareDesc); //sort output in descending order
     std::vector<std::pair<std::string, float>> results; // ordered list of labels and their probabilities
+    if (output->getNumElements() <= TOP_X) {
+        if (labelMap.size() > 0) {
+            for (int i = 0; i < output->getNumElements(); i++) {
+                // insert only as many results as exist
+                results.push_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output->getData())),
+                                                            sortOut[i]));
+            }
+        }
+        else {
+            for (int i = 0; i < output->getNumElements(); i++) {
+                // dont insert label, because non exist
+                results.push_back(std::pair<std::string, float>("", sortOut[i]));
+            }
+        }
+    }
+
+    
     for (int i = 0; i < TOP_X; i++) {
         // Add Top 5 probabilities and their labels to the list.
         results.push_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output->getData())),
@@ -47,6 +64,10 @@ ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *original
     }
 
     ImageResult *i = new ImageResult(results, placer->getCompDistribution(), *originalImage);
+
+    // free data memory
+    delete output;
+
     return i;
 }
 
