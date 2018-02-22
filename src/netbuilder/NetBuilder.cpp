@@ -60,7 +60,7 @@ NeuralNet* NetBuilder::buildNeuralNet(NetInfo netInfo) {
     return alexNet;
 }
 
-std::vector<NetInfo *> NetBuilder::queryAvailableNets() {
+std::vector<NetInfo*> NetBuilder::queryAvailableNets() {
     return ModelCrawler::getValidNets(MODEL_DIR);
 }
 
