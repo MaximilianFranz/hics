@@ -29,8 +29,7 @@
 //TODO: @Max: Redesign for new convention {channel, z, y, x}
 const float Wrapper::getElement(std::vector<int> location) {
     unsigned long pos = 0;
-    int i = 0;
-    for (i; i <= getNumDimensions() - 2; i++) {
+    for (int i = 0; i <= getNumDimensions() - 2; i++) {
         pos += location[i]*(facultyOfDim(i));
     }
     pos += location[getNumDimensions() - 1];
