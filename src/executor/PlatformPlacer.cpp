@@ -72,16 +72,21 @@ const std::vector<std::pair<PlatformInfo *, float>> &PlatformPlacer::getCompDist
 // PRIVATE METHODS
 
 PlatformInfo* PlatformPlacer::getDefaultPlatform() {
+    //Preferably use CPU as Default.
     for (auto pl : currentPlatforms) {
         if(pl->getType() == PlatformType::CPU) {
             return pl; //We assume for now that there always is a CPU platform!
         }
     }
-    return nullptr;
+    // If no CPU found, choose the first as default
+    if (currentPlatforms.size() > 0)
+        return currentPlatforms.front();
+    else {
+        return nullptr; // TODO: Make this an exception and handle it further up the hierarchy.
+    }
 }
 
 //TODO: can we give a layer a attribute that specifies it's difficutly?
-// So that we don't hard-code which layers are "difficult"
 void PlatformPlacer::placeNetWith(PlatformInfo *perfomanceInfo, PlatformInfo *fallbackInfo) {
     int perfomanceCount = 0;
     int fallbackCount = 0;
