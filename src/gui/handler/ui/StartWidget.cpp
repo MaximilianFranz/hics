@@ -131,7 +131,7 @@ QStringList StartWidget::removeDuplicateSelectedImages(const QStringList &filePa
         }
     }
 
-    for (int i = 0; i < duplicateFilePaths.size(); ++i) {
+    for (unsigned int i = 0; i < duplicateFilePaths.size(); ++i) {
         output.removeAt(output.indexOf(duplicateFilePaths.at(i)));
     }
 

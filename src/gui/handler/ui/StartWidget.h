@@ -108,7 +108,7 @@ public:
      */
     ~StartWidget();
 
-    void displayErrorMessage(const QString message);
+    void displayErrorMessage(QString message);
 
     /**
      * @brief getSelectedNeuralNet returns the selected neural net by the user.
@@ -204,7 +204,7 @@ public slots:
 
 protected:
 
-    void resizeEvent(QResizeEvent * event);
+    void resizeEvent(QResizeEvent *event) override;
 
 private slots:
 
