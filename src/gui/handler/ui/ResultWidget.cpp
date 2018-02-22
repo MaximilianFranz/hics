@@ -183,6 +183,10 @@ ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &res
         QLabel *name = new QLabel(this);
 
         name->setText(QString::fromStdString(pair.first));
+        name->setText(fontMetrics.elidedText(QString::fromStdString(pair.first),
+                                         Qt::TextElideMode::ElideMiddle,
+                                         350));
+
         name->setAlignment(Qt::AlignLeft);
         name->setToolTip(QString::fromStdString(pair.first));
         name->setToolTipDuration(-1);
