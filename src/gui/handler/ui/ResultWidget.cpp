@@ -146,7 +146,7 @@ QFrame *ResultWidget::createImageLayout(const std::string &filePath, ImageDispla
     imageDisplay->imageDisplay = imageLabel;
 
     //Don't allow resizing of the images
-    frame->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
+    frame->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum));
     return frame;
 }
 
