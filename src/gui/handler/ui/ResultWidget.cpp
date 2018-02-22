@@ -53,7 +53,7 @@ ResultWidget::~ResultWidget() {
         delete i;
     }
 
-    //Delete the predefined ui
+    //Delete the predefined ui and all its child objects
     delete ui;
 }
 
@@ -121,7 +121,6 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
 QFrame *ResultWidget::createImageLayout(const std::string &filePath, ImageDisplay *imageDisplay) {
     QFrame *frame = new QFrame(this);
     frame->setFrameShape(QFrame::Box);
-
     auto *imageLayout = new QVBoxLayout(frame);
     imageLayout->insertStretch(0);
 
@@ -151,7 +150,7 @@ QFrame *ResultWidget::createImageLayout(const std::string &filePath, ImageDispla
     imageDisplay->imageDisplay = imageLabel;
 
     //Don't allow resizing of the images
-    frame->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum));
+    frame->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
     return frame;
 }
 
@@ -159,7 +158,13 @@ QFrame *
 ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &result, ResultDisplay *resultDisplay) {
     QFrame *frame = new QFrame(this);
     frame->setFrameShape(QFrame::Box);
-    auto *layout = new QGridLayout(frame);
+    auto container = new QVBoxLayout(frame);
+    auto *layout = new QGridLayout();
+
+    //Stretch results from top and bottom to make the results compact
+    container->insertStretch(0);
+    container->addLayout(layout);
+    container->insertStretch(-1);
 
     //Display the Top result in red and above the others
     if (result.size() > 0) {
