@@ -20,12 +20,61 @@ class LayerMaker {
 private:
 
 public:
+    /**
+     * Constructs an input layer from given layer construction parameters.
+     * @param lcp an object of LayerConstructionParams type with all needed information for layer creation
+     * @return a new InputLayer object
+     */
     InputLayer* createInputLayer(LayerConstructionParams lcp);
+
+    /**
+     * Constructs a convolution layer from given layer construction parameters.
+     * @param lcp an object of LayerConstructionParams type with all needed information for layer creation
+     * @param inputDims a number representing dimensions the images (data) have to have to be processed in the layer
+     * @param weights a pointer to WeightWrapper object, that should be linked to the layer
+     * @return a new ConvolutionLayer object
+     */
     ConvolutionLayer* createConvLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights);
+
+    /**
+     * Constructs a max pooling layer from given layer construction parameters.
+     * @param lcp an object of LayerConstructionParams type with all needed information for layer creation
+     * @param inputDims a number representing dimensions the images (data) have to have to be processed in the layer
+     * @return a new MaxPoolingLayer object
+     */
     MaxPoolingLayer* createMaxPoolLayer(LayerConstructionParams lcp, std::vector<int> inputDims);
+
+    /**
+     * Constructs a local response normalization layer from given layer construction parameters.
+     * @param lcp an object of LayerConstructionParams type with all needed information for layer creation
+     * @param inputDims a number representing dimensions the images (data) have to have to be processed in the layer
+     * @return a new LocalResponseNorm object
+     */
     LocalResponseNormLayer* createLocalResponseNormLayer(LayerConstructionParams lcp, std::vector<int> inputDims);
+
+    /**
+     * Constructs a rectified linear unit activation layer from given layer construction parameters.
+     * @param lcp an object of LayerConstructionParams type with all needed information for layer creation
+     * @param inputDims a number representing dimensions the images (data) have to have to be processed in the layer
+     * @return a new ReLuActivationLayer object
+     */
     ReLUActivationLayer* createReLuActivationLayer(LayerConstructionParams lcp, std::vector<int> inputDims);
+
+    /**
+     * Constructs a softmax loss layer from given layer construction parameters.
+     * @param lcp an object of LayerConstructionParams type with all needed information for layer creation
+     * @param inputDims a number representing dimensions the images (data) have to have to be processed in the layer
+     * @return a new SoftmaxLossLayer object
+     */
     SoftMaxLossLayer* createSoftmaxLossLayer(LayerConstructionParams lcp, std::vector<int> inputDims);
+
+    /**
+     * Constructs a fully connected layer from given layer construction parameters.
+     * @param lcp an object of LayerConstructionParams type with all needed information for layer creation
+     * @param inputDims a number representing dimensions the images (data) have to have to be processed in the layer
+     * @param weights a pointer to WeightWrapper object, that should be linked to the layer
+     * @return a pointer to a new FCLayer object
+     */
     FullyConnectedLayer* createFCLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights);
 
 };
