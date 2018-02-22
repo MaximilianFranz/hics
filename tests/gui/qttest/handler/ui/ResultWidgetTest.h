@@ -40,8 +40,6 @@ private:
 
     ClassificationResult *classificationResult = nullptr;
 
-    std::string getActualString(int index, int layoutIndex, bool aggregated);
-
 private slots:
 
     void initTestCase();
