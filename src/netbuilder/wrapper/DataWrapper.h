@@ -56,4 +56,5 @@ public:
      */
     DataWrapper(const DataWrapper& wrapper);
 
+    virtual ~DataWrapper();
 };

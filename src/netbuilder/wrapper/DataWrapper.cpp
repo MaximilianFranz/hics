@@ -39,3 +39,7 @@ DataWrapper::DataWrapper(std::vector<int> dimensions)
 
 DataWrapper::DataWrapper(const DataWrapper &wrapper) : Wrapper(wrapper) {
 }
+
+DataWrapper::~DataWrapper() {
+
+}
