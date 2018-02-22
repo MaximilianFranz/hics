@@ -104,7 +104,8 @@ void PlatformPlacer::placeNetWith(PlatformInfo *perfomanceInfo, PlatformInfo *fa
 
     } while(it->hasNext());
 
-    int layerCount = fallbackCount  + perfomanceCount;
+    float layerCount = fallbackCount  + perfomanceCount;
+
     // Calculate simple distribution.
     if (fallbackInfo->getPlatformId() != perfomanceInfo->getPlatformId()) {
         compDistribution.push_back(std::pair<PlatformInfo *, float>(perfomanceInfo,
