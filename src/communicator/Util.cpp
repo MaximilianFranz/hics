@@ -130,3 +130,29 @@ ImageResult *Util::messageToImageResult(const ImageResultMessage *imgMes) {
 NetInfo *Util::messageToNetInfo(const NetInfoMessage *net) {
     return new NetInfo(net->name(), net->imagedimension(), net->identifier());
 }
+
+std::vector<std::pair<PlatformInfo *, float>> Util::aggregateReplyDistribution(std::vector<ImageResult *> results) {
+    auto aggregatePointer = std::vector<std::pair<PlatformInfo*, float>>();
+
+    //for every classification add the platform with new distribution
+    for (ImageResult* img : results) {
+        for (std::pair<PlatformInfo*, float> dist : img->getCompDistribution()) {
+            //Check if the Platform is new
+            auto oldDist = std::find_if(aggregatePointer.begin(), aggregatePointer.end(),
+                                        [&dist](std::pair<PlatformInfo*, float> newPlat) {
+                                            return newPlat.first->getPlatformId() == dist.first->getPlatformId();
+                                        });
+            //if platform already exists only add float value
+            if (oldDist != aggregatePointer.end()) {
+                oldDist.operator*().second += (dist.second / results.size());
+            } else {
+                //insert new platform if it was not found
+                std::pair<PlatformInfo*, float> newDist = dist;
+                newDist.second = (newDist.second / results.size());
+                aggregatePointer.push_back(newDist);
+            }
+        }
+    }
+    return aggregatePointer;
+}
+

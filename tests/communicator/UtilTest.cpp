@@ -59,7 +59,15 @@ SCENARIO("Test") {
     std::vector<std::pair<PlatformInfo*, float>> dist;
     dist.emplace_back(&cpu, .6);
     dist.emplace_back(&gpu, .4);
+    std::vector<std::pair<PlatformInfo*, float>> dist2;
+    dist2.emplace_back(&gpu, .6);
+    dist2.emplace_back(&cpu, .4);
+    std::vector<std::pair<PlatformInfo*, float>> dist3;
+    dist3.emplace_back(&cpu, 1);
+    dist3.emplace_back(&gpu, 0);
     ImageResult imgRes = ImageResult(labels, dist, img);
+    ImageResult imgRes2 = ImageResult(labels, dist2, img);
+    ImageResult imgRes3 = ImageResult(labels, dist3, img);
 
     SECTION("PlatformInfo to message") {
         PlatformInfoMessage *platMes = new PlatformInfoMessage();
@@ -215,4 +223,28 @@ SCENARIO("Test") {
         REQUIRE(imageResult->getResults()[4].second == .0125f);
     }
 
+    SECTION("aggregate computation distribution") {
+        auto allResults = std::vector<ImageResult*>();
+        allResults.emplace_back(&imgRes);
+        allResults.emplace_back(&imgRes2);
+        auto newDist = Util::aggregateReplyDistribution(allResults);
+
+        REQUIRE(newDist[0].first->getPlatformId() == "0");
+        REQUIRE(newDist[1].first->getPlatformId() == "1");
+        REQUIRE(newDist[0].second == .5f);
+        REQUIRE(newDist[1].second == .5f);
+
+        allResults.clear();
+        allResults.emplace_back(&imgRes2);
+        allResults.emplace_back(&imgRes);
+        allResults.emplace_back(&imgRes3);
+
+
+        newDist = Util::aggregateReplyDistribution(allResults);
+
+        REQUIRE(newDist[0].first->getPlatformId() == "1");
+        REQUIRE(newDist[1].first->getPlatformId() == "0");
+        REQUIRE(newDist[0].second == float(1)/3);
+        REQUIRE(newDist[1].second == float(2)/3);
+    }
 }
