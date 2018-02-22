@@ -85,7 +85,8 @@ public:
      * @param lcp an object of LayerConstructionParams type with all needed information for layer creation
      * @param inputDims a number representing dimensions the images (data) have to have to be processed in the layer
      * @param weights a pointer to WeightWrapper object, that should be linked to the layer
-     * 
+     *
+     *
      * @return a pointer to a new FCLayer object
      */
     FullyConnectedLayer* createFCLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights);
