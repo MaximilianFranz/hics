@@ -308,3 +308,11 @@ QGridLayout *ResultWidget::getImagesQGridLayout() {
 QHBoxLayout *ResultWidget::getMainQHBoxLayout() {
     return ui->mainQHBoxLayout;
 }
+
+const std::vector<ResultWidget::ResultDisplay *> &ResultWidget::getResultDisplays() const {
+    return resultDisplays;
+}
+
+const std::vector<ResultWidget::ImageDisplay *> &ResultWidget::getImageDisplays() const {
+    return imageDisplays;
+}

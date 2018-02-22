@@ -55,6 +55,61 @@ class ResultWidget : public QWidget {
 
 Q_OBJECT
 
+private:
+
+    /* Structs*/
+
+    struct ClassificationLabel /*!< Maps the classification label and its percentage to the objects which are displaying them*/
+    {
+        std::string name; /*!< Classification label*/
+        QLabel *nameDisplay; /*!< Displayed object*/
+
+        float percentage; /*< Percentage label*/
+        QLabel *percentageDisplay; /*!< Displayed object */
+    };
+
+    struct ImageDisplay
+    {
+        ImageResult *imageResult;
+
+        std::string filePath;
+        QLabel *filePathDisplay;
+        QLabel *imageDisplay;
+    };
+
+    struct ResultDisplay
+    {
+        ImageResult *imageResult;
+
+        std::pair<std::string, QLabel *> topResult;
+        std::vector<ClassificationLabel *> results;
+    };
+
+    /* Attributes*/
+
+    Ui::ResultWidget *ui;
+
+    const QString PERCENTAGE_BAR_COLOR = "rgba(255, 0, 0, 0.6)";
+    const int NUMERATOR_TEXT_PERCENTAGE_RATIO = 2;
+    const int DENOMINATOR_TEXT_PERCENTAGE_RATIO = 3;
+
+    std::vector<ResultDisplay *> resultDisplays;
+    std::vector<ImageDisplay *> imageDisplays;
+
+    /* Methods*/
+
+    QFrame *createImageLayout(const std::string &filePath, ImageDisplay *imageDisplay);
+
+    QFrame *createResultLayout(std::vector<std::pair<std::string, float>> &result, ResultDisplay *resultDisplay);
+
+    QString shortLink(const std::string &link);
+
+    std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
+
+    void clearLayout(QLayout *layout);
+
+    void resize();
+
 public:
 
     /**
@@ -110,62 +165,11 @@ public:
      */
     QHBoxLayout *getMainQHBoxLayout();
 
+    const std::vector<ResultDisplay *> &getResultDisplays() const;
+
+    const std::vector<ImageDisplay *> &getImageDisplays() const;
+
 protected:
 
     void resizeEvent(QResizeEvent * event) override;
-
-private:
-
-    /* Structs*/
-
-    struct ClassificationLabel /*!< Maps the classification label and its percentage to the objects which are displaying them*/
-    {
-        std::string name; /*!< Classification label*/
-        QLabel *nameDisplay; /*!< Displayed object*/
-
-        float percentage; /*< Percentage label*/
-        QLabel *percentageDisplay; /*!< Displayed object */
-    };
-
-    struct ImageDisplay
-    {
-        ImageResult *imageResult;
-
-        std::string filePath;
-        QLabel *filePathDisplay;
-        QLabel *imageDisplay;
-    };
-
-    struct ResultDisplay
-    {
-        ImageResult *imageResult;
-
-        std::pair<std::string, QLabel *> topResult;
-        std::vector<ClassificationLabel *> results;
-    };
-
-    /* Attributes*/
-
-    Ui::ResultWidget *ui;
-
-    const QString PERCENTAGE_BAR_COLOR = "rgba(255, 0, 0, 0.6)";
-    const int NUMERATOR_TEXT_PERCENTAGE_RATIO = 2;
-    const int DENOMINATOR_TEXT_PERCENTAGE_RATIO = 3;
-
-    std::vector<ResultDisplay *> resultDisplays;
-    std::vector<ImageDisplay *> imageDisplays;
-
-    /* Methods*/
-
-    QFrame *createImageLayout(const std::string &filePath, ImageDisplay *imageDisplay);
-
-    QFrame *createResultLayout(std::vector<std::pair<std::string, float>> &result, ResultDisplay *resultDisplay);
-
-    QString shortLink(const std::string &link);
-
-    std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
-
-    void clearLayout(QLayout *layout);
-
-    void resize();
 };
