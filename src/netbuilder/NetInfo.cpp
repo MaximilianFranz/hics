@@ -26,7 +26,6 @@
 
 #include "NetInfo.h"
 
-
 NetInfo::NetInfo(std::string name, int imageDimension, std::string identifier)
     : name(name), imageDimension(imageDimension), identifier(identifier) {
 }
