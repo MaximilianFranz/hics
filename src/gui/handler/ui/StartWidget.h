@@ -60,7 +60,32 @@ namespace Ui {
  * @author Patrick Deubel
  */
 class StartWidget : public QWidget {
+
 Q_OBJECT
+
+private:
+
+    Ui::StartWidget *ui;
+    QList<QHBoxLayout *> inputImagesLayouts; /*!< Layout order: QCheckBox, QPixmap (the image), QLabel (the file path) */
+    QMap<QPair<QImage *, QString>, QHBoxLayout *> images; /*!< Maps all loaded images to its layout */
+    std::map<QString, NetInfo *> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
+    std::map<QString, PlatformInfo *> platformMap; /*!< used to return the selected platform by using the displayed QString */
+
+    QString directoryPath = QDir::homePath(); /*!< The last opened directory path of the QFileDialog */
+
+    const int OFFSET_FILEPATH_DISPLAY = 20;
+
+    void addNeuralNets(std::vector<NetInfo *> &neuralNets);
+
+    void addPlatforms(std::vector<PlatformInfo *> &platforms);
+
+    void addOperationModes(std::vector<OperationMode> &operationModes);
+
+    QStringList removeDuplicateSelectedImages(const QStringList &filePaths);
+
+    QHBoxLayout *addInputImage(QImage *image, const QString &filePath);
+
+    void clearLayout(QLayout *layout);
 
 public:
 
@@ -185,28 +210,4 @@ private slots:
 
     void widgetResized();
 
-private:
-
-    Ui::StartWidget *ui;
-    QList<QHBoxLayout *> inputImagesLayouts; /*!< Layout order: QCheckBox, QPixmap (the image), QLabel (the file path) */
-    QMap<QPair<QImage *, QString>, QHBoxLayout *> images; /*!< Maps all loaded images to its layout */
-    std::map<QString, NetInfo *> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
-    std::map<QString, PlatformInfo *> platformMap; /*!< used to return the selected platform by using the displayed QString */
-
-    QString directoryPath = QDir::homePath(); /*!< The last opened directory path of the QFileDialog */
-    QTimer resizeTimer;
-
-    const int OFFSET_FILEPATH_DISPLAY = 20;
-
-    void addNeuralNets(std::vector<NetInfo *> &neuralNets);
-
-    void addPlatforms(std::vector<PlatformInfo *> &platforms);
-
-    void addOperationModes(std::vector<OperationMode> &operationModes);
-
-    QStringList removeDuplicateSelectedImages(const QStringList &filePaths);
-
-    QHBoxLayout *addInputImage(QImage *image, const QString &filePath);
-
-    void clearLayout(QLayout *layout);
 };

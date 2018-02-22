@@ -48,9 +48,6 @@ StartWidget::StartWidget(std::vector<NetInfo *> &neuralNets, std::vector<Platfor
     connect(ui->selectInputImagesQPushButton, SIGNAL(clicked()), this, SLOT(processInputImageButton()));
     connect(ui->confirmDeletionQPushButton, SIGNAL(clicked()), this, SLOT(processConfirmDeletionButton()));
     connect(ui->abortDeletionQPushButton, SIGNAL(clicked()), this, SLOT(processAbortDeletionQPushButton()));
-
-    resizeTimer.setSingleShot(true);
-    connect(&resizeTimer, SIGNAL(timeout()), SLOT(widgetResized()));
 }
 
 StartWidget::~StartWidget() {
@@ -276,9 +273,8 @@ bool StartWidget::isAggregated() {
 }
 
 void StartWidget::resizeEvent(QResizeEvent *event) {
-//    resizeTimer.start(500);
-//    QWidget::resizeEvent(event);
     widgetResized();
+    QWidget::resizeEvent(event);
 }
 
 void StartWidget::widgetResized() {
