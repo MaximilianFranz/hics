@@ -47,7 +47,7 @@ public:
 
     std::vector<NetInfo*> queryAvailableNets();
 
-    std::map<int, std::string> getLabelMap(NetInfo *net);
+    const std::map<int, std::string> getLabelMap(NetInfo *net);
 
     const std::string MODEL_DIR = RES_DIR "models";
 };

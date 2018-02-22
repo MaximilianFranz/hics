@@ -34,7 +34,7 @@ void Layer::setComputed(bool status) {
     computed = status;
 }
 
-bool Layer::isLayerFunctionSet() {
+bool Layer::isPlatformSet() {
     return functionSet;
 }
 
@@ -102,6 +102,4 @@ void Layer::deleteGarbage() {
 Layer::~Layer() {
     deleteGarbage();
 }
-
-
 

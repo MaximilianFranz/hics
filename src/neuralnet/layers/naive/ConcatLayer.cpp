@@ -40,11 +40,8 @@ Layer *ConcatLayer::getPreviousLayer() const {
 ConcatLayer::ConcatLayer(std::vector<std::vector<int>> inputLayersDimensions)
 {
     this->inputLayersDimensions = inputLayersDimensions;
-    this->functionSet = true; // Naive layers don't require LayerFunction
     this->type = CONCAT;
     this->outputDimensions = calcOutputDimensions();
-
-
 }
 
 // This concatenates multiple layer dimensions by putting them "behind" each other in z dimension

@@ -37,7 +37,6 @@ public:
 
     void forward() override;
 
-    void setFunction(LossFunction* function);
-
+    void setPlatform(Platform *platform) override;
 };
 

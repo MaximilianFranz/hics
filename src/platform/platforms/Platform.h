@@ -28,7 +28,6 @@
 
 #include <string>
 
-#include <layers/Layer.h>
 
 #include <PlatformInfo.h>
 
@@ -38,6 +37,7 @@
 #include <layerfunctions/convolution/ConvolutionFunction.h>
 #include <layerfunctions/loss/LossFunction.h>
 #include <layerfunctions/FullyConnectedFunction.h>
+#include <layers/LayerType.h>
 #include "PlatformType.h"
 
 class Platform {

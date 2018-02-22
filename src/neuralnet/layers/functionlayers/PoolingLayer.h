@@ -45,8 +45,7 @@ public:
 
     void forward() override;
 
-    void setFunction(PoolingFunction* function);
-
+    void setPlatform(Platform *platform) override;
 
     // GETTER
 

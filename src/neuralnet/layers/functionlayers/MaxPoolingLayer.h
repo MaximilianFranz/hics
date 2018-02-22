@@ -35,7 +35,6 @@
 class MaxPoolingLayer : public PoolingLayer {
 public:
     MaxPoolingLayer(std::vector<int> inputDimensions, int stride, int filterSize, int zeroPadding);
-
 };
 
 

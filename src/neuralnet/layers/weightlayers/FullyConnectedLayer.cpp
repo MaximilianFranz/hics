@@ -100,3 +100,8 @@ void FullyConnectedLayer::setFunction(FullyConnectedFunction *function) {
     functionSet = true;
 }
 
+void FullyConnectedLayer::setPlatform(Platform *platform) {
+    this->function = platform->createFullyConnectedFunction();
+    this->functionSet = true;
+}
+

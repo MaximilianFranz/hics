@@ -25,3 +25,9 @@
  */
 
 #include "NaiveLayer.h"
+
+void NaiveLayer::setPlatform(Platform *platform) {
+    // No platform needed in naive layers
+    this->functionSet = true;
+}
+

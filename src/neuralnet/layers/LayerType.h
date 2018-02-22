@@ -24,20 +24,18 @@
  * SPDX-License-Identifier: MIT
  */
 
-#ifndef HICS_NAIVELAYER_H
-#define HICS_NAIVELAYER_H
-
-
-#include "layers/Layer.h"
+#pragma once
 
 /**
- * Naive Layers do not have a Layerfunction, because they don't perform logic,
- * they are simple forms of control-flow layers
+ * ENUM to identify layers by their type.
  */
-class NaiveLayer : public Layer{
-public:
-    void setPlatform(Platform *platform) override;
+enum LayerType {
+    ACTIVATION_RELU,
+    NORMALIZATION_LOCALRESPONSE,
+    LOSS_SOFTMAX,
+    POOLING_MAX,
+    CONVOLUTION,
+    FULLYCONNECTED,
+    INPUT,
+    CONCAT
 };
-
-
-#endif //HICS_NAIVELAYER_H
