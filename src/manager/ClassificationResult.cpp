@@ -77,8 +77,7 @@ void ClassificationResult::aggregateResults() {
         }
     }
 
-    auto aggIt = aggregatedResult.begin();
-    for (aggIt; aggIt != aggregatedResult.end(); ++aggIt) {
+    for (auto aggIt = aggregatedResult.begin(); aggIt != aggregatedResult.end(); ++aggIt) {
         aggIt.operator*().second = aggIt.operator*().second/results.size();
     }
 
