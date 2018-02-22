@@ -75,4 +75,8 @@ public:
     virtual std::string getName() {
         return name;
     }
+
+    virtual ~ComputationHost() {
+
+    }
 };
