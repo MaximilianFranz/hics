@@ -95,7 +95,7 @@ void StartWidget::processInputImageButton(){
                             this,
                             "Select one or more files to open",
                             directoryPath,
-                            "Images (*.png *.jpg *.jpeg)");
+                            "Images (*.png *.jpg *.jpeg *.PNG *.JPG *.JPEG)");
 
     fileNames = removeDuplicateSelectedImages(fileNames);
     //Create a QImage to every selected file path
