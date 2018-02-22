@@ -105,6 +105,9 @@ void Executor::runDataForward(DataWrapper *data) {
         layer->deleteGarbage();
         it->next();
     } while (it->hasNext());
+
+    // free unnecessary memory
+    delete data;
 }
 
 const NetInfo Executor::createMockInfo() {
