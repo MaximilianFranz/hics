@@ -25,7 +25,6 @@
  */
 
 #include <QtWidgets/QLabel>
-#include <iostream>
 #include "ResultWidgetTest.h"
 
 void ResultWidgetTest::initTestCase() {
@@ -49,10 +48,10 @@ void ResultWidgetTest::initTestCase() {
     PlatformInfo* info3 = new PlatformInfo("GPU1", PlatformType::GPU, "gpu1", 34, 55);
     PlatformInfo* info4 = new PlatformInfo("GPU2", PlatformType::GPU, "gpu2", 99, 211);
 
-    plat.push_back(std::pair<PlatformInfo*, float>(info1, 20));
-    plat.push_back(std::pair<PlatformInfo*, float>(info2, 10));
-    plat.push_back(std::pair<PlatformInfo*, float>(info3, 1));
-    plat.push_back(std::pair<PlatformInfo*, float>(info4, 69));
+    plat.push_back(std::pair<PlatformInfo*, float>(info1, 0.2));
+    plat.push_back(std::pair<PlatformInfo*, float>(info2, 0.1));
+    plat.push_back(std::pair<PlatformInfo*, float>(info3, 0.01));
+    plat.push_back(std::pair<PlatformInfo*, float>(info4, 0.69));
 
     PerformanceData performanceData(15, 999, plat);
     ImageResult imgResult1(results, imageWrapper);
