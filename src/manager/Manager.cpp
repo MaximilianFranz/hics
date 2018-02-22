@@ -207,6 +207,7 @@ void Manager::update() {
     for (auto hostResults : allResults){
             for (auto singleResult : hostResults) {
                 newResults.push_back(*singleResult);
+                delete singleResult;
             }
     }
 
