@@ -35,6 +35,6 @@ public:
      */
     std::map<int, std::string> getLabelMap(NetInfo *net);
 
-    //Hard-coded path to the model directory.
+    //Static path to the model directory.
     const std::string MODEL_DIR = RES_DIR "models";
 };
