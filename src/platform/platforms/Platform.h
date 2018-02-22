@@ -62,6 +62,4 @@ public:
     virtual FullyConnectedFunction *createFullyConnectedFunction() = 0;
 
     virtual PlatformInfo &getPlatformInfo() = 0;
-
-    virtual PlatformType getPlatformType() = 0;
 };

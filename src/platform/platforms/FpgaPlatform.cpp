@@ -90,10 +90,6 @@ PlatformInfo &FpgaPlatform::getPlatformInfo() {
     return this->platformInfo;
 }
 
-PlatformType FpgaPlatform::getPlatformType() {
-    return PlatformType::CPU;
-}
-
 FpgaPlatform::FpgaPlatform() {
     init();
 }

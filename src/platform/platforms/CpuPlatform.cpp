@@ -84,10 +84,6 @@ PlatformInfo &CpuPlatform::getPlatformInfo() {
     return this->platformInfo;
 }
 
-PlatformType CpuPlatform::getPlatformType() {
-    return PlatformType::CPU;
-}
-
 CpuPlatform::CpuPlatform() {}
 
 CpuPlatform::CpuPlatform(PlatformInfo &info) : Platform(info) {}
