@@ -114,11 +114,7 @@ void ResultWidgetTest::testAggregated() {
     classificationResult->aggregateResults();
 
     resultWidget->displayResults(classificationResult);
-    int size = resultWidget->getResultDisplays().size();
-    std::string a = resultWidget->getResultDisplays()[1]->topResult.first;
 
-    /*Index 2: Normaly SpacerItem but there is the aggregated result layout
-     *Index 1: SpacerItem at index 0 */
     QCOMPARE(resultWidget->getResultDisplays()[0]->topResult.first, (std::string) "Baukran");
 
     QCOMPARE(resultWidget->getResultDisplays()[0]->results[0]->name, (std::string) "Baukran");
@@ -137,5 +133,5 @@ void ResultWidgetTest::testAggregated() {
     QCOMPARE(resultWidget->getResultDisplays()[0]->results[4]->percentage, (float) 0.016);
 
     //imagesQGridLayout has only 1 column == no not_aggr result
-    QCOMPARE(resultWidget->getImagesQGridLayout()->columnCount(), 2);
+    QCOMPARE(resultWidget->getImagesQGridLayout()->columnCount(), 1);
 }
