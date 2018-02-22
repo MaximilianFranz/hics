@@ -119,6 +119,6 @@ std::vector<NetInfo*> Client::queryNets() {
         }
         return nets;
     } else {
-        throw new std::exception();
+        throw std::exception();
     }
 }
