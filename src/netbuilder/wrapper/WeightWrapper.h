@@ -48,6 +48,7 @@ public:
                   std::vector<int> biasDimensions);
 
 
+    virtual ~WeightWrapper();
 
     /** Cover method for readability and semantics.
      *

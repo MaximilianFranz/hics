@@ -58,3 +58,6 @@ WeightWrapper::WeightWrapper(std::vector<int> dimensions, std::vector<float> &we
           biasDimension(biasDimensions) {
 }
 
+WeightWrapper::~WeightWrapper() {
+
+}
