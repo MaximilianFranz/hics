@@ -54,6 +54,3 @@ FullyConnectedLayer* LayerMaker::createFCLayer(LayerConstructionParams lcp, std:
                                                             weights);
     return fullycon;
 }
-
-
-

@@ -17,6 +17,7 @@ public:
 
     /***
      * Constructs a neural net based on given net information.
+     *
      * @param net net information
      * @return a new NeuralNet object created from given NetInfo object
      */
