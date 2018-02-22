@@ -126,19 +126,12 @@ void MainWindowHandlerTest::testStartClassification() {
     QCOMPARE(request->getUserImages().size(), (unsigned long) 1);
 }
 
-std::string MainWindowHandlerTest::getLabelFromResultLayout(int layoutPosition, int labelIndex){
-    return ((QLabel*)(mainWindowHandler->getResultWidget()->getImagesQGridLayout()
-        ->itemAtPosition(0, layoutPosition)->layout()
-        ->itemAt(labelIndex)->widget()))->text().toStdString();
-}
-
 void MainWindowHandlerTest::testDisplayClassification() {
     setUpClassificationResult();
     mainWindowHandler->processClassificationResult(classificationResult);
-    //TODO add getters for result widget and detail dialog
-    //Get top result
 
-    QCOMPARE(getLabelFromResultLayout(1, 1), (std::string)"Baukran");
+    //Get top result
+    QCOMPARE(mainWindowHandler->getResultWidget()->getResultDisplays()[0]->topResult.first, (std::string)"Baukran");
 
     QCOMPARE(mainWindowHandler->getDetailDialog()->getPowerConsumptionQLabel()->text().toStdString(), (std::string)"15");
     QCOMPARE(mainWindowHandler->getDetailDialog()->getComputationTimeQLabel()->text().toStdString(), (std::string)"999");

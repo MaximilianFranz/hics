@@ -51,8 +51,6 @@ private:
 
 private slots:
 
-    std::string getLabelFromResultLayout(int layoutPosition, int labelIndex);
-
     void initTestCase();
 
     void init();
