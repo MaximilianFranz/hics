@@ -170,6 +170,9 @@ void StartWidget::processAbortDeletionQPushButton() {
     }
 }
 
+void StartWidget::updateProgressBar(QProgressBar *progressBar, int remainingTime) {
+    progressBar->setValue(remainingTime);
+}
 
 void StartWidget::addNeuralNets(std::vector<NetInfo *> &neuralNets) {
     std::vector<NetInfo *>::iterator it;
@@ -232,6 +235,27 @@ NetInfo StartWidget::getSelectedNeuralNet() {
     }
 
     return *it->second;
+}
+
+void StartWidget::displayProgressBar(int approximatedTime){
+    auto *progressBar = new QProgressBar(this);
+    clearLayout(ui->buttonsLayout);
+
+    progressBar->setMaximum(approximatedTime);
+
+    ui->buttonsLayout->addWidget(progressBar);
+
+    int remainingTime = 0;
+    while(remainingTime < approximatedTime){
+        //TODO fix singleShot Timer, Connect does not work
+//        QTimer::singleShot(100, this, SLOT(updateProgressBar(progressBar, remainingTime)));
+//        remainingTime += 100;
+//        progressBar->setValue(remainingTime);
+//        remainingTime += 50;
+    }
+
+    //Progress bar could be at 99% because remainingTime is not completely equal to approximatedTime. This will fix it
+    updateProgressBar(progressBar, approximatedTime);
 }
 
 std::vector<PlatformInfo> StartWidget::getSelectedPlatforms() {

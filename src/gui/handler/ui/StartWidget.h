@@ -42,6 +42,7 @@
 #include <QtWidgets/QCheckBox>
 #include <QtCore/QDir>
 #include <QTimer>
+#include <QtWidgets/QProgressBar>
 
 namespace Ui {
     class StartWidget;
@@ -108,7 +109,22 @@ public:
      */
     ~StartWidget();
 
+    /**
+     * @brief Displays a QErrorDialog with the given error message.
+     *
+     * @param message the to be displayed error message
+     */
     void displayErrorMessage(QString message);
+
+    /**
+     * @brief Removes the Classify and Select images button and displays a progress bar.
+     *
+     * The progress bar takes the approximated time for the classification and uses it to show the status of the
+     * classification.
+     *
+     * @param approximatedTime is the calculated time for the classification
+     */
+    void displayProgressBar(int approximatedTime);
 
     /**
      * @brief getSelectedNeuralNet returns the selected neural net by the user.
@@ -201,6 +217,8 @@ public slots:
      * processAbortDeletionQPushButton() is connected to the abortDeletionQPushButton.
      */
     void processAbortDeletionQPushButton();
+
+    void updateProgressBar(QProgressBar* progressBar, int remainingTime);
 
 protected:
 
