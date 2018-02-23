@@ -234,18 +234,12 @@ NetInfo StartWidget::getSelectedNeuralNet() {
     return *it->second;
 }
 
-void StartWidget::displayProgressBar(int approximatedTime){
-    auto *timeLine = new QTimeLine(approximatedTime, this);
+void StartWidget::displayProgressBar(){
     auto *progressBar = new QProgressBar(this);
 
     clearLayout(ui->buttonsLayout);
-    progressBar->setRange(0, 100);
-    timeLine->setFrameRange(0, 100);
-    connect(timeLine, SIGNAL(frameChanged(int)), progressBar, SLOT(setValue(int)));
-
+    progressBar->setRange(0, 0);
     ui->buttonsLayout->addWidget(progressBar);
-    timeLine->start();
-
     //TODO reinitialize ui->buttonsLayout after classification, delete progressBar and timeLine.
     //TODO add cancel button to the progressbar.
 }

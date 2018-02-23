@@ -117,14 +117,10 @@ public:
     void displayErrorMessage(QString message);
 
     /**
-     * @brief Removes the Classify and Select images button and displays a progress bar.
-     *
-     * The progress bar takes the approximated time for the classification and uses it to show the status of the
-     * classification.
-     *
-     * @param approximatedTime is the calculated time for the classification
+     * @brief Removes the Classify and Select images button and displays a busy loading progress bar to indicate that a
+     *        computation task is going on.
      */
-    void displayProgressBar(int approximatedTime);
+    void displayProgressBar();
 
     /**
      * @brief getSelectedNeuralNet returns the selected neural net by the user.
