@@ -30,6 +30,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtCore/QMap>
 #include <QtWidgets/QErrorMessage>
+#include <QtCore/QTimeLine>
 #include "handler/ui/StartWidget.h"
 #include "ui_StartWidget.h"
 
@@ -170,10 +171,6 @@ void StartWidget::processAbortDeletionQPushButton() {
     }
 }
 
-void StartWidget::updateProgressBar(QProgressBar *progressBar, int remainingTime) {
-    progressBar->setValue(remainingTime);
-}
-
 void StartWidget::addNeuralNets(std::vector<NetInfo *> &neuralNets) {
     std::vector<NetInfo *>::iterator it;
 
@@ -238,24 +235,19 @@ NetInfo StartWidget::getSelectedNeuralNet() {
 }
 
 void StartWidget::displayProgressBar(int approximatedTime){
+    auto *timeLine = new QTimeLine(approximatedTime, this);
     auto *progressBar = new QProgressBar(this);
-    clearLayout(ui->buttonsLayout);
 
-    progressBar->setMaximum(approximatedTime);
+    clearLayout(ui->buttonsLayout);
+    progressBar->setRange(0, 100);
+    timeLine->setFrameRange(0, 100);
+    connect(timeLine, SIGNAL(frameChanged(int)), progressBar, SLOT(setValue(int)));
 
     ui->buttonsLayout->addWidget(progressBar);
+    timeLine->start();
 
-    int remainingTime = 0;
-    while(remainingTime < approximatedTime){
-        //TODO fix singleShot Timer, Connect does not work
-//        QTimer::singleShot(100, this, SLOT(updateProgressBar(progressBar, remainingTime)));
-//        remainingTime += 100;
-//        progressBar->setValue(remainingTime);
-//        remainingTime += 50;
-    }
-
-    //Progress bar could be at 99% because remainingTime is not completely equal to approximatedTime. This will fix it
-    updateProgressBar(progressBar, approximatedTime);
+    //TODO reinitialize ui->buttonsLayout after classification, delete progressBar and timeLine.
+    //TODO add cancel button to the progressbar.
 }
 
 std::vector<PlatformInfo> StartWidget::getSelectedPlatforms() {

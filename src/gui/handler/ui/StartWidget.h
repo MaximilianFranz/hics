@@ -218,8 +218,6 @@ public slots:
      */
     void processAbortDeletionQPushButton();
 
-    void updateProgressBar(QProgressBar* progressBar, int remainingTime);
-
 protected:
 
     void resizeEvent(QResizeEvent *event) override;
