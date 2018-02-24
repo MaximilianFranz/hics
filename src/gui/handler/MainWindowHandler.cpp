@@ -81,10 +81,11 @@ void MainWindowHandler::setClassificationRequestState() {
 
         //Emit that the classification shall start
         emit startNotifying();
-        //TODO Disable the StartWidget's widgets
+
+        //Displays a busy loading progress bar and disables all widgets
+        startWidget->displayProgress();
     }
 }
-
 
 ClassificationRequest *MainWindowHandler::getClassificationRequestState() {
     return classificationRequestState;
@@ -106,6 +107,9 @@ void MainWindowHandler::processClassificationResult(ClassificationResult *classi
 }
 
 void MainWindowHandler::processReturnQPushButton() {
+    //Enable the widgets in StartWidget again and remove the progress bar
+    startWidget->resetProgressDisplay();
+
     mainWindow->setCurrentWidget(startWidget);
 
     disconnectAll();
