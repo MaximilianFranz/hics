@@ -24,6 +24,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <QtCore/QThread>
+#include "Worker.h"
 #include "MainWindowHandler.h"
 
 MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::vector<PlatformInfo *> &platforms,
@@ -57,12 +59,32 @@ void MainWindowHandler::setClassificationRequestState() {
     if (!platforms.empty() && !userImgs.empty()) {
         classificationRequestState = new ClassificationRequest(neuralNet, platforms, mode, aggregate, userImgs);
 
-        //Notify all observers that the state has changed
-        notify();
+        //Distribute the computation in a worker thread to ensure a responsive GUI
+        auto *workerThread = new QThread;
+        auto *worker = new Worker(getObservers());
+        worker->moveToThread(workerThread);
 
-        //TODO here maybe display loading screen/bar
+        connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
+
+        //A signal must be connected to the workers method to ensure that the computation is run in the worker thread
+        connect(this, &MainWindowHandler::startNotifying, worker, &Worker::doWork);
+
+        //Receive the computed result
+        connect(worker, &Worker::workDone, this, &MainWindowHandler::processClassificationResult);
+
+        //Delete memory
+        connect(worker, &Worker::workDone, workerThread, &QThread::quit);
+        connect(worker, &Worker::workDone, worker, &Worker::deleteLater);
+        connect(worker, &Worker::workDone, workerThread, &QThread::deleteLater);
+
+        workerThread->start();
+
+        //Emit that the classification shall start
+        emit startNotifying();
+        //TODO Disable the StartWidget's widgets
     }
 }
+
 
 ClassificationRequest *MainWindowHandler::getClassificationRequestState() {
     return classificationRequestState;

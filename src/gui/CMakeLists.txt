@@ -16,7 +16,9 @@ set(SOURCE_FILES
         handler/ui/DetailDialog.cpp
         handler/ui/DetailDialog.h
         handler/ui/DetailDialog.ui
-    MainWindowSubject.h
+        MainWindowSubject.h
+        Worker.cpp
+        Worker.h
         handler/MainWindowHandler.cpp
         handler/MainWindowHandler.h)
 

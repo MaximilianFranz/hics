@@ -157,4 +157,9 @@ public slots:
      * processClassificationResult method.
      */
     void processDetailQPushButton();
+
+signals:
+
+    void startNotifying();
+
 };

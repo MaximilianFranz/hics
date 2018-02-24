@@ -76,13 +76,19 @@ public:
     /**
      * @brief The notify method will call notify every attached ManagerObserver which means that it will call update()
      *        on each one.
+     *
+     * @return returns the computed ClassificationResult
      */
-    virtual void notify(){
-        std::vector<ManagerObserver*>::iterator it;
+    virtual ClassificationResult* notify(){
+        ClassificationResult* result = nullptr;
 
-        for(it = observers.begin(); it != observers.end(); ++it){
-            (*it)->update();
+        //TODO ensure only one observer
+
+        for(ManagerObserver* observer : observers) {
+            result = observer->update();
         }
+
+        return result;
     }
 
     /**
