@@ -44,6 +44,31 @@ namespace helper {
                                             float *result_matrix);
 
     /**
+     * Adds zero padding to a matrix so the x and y dimensions are multiples of padding.
+     * The padding is applied to the left and the bottom.
+     *
+     * @param padding the matrix will be padded so x and y are a factor of padding
+     * @param x size of x dimension
+     * @param y size of y dimension
+     * @param input float pointer holding the data
+     * @param paddedX size of x the padded matrix
+     * @param paddedY size of y of the padded matrix
+     * @return float pointer holding the padded data, needs to be deallocated by the caller
+     */
+    float *add_padding(int padding, int x, int y, const float *input, int *paddedX, int *paddedY);
+
+    /**
+     * Removes zero padding that was applied to a matrix
+     *
+     * @param padding padding that was applied
+     * @param x desired size of x dimension
+     * @param y desized size of y dimension
+     * @param input float pointer holding the padded data
+     * @return float pointer holding the unpadded data, needs to be deallocated by the caller
+     */
+    float *remove_padding(int padding, int x, int y, const float *input);
+
+    /**
      * Performs the im2col algorithm on the CPU.
      *
      * @tparam Dtype                A data type representing a matrix.

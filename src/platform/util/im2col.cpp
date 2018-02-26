@@ -33,6 +33,7 @@
 
 #include <cstring>
 #include <algorithm>
+
 #include "im2col.h"
 
 namespace helper {
@@ -52,6 +53,54 @@ namespace helper {
                 result_matrix[m * result_matrix_columns + n] = value;
             }
         }
+    }
+
+    float *add_padding(int padding, int sizeX, int sizeY, const float *input, int *newX, int *newY) {
+        int paddedX = sizeX;
+        int paddedY = sizeY;
+
+        if (sizeX % padding != 0) {
+            paddedX = ((sizeX / padding) + 1) * padding;
+        }
+        if (sizeY % padding != 0) {
+            paddedY = ((sizeY / padding) + 1) * padding;
+        }
+
+        float* out = new float [paddedX*paddedY];
+        memset(out, 0, paddedX*paddedY*sizeof(float));
+
+        float *dest = out;
+        const float *src = input;
+        for (int i = 0; i < sizeY; i++) {
+            memcpy(dest, src, sizeX*sizeof(float));
+            dest += paddedX;
+            src += sizeX;
+        }
+
+        *newX = paddedX;
+        *newY = paddedY;
+        return out;
+    }
+
+    float *remove_padding(int padding, int sizeX, int sizeY, const float *input) {
+        int paddedX = sizeX;
+
+        if (sizeX % padding != 0) {
+            paddedX = ((sizeX / padding) + 1) * padding;
+        }
+
+
+        float* out = new float[sizeX*sizeY];
+
+        float *dest = out;
+        const float *src = input;
+        for (int i = 0; i < sizeY; i++) {
+            memcpy(dest, src, sizeX*sizeof(float));
+            dest += sizeX;
+            src += paddedX;
+        }
+
+        return out;
     }
 
     template<typename Dtype>
