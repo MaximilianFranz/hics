@@ -43,7 +43,6 @@ namespace helper {
                                             const float *matrix_right, int matrix_right_rows, int matrix_right_columns,
                                             float *result_matrix);
 
-    float *transpose_and_pad(int pad, int x, int y, float* input);
     /**
      * Performs the im2col algorithm on the CPU.
      *
