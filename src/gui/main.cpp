@@ -93,6 +93,7 @@ int main(int argc, char *argv[])
 
     StartWidget *startWidget = new StartWidget(nets, platforms, modes);
     startWidget->show();
-    startWidget->displayProgress(5500);
+    startWidget->displayProgress();
+    
     return a.exec();
 }
