@@ -32,8 +32,6 @@
 
 #include <json.hpp>
 
-#include "StringLoader.h"
-
 
 using json = nlohmann::json;
 
@@ -66,7 +64,6 @@ protected:
     string pathToJSON;
     json model;
     json layers;
-    StringLoader s;
 
 
 public:
@@ -74,7 +71,7 @@ public:
      * Constructor
      * @param path
      */
-     ModelLoader(string path);
+    ModelLoader(string path);
 
     //Methods for NetInfo construction
     virtual string getNetWorkName() = 0;

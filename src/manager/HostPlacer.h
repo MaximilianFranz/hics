@@ -33,7 +33,6 @@
 #include <ComputationHost.h>
 #include <NetInfo.h>
 #include <json.hpp>
-#include <loader/StringLoader.h>
 
 using json = nlohmann::json;
 

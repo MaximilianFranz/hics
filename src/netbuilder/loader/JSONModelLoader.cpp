@@ -24,6 +24,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <fstream>
+
 #include "JSONModelLoader.h"
 
 
@@ -32,8 +34,8 @@ JSONModelLoader::JSONModelLoader(string path) : ModelLoader(path){
 }
 
 void JSONModelLoader::init() {
-    string jsonString = s.getStringFromFile(this->pathToJSON);
-    this->model = json::parse(jsonString);
+    std::ifstream i(this->pathToJSON);
+    i >> this->model;
     this->layers = model["layers"];
 }
 
