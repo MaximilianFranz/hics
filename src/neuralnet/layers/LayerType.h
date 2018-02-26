@@ -29,7 +29,7 @@
 /**
  * ENUM to identify layers by their type.
  */
-enum LayerType {
+enum class LayerType {
     ACTIVATION_RELU,
     NORMALIZATION_LOCALRESPONSE,
     LOSS_SOFTMAX,

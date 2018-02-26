@@ -29,7 +29,7 @@
 InputLayer::InputLayer(std::vector<int> inputDimensions) {
     this->inputDimensions = inputDimensions;
     this->functionSet = true; // Naive Layers don't have functions
-    this->type = INPUT;
+    this->type = LayerType::INPUT;
     this->outputDimensions = calcOutputDimensions();
 }
 

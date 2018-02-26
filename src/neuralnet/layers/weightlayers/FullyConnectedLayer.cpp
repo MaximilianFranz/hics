@@ -34,7 +34,7 @@ FullyConnectedLayer::FullyConnectedLayer(std::vector<int> inputDimensions, Weigh
     this->inputDimensions = inputDimensions;
     this->weights = weights;
     this->outputDimensions = calcOutputDimensions();
-    this->type = FULLYCONNECTED;
+    this->type = LayerType::FULLYCONNECTED;
 }
 
 // Takes the outputDimensions based on the dimensions of the weights.

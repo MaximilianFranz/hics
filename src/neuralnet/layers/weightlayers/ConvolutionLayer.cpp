@@ -43,7 +43,7 @@ ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPaddi
           numGroups(numGroups)
 {
     this->inputDimensions = inputDimensions;
-    this->type = CONVOLUTION;
+    this->type = LayerType::CONVOLUTION;
     this->outputDimensions = calcOutputDimensions();
     init(); // TODO never call virtual functions in constructor
 }
@@ -58,7 +58,7 @@ ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPaddi
           weights(weights)
 {
     this->inputDimensions = inputDimensions;
-    this->type = CONVOLUTION;
+    this->type = LayerType::CONVOLUTION;
     this->outputDimensions = calcOutputDimensions();
     init(); // TODO never call virtual functions in constructor
 }
