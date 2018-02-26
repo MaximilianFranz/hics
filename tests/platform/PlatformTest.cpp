@@ -31,6 +31,8 @@
 #include <cmath>
 #include <limits>
 #include <algorithm>
+#include <iomanip>
+#include <cstring>
 
 #include <wrapper/DataWrapper.h>
 
@@ -38,6 +40,7 @@
 #include <loader/weightloader/AlexNetWeightLoader.h>
 
 #include <FileHelper.h>
+#include <util/im2col.h>
 
 #include "PlatformTest.h"
 
@@ -548,3 +551,47 @@ TEST_CASE("Softmax with real data") {
     }
 
 }
+
+TEST_CASE("GEMM with padding") {
+
+    const int M = 4;
+    const int K = 5;
+    const int N = 6;
+
+    float *A = new float[M*K];
+    float *B = new float[K*N];
+    float *C = new float[M*N];
+
+    for (int i = 0; i < M*K; i++) {
+        A[i] = i+1;
+    }
+    for (int i = 0; i < K*N; i++) {
+        B[i] = i;
+    }
+    std::memset(C, 0, M*N*sizeof(float));
+
+    helper::multiply_matrices_using_1d_vectors(A, M, K, B, K, N, C);
+
+    int paddedM = 0;
+    int paddedN = 0;
+    int paddedK = 0;
+    const int padding = 8;
+    float *paddedA = helper::add_padding(padding, K, M, A, &paddedK, &paddedM);
+    float *paddedB = helper::add_padding(padding, N, K, B, &paddedN, &paddedK);
+
+    float *paddedC = new float[paddedM*paddedK];
+    helper::multiply_matrices_using_1d_vectors(paddedA, paddedM, paddedK, paddedB, paddedK, paddedN, paddedC);
+
+    float *unpaddedC = helper::remove_padding(padding, N, M, paddedC);
+
+    for (int i = 0; i < M*N; i++) {
+        REQUIRE(C[i] == unpaddedC[i]);
+
+    }
+
+    delete [] paddedA;
+    delete [] paddedB;
+    delete [] paddedC;
+    delete [] unpaddedC;
+}
+
