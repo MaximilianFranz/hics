@@ -24,22 +24,29 @@
  * SPDX-License-Identifier: MIT
  */
 
-#pragma once
-
 #include <ostream>
 
-/**
- * ENUM to identify layers by their type.
- */
-enum class LayerType {
-    ACTIVATION_RELU,
-    NORMALIZATION_LOCALRESPONSE,
-    LOSS_SOFTMAX,
-    POOLING_MAX,
-    CONVOLUTION,
-    FULLYCONNECTED,
-    INPUT,
-    CONCAT
-};
+#include "LayerType.h"
 
-std::ostream &operator<<(std::ostream &os, const LayerType &layertype);
+std::ostream &operator<<(std::ostream &os, const LayerType &layertype) {
+    switch (layertype) {
+        case LayerType::ACTIVATION_RELU :
+            return os << "ACTIVATION_RELU";
+        case LayerType::NORMALIZATION_LOCALRESPONSE :
+            return os << "NORMALIZATION_LOCALRESPONSE";
+        case LayerType::LOSS_SOFTMAX :
+            return os << "LOSS_SOFTMAX";
+        case LayerType::POOLING_MAX :
+            return os << "POOLING_MAX";
+        case LayerType::CONVOLUTION :
+            return os << "CONVOLUTION";
+        case LayerType::FULLYCONNECTED :
+            return os << "FULLYCONNECTED";
+        case LayerType::INPUT :
+            return os << "INPUT";
+        case LayerType::CONCAT :
+            return os << "CONCAT";
+        // omit default case to trigger compiler warning for missing cases
+    }
+    return os << "<UNKNOWN>";
+}

@@ -16,4 +16,5 @@ add_library(neuralnet STATIC
         layers/weightlayers/FullyConnectedLayer.cpp layers/weightlayers/FullyConnectedLayer.h
         layers/naive/ConcatLayer.cpp layers/naive/ConcatLayer.h
         layers/naive/NaiveLayer.cpp layers/naive/NaiveLayer.h
-        layers/LayerType.h)
+        layers/LayerType.h layers/LayerType.cpp)
+
