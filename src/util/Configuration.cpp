@@ -7,6 +7,7 @@
 
 const std::string Configuration::SETTINGS_PATH = "../../../resources";
 const std::string Configuration::TESTING_PATH = "";
+std::char* environment;
 
 std::string Configuration::choose_path() {
     if (std::getenv(environment) == "testing") {

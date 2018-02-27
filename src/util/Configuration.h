@@ -16,7 +16,7 @@ private:
      *
      * @return a path to the folder with needed information for neural net's construction and image classifications
      */
-    std::string choose_path();
+    static std::string choose_path();
 
 public:
 

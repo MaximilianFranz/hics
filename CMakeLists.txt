@@ -47,15 +47,12 @@ include_directories(src/manager)
 include_directories(src/netbuilder)
 include_directories(src/neuralnet)
 include_directories(src/platform)
+include_directories(src/util)
 include_directories(src)
 include_directories(thirdparty)
 
 add_subdirectory(src)
 
-# Prepare "Catch" library for other executables, so they can link against 'Catch'
-set(CATCH_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/catch)
-add_library(Catch INTERFACE src/util/Configuration.cpp src/util/Configuration.h)
-target_include_directories(Catch INTERFACE ${CATCH_INCLUDE_DIR})
 
 enable_testing()
 
