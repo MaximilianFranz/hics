@@ -35,6 +35,7 @@
 #include <ClassificationResult.h>
 
 #include "MainWindowSubject.h"
+#include "Worker.h"
 #include "ui/MainWindow.h"
 #include "ui/StartWidget.h"
 #include "ui/ResultWidget.h"
@@ -72,6 +73,8 @@ private:
 
     ClassificationRequest *classificationRequestState = nullptr;
 
+    Worker *worker = nullptr;
+
     void connectAll();
 
     void disconnectAll();
@@ -105,8 +108,6 @@ public:
      * @param classificationResult contains the classification result and details which shall be displayed
      */
     void processClassificationResult(ClassificationResult *classificationResult);
-
-    //TODO here could be the displayErrorMessage(Exception e) method
 
     /**
      * @brief getStartWidget returns the startWidget which represents the starting page of the GUI.
@@ -158,8 +159,20 @@ public slots:
      */
     void processDetailQPushButton();
 
+    /**
+     * @brief displayErrorMessage will send the error message to the startWidget's respective method to display it.
+     * @param errorMessage the to be displayed error message
+     */
+    void displayErrorMessage(const QString &errorMessage);
+
 signals:
 
+    /**
+     * @brief The startNotfiying signal gets emitted when the classification shall be started.
+     *
+     * This should only be emitted in combination with a QThread and Worker object to ensure a responsive GUI and a
+     * fully working software.
+     */
     void startNotifying();
 
 };

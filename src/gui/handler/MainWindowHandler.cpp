@@ -61,7 +61,7 @@ void MainWindowHandler::setClassificationRequestState() {
 
         //Distribute the computation in a worker thread to ensure a responsive GUI
         auto *workerThread = new QThread;
-        auto *worker = new Worker(getObservers());
+        worker = new Worker(getObservers());
         worker->moveToThread(workerThread);
 
         connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
@@ -71,6 +71,7 @@ void MainWindowHandler::setClassificationRequestState() {
 
         //Receive the computed result
         connect(worker, &Worker::workDone, this, &MainWindowHandler::processClassificationResult);
+        connect(worker, &Worker::exception, this, &MainWindowHandler::displayErrorMessage);
 
         //Delete memory
         connect(worker, &Worker::workDone, workerThread, &QThread::quit);
@@ -85,6 +86,11 @@ void MainWindowHandler::setClassificationRequestState() {
         //Displays a busy loading progress bar and disables all widgets
         startWidget->displayProgress();
     }
+}
+
+void MainWindowHandler::displayErrorMessage(const QString &errorMessage) {
+    startWidget->resetProgressDisplay();
+    startWidget->displayErrorMessage(errorMessage);
 }
 
 ClassificationRequest *MainWindowHandler::getClassificationRequestState() {

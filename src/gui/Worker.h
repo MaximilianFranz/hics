@@ -55,7 +55,7 @@ public:
      *
      * @param observers are the observers on the object from the main thread
      */
-    Worker(std::vector<ManagerObserver*> observers);
+    explicit Worker(std::vector<ManagerObserver*> observers);
 
 public slots:
 
@@ -77,4 +77,12 @@ signals:
      */
     void workDone(ClassificationResult* result);
 
+    /**
+     * @brief The exception signal gets emitted when an exception gets thrown during the notify() method call.
+     *
+     * The signal emits a error message by providing a QString.
+     *
+     * @param errorMessage is the to be displayed error message
+     */
+    void exception(const QString &errorMessage);
 };
