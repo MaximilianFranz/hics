@@ -35,8 +35,8 @@
 //TAKES relative PATHS
 std::vector<std::string> ModelCrawler::getFilesInDir(std::string relPathToDir) {
     std::vector<std::string> results;
-    char resolved_path[1024];
-    realpath(relPathToDir.c_str(), resolved_path);
+    char *resolved_path = realpath(relPathToDir.c_str(), NULL);
+    // TODO: check if resolved_path is NULL
 
     DIR *dir;
     struct dirent *ent;
@@ -60,6 +60,9 @@ std::vector<std::string> ModelCrawler::getFilesInDir(std::string relPathToDir) {
     } else {
         /* could not open directory */
     }
+
+    free(resolved_path);
+
     return results;
 }
 

@@ -604,10 +604,10 @@ std::vector<T> split_im2col(const std::string &line) {
 }
 
 std::vector<float> getDataFromFile_im2col(std::string path) {
-    char *resolved_path;
     // Getting the real path from execution dir.
     // We pass NULL and let realpath allocate the string which means we have to free() it later.
-    resolved_path = realpath(path.c_str(), NULL);
+    char *resolved_path = realpath(path.c_str(), NULL);
+    // TODO: check if resolved_path is NULL
     // Open file
     std::ifstream file(resolved_path);
     std::string str;
@@ -622,6 +622,7 @@ std::vector<float> getDataFromFile_im2col(std::string path) {
     std::vector<float> data = split_im2col<float>(str);
 
     free(resolved_path);
+
     return data;
 }
 

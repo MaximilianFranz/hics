@@ -31,10 +31,9 @@ std::map<int, std::string> LabelLoader::getLabelMap(std::string path) {
 
     std::map<int, std::string> labelMap;
 
-    char resolved_path[1024];
-    realpath(path.c_str(), resolved_path);
+    char *resolved_path = realpath(path.c_str(), NULL);
+    // TODO: check if resolved_path is NULL
     std::ifstream file(resolved_path);
-    std::string str;
 
     std::string line;
 
@@ -45,6 +44,7 @@ std::map<int, std::string> LabelLoader::getLabelMap(std::string path) {
         index++;
     }
 
-    return labelMap;
+    free(resolved_path);
 
+    return labelMap;
 }
