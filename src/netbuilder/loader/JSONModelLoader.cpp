@@ -25,6 +25,7 @@
  */
 
 #include <fstream>
+#include <ResourceException.h>
 
 #include "JSONModelLoader.h"
 
@@ -34,9 +35,13 @@ JSONModelLoader::JSONModelLoader(string path) : ModelLoader(path){
 }
 
 void JSONModelLoader::init() {
-    std::ifstream i(this->pathToJSON);
-    i >> this->model;
-    this->layers = model["layers"];
+    try {
+        std::ifstream i(this->pathToJSON);
+        i >> this->model;
+        this->layers = model["layers"];
+    } catch (...) {
+        throw ResourceException("Model JSON could not be read, file corrupted");
+    }
 }
 
 string JSONModelLoader::getNetWorkName() {
