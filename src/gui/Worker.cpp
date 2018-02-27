@@ -24,44 +24,18 @@
  * SPDX-License-Identifier: MIT
  */
 
-#pragma once
+#include "Worker.h"
 
+Worker::Worker(const std::vector<ManagerObserver *> observers) {
+    //Attach every observer from the object from the main thread to this object to ensure everyone gets called
+    for(ManagerObserver* observer : observers) {
+        this->attach(observer);
+    }
+}
 
-#include <Executor.h>
-#include "ManagerObserver.h"
-#include "handler/MainWindowHandler.h"
-
-
-/**
- * The manager is the entry point to the system. It observes the GUI and creates all other modules needed for a
- * Classification.
- */
-class Manager : public ManagerObserver {
-
-private:
-    std::vector<ComputationHost*> computationHosts;
-
-    MainWindowHandler *mainWindowHandler = nullptr;
-
-public:
-
-    Manager();
-
-    /**
-     * called by GUI to update the Manager when the classify is pressed
-     *
-     * @return returns the computed ClassificationResult
-     */
-    virtual ClassificationResult* update();
-
-    void initGUI();
-
-    bool operator==(const ManagerObserver &managerObserver) override;
-
-    /**
-     * Intersects the available neural nets of each computation host, to only hand neural nets available on every
-     * host to the Gui.
-     * @return
-     */
-    static std::vector<NetInfo*> netIntersection(std::vector<std::vector<NetInfo*>> &allNets);
-};
+void Worker::doWork() {
+    //Start the classification
+    ClassificationResult* result = notify();
+    //Signal that the classification has finished and hand over the result
+    emit workDone(result);
+}

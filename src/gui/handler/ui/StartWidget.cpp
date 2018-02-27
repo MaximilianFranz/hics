@@ -30,6 +30,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtCore/QMap>
 #include <QtWidgets/QErrorMessage>
+#include <QtCore/QTimeLine>
 #include "handler/ui/StartWidget.h"
 #include "ui_StartWidget.h"
 
@@ -48,6 +49,10 @@ StartWidget::StartWidget(std::vector<NetInfo *> &neuralNets, std::vector<Platfor
     connect(ui->selectInputImagesQPushButton, SIGNAL(clicked()), this, SLOT(processInputImageButton()));
     connect(ui->confirmDeletionQPushButton, SIGNAL(clicked()), this, SLOT(processConfirmDeletionButton()));
     connect(ui->abortDeletionQPushButton, SIGNAL(clicked()), this, SLOT(processAbortDeletionQPushButton()));
+
+    progressBar = new QProgressBar(this);
+    progressBar->hide();
+    ui->buttonsLayout->addWidget(progressBar);
 }
 
 StartWidget::~StartWidget() {
@@ -170,7 +175,6 @@ void StartWidget::processAbortDeletionQPushButton() {
     }
 }
 
-
 void StartWidget::addNeuralNets(std::vector<NetInfo *> &neuralNets) {
     std::vector<NetInfo *>::iterator it;
 
@@ -232,6 +236,55 @@ NetInfo StartWidget::getSelectedNeuralNet() {
     }
 
     return *it->second;
+}
+
+void StartWidget::displayProgress(){
+    ui->classificationQPushButton->hide();
+    ui->selectInputImagesQPushButton->hide();
+
+    progressBar->setRange(0, 0);
+    progressBar->show();
+
+    disableWidgets(true);
+
+    //TODO add cancel button to the progressbar.
+}
+
+void StartWidget::resetProgressDisplay() {
+    progressBar->setMaximum(100);
+    progressBar->setValue(100);
+    progressBar->hide();
+
+    ui->classificationQPushButton->show();
+    ui->selectInputImagesQPushButton->show();
+
+    disableWidgets(false);
+}
+
+void StartWidget::disableWidgets(bool disable) {
+    ui->selectInputImagesQPushButton->setDisabled(disable);
+    ui->classificationQPushButton->setDisabled(disable);
+    ui->operationModesQComboBox->setDisabled(disable);
+    ui->neuralNetsQComboBox->setDisabled(disable);
+    ui->aggregateResultsQCheckBox->setDisabled(disable);
+    ui->abortDeletionQPushButton->setDisabled(disable);
+    ui->confirmDeletionQPushButton->setDisabled(disable);
+
+    for(unsigned int i = 0; i < ui->platformsQVBoxLayout->count(); ++i){
+        QLayoutItem *item = ui->platformsQVBoxLayout->itemAt(i);
+        if(item->widget()){
+            item->widget()->setDisabled(disable);
+        }
+    }
+
+    QMapIterator<QPair<QImage *, QString>, QHBoxLayout *> it(images);
+    //Get every QImage's check box inside the layout and set the disabled state
+    while (it.hasNext()) {
+        it.next();
+        if(it.value()->itemAt(0)->widget()){
+            it.value()->itemAt(0)->widget()->setDisabled(disable);
+        }
+    }
 }
 
 std::vector<PlatformInfo> StartWidget::getSelectedPlatforms() {

@@ -26,6 +26,8 @@
 
 #pragma once
 
+#include "ClassificationResult.h"
+
 /**
  * This interface is implemented by the manager to observe the GUI. It follows the observer-pattern structure.
  */
@@ -34,9 +36,11 @@ class ManagerObserver {
 public:
 
     /**
-     * Observer method for the manager to implement
+     * @brief Observer method for the manager to implement
+     *
+     * @return returns the computed ClassificationResult
      */
-    virtual void update() = 0;
+    virtual ClassificationResult* update() = 0;
 
     /**
      * @brief Overloads operator==() function to compare two ManagerObserver's on their identity.

@@ -42,6 +42,7 @@
 #include <QtWidgets/QCheckBox>
 #include <QtCore/QDir>
 #include <QTimer>
+#include <QtWidgets/QProgressBar>
 
 namespace Ui {
     class StartWidget;
@@ -75,6 +76,8 @@ private:
 
     const int OFFSET_FILEPATH_DISPLAY = 20;
 
+    QProgressBar* progressBar = nullptr;
+
     void addNeuralNets(std::vector<NetInfo *> &neuralNets);
 
     void addPlatforms(std::vector<PlatformInfo *> &platforms);
@@ -86,6 +89,8 @@ private:
     QHBoxLayout *addInputImage(QImage *image, const QString &filePath);
 
     void clearLayout(QLayout *layout);
+
+    void disableWidgets(bool disable);
 
 public:
 
@@ -108,7 +113,23 @@ public:
      */
     ~StartWidget();
 
+    /**
+     * @brief Displays a QErrorDialog with the given error message.
+     *
+     * @param message the to be displayed error message
+     */
     void displayErrorMessage(QString message);
+
+    /**
+     * @brief Removes the Classify and Select images button and displays a busy loading progress bar to indicate that a
+     *        computation task is going on.
+     */
+    void displayProgress();
+
+    /**
+     * @brief Removes the progress bar and enables all widgets again, so that a new classification can be started
+     */
+    void resetProgressDisplay();
 
     /**
      * @brief getSelectedNeuralNet returns the selected neural net by the user.

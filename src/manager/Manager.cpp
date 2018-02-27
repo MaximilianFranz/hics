@@ -90,7 +90,7 @@ void Manager::initGUI() {
     mainWindowHandler->attach(this);
 }
 
-void Manager::update() {
+ClassificationResult* Manager::update() {
 
     ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
 
@@ -220,7 +220,8 @@ void Manager::update() {
     if(request->getAggregateResults()){
         result->aggregateResults();
     }
-    mainWindowHandler->processClassificationResult(result);
+
+    return result;
 }
 
 bool Manager::operator==(const ManagerObserver &managerObserver){
