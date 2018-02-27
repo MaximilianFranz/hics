@@ -1,6 +1,28 @@
-//
-// Created by Maximilian Franz on 08.01.18.
-//
+/* Copyright 2018 The HICS Authors
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom
+ * the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall
+ * be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
 #pragma once
 
@@ -15,11 +37,9 @@
 
 class PlatformPlacer {
 private:
-    OperationMode currentMode;          //! The OperationMode applied to the last configuration
-    std::vector<PlatformInfo*> currentPlatformsInfos; //! The selected platforms infos in the last configurations
-    std::vector<Platform*> currentPlatforms;  //! The corresponding platforms used in the last configuration
+    std::vector<PlatformInfo*> currentPlatforms; //! The selected platformInfos in the last configurations
 
-    std::vector<std::pair<PlatformInfo*, float>> compDistribution;
+    std::vector<std::pair<PlatformInfo*, float>> compDistribution; //! Distribution of computation to different platforms
 
     PlatformManager* platformManager;   //! The platformManager is the access point to get available platforms
     NeuralNet *net;                     //! the net that has been configured in the last excectuion
@@ -28,7 +48,7 @@ private:
      *
      * @return the CPU Platform for testing purposes
      */
-    Platform * getDefaultPlatform();
+    PlatformInfo * getDefaultPlatform();
 
     /**
      * Chooses platforms for low power mode and configures net accordingly
@@ -51,12 +71,8 @@ private:
      * Perfomance platform is used for computationally difficult tasks and fallback is usually CPU used for
      * all other tasks, where
      */
-    void placeNetWith(Platform* perfomance, Platform* fallback);
+    void placeNetWith(PlatformInfo* perfomance, PlatformInfo* fallback);
 
-    /**
-     * Chooses platforms for low power mode and configures net accordingly
-     */
-    void placeLayerWith(Platform* platform, Layer* layer);
 
 public:
     /**

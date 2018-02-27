@@ -1,16 +1,41 @@
-//
-// Created by jallmenroeder on 07/01/18.
-//
+/* Copyright 2018 The HICS Authors
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom
+ * the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall
+ * be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
 #include <ctime>
 #include <Client.h>
 #include <thread>
+#include <fstream>
 
 #include "Manager.h"
 #include "PreProcessor.h"
 #include "PerformanceCalculator.h"
 #include "HostPlacer.h"
 
+
+std::string getHostAdress(std::string hostname);
 
 void runClassification(ComputationHost* host,
                        std::vector<ImageResult*>& allResults,
@@ -29,7 +54,8 @@ void runClassification(ComputationHost* host,
 Manager::Manager() {
 
     ComputationHost* client = new Client("fpga", grpc::CreateChannel(
-            "localhost:50051", grpc::InsecureChannelCredentials()));
+            getHostAdress("fpga"), grpc::InsecureChannelCredentials()));
+    std::cout << getHostAdress("fpga") << std::endl;
     try {
         client->queryNets();
         computationHosts.push_back(client);
@@ -64,7 +90,7 @@ void Manager::initGUI() {
     mainWindowHandler->attach(this);
 }
 
-void Manager::update() {
+ClassificationResult* Manager::update() {
 
     ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
 
@@ -185,6 +211,7 @@ void Manager::update() {
     for (auto hostResults : allResults){
             for (auto singleResult : hostResults) {
                 newResults.push_back(*singleResult);
+                delete singleResult;
             }
     }
 
@@ -193,7 +220,8 @@ void Manager::update() {
     if(request->getAggregateResults()){
         result->aggregateResults();
     }
-    mainWindowHandler->processClassificationResult(result);
+
+    return result;
 }
 
 bool Manager::operator==(const ManagerObserver &managerObserver){
@@ -218,4 +246,21 @@ std::vector<NetInfo *> Manager::netIntersection(std::vector<std::vector<NetInfo*
     }
 
     return nets;
+}
+
+/**
+ * Reads the Adress from a computation host specified in the computations.json (only for remote hosts)
+ * @param hostname  the name of the computationhost in the .json file
+ * @return adress of the computationHost
+ */
+std::string getHostAdress(std::string hostname) {
+    std::ifstream i(RES_DIR "computationHosts.json");
+    json computationHostFile;
+    i >> computationHostFile;
+    json computationHost = computationHostFile["computationHosts"];
+    for (auto compHostIt : computationHost) {
+        if (compHostIt["name"] == hostname) {
+            return compHostIt["host"];
+        }
+    }
 }

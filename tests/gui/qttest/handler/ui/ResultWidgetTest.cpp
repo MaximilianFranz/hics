@@ -1,6 +1,28 @@
-//
-// Created by pselab on 31.01.18.
-//
+/* Copyright 2018 The HICS Authors
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom
+ * the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall
+ * be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
 #include <QtWidgets/QLabel>
 #include "ResultWidgetTest.h"
@@ -26,10 +48,10 @@ void ResultWidgetTest::initTestCase() {
     PlatformInfo* info3 = new PlatformInfo("GPU1", PlatformType::GPU, "gpu1", 34, 55);
     PlatformInfo* info4 = new PlatformInfo("GPU2", PlatformType::GPU, "gpu2", 99, 211);
 
-    plat.push_back(std::pair<PlatformInfo*, float>(info1, 20));
-    plat.push_back(std::pair<PlatformInfo*, float>(info2, 10));
-    plat.push_back(std::pair<PlatformInfo*, float>(info3, 1));
-    plat.push_back(std::pair<PlatformInfo*, float>(info4, 69));
+    plat.push_back(std::pair<PlatformInfo*, float>(info1, 0.2));
+    plat.push_back(std::pair<PlatformInfo*, float>(info2, 0.1));
+    plat.push_back(std::pair<PlatformInfo*, float>(info3, 0.01));
+    plat.push_back(std::pair<PlatformInfo*, float>(info4, 0.69));
 
     PerformanceData performanceData(15, 999, plat);
     ImageResult imgResult1(results, imageWrapper);
@@ -63,74 +85,51 @@ void ResultWidgetTest::cleanup() {
     delete resultWidget;
 }
 
-std::string ResultWidgetTest::getActualString(int index, int layoutIndex, bool aggregated) {
-    std::string output = "";
-    if (!aggregated) {
-        output = ((QLabel *) (resultWidget->getImagesQGridLayout()
-            ->itemAtPosition(0, 1)->layout() /*!< ResultLayout in the first row*/
-            ->itemAt(index)->layout() /*!< Result row*/
-            ->itemAt(layoutIndex)->widget()))->text().toStdString(); /*!< layoutIndex 0 == Label name, 1 == percentage*/
-    } else {
-        output = ((QLabel *) (resultWidget->getMainQHBoxLayout()
-            ->itemAt(2)->layout()
-            ->itemAt(index)->layout()
-            ->itemAt(layoutIndex)->widget()))->text().toStdString();
-    }
-
-    return output;
-}
-
 void ResultWidgetTest::testNotAggregated() {
     resultWidget->displayResults(classificationResult);
-    QCOMPARE(((QLabel *) (resultWidget->getImagesQGridLayout()
-        ->itemAtPosition(0, 1)->layout()
-        ->itemAt(1)->widget()))
-                 ->text().toStdString(), (std::string) "Baukran");
 
-    QCOMPARE(getActualString(2, 0, false), (std::string) "Baukran");
-    QCOMPARE(getActualString(2, 1, false), (std::string) "68.4%");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->topResult.first, (std::string) "Baukran");
 
-    QCOMPARE(getActualString(3, 0, false), (std::string) "Haus");
-    QCOMPARE(getActualString(3, 1, false), (std::string) "17%");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[0]->name, (std::string) "Baukran");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[0]->percentage, (float) 0.684);
 
-    QCOMPARE(getActualString(4, 0, false), (std::string) "Tiger");
-    QCOMPARE(getActualString(4, 1, false), (std::string) "9%");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[1]->name, (std::string) "Haus");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[1]->percentage, (float) 0.17);
 
-    QCOMPARE(getActualString(5, 0, false), (std::string) "Leopard");
-    QCOMPARE(getActualString(5, 1, false), (std::string) "2.9%");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[2]->name, (std::string) "Tiger");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[2]->percentage, (float) 0.09);
 
-    QCOMPARE(getActualString(6, 0, false), (std::string) "KIT");
-    QCOMPARE(getActualString(6, 1, false), (std::string) "1.6%");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[3]->name, (std::string) "Leopard");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[3]->percentage, (float) 0.029);
+
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[4]->name, (std::string) "KIT");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[4]->percentage, (float) 0.016);
 
     QCOMPARE(resultWidget->getImagesQGridLayout()->rowCount(), 5);
 }
 
 void ResultWidgetTest::testAggregated() {
+    //TODO proper delete allocated memeory in ResultDisplays
     classificationResult->aggregateResults();
 
     resultWidget->displayResults(classificationResult);
 
-    /*Index 2: Normaly SpacerItem but there is the aggregated result layout
-     *Index 1: SpacerItem at index 0 */
-    QCOMPARE(((QLabel *) (resultWidget->getMainQHBoxLayout()
-        ->itemAt(2)->layout()
-        ->itemAt(1)->widget()))
-                 ->text().toStdString(), (std::string)"Baukran");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->topResult.first, (std::string) "Baukran");
 
-    QCOMPARE(getActualString(2, 0, true), (std::string) "Baukran");
-    QCOMPARE(getActualString(2, 1, true), (std::string) "68.4%");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[0]->name, (std::string) "Baukran");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[0]->percentage, (float) 0.684);
 
-    QCOMPARE(getActualString(3, 0, true), (std::string) "Haus");
-    QCOMPARE(getActualString(3, 1, true), (std::string) "17%");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[1]->name, (std::string) "Haus");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[1]->percentage, (float) 0.17);
 
-    QCOMPARE(getActualString(4, 0, true), (std::string) "Tiger");
-    QCOMPARE(getActualString(4, 1, true), (std::string) "9%");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[2]->name, (std::string) "Tiger");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[2]->percentage, (float) 0.09);
 
-    QCOMPARE(getActualString(5, 0, true), (std::string) "Leopard");
-    QCOMPARE(getActualString(5, 1, true), (std::string) "2.9%");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[3]->name, (std::string) "Leopard");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[3]->percentage, (float) 0.029);
 
-    QCOMPARE(getActualString(6, 0, true), (std::string) "KIT");
-    QCOMPARE(getActualString(6, 1, true), (std::string) "1.6%");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[4]->name, (std::string) "KIT");
+    QCOMPARE(resultWidget->getResultDisplays()[0]->results[4]->percentage, (float) 0.016);
 
     //imagesQGridLayout has only 1 column == no not_aggr result
     QCOMPARE(resultWidget->getImagesQGridLayout()->columnCount(), 1);

@@ -1,6 +1,28 @@
-//
-// Created by Maximilian Franz on 08.01.18.
-//
+/* Copyright 2018 The HICS Authors
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom
+ * the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall
+ * be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
 #pragma once
 
@@ -18,13 +40,14 @@ class PlatformPlacer;
 
 class Executor : public ComputationHost {
 private:
+    // Status members
     NeuralNet *net;
     OperationMode currentMode;
     std::vector<PlatformInfo*> currentPlatforms;
 
-    NetBuilder *builder;
-    PlatformPlacer *placer;
-    Interpreter *interpreter;
+    NetBuilder *builder = nullptr;
+    PlatformPlacer *placer = nullptr;
+    Interpreter *interpreter = nullptr;
 
     std::string name;
 
@@ -63,9 +86,22 @@ private:
     */
     DataWrapper *getImageData(ImageWrapper *imageWrapper);
 
-    NetInfo createMockInfo();
+    /**
+     * Helper method to create an empty NetInfo object
+     * @return empty NetInfo
+     */
+    const NetInfo createMockInfo();
 
 public:
+
+    /**
+     * Constructor assigning a name to this instance of Executor.
+     *
+     * The name is required to identify the Executor among the ComputationHosts in the Manager.
+     *
+     * @param name of this Executor
+     */
+    Executor(std::string name);
 
     /**
      * Default constructor ensuring that PlatformPlacer and NetBuilder are available
@@ -83,7 +119,7 @@ public:
      * @param net                   a NetInfo specifying which net ought to be used to classfiy
      * @param mode                  ENUM specifying which mode has been chosen
      * @param selectedPlatforms     list of PlatformInfo specifying which platforms to use for computation
-     * @return list of classfied Images with the top-5 results in an ImageResult!
+     * @return                      list of classified Images with the top-5 results in an ImageResult!
      */
     std::vector<ImageResult*> classify(std::vector<ImageWrapper*> images, NetInfo net, OperationMode mode,
                                       std::vector<PlatformInfo*> selectedPlatforms) override;
@@ -102,9 +138,9 @@ public:
      */
     std::vector<NetInfo*> queryNets() override;
 
-    Executor(std::string name);
-
     std::string getName() {
         return name;
     }
+
+    virtual ~Executor();
 };

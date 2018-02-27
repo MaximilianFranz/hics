@@ -9,8 +9,8 @@
     },
     {
       "type" : "FPGA",
-      "description" : "Altera de1soc FPGA",
-      "uuid" : "bf11cc38-081f-11e8-bba2-abd6db15b36e",
+      "description" : "OpenCL CPU",
+      "uuid" : "bf11cc38-081f-11e8-bba2-abd6db15b367",
       "power_consumption" : 500,
       "flops" : 1400
     }

@@ -56,18 +56,28 @@ g5.create_dataset('conv_5_b', data=new_data["conv5"][1])
 
 g6 = convertedH5.create_group('dense_1')
 
-g6.create_dataset('dense_1_W', data=new_data["fc6"][0])
+dataset = new_data["fc6"][0]
+dataset = np.transpose(dataset, (1, 0))
+
+g6.create_dataset('dense_1_W', data=dataset)
 g6.create_dataset('dense_1_b', data=new_data["fc6"][1])
 
 g7 = convertedH5.create_group('dense_2')
 
-g7.create_dataset('dense_2_W', data=new_data["fc7"][0])
+dataset = new_data["fc7"][0]
+dataset = np.transpose(dataset, (1, 0))
+
+g7.create_dataset('dense_2_W', data=dataset)
 g7.create_dataset('dense_2_b', data=new_data["fc7"][1])
 
 g8 = convertedH5.create_group('dense_3')
 
-g8.create_dataset('dense_3_W', data=new_data["fc8"][0])
+dataset = new_data["fc8"][0]
+dataset = np.transpose(dataset, (1, 0))
+
+g8.create_dataset('dense_3_W', data=dataset)
 g8.create_dataset('dense_3_b', data=new_data["fc8"][1])
 
 
 convertedH5.close()
+

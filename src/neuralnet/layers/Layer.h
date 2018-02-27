@@ -1,26 +1,38 @@
-//
-// Created by Maximilian Franz on 07.01.18.
-//
+/* Copyright 2018 The HICS Authors
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom
+ * the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall
+ * be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
 #pragma once
 
 #include <string>
 #include <wrapper/DataWrapper.h>
 #include <wrapper/WeightWrapper.h>
+#include <platforms/Platform.h>
 
-/**
- * ENUM to identify layers by their type.
- */
-enum LayerType {
-    ACTIVATION_RELU,
-    NORMALIZATION_LOCALRESPONSE,
-    LOSS_SOFTMAX,
-    POOLING_MAX,
-    CONVOLUTION,
-    FULLYCONNECTED,
-    INPUT,
-    CONCAT
-};
+#include "LayerType.h"
+
 
 /**
  * Abstract class Layer defines the public interface for all layers contained in a NeuralNet.
@@ -33,8 +45,8 @@ protected:
     DataWrapper* inputWrapper; //! == previousLayer.getOutputWrapper()
     DataWrapper* outputWrapper; //! == nextLayer.getInputWrapper()
 
-    bool computed;
-    bool functionSet;
+    bool computed = false;
+    bool functionSet = false;
 
     LayerType type;
     std::vector<int> inputDimensions;
@@ -61,6 +73,13 @@ public:
     virtual void forward() = 0;
 
     /**
+     * Set platform which is used to generate the corresponding function
+     *
+     * @param platform to be used as a LayerFunction factory
+     */
+    virtual void setPlatform(Platform *platform) = 0;
+
+    /**
      * Returns whether this Layer has been computed
      *
      * @return
@@ -77,24 +96,10 @@ public:
     virtual void setComputed(bool status);
 
     /**
-     * Returns whether this Layer is ready to be computed.
-     *
-     * A Layer is ready iff the function has been set and previous layers are computed.
      *
      * @return
      */
-    virtual bool readyToCompute();
-
-    /**
-     *
-     * @return
-     */
-    virtual bool isLayerFunctionSet();
-
-    /**
-     * Resets the status of this layer, so that it can be reconfigured.
-     */
-    virtual void reset();
+    virtual bool isPlatformSet();
 
     /**
      * Initializes the default values of this layer
@@ -103,7 +108,7 @@ public:
      *             computed is false
      *
      */
-    virtual void init();
+    void init();
 
     /**
      * Set previous layer by giving a pointer
@@ -159,15 +164,47 @@ public:
      */
     const std::vector<int> &getInputDimensions() const;
 
+    /**
+     * Getter for the pointer to inputWrapper
+     * @return
+     */
     DataWrapper *getInputWrapper() const;
 
+    /**
+     * Set inputWrapper explicitly
+     * @param inputWrapper
+     */
     void setInputWrapper(DataWrapper *inputWrapper);
 
+    /**
+     * Getter for outputWrapper
+     * @return outputWrapper
+     */
     DataWrapper *getOutputWrapper() const;
 
-    void setOutputWrapper(DataWrapper *outputWrapper);
+    /**
+     * Resets the status of this Layer
+     */
+    void reset();
 
+    /**
+     * Checks whether this layer is ready to be executed
+     * @return whether layer is ready for forward() call
+     */
+    virtual bool readyToCompute();
+
+    /**
+     * Remove obsolete DataWrapper instances
+     *
+     * Call only after forward() has been comuted
+     *
+     */
     void deleteGarbage();
+
+    /**
+     * Destructor of Layer
+     */
+    virtual ~Layer();
 
 };
 

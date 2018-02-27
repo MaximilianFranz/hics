@@ -2,7 +2,8 @@
 __kernel void myGEMM1(const int M, const int N, const int K,
                   const __global float* A,
                   const __global float* B,
-                  __global float* C) {
+                  __global float* C,
+                  const __global float* D) {
 
     // Thread identifiers
     const int m = get_global_id(0); // Col ID of C (0..M)
@@ -23,6 +24,9 @@ __kernel void myGEMM1(const int M, const int N, const int K,
     for (int k=0; k<K; k++) {
         acc += A[m*K + k] * B[k*N + n];
     }
+
+    // Add bias
+    acc += D[m];
 
     // Store the result
     C[m*N + n] = acc;

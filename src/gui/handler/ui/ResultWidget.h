@@ -1,9 +1,36 @@
+/* Copyright 2018 The HICS Authors
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom
+ * the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall
+ * be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
 #pragma once
 
 #include <QWidget>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <ClassificationResult.h>
+#include <QtWidgets/QLabel>
 
 namespace Ui {
     class ResultWidget;
@@ -28,6 +55,61 @@ class ResultWidget : public QWidget {
 
 Q_OBJECT
 
+private:
+
+    /* Structs*/
+
+    struct ClassificationLabel /*!< Maps the classification label and its percentage to the objects which are displaying them*/
+    {
+        std::string name; /*!< Classification label*/
+        QLabel *nameDisplay; /*!< Displayed object*/
+
+        float percentage; /*< Percentage label*/
+        QLabel *percentageDisplay; /*!< Displayed object */
+    };
+
+    struct ImageDisplay
+    {
+        ImageResult *imageResult;
+
+        std::string filePath;
+        QLabel *filePathDisplay;
+        QLabel *imageDisplay;
+    };
+
+    struct ResultDisplay
+    {
+        ImageResult *imageResult;
+
+        std::pair<std::string, QLabel *> topResult;
+        std::vector<ClassificationLabel *> results;
+    };
+
+    /* Attributes*/
+
+    Ui::ResultWidget *ui;
+
+    const QString PERCENTAGE_BAR_COLOR = "rgba(255, 0, 0, 0.6)";
+    const int NUMERATOR_TEXT_PERCENTAGE_RATIO = 2;
+    const int DENOMINATOR_TEXT_PERCENTAGE_RATIO = 3;
+
+    std::vector<ResultDisplay *> resultDisplays;
+    std::vector<ImageDisplay *> imageDisplays;
+
+    /* Methods*/
+
+    QFrame *createImageLayout(const std::string &filePath, ImageDisplay *imageDisplay);
+
+    QFrame *createResultLayout(std::vector<std::pair<std::string, float>> &result, ResultDisplay *resultDisplay);
+
+    QString shortLink(const std::string &link);
+
+    std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
+
+    void clearLayout(QLayout *layout);
+
+    void resize();
+
 public:
 
     /**
@@ -45,7 +127,7 @@ public:
      *
      * Delets the ui and all its child widgets, as well as all allocated memory in ResultWidget.
      */
-    ~ResultWidget();
+    ~ResultWidget() override;
 
     /**
      * @brief displayResults() takes a ClassificationResult and displays its results in the ResultWidget
@@ -83,17 +165,11 @@ public:
      */
     QHBoxLayout *getMainQHBoxLayout();
 
-private:
+    const std::vector<ResultDisplay *> &getResultDisplays() const;
 
-    Ui::ResultWidget *ui;
+    const std::vector<ImageDisplay *> &getImageDisplays() const;
 
-    QString shortLink(const std::string &link);
+protected:
 
-    QFrame *createImageLayout(const std::string &filePath);
-
-    QFrame *createResultLayout(std::vector<std::pair<std::string, float>> &result);
-
-    std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
-
-    void clearLayout(QLayout *layout);
+    void resizeEvent(QResizeEvent * event) override;
 };

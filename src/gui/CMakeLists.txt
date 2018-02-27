@@ -16,12 +16,11 @@ set(SOURCE_FILES
         handler/ui/DetailDialog.cpp
         handler/ui/DetailDialog.h
         handler/ui/DetailDialog.ui
-    MainWindowSubject.h
+        MainWindowSubject.h
+        Worker.cpp
+        Worker.h
         handler/MainWindowHandler.cpp
         handler/MainWindowHandler.h)
 
 add_library(gui STATIC ${SOURCE_FILES})
 target_link_libraries(gui Qt5::Core Qt5::Gui Qt5::Widgets)
-
-add_executable(gui-exec main.cpp)
-target_link_libraries(gui-exec gui executor netbuilder platform manager neuralnet)

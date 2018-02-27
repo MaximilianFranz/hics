@@ -1,6 +1,28 @@
-//
-// Created by Maximilian Franz on 16.01.18.
-//
+/* Copyright 2018 The HICS Authors
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom
+ * the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall
+ * be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
 #include <map>
 #include <wrapper/DataWrapper.h>
@@ -80,14 +102,15 @@ SCENARIO("Testing Executor Module") {
 
     SECTION("Testing Placer") {
         PlatformPlacer p;
+        Executor e;
         NetBuilder *builder = new NetBuilder();
         std::vector<NetInfo*> nets = builder->queryAvailableNets();
         NetInfo alexnetinfo = *nets.at(0);
         NeuralNet* alexnet = builder->buildNeuralNet(alexnetinfo);
 
-        std::vector<PlatformInfo*> platformsinfos_mock;
+        std::vector<PlatformInfo*> platforminfos = e.queryPlatform();
 
-        p.placeComputations(alexnet, OperationMode::EnergyEfficient, platformsinfos_mock);
+        p.placeComputations(alexnet, OperationMode::EnergyEfficient, platforminfos);
         REQUIRE(alexnet->isPlacementComplete());
 
     }
@@ -105,11 +128,13 @@ SCENARIO("Testing Executor Module") {
         ImageWrapper *img = new ImageWrapper(imgDim, image, "filepath");
 
         std::vector<ImageResult*> results;
-        std::vector<PlatformInfo*> info_mock;
-        results = executor->classify({img}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
+        std::vector<PlatformInfo*> info = executor->queryPlatform();
+        results = executor->classify({img}, alexnetinfo, OperationMode::EnergyEfficient, info);
 
         // Highest prob is weasel
         REQUIRE(results.front()->getResults().front().first == "weasel");
+
+        delete executor;
 
     }
 
@@ -123,19 +148,16 @@ SCENARIO("Testing Executor Module") {
         map.insert(std::pair<QString, QImage>(QString("laska"), img));
         std::vector<ImageWrapper*> images = p.processImages(map);
 
-
         Executor executor;
         std::vector<NetInfo*> nets = executor.queryNets();
         NetInfo alexnetinfo = *nets.at(0);
 
         std::vector<ImageResult*> results;
-        std::vector<PlatformInfo*> info_mock;
-        results = executor.classify({images.front()}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
+        std::vector<PlatformInfo*> infos = executor.queryPlatform();
+        results = executor.classify({images.front()}, alexnetinfo, OperationMode::EnergyEfficient, infos);
 
         std::cout << results.front()->getResults().front().first << std::endl;
         std::cout << results.front()->getResults().front().second << std::endl;
-
-
 
     }
 }
