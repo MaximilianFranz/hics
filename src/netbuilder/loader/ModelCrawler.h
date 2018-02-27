@@ -35,11 +35,24 @@ class ModelCrawler {
 private:
     static NetInfo *constructNetInfo(JSONModelLoader *loader);
 
-public:
+    /**
+     * Helper that lists all files names in a directory
+     *
+     * @param pathToDir from which to list file names
+     * @return list of file names that are not . or ..
+     * @throws ResourceExecption if directory could not be located or cannot be read
+     */
     static std::vector<std::string> getFilesInDir(std::string pathToDir);
 
+public:
+
+    /**
+     * Returns NetInfos for all valid neural net descriptions
+     *
+     * @param path to the directory where nets should be located
+     * @return list of valid nets as NetInfo
+     * @throws ResourceException if no valid nets where found
+     */
     static std::vector<NetInfo*> getValidNets(std::string path);
-
-
 };
 
