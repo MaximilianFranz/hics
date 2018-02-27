@@ -27,12 +27,15 @@
 #include <ctime>
 #include <Client.h>
 #include <thread>
+#include <fstream>
 
 #include "Manager.h"
 #include "PreProcessor.h"
 #include "PerformanceCalculator.h"
 #include "HostPlacer.h"
 
+
+std::string getHostAdress(std::string hostname);
 
 void runClassification(ComputationHost* host,
                        std::vector<ImageResult*>& allResults,
@@ -51,7 +54,8 @@ void runClassification(ComputationHost* host,
 Manager::Manager() {
 
     ComputationHost* client = new Client("fpga", grpc::CreateChannel(
-            "localhost:50051", grpc::InsecureChannelCredentials()));
+            getHostAdress("fpga"), grpc::InsecureChannelCredentials()));
+    std::cout << getHostAdress("fpga") << std::endl;
     try {
         client->queryNets();
         computationHosts.push_back(client);
@@ -241,4 +245,21 @@ std::vector<NetInfo *> Manager::netIntersection(std::vector<std::vector<NetInfo*
     }
 
     return nets;
+}
+
+/**
+ * Reads the Adress from a computation host specified in the computations.json (only for remote hosts)
+ * @param hostname  the name of the computationhost in the .json file
+ * @return adress of the computationHost
+ */
+std::string getHostAdress(std::string hostname) {
+    std::ifstream i(RES_DIR "computationHosts.json");
+    json computationHostFile;
+    i >> computationHostFile;
+    json computationHost = computationHostFile["computationHosts"];
+    for (auto compHostIt : computationHost) {
+        if (compHostIt["name"] == hostname) {
+            return compHostIt["host"];
+        }
+    }
 }
