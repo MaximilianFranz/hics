@@ -92,6 +92,8 @@ private:
 
     void disableWidgets(bool disable);
 
+    void renumerateImages();
+
 public:
 
     /**

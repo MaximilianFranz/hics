@@ -70,9 +70,9 @@ StartWidget::~StartWidget() {
 
 QHBoxLayout *StartWidget::addInputImage(QImage *image, const QString &filePath) {
     auto layout = new QHBoxLayout();
-    auto checkBox = new QCheckBox(this);
     auto label = new QLabel(this);
 
+    auto checkBox = new QCheckBox(QString::number(ui->inputImagesQVBoxLayout->count() + 1), this);
     layout->addWidget(checkBox, 0);
 
     //Paint the QImage into a QLabel so that it can be displayed
@@ -159,6 +159,14 @@ void StartWidget::processConfirmDeletionButton() {
                 images.remove(it.key());
             }
         }
+    }
+
+    renumerateImages();
+}
+
+void StartWidget::renumerateImages() {
+    for (int i = 0; i < ui->inputImagesQVBoxLayout->count(); ++i){
+        ((QCheckBox*)(ui->inputImagesQVBoxLayout->itemAt(i)->layout()->itemAt(0)->widget()))->setText(QString::number(i + 1));
     }
 }
 
