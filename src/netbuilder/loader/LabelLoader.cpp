@@ -39,7 +39,7 @@ std::map<int, std::string> LabelLoader::getLabelMap(std::string path) {
     }
 
     try {
-        std::ifstream file(resolved_path);
+        file.open(resolved_path);
     }
     catch (...) {
         throw ResourceException("Could not read label file at: " + path);
