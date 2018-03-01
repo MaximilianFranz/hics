@@ -43,6 +43,12 @@ void LayerMaker::validateInputDims(std::vector<int> inputDims, std::string layer
     }
 }
 
+void LayerMaker::validateWeights(WeightWrapper *weights, std::string layerName) {
+    if (weights == nullptr) {
+        throw IllegalArgumentException("Weights should not be NULL for " + layerName);
+    }
+}
+
 InputLayer* LayerMaker::createInputLayer(LayerConstructionParams lcp){
     std::vector<int> inputDim = {lcp.inputChannels,
                                  lcp.inputSize,
@@ -56,6 +62,7 @@ InputLayer* LayerMaker::createInputLayer(LayerConstructionParams lcp){
 ConvolutionLayer* LayerMaker::createConvLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights){
     LayerMaker::validateInputDims(inputDims, "Convolution layer");
     LayerMaker::validateKernels(lcp, "Convolution layer");
+    LayerMaker::validateWeights(weights, "Convolution layer");
     ConvolutionLayer* conv = new ConvolutionLayer(lcp.numFilters,
                                                   lcp.filterSize,
                                                   lcp.paddingSize,
@@ -99,6 +106,7 @@ SoftMaxLossLayer* LayerMaker::createSoftmaxLossLayer(LayerConstructionParams lcp
 
 FullyConnectedLayer* LayerMaker::createFCLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights) {
     LayerMaker::validateInputDims(inputDims, "FullyConnected layer");
+    LayerMaker::validateWeights(weights, "FullyConnected layer");
     FullyConnectedLayer* fullycon = new FullyConnectedLayer(inputDims,
                                                             weights);
     return fullycon;
