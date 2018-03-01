@@ -35,13 +35,12 @@ Interpreter::Interpreter(std::map<int, std::string> &labelMap)
 
 }
 
-//TODO: Case for less then 5 elements in output
 ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *originalImage, PlatformPlacer* placer) {
     std::vector<float> sortOut = output->getData();
     std::sort(sortOut.begin(), sortOut.end(), compareDesc); //sort output in descending order
     std::vector<std::pair<std::string, float>> results; // ordered list of labels and their probabilities
     if (output->getNumElements() <= TOP_X) {
-        if (labelMap.size() > 0) {
+        if (!labelMap.empty()) {
             for (int i = 0; i < output->getNumElements(); i++) {
                 // insert only as many results as exist
                 results.push_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output->getData())),
