@@ -25,7 +25,6 @@
  */
 
 #include <map>
-#include <wrapper/DataWrapper.h>
 #include <Interpreter.h>
 #include <Executor.h>
 #include <fstream>
@@ -35,6 +34,9 @@
 #include <algorithm>
 
 #include <QImage>
+
+#include <wrapper/DataWrapper.h>
+#include <FileHelper.h>
 
 
 #include "ExecutorTest.h"
@@ -69,33 +71,7 @@ TEST_CASE("Testing Interpreter") {
 }
 
 
-template<typename T>
-std::vector<T> split(const std::string& line) {
-    std::istringstream is(line);
-    return std::vector<T>(std::istream_iterator<T>(is), std::istream_iterator<T>());
-}
 
-std::vector<float> getDataFromFile(std::string path) {
-    char* resolved_path;
-    // Getting the real path from execution dir.
-    // We pass NULL and let realpath allocate the string which means we have to free() it later.
-    resolved_path = realpath(path.c_str(), NULL);
-    // Open file
-    std::ifstream file(resolved_path);
-    std::string str;
-
-    file.seekg(0, std::ios::end);
-    str.reserve(static_cast<unsigned long>(file.tellg()));
-    file.seekg(0, std::ios::beg);
-
-    str.assign((std::istreambuf_iterator<char>(file)),
-               std::istreambuf_iterator<char>());
-
-    std::vector<float> data = split<float>(str);
-
-    free(resolved_path);
-    return data;
-}
 
 SCENARIO("Testing Executor Module") {
 
@@ -122,7 +98,7 @@ SCENARIO("Testing Executor Module") {
 
         std::string img_data_path = TEST_RES_DIR "img_data.txt";
 
-        std::vector<float> image = getDataFromFile(img_data_path);
+        std::vector<float> image = util::getDataFromFile(img_data_path);
 
         std::vector<int> imgDim = {3,227,227};
         ImageWrapper *img = new ImageWrapper(imgDim, image, "filepath");

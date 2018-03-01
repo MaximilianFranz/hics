@@ -29,6 +29,7 @@
 #include <iterator>
 #include <cmath>
 
+#include <FileHelper.h>
 #include <util/im2col.h>
 
 #include "im2colTest.h"
@@ -597,34 +598,6 @@ TEST_CASE("4x4x1 image and 3x3x1 kernel") {
 //    }
 //}
 
-template<typename T>
-std::vector<T> split_im2col(const std::string &line) {
-    std::istringstream is(line);
-    return std::vector<T>(std::istream_iterator<T>(is), std::istream_iterator<T>());
-}
-
-std::vector<float> getDataFromFile_im2col(std::string path) {
-    // Getting the real path from execution dir.
-    // We pass NULL and let realpath allocate the string which means we have to free() it later.
-    char *resolved_path = realpath(path.c_str(), NULL);
-    // TODO: check if resolved_path is NULL
-    // Open file
-    std::ifstream file(resolved_path);
-    std::string str;
-
-    file.seekg(0, std::ios::end);
-    str.reserve(static_cast<unsigned long>(file.tellg()));
-    file.seekg(0, std::ios::beg);
-
-    str.assign((std::istreambuf_iterator<char>(file)),
-               std::istreambuf_iterator<char>());
-
-    std::vector<float> data = split_im2col<float>(str);
-
-    free(resolved_path);
-
-    return data;
-}
 
 TEST_CASE("Testing im2Col with real data") {
     SECTION("Conv Layer 1") {
@@ -633,10 +606,10 @@ TEST_CASE("Testing im2Col with real data") {
         std::string convolution_result_path = TEST_RES_DIR "conv1_data_alexnet.txt";
         std::string bias_path = TEST_RES_DIR "conv1_bias.txt";
 
-        std::vector<float> input = getDataFromFile_im2col(input_path);
-        std::vector<float> weights = getDataFromFile_im2col(weights_path);
-        std::vector<float> bias = getDataFromFile_im2col(bias_path);
-        std::vector<float> result_expected = getDataFromFile_im2col(convolution_result_path);
+        std::vector<float> input = util::getDataFromFile(input_path);
+        std::vector<float> weights = util::getDataFromFile(weights_path);
+        std::vector<float> bias = util::getDataFromFile(bias_path);
+        std::vector<float> result_expected = util::getDataFromFile(convolution_result_path);
 
         int input_size = 227;
         int channels = 3;
@@ -680,10 +653,10 @@ TEST_CASE("Testing im2Col with real data") {
         std::string convolution_result_path = TEST_RES_DIR "conv2_data_alexnet.txt";
         std::string bias_path = TEST_RES_DIR "conv2_bias.txt";
 
-        std::vector<float> input = getDataFromFile_im2col(input_path);
-        std::vector<float> weights = getDataFromFile_im2col(weights_path);
-        std::vector<float> bias = getDataFromFile_im2col(bias_path);
-        std::vector<float> result_expected = getDataFromFile_im2col(convolution_result_path);
+        std::vector<float> input = util::getDataFromFile(input_path);
+        std::vector<float> weights = util::getDataFromFile(weights_path);
+        std::vector<float> bias = util::getDataFromFile(bias_path);
+        std::vector<float> result_expected = util::getDataFromFile(convolution_result_path);
 
         int input_size = 27;
         int channels = 48;
@@ -727,10 +700,10 @@ TEST_CASE("Testing im2Col with real data") {
         std::string convolution_result_path = TEST_RES_DIR "conv3_data_alexnet.txt";
         std::string bias_path = TEST_RES_DIR "conv3_bias.txt";
 
-        std::vector<float> input = getDataFromFile_im2col(input_path);
-        std::vector<float> weights = getDataFromFile_im2col(weights_path);
-        std::vector<float> bias = getDataFromFile_im2col(bias_path);
-        std::vector<float> result_expected = getDataFromFile_im2col(convolution_result_path);
+        std::vector<float> input = util::getDataFromFile(input_path);
+        std::vector<float> weights = util::getDataFromFile(weights_path);
+        std::vector<float> bias = util::getDataFromFile(bias_path);
+        std::vector<float> result_expected = util::getDataFromFile(convolution_result_path);
 
         int input_size = 13;
         int channels = 256;
@@ -774,10 +747,10 @@ TEST_CASE("Testing im2Col with real data") {
         std::string convolution_result_path = TEST_RES_DIR "conv4_data_alexnet.txt";
         std::string bias_path = TEST_RES_DIR "conv4_bias.txt";
 
-        std::vector<float> input = getDataFromFile_im2col(input_path);
-        std::vector<float> weights = getDataFromFile_im2col(weights_path);
-        std::vector<float> bias = getDataFromFile_im2col(bias_path);
-        std::vector<float> result_expected = getDataFromFile_im2col(convolution_result_path);
+        std::vector<float> input = util::getDataFromFile(input_path);
+        std::vector<float> weights = util::getDataFromFile(weights_path);
+        std::vector<float> bias = util::getDataFromFile(bias_path);
+        std::vector<float> result_expected = util::getDataFromFile(convolution_result_path);
 
         int input_size = 13;
         int channels = 384;
@@ -821,10 +794,10 @@ TEST_CASE("Testing im2Col with real data") {
         std::string convolution_result_path = TEST_RES_DIR "conv5_data_alexnet.txt";
         std::string bias_path = TEST_RES_DIR "conv5_bias.txt";
 
-        std::vector<float> input = getDataFromFile_im2col(input_path);
-        std::vector<float> weights = getDataFromFile_im2col(weights_path);
-        std::vector<float> bias = getDataFromFile_im2col(bias_path);
-        std::vector<float> result_expected = getDataFromFile_im2col(convolution_result_path);
+        std::vector<float> input = util::getDataFromFile(input_path);
+        std::vector<float> weights = util::getDataFromFile(weights_path);
+        std::vector<float> bias = util::getDataFromFile(bias_path);
+        std::vector<float> result_expected = util::getDataFromFile(convolution_result_path);
 
         int input_size = 13;
         int channels = 384;
