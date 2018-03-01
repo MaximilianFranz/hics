@@ -99,11 +99,8 @@ void NeuralNet::reset() {
 
 long long NeuralNet::getTotalDifficulty() {
     long long total = 0;
-    int index = 0;
     for (auto l : layers) {
-        std::cout << l->getType() << " " << index << " " << l->getDifficulty() << std::endl;
         total += l->getDifficulty();
-        index++;
     }
     return total;
 }
