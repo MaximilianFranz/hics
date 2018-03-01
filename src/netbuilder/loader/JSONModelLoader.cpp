@@ -36,7 +36,6 @@ JSONModelLoader::JSONModelLoader(string path) : ModelLoader(path){
 }
 
 void JSONModelLoader::init() {
-    //loads the json File as a string
     try {
         std::ifstream jsonFile(this->pathToJSON);
         jsonFile >> this->model;

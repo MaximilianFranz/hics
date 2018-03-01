@@ -25,10 +25,13 @@
  */
 
 #include "LayerMaker.h"
+#include <IllegalArgumentException.h>
 
 
-void LayerMaker::validateData() throw() {
-
+void LayerMaker::validateKernels(LayerConstructionParams lcp, std::string layerName){
+    if (lcp.numFilters == 0) {
+        throw IllegalArgumentException("The number of kernels should not be zero for " + layerName);
+    }
 }
 
 InputLayer* LayerMaker::createInputLayer(LayerConstructionParams lcp){
@@ -41,6 +44,7 @@ InputLayer* LayerMaker::createInputLayer(LayerConstructionParams lcp){
 
 
 ConvolutionLayer* LayerMaker::createConvLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights){
+    LayerMaker::validateKernels(lcp, "Convolution layer");
     ConvolutionLayer* conv = new ConvolutionLayer(lcp.numFilters,
                                                   lcp.filterSize,
                                                   lcp.paddingSize,

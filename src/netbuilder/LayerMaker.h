@@ -41,7 +41,7 @@
 class LayerMaker {
 private:
 
-    void validateData()throw();
+    void validateKernels(LayerConstructionParams lcp, std::string layerName);
 
 public:
     /**
