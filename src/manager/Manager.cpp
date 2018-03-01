@@ -50,7 +50,6 @@ void runClassification(ComputationHost* host,
                        int& allTimes) {
     try {
         allResults = host->classify(std::move(img), std::move(net), mode, std::move(selecedPlatforms));
-        //throw std::logic_error("This is a example bug.");
     } catch (...) {
         //TODO: handling
         exceptionptr = std::current_exception();
