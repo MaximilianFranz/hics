@@ -88,9 +88,11 @@ PlatformInfo* PlatformPlacer::getDefaultPlatform() {
 
 //TODO: can we give a layer a attribute that specifies it's difficutly?
 void PlatformPlacer::placeNetWith(PlatformInfo *perfomanceInfo, PlatformInfo *fallbackInfo) {
-    int perfomanceCount = 0;
-    int fallbackCount = 0;
+    float perfomanceDifficulty = 0;
+    float  fallbackDifficulty = 0;
 
+    long long totalDifficulty = net->getTotalDifficulty();
+    long long averageDifficulty = totalDifficulty / net->getNumLayers();
     
     Platform *perfomance = platformManager->getPlatformById(perfomanceInfo->getPlatformId());
     Platform *fallback = platformManager->getPlatformById(fallbackInfo->getPlatformId());
@@ -98,25 +100,28 @@ void PlatformPlacer::placeNetWith(PlatformInfo *perfomanceInfo, PlatformInfo *fa
     SimpleNetIterator *it = net->createIterator();
     do {
         Layer *currentLayer = it->getElement();
-        if (currentLayer->getType() == LayerType::CONVOLUTION || currentLayer->getType() == LayerType::FULLYCONNECTED) {
+
+        // If layer is relatively difficult, use the perfomance platform
+        if (currentLayer->getDifficulty() > averageDifficulty) {
             currentLayer->setPlatform(perfomance);
-            perfomanceCount++;
+            perfomanceDifficulty += currentLayer->getDifficulty();
         } else {
             currentLayer->setPlatform(fallback);
-            fallbackCount++;
+            fallbackDifficulty += currentLayer->getDifficulty();
         }
         it->next();
 
     } while(it->hasNext());
 
-    float layerCount = fallbackCount  + perfomanceCount;
+    float performanceDistribution = perfomanceDifficulty / totalDifficulty;
+    float fallbackDistribution = fallbackDifficulty / totalDifficulty;
 
-    // Calculate simple distribution.
+    // Calculate distribution.
     if (fallbackInfo->getPlatformId() != perfomanceInfo->getPlatformId()) {
         compDistribution.push_back(std::pair<PlatformInfo *, float>(perfomanceInfo,
-                                                                    perfomanceCount / layerCount));
+                                                                    performanceDistribution));
         compDistribution.push_back(std::pair<PlatformInfo *, float>(fallbackInfo,
-                                                                    fallbackCount / layerCount));
+                                                                    fallbackDistribution));
     } else {
         compDistribution.emplace_back(std::pair<PlatformInfo *, float>(perfomanceInfo, 1));
     }
