@@ -10,7 +10,6 @@
 
 #include <json.hpp>
 
-#include "StringLoader.h"
 
 
 using json = nlohmann::json;
@@ -44,7 +43,6 @@ protected:
     string pathToJSON;
     json model;
     json layers;
-    //StringLoader s;
 
 
 public:
