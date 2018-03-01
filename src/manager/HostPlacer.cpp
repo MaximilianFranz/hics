@@ -3,11 +3,15 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include "HostPlacer.h"
 
 
 HostPlacer::Performance HostPlacer::readComputationHostInfo(std::string hostName) {
-    std::string jsonStr = StringLoader::getStringFromFile(RES_DIR "computationHosts.json");
+    std::ifstream jsonFile(RES_DIR "computationHosts.json");
+    std::ostringstream tmp;
+    tmp<<jsonFile.rdbuf();
+    std::string jsonStr = tmp.str();
     json computationHostFile = json::parse(jsonStr);
     json computationHost = computationHostFile["computationHosts"];
 

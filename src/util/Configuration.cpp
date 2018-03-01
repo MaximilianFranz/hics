@@ -7,7 +7,7 @@
 
 const std::string Configuration::SETTINGS_PATH = "../../../resources";
 const std::string Configuration::TESTING_PATH = "";
-std::char* environment;
+char* environment = NULL;
 
 std::string Configuration::choose_path() {
     if (std::getenv(environment) == "testing") {
@@ -24,7 +24,6 @@ std::string Configuration::get_model_path() {
 
 std::string Configuration::get_weights_path() {
     return choose_path() + "/weights";
-    }
 }
 
 std::string Configuration::get_labels_path() {
