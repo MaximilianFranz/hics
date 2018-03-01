@@ -76,13 +76,4 @@ signals:
      * @param result is the computed ClassificationResult
      */
     void workDone(ClassificationResult* result);
-
-    /**
-     * @brief The exception signal gets emitted when an exception gets thrown during the notify() method call.
-     *
-     * The signal emits a error message by providing a QString.
-     *
-     * @param errorMessage is the to be displayed error message
-     */
-    void exception(const QString &errorMessage);
 };

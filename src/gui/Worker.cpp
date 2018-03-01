@@ -37,12 +37,8 @@ void Worker::doWork() {
     ClassificationResult *result = nullptr;
 
     //Start the classification
-    try {
-        result = notify();
-        //Signal that the classification has finished and hand over the result
-        emit workDone(result);
-    } catch (std::exception &e){
-        //Throw the exception to mainWindowHandler to let it display it to the user
-        emit exception(QString::fromStdString(e.what()));
-    }
+    result = notify();
+
+    //Signal that the classification has finished and hand over the result
+    emit workDone(result);
 }
