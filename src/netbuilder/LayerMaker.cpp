@@ -5,7 +5,9 @@
 #include "LayerMaker.h"
 
 InputLayer* LayerMaker::createInputLayer(LayerConstructionParams lcp){
-    std::vector<int> inputDim = {lcp.inputChannels, lcp.inputSize, lcp.inputSize};
+    std::vector<int> inputDim = {lcp.inputChannels,
+                                 lcp.inputSize,
+                                 lcp.inputSize};
     InputLayer* input = new InputLayer(inputDim);
     return input;
 }

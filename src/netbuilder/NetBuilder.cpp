@@ -30,7 +30,7 @@ NeuralNet* NetBuilder::buildNeuralNet(NetInfo netInfo) {
         if (lcp.type == "conv"){
             WeightWrapper *weights = loader.getWeights(WeightLoader::LayerIdentifier(weightIndex));
             layer = layerMaker.createConvLayer(lcp, inputDimensionsForLayer, weights);
-            weightIndex++;
+            weightIndex++
         }
             //Naive for now - No possibility for other activations
         else if (lcp.type == "activation") {
