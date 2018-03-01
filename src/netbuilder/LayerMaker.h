@@ -19,6 +19,8 @@
 class LayerMaker {
 private:
 
+    void validateData()throw(...);
+
 public:
     /**
      * Creates an input layer from given layer construction parameters.

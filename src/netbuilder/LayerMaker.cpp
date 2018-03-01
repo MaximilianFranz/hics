@@ -4,6 +4,11 @@
 
 #include "LayerMaker.h"
 
+
+void LayerMaker::validateData() {
+    
+}
+
 InputLayer* LayerMaker::createInputLayer(LayerConstructionParams lcp){
     std::vector<int> inputDim = {lcp.inputChannels,
                                  lcp.inputSize,
