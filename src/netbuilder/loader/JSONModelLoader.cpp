@@ -3,6 +3,7 @@
 //
 
 #include "JSONModelLoader.h"
+#include <fstream>
 
 
 JSONModelLoader::JSONModelLoader(string path) : ModelLoader(path){
@@ -10,7 +11,12 @@ JSONModelLoader::JSONModelLoader(string path) : ModelLoader(path){
 }
 
 void JSONModelLoader::init() {
-    string jsonString = s.getStringFromFile(this->pathToJSON);
+    //loads the json File as a string
+    std::ifstream jsonFile(this->pathToJSON);
+    std::ostringstream tmp;
+    tmp<<jsonFile.rdbuf();
+    std::string jsonString = tmp.str();
+
     this->model = json::parse(jsonString);
     this->layers = model["layers"];
 }

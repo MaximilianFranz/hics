@@ -44,7 +44,7 @@ protected:
     string pathToJSON;
     json model;
     json layers;
-    StringLoader s;
+    //StringLoader s;
 
 
 public:
