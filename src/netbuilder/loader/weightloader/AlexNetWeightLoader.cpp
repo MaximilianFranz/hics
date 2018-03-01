@@ -24,6 +24,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <ResourceException.h>
 #include "AlexNetWeightLoader.h"
 
 WeightWrapper *AlexNetWeightLoader::createWeightWrapper(const std::string &groupName) {
@@ -159,8 +160,9 @@ AlexNetWeightLoader::AlexNetWeightLoader(const std::string &filePath)
     : filePath(filePath) {
     try {
         weightFile = h5cpp::File(filePath, "r");
-    } catch (std::exception &e) {
+    } catch (h5cpp::Exception &e) {
         //Weight File Error is crucial
+        throw ResourceException();
         //TODO act accordingly -> log
     }
 }
