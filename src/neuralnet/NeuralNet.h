@@ -73,7 +73,6 @@ public:
     void reset();
 
     /**
-     * TODO: Replace with NetIterator and get proper inheritance to work!
      *
      * @return an iterator
      */
@@ -88,11 +87,15 @@ public:
      */
     bool verifyConsistency();
 
+    long long getTotalDifficulty();
+
     /**
      *
      * @return last Layer of the network, which is the output.
      */
     const Layer *getLastLayer() const;
+
+    const int getNumLayers() const;
 
     /**
      * Desctructs this instance of NeuralNet an all layers in it.

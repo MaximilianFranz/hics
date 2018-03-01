@@ -24,6 +24,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <iostream>
 #include "NeuralNet.h"
 
 // Include SimpleIterator only here in cpp to avoid build errors due to cyclic dependencies
@@ -94,4 +95,19 @@ void NeuralNet::reset() {
         l->reset();
     }
 
+}
+
+long long NeuralNet::getTotalDifficulty() {
+    long long total = 0;
+    int index = 0;
+    for (auto l : layers) {
+        std::cout << l->getType() << " " << index << " " << l->getDifficulty() << std::endl;
+        total += l->getDifficulty();
+        index++;
+    }
+    return total;
+}
+
+const int NeuralNet::getNumLayers() const {
+    return (int)layers.size(); // number of layers are reasonably small
 }
