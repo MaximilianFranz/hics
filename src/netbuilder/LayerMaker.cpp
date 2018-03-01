@@ -5,8 +5,8 @@
 #include "LayerMaker.h"
 
 
-void LayerMaker::validateData() {
-    
+void LayerMaker::validateData() throw() {
+
 }
 
 InputLayer* LayerMaker::createInputLayer(LayerConstructionParams lcp){

@@ -19,7 +19,7 @@
 class LayerMaker {
 private:
 
-    void validateData()throw(...);
+    void validateData()throw();
 
 public:
     /**
