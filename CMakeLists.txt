@@ -66,6 +66,5 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
     set(COVERAGE_EXCLUDES '/usr/*' 'tests/*' 'catch/*' 'cmake-build*' 'thirdparty/*')
     setup_target_for_coverage(NAME test_coverage EXECUTABLE all_tests DEPENDENCIES catchtest)
 
-    set(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
-    set(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+    APPEND_COVERAGE_COMPILER_FLAGS()
 endif() #CMAKE_BUILD_TYPE STREQUAL "Coverage"
