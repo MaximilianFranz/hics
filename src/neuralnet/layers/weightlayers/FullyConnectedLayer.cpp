@@ -61,6 +61,15 @@ void FullyConnectedLayer::forward() {
     }
 }
 
+// The computation neccessary for W*x = c where W ist the weights matrix and x the input vector
+// are equal to the size of the matrix
+long long int FullyConnectedLayer::getDifficulty() {
+    if (this->difficulty == 0) {
+        this-> difficulty = weights->getNumElements();
+    }
+    return this->difficulty;
+}
+
 // HELPER methods
 
 DataWrapper *FullyConnectedLayer::stretchInput(DataWrapper *input) {
@@ -97,7 +106,7 @@ void FullyConnectedLayer::setWeights(WeightWrapper *weights) {
 
 void FullyConnectedLayer::setFunction(FullyConnectedFunction *function) {
     this->function = function;
-    functionSet = true;
+    this->functionSet = true;
 }
 
 void FullyConnectedLayer::setPlatform(Platform *platform) {

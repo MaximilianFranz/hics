@@ -37,6 +37,8 @@
 class NaiveLayer : public Layer{
 public:
     void setPlatform(Platform *platform) override;
+
+    long long int getDifficulty() override;
 };
 
 

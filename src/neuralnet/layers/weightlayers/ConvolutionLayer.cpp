@@ -220,14 +220,6 @@ int ConvolutionLayer::getStride() const {
     return stride;
 }
 
-void ConvolutionLayer::setFunction(ConvolutionFunction *function) {
-    this->function = function;
-    this->functionSet =true;
-}
-
-void ConvolutionLayer::setWeights(WeightWrapper* weights) {
-    this->weights = weights;
-}
 
 int ConvolutionLayer::getNumGroups() const {
     return numGroups;
@@ -236,6 +228,20 @@ int ConvolutionLayer::getNumGroups() const {
 void ConvolutionLayer::setPlatform(Platform *platform) {
     this->function = platform->createConvolutionFunction();
     this->functionSet = true;
+}
+
+// Workaround to get numElements of output
+// Foreach position in the output the whole filter has to be traversed in all dimensions of the input
+long long int ConvolutionLayer::getDifficulty() {
+    outputWrapper = new DataWrapper(outputDimensions);
+    if (this->difficulty == 0) {
+        this->difficulty = outputWrapper->getNumElements()
+                           * filterSize * filterSize
+                           * inputDimensions[Z_DIM];
+    }
+    delete outputWrapper;
+    return this->difficulty;
+
 }
 
 
