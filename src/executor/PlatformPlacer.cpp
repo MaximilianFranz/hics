@@ -32,6 +32,7 @@
 #include <layers/functionlayers/LocalResponseNormLayer.h>
 #include <layers/functionlayers/SoftMaxLossLayer.h>
 #include <layers/functionlayers/MaxPoolingLayer.h>
+#include <IllegalArgumentException.h>
 
 #include "PlatformPlacer.h"
 
@@ -73,16 +74,17 @@ const std::vector<std::pair<PlatformInfo *, float>> &PlatformPlacer::getCompDist
 
 PlatformInfo* PlatformPlacer::getDefaultPlatform() {
     //Preferably use CPU as Default.
-    for (auto pl : currentPlatforms) {
-        if(pl->getType() == PlatformType::CPU) {
-            return pl; //We assume for now that there always is a CPU platform!
+    if (! currentPlatforms.empty()) {
+        for (auto pl : currentPlatforms) {
+            if(pl->getType() == PlatformType::CPU) {
+                return pl; //We assume for now that there always is a CPU platform!
+            }
         }
-    }
-    // If no CPU found, choose the first as default
-    if (currentPlatforms.size() > 0)
+        // If no CPU found, choose the first as default
         return currentPlatforms.front();
+    }
     else {
-        return nullptr; // TODO: Make this an exception and handle it further up the hierarchy.
+        throw IllegalArgumentException("No platforms selected, can't compute without platforms");
     }
 }
 
