@@ -8,7 +8,8 @@
 		{
 			"name" : "fpga",
 			"power" : 500,
-			"time" : 1400
+			"time" : 1400,
+			"host" : "localhost:50051"
 		},
 		{
 			"name" : "GPU",

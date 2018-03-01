@@ -1,4 +1,31 @@
-#include <NotImplementedException.h>
+/* Copyright 2018 The HICS Authors
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom
+ * the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall
+ * be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+#include <QtCore/QThread>
+#include "Worker.h"
 #include "MainWindowHandler.h"
 
 MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::vector<PlatformInfo *> &platforms,
@@ -20,9 +47,8 @@ MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::ve
 }
 
 void MainWindowHandler::setClassificationRequestState() {
-    if (classificationRequestState) {
-        delete classificationRequestState;
-    }
+    delete classificationRequestState;
+    classificationRequestState = nullptr;
 
     NetInfo neuralNet = startWidget->getSelectedNeuralNet();
     std::vector<PlatformInfo> platforms = startWidget->getSelectedPlatforms();
@@ -33,10 +59,31 @@ void MainWindowHandler::setClassificationRequestState() {
     if (!platforms.empty() && !userImgs.empty()) {
         classificationRequestState = new ClassificationRequest(neuralNet, platforms, mode, aggregate, userImgs);
 
-        //Notify all observers that the state has changed
-        notify();
+        //Distribute the computation in a worker thread to ensure a responsive GUI
+        auto *workerThread = new QThread;
+        auto *worker = new Worker(getObservers());
+        worker->moveToThread(workerThread);
 
-        //TODO here maybe display loading screen/bar
+        connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
+
+        //A signal must be connected to the workers method to ensure that the computation is run in the worker thread
+        connect(this, &MainWindowHandler::startNotifying, worker, &Worker::doWork);
+
+        //Receive the computed result
+        connect(worker, &Worker::workDone, this, &MainWindowHandler::processClassificationResult);
+
+        //Delete memory
+        connect(worker, &Worker::workDone, workerThread, &QThread::quit);
+        connect(worker, &Worker::workDone, worker, &Worker::deleteLater);
+        connect(worker, &Worker::workDone, workerThread, &QThread::deleteLater);
+
+        workerThread->start();
+
+        //Emit that the classification shall start
+        emit startNotifying();
+
+        //Displays a busy loading progress bar and disables all widgets
+        startWidget->displayProgress();
     }
 }
 
@@ -60,6 +107,9 @@ void MainWindowHandler::processClassificationResult(ClassificationResult *classi
 }
 
 void MainWindowHandler::processReturnQPushButton() {
+    //Enable the widgets in StartWidget again and remove the progress bar
+    startWidget->resetProgressDisplay();
+
     mainWindow->setCurrentWidget(startWidget);
 
     disconnectAll();
@@ -107,10 +157,7 @@ MainWindowHandler::~MainWindowHandler() {
     delete resultWidget;
     delete startWidget;
     delete mainWindow;
-
-    if (classificationRequestState) {
-        delete classificationRequestState;
-    }
+    delete classificationRequestState;
 }
 
 MainWindow *MainWindowHandler::getMainWindow() const {

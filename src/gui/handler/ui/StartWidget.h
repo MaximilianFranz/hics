@@ -1,3 +1,29 @@
+/* Copyright 2018 The HICS Authors
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom
+ * the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall
+ * be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
 #pragma once
 
 #include <QWidget>
@@ -15,6 +41,8 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QCheckBox>
 #include <QtCore/QDir>
+#include <QTimer>
+#include <QtWidgets/QProgressBar>
 
 namespace Ui {
     class StartWidget;
@@ -33,7 +61,36 @@ namespace Ui {
  * @author Patrick Deubel
  */
 class StartWidget : public QWidget {
+
 Q_OBJECT
+
+private:
+
+    Ui::StartWidget *ui;
+    QList<QHBoxLayout *> inputImagesLayouts; /*!< Layout order: QCheckBox, QPixmap (the image), QLabel (the file path) */
+    QMap<QPair<QImage *, QString>, QHBoxLayout *> images; /*!< Maps all loaded images to its layout */
+    std::map<QString, NetInfo *> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
+    std::map<QString, PlatformInfo *> platformMap; /*!< used to return the selected platform by using the displayed QString */
+
+    QString directoryPath = QDir::homePath(); /*!< The last opened directory path of the QFileDialog */
+
+    const int OFFSET_FILEPATH_DISPLAY = 20;
+
+    QProgressBar* progressBar = nullptr;
+
+    void addNeuralNets(std::vector<NetInfo *> &neuralNets);
+
+    void addPlatforms(std::vector<PlatformInfo *> &platforms);
+
+    void addOperationModes(std::vector<OperationMode> &operationModes);
+
+    QStringList removeDuplicateSelectedImages(const QStringList &filePaths);
+
+    QHBoxLayout *addInputImage(QImage *image, const QString &filePath);
+
+    void clearLayout(QLayout *layout);
+
+    void disableWidgets(bool disable);
 
 public:
 
@@ -56,7 +113,23 @@ public:
      */
     ~StartWidget();
 
-    void displayErrorMessage(const QString message);
+    /**
+     * @brief Displays a QErrorDialog with the given error message.
+     *
+     * @param message the to be displayed error message
+     */
+    void displayErrorMessage(QString message);
+
+    /**
+     * @brief Removes the Classify and Select images button and displays a busy loading progress bar to indicate that a
+     *        computation task is going on.
+     */
+    void displayProgress();
+
+    /**
+     * @brief Removes the progress bar and enables all widgets again, so that a new classification can be started
+     */
+    void resetProgressDisplay();
 
     /**
      * @brief getSelectedNeuralNet returns the selected neural net by the user.
@@ -150,25 +223,12 @@ public slots:
      */
     void processAbortDeletionQPushButton();
 
-private:
+protected:
 
-    Ui::StartWidget *ui;
-    QList<QHBoxLayout *> inputImagesLayouts; /*!< Layout order: QCheckBox, QPixmap (the image), QLabel (the file path) */
-    QMap<QPair<QImage *, QString>, QHBoxLayout *> images; /*!< Maps all loaded images to its layout */
-    std::map<QString, NetInfo *> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
-    std::map<QString, PlatformInfo *> platformMap; /*!< used to return the selected platform by using the displayed QString */
+    void resizeEvent(QResizeEvent *event) override;
 
-    QString directoryPath = QDir::homePath(); /*!< The last opened directory path of the QFileDialog */
+private slots:
 
-    void addNeuralNets(std::vector<NetInfo *> &neuralNets);
+    void widgetResized();
 
-    void addPlatforms(std::vector<PlatformInfo *> &platforms);
-
-    void addOperationModes(std::vector<OperationMode> &operationModes);
-
-    QStringList removeDuplicateSelectedImages(const QStringList &filePaths);
-
-    QHBoxLayout *addInputImage(QImage *image, const QString &filePath);
-
-    void clearLayout(QLayout *layout);
 };

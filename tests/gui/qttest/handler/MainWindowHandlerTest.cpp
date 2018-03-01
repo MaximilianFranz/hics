@@ -1,9 +1,32 @@
-//
-// Created by pselab on 30.01.18.
-//
+/* Copyright 2018 The HICS Authors
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom
+ * the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall
+ * be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
 #include <QtTest/QSignalSpy>
 #include <QtWidgets/QLabel>
+#include <iostream>
 #include "MainWindowHandlerTest.h"
 
 void MainWindowHandlerTest::initTestCase() {
@@ -56,10 +79,10 @@ void MainWindowHandlerTest::setUpClassificationResult() {
     PlatformInfo* info3 = new PlatformInfo("GPU1", PlatformType::GPU, "gpu1", 34, 55);
     PlatformInfo* info4 = new PlatformInfo("GPU2", PlatformType::GPU, "gpu2", 99, 211);
 
-    plat.push_back(std::pair<PlatformInfo*, float>(info1, 20));
-    plat.push_back(std::pair<PlatformInfo*, float>(info2, 10));
-    plat.push_back(std::pair<PlatformInfo*, float>(info3, 1));
-    plat.push_back(std::pair<PlatformInfo*, float>(info4, 69));
+    plat.push_back(std::pair<PlatformInfo*, float>(info1, 0.2));
+    plat.push_back(std::pair<PlatformInfo*, float>(info2, 0.1));
+    plat.push_back(std::pair<PlatformInfo*, float>(info3, 0.01));
+    plat.push_back(std::pair<PlatformInfo*, float>(info4, 0.69));
 
     PerformanceData performanceData(15, 999, plat);
     ImageResult imgResult1(results, imageWrapper);
@@ -104,22 +127,15 @@ void MainWindowHandlerTest::testStartClassification() {
     QCOMPARE(request->getUserImages().size(), (unsigned long) 1);
 }
 
-std::string MainWindowHandlerTest::getLabelFromResultLayout(int layoutPosition, int labelIndex){
-    return ((QLabel*)(mainWindowHandler->getResultWidget()->getImagesQGridLayout()
-        ->itemAtPosition(0, layoutPosition)->layout()
-        ->itemAt(labelIndex)->widget()))->text().toStdString();
-}
-
 void MainWindowHandlerTest::testDisplayClassification() {
     setUpClassificationResult();
     mainWindowHandler->processClassificationResult(classificationResult);
-    //TODO add getters for result widget and detail dialog
+
     //Get top result
+    QCOMPARE(mainWindowHandler->getResultWidget()->getResultDisplays()[0]->topResult.first, (std::string)"Baukran");
 
-    QCOMPARE(getLabelFromResultLayout(1, 1), (std::string)"Baukran");
-
-    QCOMPARE(mainWindowHandler->getDetailDialog()->getPowerConsumptionQLabel()->text().toStdString(), (std::string)"15");
-    QCOMPARE(mainWindowHandler->getDetailDialog()->getComputationTimeQLabel()->text().toStdString(), (std::string)"999");
+    QCOMPARE(mainWindowHandler->getDetailDialog()->getPowerConsumptionQLabel()->text().toStdString(), (std::string)"15 mW");
+    QCOMPARE(mainWindowHandler->getDetailDialog()->getComputationTimeQLabel()->text().toStdString(), (std::string)"999 ms");
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(), mainWindowHandler->getResultWidget());
 }
 
@@ -148,5 +164,4 @@ void MainWindowHandlerTest::testDetailButton(){
     QTest::mouseClick(mainWindowHandler->getResultWidget()->getDetailsQPushButton(), Qt::LeftButton);
 
     QCOMPARE(mainWindowHandler->getDetailDialog()->isVisible(), true);
-
 }

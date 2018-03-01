@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 11)
 # switch on various compiler warnings
 # https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
 if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-reorder -Wall")
 endif ()
 
 # those defines are expanded to absolute paths

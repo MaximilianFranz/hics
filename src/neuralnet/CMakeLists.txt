@@ -14,4 +14,7 @@ add_library(neuralnet STATIC
         layers/functionlayers/SoftMaxLossLayer.cpp layers/functionlayers/SoftMaxLossLayer.h
         layers/naive/InputLayer.cpp layers/naive/InputLayer.h
         layers/weightlayers/FullyConnectedLayer.cpp layers/weightlayers/FullyConnectedLayer.h
-        layers/naive/ConcatLayer.cpp layers/naive/ConcatLayer.h layers/naive/NaiveLayer.cpp layers/naive/NaiveLayer.h)
+        layers/naive/ConcatLayer.cpp layers/naive/ConcatLayer.h
+        layers/naive/NaiveLayer.cpp layers/naive/NaiveLayer.h
+        layers/LayerType.h layers/LayerType.cpp)
+

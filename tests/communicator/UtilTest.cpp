@@ -1,6 +1,28 @@
-//
-// Created by jallmenroeder on 02/02/18.
-//
+/* Copyright 2018 The HICS Authors
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom
+ * the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall
+ * be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
 #include "UtilTest.h"
 #include "Util.h"
@@ -37,7 +59,15 @@ SCENARIO("Test") {
     std::vector<std::pair<PlatformInfo*, float>> dist;
     dist.emplace_back(&cpu, .6);
     dist.emplace_back(&gpu, .4);
+    std::vector<std::pair<PlatformInfo*, float>> dist2;
+    dist2.emplace_back(&gpu, .6);
+    dist2.emplace_back(&cpu, .4);
+    std::vector<std::pair<PlatformInfo*, float>> dist3;
+    dist3.emplace_back(&cpu, 1);
+    dist3.emplace_back(&gpu, 0);
     ImageResult imgRes = ImageResult(labels, dist, img);
+    ImageResult imgRes2 = ImageResult(labels, dist2, img);
+    ImageResult imgRes3 = ImageResult(labels, dist3, img);
 
     SECTION("PlatformInfo to message") {
         PlatformInfoMessage *platMes = new PlatformInfoMessage();
@@ -193,4 +223,28 @@ SCENARIO("Test") {
         REQUIRE(imageResult->getResults()[4].second == .0125f);
     }
 
+    SECTION("aggregate computation distribution") {
+        auto allResults = std::vector<ImageResult*>();
+        allResults.emplace_back(&imgRes);
+        allResults.emplace_back(&imgRes2);
+        auto newDist = Util::aggregateReplyDistribution(allResults);
+
+        REQUIRE(newDist[0].first->getPlatformId() == "0");
+        REQUIRE(newDist[1].first->getPlatformId() == "1");
+        REQUIRE(newDist[0].second == .5f);
+        REQUIRE(newDist[1].second == .5f);
+
+        allResults.clear();
+        allResults.emplace_back(&imgRes2);
+        allResults.emplace_back(&imgRes);
+        allResults.emplace_back(&imgRes3);
+
+
+        newDist = Util::aggregateReplyDistribution(allResults);
+
+        REQUIRE(newDist[0].first->getPlatformId() == "1");
+        REQUIRE(newDist[1].first->getPlatformId() == "0");
+        REQUIRE(newDist[0].second == float(1)/3);
+        REQUIRE(newDist[1].second == float(2)/3);
+    }
 }
