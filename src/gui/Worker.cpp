@@ -28,14 +28,17 @@
 
 Worker::Worker(const std::vector<ManagerObserver *> observers) {
     //Attach every observer from the object from the main thread to this object to ensure everyone gets called
-    for(ManagerObserver* observer : observers) {
+    for (ManagerObserver *observer : observers) {
         this->attach(observer);
     }
 }
 
 void Worker::doWork() {
+    ClassificationResult *result = nullptr;
+
     //Start the classification
-    ClassificationResult* result = notify();
+    result = notify();
+
     //Signal that the classification has finished and hand over the result
     emit workDone(result);
 }

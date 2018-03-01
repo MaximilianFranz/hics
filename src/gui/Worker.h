@@ -55,7 +55,7 @@ public:
      *
      * @param observers are the observers on the object from the main thread
      */
-    Worker(std::vector<ManagerObserver*> observers);
+    explicit Worker(std::vector<ManagerObserver*> observers);
 
 public slots:
 
@@ -76,5 +76,4 @@ signals:
      * @param result is the computed ClassificationResult
      */
     void workDone(ClassificationResult* result);
-
 };
