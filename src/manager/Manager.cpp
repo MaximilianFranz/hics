@@ -28,6 +28,7 @@
 #include <Client.h>
 #include <thread>
 #include <fstream>
+#include <ResourceException.h>
 
 #include "Manager.h"
 #include "PreProcessor.h"
@@ -263,4 +264,5 @@ std::string getHostAdress(std::string hostname) {
             return compHostIt["host"];
         }
     }
+    throw new ResourceException("Host name not found in .json file");
 }
