@@ -47,15 +47,7 @@ MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::ve
 }
 
 void MainWindowHandler::abortClassification() {
-    if (workerThread && worker) {
-        workerThread->terminate();
-        workerThread->wait();
-//        delete workerThread;
-//        workerThread = nullptr;
-//        delete worker;
-//        worker = nullptr;
-        startWidget->resetProgressDisplay();
-    }
+    cancelClassification = true;
 }
 
 void MainWindowHandler::setClassificationRequestState() {
@@ -168,7 +160,7 @@ void MainWindowHandler::connectAll() {
     connect(startWidget->getClassificationQPushButton(), SIGNAL(clicked(bool)), this,
             SLOT(setClassificationRequestState()));
 
-    //connect(startWidget->getCancelProgressButton(), SIGNAL(clicked(bool)), this, SLOT(abortClassification()));
+    connect(startWidget->getCancelProgressButton(), SIGNAL(clicked(bool)), this, SLOT(abortClassification()));
 
     //Deletes resultWidget
     connect(resultWidget->getReturnQPushButton(), SIGNAL(clicked(bool)), this, SLOT(processReturnQPushButton()));
@@ -183,7 +175,7 @@ void MainWindowHandler::connectAll() {
 void MainWindowHandler::disconnectAll() {
     disconnect(startWidget->getClassificationQPushButton(), SIGNAL(clicked()), this,
                SLOT(setClassificationRequestState()));
-    //disconnect(startWidget->getCancelProgressButton(), SIGNAL(clicked()), this, SLOT(abortClassification()));
+    disconnect(startWidget->getCancelProgressButton(), SIGNAL(clicked()), this, SLOT(abortClassification()));
     disconnect(resultWidget->getReturnQPushButton(), SIGNAL(clicked()), this, SLOT(processReturnQPushButton()));
     disconnect(resultWidget->getDetailsQPushButton(), SIGNAL(clicked()), this, SLOT(processDetailQPushButton()));
     disconnect(resultWidget, SIGNAL(destroyed()), this, SLOT(processReturnQPushButton()));
@@ -196,6 +188,10 @@ MainWindowHandler::~MainWindowHandler() {
     delete startWidget;
     delete mainWindow;
     delete classificationRequestState;
+}
+
+bool MainWindowHandler::isClassificationAborted() {
+    return cancelClassification;
 }
 
 MainWindow *MainWindowHandler::getMainWindow() const {

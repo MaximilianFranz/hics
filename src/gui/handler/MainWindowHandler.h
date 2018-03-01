@@ -78,6 +78,7 @@ private:
     Worker *worker = nullptr;
 
     std::exception_ptr exceptionptr = nullptr;
+    bool cancelClassification = false;
 
 private:
 
@@ -90,6 +91,8 @@ private slots:
     void abortClassification();
 
 public:
+
+    bool isClassificationAborted();
 
     /**
     * @brief This constructor initializes the GUI with the needed information on available data.
