@@ -42,6 +42,7 @@ class LayerMaker {
 private:
 
     void validateKernels(LayerConstructionParams lcp, std::string layerName);
+    void validateInputDims(std::vector<int> inputDims, std::string layerName);
 
 public:
     /**
