@@ -71,7 +71,6 @@ void MainWindowHandler::setClassificationRequestState() {
 
         //Receive the computed result
         connect(worker, &Worker::workDone, this, &MainWindowHandler::processClassificationResult);
-        connect(worker, &Worker::exception, this, &MainWindowHandler::displayErrorMessage);
 
         //Delete memory
         connect(worker, &Worker::workDone, workerThread, &QThread::quit);
@@ -98,6 +97,7 @@ ClassificationRequest *MainWindowHandler::getClassificationRequestState() {
 }
 
 void MainWindowHandler::processClassificationResult(ClassificationResult *classificationResult) {
+    //If classificationResult is a nullptr the classification went wrong
     if(classificationResult) {
         disconnectAll();
         mainWindow->removeWidgetFromStack(resultWidget);
@@ -112,14 +112,18 @@ void MainWindowHandler::processClassificationResult(ClassificationResult *classi
         //Change the currently displayed widget to resultWidget
         mainWindow->setCurrentWidget(resultWidget);
     } else {
+        //Check if an exception has been set during the classification
         if(exceptionptr){
             try {
+                //Since the exception is stored as a exception pointer we need to rethrow it to catch the exception
                 std::rethrow_exception(exceptionptr);
             } catch (std::exception &e) {
+                //Display the error message and reset the loading state of the GUI to the normal starting page
                 displayErrorMessage(QString::fromStdString(e.what()));
                 exceptionptr = nullptr;
             }
         } else {
+            //This case should never occur, but for safety measures the GUI should be resetted
             startWidget->resetProgressDisplay();
         }
     }
@@ -193,10 +197,6 @@ ResultWidget *MainWindowHandler::getResultWidget() const {
 
 DetailDialog *MainWindowHandler::getDetailDialog() const {
     return detailDialog;
-}
-
-const std::exception_ptr &MainWindowHandler::getExceptionptr() const {
-    return exceptionptr;
 }
 
 void MainWindowHandler::setExceptionptr(const std::exception_ptr &exceptionptr) {

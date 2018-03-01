@@ -78,11 +78,6 @@ private:
 
     std::exception_ptr exceptionptr = nullptr;
 
-public:
-    const std::exception_ptr &getExceptionptr() const;
-
-    void setExceptionptr(const std::exception_ptr &exceptionptr);
-
 private:
 
     void connectAll();
@@ -142,6 +137,12 @@ public:
      * @return detailDialog
      */
     DetailDialog *getDetailDialog() const;
+
+    /**
+     * @brief setExceptionptr sets the exception pointer to a given exception which was thrown
+     * @param exceptionptr is the thrown exception
+     */
+    void setExceptionptr(const std::exception_ptr &exceptionptr);
 
 public slots:
 
