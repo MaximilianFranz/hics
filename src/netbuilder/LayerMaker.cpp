@@ -49,6 +49,19 @@ void LayerMaker::validateWeights(WeightWrapper *weights, std::string layerName) 
     }
 }
 
+void LayerMaker::validateData(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper *weights) {
+    if (lcp.type == "conv") {
+        validateInputDims(inputDims, lcp.type);
+        validateKernels(lcp, lcp.type);
+        validateWeights(weights, lcp.type);
+    } else if (lcp.type == "fullyConnected"){
+        validateInputDims(inputDims, lcp.type);
+        validateWeights(weights, lcp.type);
+    } else {
+        validateInputDims(inputDims, lcp.type);
+    }
+}
+
 InputLayer* LayerMaker::createInputLayer(LayerConstructionParams lcp){
     std::vector<int> inputDim = {lcp.inputChannels,
                                  lcp.inputSize,
