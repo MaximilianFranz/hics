@@ -30,7 +30,7 @@
 
 void LayerMaker::validateKernels(LayerConstructionParams lcp, std::string layerName){
     if (lcp.numFilters == 0) {
-        throw IllegalArgumentException("The number of kernels should not be zero for " + layerName);
+        throw IllegalArgumentException("The number of kernels should not be zero for " + layerName + " layer.");
     }
 }
 
@@ -38,14 +38,14 @@ void LayerMaker::validateInputDims(std::vector<int> inputDims, std::string layer
     for (int i:inputDims) {
         if (i == 0) {
             throw IllegalArgumentException("The " + std::to_string(i+1)
-                                           + " input dimension should not be zero for " + layerName);
+                                           + " input dimension should not be zero for " + layerName + " layer.");
         }
     }
 }
 
 void LayerMaker::validateWeights(WeightWrapper *weights, std::string layerName) {
     if (weights == nullptr) {
-        throw IllegalArgumentException("Weights should not be NULL for " + layerName);
+        throw IllegalArgumentException("Weights should not be NULL for " + layerName + " layer.");
     }
 }
 
@@ -66,16 +66,14 @@ InputLayer* LayerMaker::createInputLayer(LayerConstructionParams lcp){
     std::vector<int> inputDim = {lcp.inputChannels,
                                  lcp.inputSize,
                                  lcp.inputSize};
-    LayerMaker::validateInputDims(inputDim, "Input layer");
+    LayerMaker::validateData(lcp, inputDim, NULL);
     InputLayer* input = new InputLayer(inputDim);
     return input;
 }
 
 
 ConvolutionLayer* LayerMaker::createConvLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights){
-    LayerMaker::validateInputDims(inputDims, "Convolution layer");
-    LayerMaker::validateKernels(lcp, "Convolution layer");
-    LayerMaker::validateWeights(weights, "Convolution layer");
+    LayerMaker::validateData(lcp, inputDims, weights);
     ConvolutionLayer* conv = new ConvolutionLayer(lcp.numFilters,
                                                   lcp.filterSize,
                                                   lcp.paddingSize,
@@ -87,7 +85,7 @@ ConvolutionLayer* LayerMaker::createConvLayer(LayerConstructionParams lcp, std::
 }
 
 MaxPoolingLayer* LayerMaker::createMaxPoolLayer(LayerConstructionParams lcp, std::vector<int> inputDims) {
-    LayerMaker::validateInputDims(inputDims, "Max Pooling layer");
+    LayerMaker::validateData(lcp, inputDims, NULL);
     MaxPoolingLayer* maxPool = new MaxPoolingLayer(inputDims,
                                                    lcp.stride,
                                                    lcp.filterSize,
@@ -96,7 +94,7 @@ MaxPoolingLayer* LayerMaker::createMaxPoolLayer(LayerConstructionParams lcp, std
 }
 
 LocalResponseNormLayer* LayerMaker::createLocalResponseNormLayer(LayerConstructionParams lcp, std::vector<int> inputDims) {
-    LayerMaker::validateInputDims(inputDims, "Local Response Normalization layer");
+    LayerMaker::validateData(lcp, inputDims, NULL);
     LocalResponseNormLayer* localresp = new LocalResponseNormLayer(inputDims,
                                                                    lcp.normParams["radius"],
                                                                    lcp.normParams["alpha"],
@@ -106,20 +104,19 @@ LocalResponseNormLayer* LayerMaker::createLocalResponseNormLayer(LayerConstructi
 }
 
 ReLUActivationLayer* LayerMaker::createReLuActivationLayer(LayerConstructionParams lcp, std::vector<int> inputDims) {
-    LayerMaker::validateInputDims(inputDims, "Rectified Linear Unit Activation Layer");
+    LayerMaker::validateData(lcp, inputDims, NULL);
     ReLUActivationLayer* relu = new ReLUActivationLayer(inputDims);
     return relu;
 }
 
 SoftMaxLossLayer* LayerMaker::createSoftmaxLossLayer(LayerConstructionParams lcp, std::vector<int> inputDims) {
-    LayerMaker::validateInputDims(inputDims, "Softmax Loss layer");
+    LayerMaker::validateData(lcp, inputDims, NULL);
     SoftMaxLossLayer* softmax = new SoftMaxLossLayer(inputDims);
     return softmax;
 }
 
 FullyConnectedLayer* LayerMaker::createFCLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights) {
-    LayerMaker::validateInputDims(inputDims, "FullyConnected layer");
-    LayerMaker::validateWeights(weights, "FullyConnected layer");
+    LayerMaker::validateData(lcp, inputDims, weights);
     FullyConnectedLayer* fullycon = new FullyConnectedLayer(inputDims,
                                                             weights);
     return fullycon;
