@@ -61,3 +61,16 @@ enable_testing()
 
 add_subdirectory(tests)
 
+if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+    include(CodeCoverage)
+    set(COVERAGE_EXCLUDES
+            '/usr/*'
+            '${CMAKE_SOURCE_DIR}/tests/*'
+            '${CMAKE_SOURCE_DIR}/thirdparty/*'
+            '${CMAKE_SOURCE_DIR}/catch/*'
+            '${CMAKE_SOURCE_DIR}/cmake-build-*'
+            '${CMAKE_BINARY_DIR}/*')
+    setup_target_for_coverage(NAME test_coverage EXECUTABLE all_tests DEPENDENCIES catchtest)
+
+    APPEND_COVERAGE_COMPILER_FLAGS()
+endif() #CMAKE_BUILD_TYPE STREQUAL "Coverage"

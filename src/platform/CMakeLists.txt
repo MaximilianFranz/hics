@@ -28,5 +28,3 @@ add_library(platform STATIC ${SOURCE_FILES})
 target_link_libraries(platform netbuilder ${OpenCL_LIBRARIES})
 include_directories(${OpenCL_INCLUDE_DIRS})
 
-add_executable(platform-exec util/main.cpp)
-target_link_libraries(platform-exec platform)
