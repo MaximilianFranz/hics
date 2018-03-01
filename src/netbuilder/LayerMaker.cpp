@@ -28,9 +28,9 @@
 #include <IllegalArgumentException.h>
 
 
-void LayerMaker::validateKernels(LayerConstructionParams lcp, std::string layerName){
+void LayerMaker::validateKernels(LayerConstructionParams lcp){
     if (lcp.numFilters == 0) {
-        throw IllegalArgumentException("The number of kernels should not be zero for " + layerName + " layer.");
+        throw IllegalArgumentException("The number of kernels should not be zero for " + lcp.type + " layer.");
     }
 }
 
@@ -52,7 +52,7 @@ void LayerMaker::validateWeights(WeightWrapper *weights, std::string layerName) 
 void LayerMaker::validateData(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper *weights) {
     if (lcp.type == "conv") {
         validateInputDims(inputDims, lcp.type);
-        validateKernels(lcp, lcp.type);
+        validateKernels(lcp);
         validateWeights(weights, lcp.type);
     } else if (lcp.type == "fullyConnected"){
         validateInputDims(inputDims, lcp.type);
