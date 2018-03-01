@@ -1,6 +1,7 @@
 set(TEST_SOURCES MainTest.cpp util/FileHelper.cpp)
 
-file(GLOB_RECURSE testsrcs . communicator/*.cpp
+file(GLOB_RECURSE testsrcs .
+        communicator/UtilTest.cpp
         executor/*.cpp
         gui/catchtest/*.cpp
         manager/*.cpp
