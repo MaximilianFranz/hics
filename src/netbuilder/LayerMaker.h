@@ -40,9 +40,36 @@
 
 class LayerMaker {
 private:
+    /**
+     * Checks if the number of filters is valid.
+     *
+     * @param lcp an object of LayerConstructionParams the number of filters should be checked of
+     */
     void validateKernels(LayerConstructionParams lcp);
+
+    /**
+     * Checks if the input dimensions are valid.
+     *
+     * @param inputDims a vector with input dimensions
+     * @param layerName a string which contains layer name
+     */
     void validateInputDims(std::vector<int> inputDims, std::string layerName);
+
+    /**
+     * Checks if the weights are valid.
+     *
+     * @param weights a pointer to the WeightWrapper object
+     * @param layerName a string which contains layer name
+     */
     void validateWeights(WeightWrapper* weights, std::string layerName);
+
+    /**
+     * Checks if the data needed for the layer creation is valid.
+     *
+     * @param lcp an object of LayerConstructionParams the number of filters should be checked of
+     * @param inputDims a vector with input dimensions
+     * @param weights a pointer to the WeightWrapper object
+     */
     void validateData(LayerConstructionParams lcp,
                       std::vector<int> inputDims,
                       WeightWrapper* weights);
