@@ -46,7 +46,11 @@ void runClassification(ComputationHost* host,
                        std::vector<PlatformInfo*> selecedPlatforms,
                        std::chrono::steady_clock::time_point startTime,
                        int& allTimes) {
-    allResults = host->classify(img, net, mode, selecedPlatforms);
+    try {
+        allResults = host->classify(std::move(img), std::move(net), mode, std::move(selecedPlatforms));
+    } catch (std::exception& e) {
+        //TODO: handling
+    }
     std::chrono::steady_clock::time_point timeAfter = std::chrono::steady_clock::now();
     auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(timeAfter - startTime);
     allTimes = (int)diff.count();
@@ -54,9 +58,16 @@ void runClassification(ComputationHost* host,
 
 Manager::Manager() {
 
+    std::string hostAdress;
+    try {
+        hostAdress = getHostAdress("fpga");
+    } catch (ResourceException& r) {
+        //TODO: handling
+    }
     ComputationHost* client = new Client("fpga", grpc::CreateChannel(
-            getHostAdress("fpga"), grpc::InsecureChannelCredentials()));
+            hostAdress, grpc::InsecureChannelCredentials()));
     std::cout << getHostAdress("fpga") << std::endl;
+
     try {
         client->queryNets();
         computationHosts.push_back(client);
