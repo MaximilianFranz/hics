@@ -73,7 +73,17 @@ private:
 
     ClassificationRequest *classificationRequestState = nullptr;
 
+    QThread *workerThread = nullptr;
     Worker *worker = nullptr;
+
+    std::exception_ptr exceptionptr = nullptr;
+
+public:
+    const std::exception_ptr &getExceptionptr() const;
+
+    void setExceptionptr(const std::exception_ptr &exceptionptr);
+
+private:
 
     void connectAll();
 

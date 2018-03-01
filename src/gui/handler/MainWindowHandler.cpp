@@ -60,7 +60,7 @@ void MainWindowHandler::setClassificationRequestState() {
         classificationRequestState = new ClassificationRequest(neuralNet, platforms, mode, aggregate, userImgs);
 
         //Distribute the computation in a worker thread to ensure a responsive GUI
-        auto *workerThread = new QThread;
+        workerThread = new QThread;
         worker = new Worker(getObservers());
         worker->moveToThread(workerThread);
 
@@ -98,18 +98,31 @@ ClassificationRequest *MainWindowHandler::getClassificationRequestState() {
 }
 
 void MainWindowHandler::processClassificationResult(ClassificationResult *classificationResult) {
-    disconnectAll();
-    mainWindow->removeWidgetFromStack(resultWidget);
-    delete resultWidget;
-    resultWidget = new ResultWidget;
-    connectAll();
-    //Initialize the results in resultWidget
-    resultWidget->displayResults(classificationResult);
-    mainWindow->addWidgetToStack(resultWidget);
-    //Initialize the details in detailDialog
-    detailDialog->insertDetails(classificationResult);
-    //Change the currently displayed widget to resultWidget
-    mainWindow->setCurrentWidget(resultWidget);
+    if(classificationResult) {
+        disconnectAll();
+        mainWindow->removeWidgetFromStack(resultWidget);
+        delete resultWidget;
+        resultWidget = new ResultWidget;
+        connectAll();
+        //Initialize the results in resultWidget
+        resultWidget->displayResults(classificationResult);
+        mainWindow->addWidgetToStack(resultWidget);
+        //Initialize the details in detailDialog
+        detailDialog->insertDetails(classificationResult);
+        //Change the currently displayed widget to resultWidget
+        mainWindow->setCurrentWidget(resultWidget);
+    } else {
+        if(exceptionptr){
+            try {
+                std::rethrow_exception(exceptionptr);
+            } catch (std::exception &e) {
+                displayErrorMessage(QString::fromStdString(e.what()));
+                exceptionptr = nullptr;
+            }
+        } else {
+            startWidget->resetProgressDisplay();
+        }
+    }
 }
 
 void MainWindowHandler::processReturnQPushButton() {
@@ -180,4 +193,12 @@ ResultWidget *MainWindowHandler::getResultWidget() const {
 
 DetailDialog *MainWindowHandler::getDetailDialog() const {
     return detailDialog;
+}
+
+const std::exception_ptr &MainWindowHandler::getExceptionptr() const {
+    return exceptionptr;
+}
+
+void MainWindowHandler::setExceptionptr(const std::exception_ptr &exceptionptr) {
+    MainWindowHandler::exceptionptr = exceptionptr;
 }

@@ -38,6 +38,8 @@
 
 std::string getHostAdress(std::string hostname);
 
+static std::exception_ptr exceptionptr = nullptr;
+
 void runClassification(ComputationHost* host,
                        std::vector<ImageResult*>& allResults,
                        std::vector<ImageWrapper*> img,
@@ -48,8 +50,10 @@ void runClassification(ComputationHost* host,
                        int& allTimes) {
     try {
         allResults = host->classify(std::move(img), std::move(net), mode, std::move(selecedPlatforms));
-    } catch (std::exception& e) {
+        //throw std::logic_error("This is a example bug.");
+    } catch (...) {
         //TODO: handling
+        exceptionptr = std::current_exception();
     }
     std::chrono::steady_clock::time_point timeAfter = std::chrono::steady_clock::now();
     auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(timeAfter - startTime);
@@ -189,6 +193,14 @@ ClassificationResult* Manager::update() {
 
     for (int i = 0; i < classifyThreads.size(); i++) {
         classifyThreads[i].join();
+    }
+
+    if(exceptionptr) {
+        mainWindowHandler->setExceptionptr(exceptionptr);
+
+        //Null exceptionptr for next classification
+        exceptionptr = nullptr;
+        return nullptr;
     }
 
     auto hosts = std::vector<PerformanceCalculator::HostInfo*>();
