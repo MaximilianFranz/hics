@@ -28,6 +28,7 @@
 
 #include <list>
 #include <QObject>
+#include <QThread>
 #include <NetInfo.h>
 #include <PlatformInfo.h>
 #include <OperationMode.h>
@@ -83,6 +84,10 @@ private:
     void connectAll();
 
     void disconnectAll();
+
+private slots:
+
+    void abortClassification();
 
 public:
 

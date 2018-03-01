@@ -71,12 +71,16 @@ private:
     QMap<QPair<QImage *, QString>, QHBoxLayout *> images; /*!< Maps all loaded images to its layout */
     std::map<QString, NetInfo *> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
     std::map<QString, PlatformInfo *> platformMap; /*!< used to return the selected platform by using the displayed QString */
+public:
+    QPushButton *getCancelProgressButton() const;
 
+private:
     QString directoryPath = QDir::homePath(); /*!< The last opened directory path of the QFileDialog */
 
     const int OFFSET_FILEPATH_DISPLAY = 20;
 
     QProgressBar* progressBar = nullptr;
+    QPushButton* cancelProgressButton = nullptr;
 
     void addNeuralNets(std::vector<NetInfo *> &neuralNets);
 
