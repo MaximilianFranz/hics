@@ -30,9 +30,10 @@
 
 ClassificationRequest::ClassificationRequest(NetInfo neuralNet, std::vector<PlatformInfo> platforms, OperationMode m,
                                              bool aggregate, std::map<QString, QImage> userImgs) :
-        neuralNet(neuralNet), platforms(std::move(platforms)), opMode(m), aggregate(aggregate), userImages(std::move(userImgs)) {
-
-}
+        neuralNet(std::move(neuralNet)),
+        platforms(std::move(platforms)),
+        opMode(m), aggregate(aggregate), 
+        userImages(std::move(userImgs)) {}
 
 
 
@@ -62,7 +63,7 @@ void ClassificationRequest::setSelectedOperationMode(OperationMode mode) {
 }
 
 void ClassificationRequest::setSelectedNeuralNet(NetInfo net) {
-    neuralNet = net;
+    neuralNet = std::move(net);
 }
 
 
