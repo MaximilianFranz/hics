@@ -42,6 +42,9 @@ using json = nlohmann::json;
 class HostPlacer {
 
 public:
+    /**
+     * This struct wraps up the performance of a computation host. Note that the powerConsumption is specified in watts.
+     */
     struct Performance {
         int powerConsumption;
         int timeConsumption;
@@ -57,7 +60,7 @@ private:
     static std::vector<std::pair<ComputationHost*, int>>& placeEnergyEfficient(
             std::vector<std::pair<ComputationHost*, Performance>> &hosts, int numOfImg);
 
-    static const int timePriority = 2;
+    static const int timePriority = 1;
     static const int powerPriority = 1;
 public:
     /**
