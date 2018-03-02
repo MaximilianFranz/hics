@@ -45,7 +45,7 @@ PerformanceCalculator::calculatePerformance(std::vector<hostPlatformDistribution
         host++;
     }
     //find the slowest host, this is the total computation time
-    //add the power each Host took to add up the power consumption
+    //add the power each host took to add up the power consumption
     for (auto host : hostDistribution) {
         computationTime = std::max(computationTime, host->time);
 
@@ -53,6 +53,9 @@ PerformanceCalculator::calculatePerformance(std::vector<hostPlatformDistribution
         float powerPerTime = float(hostData.powerConsumption) / float(hostData.timeConsumption);
         powerConsumption += powerPerTime * host->time;
     }
+    //mw * ms = 10^-3 mWs
+    //convert powerconsumption from mw * ms to mWs
+    powerConsumption = powerConsumption / 1000;
 
     return PerformanceData(powerConsumption, computationTime, overallDistribution);
 

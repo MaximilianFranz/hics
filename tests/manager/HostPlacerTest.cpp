@@ -38,11 +38,11 @@ SCENARIO("Read values from JSON") {
         HostPlacer::Performance localPerformance = HostPlacer::readComputationHostInfo(localHost->getName());
         HostPlacer::Performance fpgaPerformance = HostPlacer::readComputationHostInfo(fpgaHost->getName());
 
-        REQUIRE(localPerformance.powerConsumption == 1500);
-        REQUIRE(localPerformance.timeConsumption == 500);
+        REQUIRE(localPerformance.powerConsumption == 24952*150);
+        REQUIRE(localPerformance.timeConsumption == 150);
 
-        REQUIRE(fpgaPerformance.powerConsumption == 500);
-        REQUIRE(fpgaPerformance.timeConsumption == 1400);
+        REQUIRE(fpgaPerformance.powerConsumption == 615*10974);
+        REQUIRE(fpgaPerformance.timeConsumption == 10974);
     }
 
     SECTION("Test placeLowPower") {
@@ -54,9 +54,9 @@ SCENARIO("Read values from JSON") {
                 HostPlacer::place(hosts, 5, OperationMode::LowPower);
         REQUIRE(distribution.size() == 2);
         REQUIRE(distribution.begin().operator*().first->getName() == "local");
-        REQUIRE(distribution.begin().operator*().second == 0);
+        REQUIRE(distribution.begin().operator*().second == 5);
         REQUIRE((distribution.begin()+1).operator*().first->getName() == "fpga");
-        REQUIRE((distribution.begin()+1).operator*().second == 5);
+        REQUIRE((distribution.begin()+1).operator*().second == 0);
     }
 
     SECTION("Test placeHighPower with two hosts") {
@@ -65,10 +65,10 @@ SCENARIO("Read values from JSON") {
         hosts.push_back(fpgaHost);
 
         std::vector<std::pair<ComputationHost *, int >> distribution =
-                HostPlacer::place(hosts, 5, OperationMode::HighPower);
+                HostPlacer::place(hosts, 74, OperationMode::HighPower);
         REQUIRE(distribution.size() == 2);
         REQUIRE(distribution.begin().operator*().first->getName() == "local");
-        REQUIRE(distribution.begin().operator*().second == 4);
+        REQUIRE(distribution.begin().operator*().second == 73);
         REQUIRE((distribution.begin() + 1).operator*().first->getName() == "fpga");
         REQUIRE((distribution.begin() + 1).operator*().second == 1);
     }
@@ -80,14 +80,14 @@ SCENARIO("Read values from JSON") {
         hosts.push_back(gpuHost);
 
         std::vector<std::pair<ComputationHost *, int>> distribution =
-                HostPlacer::place(hosts, 10, OperationMode::HighPower);
+                HostPlacer::place(hosts, 5, OperationMode::HighPower);
         REQUIRE(distribution.size() == 3);
         REQUIRE(distribution.begin().operator*().first->getName() == "local");
         REQUIRE(distribution.begin().operator*().second == 3);
         REQUIRE((distribution.begin() + 1).operator*().first->getName() == "fpga");
-        REQUIRE((distribution.begin() + 1).operator*().second == 1);
+        REQUIRE((distribution.begin() + 1).operator*().second == 0);
         REQUIRE((distribution.begin() + 2).operator*().first->getName() == "GPU");
-        REQUIRE((distribution.begin() + 2).operator*().second == 6);
+        REQUIRE((distribution.begin() + 2).operator*().second == 2);
     }
 
     SECTION("Test placeEnergyEfficient with 4 images") {
@@ -100,12 +100,11 @@ SCENARIO("Read values from JSON") {
                 HostPlacer::place(hosts, 4, OperationMode::EnergyEfficient);
         REQUIRE(distribution.size() == 3);
         REQUIRE(distribution.begin().operator*().first->getName() == "local");
-        REQUIRE(distribution.begin().operator*().second == 1);
+        REQUIRE(distribution.begin().operator*().second == 4);
         REQUIRE((distribution.begin() + 1).operator*().first->getName() == "fpga");
-        REQUIRE((distribution.begin() + 1).operator*().second == 1);
+        REQUIRE((distribution.begin() + 1).operator*().second == 0);
         REQUIRE((distribution.begin() + 2).operator*().first->getName() == "GPU");
-        REQUIRE((distribution.begin() + 2).operator*().second == 2);
-
+        REQUIRE((distribution.begin() + 2).operator*().second == 0);
     }
 
 }

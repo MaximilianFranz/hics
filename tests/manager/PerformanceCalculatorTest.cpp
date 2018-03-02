@@ -55,7 +55,7 @@ SCENARIO("Test PerformanceCalculator") {
 
         REQUIRE(data.getComputationTime() == 5000);
 
-        int powerConsumptionValue = int((1500.0f / 500.0f) * 2000.0f + (500.0f / 1400.0f) * 5000.0f);
+        int powerConsumptionValue = int(24952.0f * 2000.0f + 615.0f * 5000.0f) / 1000;
         REQUIRE(data.getPowerConsumption() == powerConsumptionValue);
 
     }
