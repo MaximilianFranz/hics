@@ -30,13 +30,6 @@
 #include "HostPlacer.h"
 
 
-/**
- * This function reads power and time consumption of a host from the computationHosts.json. The power in the json file
- * is given in watts. For the use in the hostPlacer the power is multiplied with the time of a classification to 
- * represent the power consumption of a whole classification
- * @param hostName 
- * @return 
- */
 HostPlacer::Performance HostPlacer::readComputationHostInfo(std::string hostName) {
     std::ifstream i(RES_DIR "computationHosts.json");
     json computationHostFile;
