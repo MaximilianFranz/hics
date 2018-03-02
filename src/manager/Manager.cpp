@@ -69,7 +69,6 @@ Manager::Manager() {
     }
     ComputationHost* client = new Client("fpga", grpc::CreateChannel(
             hostAdress, grpc::InsecureChannelCredentials()));
-    std::cout << getHostAdress("fpga") << std::endl;
 
     try {
         client->queryNets();
