@@ -54,7 +54,7 @@ void DetailDialog::insertDetails(const ClassificationResult *result) {
     for (int i = 0; i < platformUsage.size(); ++i) {
         std::pair<PlatformInfo*, float> pair = platformUsage[i];
         platformText +=
-            QString::fromStdString(pair.first->getDescription()) + ": " + QString::number(pair.second*100) + "%, ";
+            QString::fromStdString(pair.first->getDescription()) + ": " + QString::number(qRound(pair.second*100)) + "%, ";
     }
 
     //Remove the last white space and comma from the QString
