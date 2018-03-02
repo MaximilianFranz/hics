@@ -93,8 +93,8 @@ std::vector<ImageWrapper*> PreProcessor::processImages(std::map<QString, QImage>
         }
 
         //substract mean to normalize
-        for (int i = 0; i < bitmap.size(); i++) {
-            bitmap[i] = float(bitmap[i] - (meanR + meanG + meanB)/3);
+        for (auto pixel : bitmap) {
+            pixel = float(pixel - (meanR + meanG + meanB)/3);
         }
 
         images.emplace_back(new ImageWrapper(dim, bitmap, stdFilePath));

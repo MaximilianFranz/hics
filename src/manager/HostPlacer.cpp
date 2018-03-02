@@ -175,6 +175,8 @@ HostPlacer::placeEnergyEfficient(std::vector<std::pair<ComputationHost *, HostPl
         int newStackHeight = 0;
         ComputationHost *currentMinHost;
 
+        //find image with the least cost coefficient for the next image
+        //this takes in account the time and power consumption of the computation multiplied with power/time priority
         for (auto host : hosts) {
             currentTime = jobStacks[hostIndex] + host.second.timeConsumption;
             int currentCost = std::max((currentTime - currentTimeMax), 0) * timePriority +
