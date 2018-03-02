@@ -106,16 +106,6 @@ void Manager::initGUI() {
 
 ClassificationResult* Manager::update() {
 
-    std::thread cancelThread([&](){
-        bool cancel = mainWindowHandler->isClassificationAborted();
-        while (!cancel) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
-            cancel = mainWindowHandler->isClassificationAborted();
-        }
-        //return nullptr;
-        //TODO not just return nullptr, but also stop the other threads.
-    });
-
     ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
 
     PreProcessor processor = PreProcessor();
@@ -201,6 +191,10 @@ ClassificationResult* Manager::update() {
 
     for (int i = 0; i < classifyThreads.size(); i++) {
         classifyThreads[i].join();
+    }
+
+    if(mainWindowHandler->isClassificationAborted()){
+        return nullptr;
     }
 
     if(exceptionptr) {
