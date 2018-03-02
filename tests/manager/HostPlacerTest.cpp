@@ -59,6 +59,24 @@ SCENARIO("Read values from JSON") {
         REQUIRE((distribution.begin()+1).operator*().second == 0);
     }
 
+    SECTION("Test placeLowPower with hosts with equal power consumption") {
+        std::vector<ComputationHost*> hosts;
+        ComputationHost* test = new Executor("test");
+        hosts.push_back(localHost);
+        hosts.push_back(fpgaHost);
+        hosts.push_back(test);
+
+
+        auto distribution = HostPlacer::place(hosts, 11, OperationMode::LowPower);
+        REQUIRE(distribution.size() == 3);
+        REQUIRE(distribution.begin().operator*().first->getName() == "local");
+        REQUIRE(distribution.begin().operator*().second == 6);
+        REQUIRE((distribution.begin()+1).operator*().first->getName() == "fpga");
+        REQUIRE((distribution.begin()+1).operator*().second == 0);
+        REQUIRE((distribution.begin()+2).operator*().first->getName() == "test");
+        REQUIRE((distribution.begin()+2).operator*().second == 5);
+    }
+
     SECTION("Test placeHighPower with two hosts") {
         std::vector<ComputationHost *> hosts;
         hosts.push_back(localHost);

@@ -83,14 +83,30 @@ HostPlacer::placeLowPower(std::vector<std::pair<ComputationHost *, HostPlacer::P
                                             std::pair<ComputationHost *, HostPlacer::Performance> &right) {
                                             return left.second.powerConsumption < right.second.powerConsumption;
                                         });
+    std::vector<ComputationHost*> allLowest;
+    for (auto host : hosts) {
+        if (host.second.powerConsumption == lowest.operator*().second.powerConsumption) {
+            allLowest.push_back(host.first);
+        }
+    }
+    int workload = int(numOfImg / allLowest.size());
+    int remainder = int(numOfImg % allLowest.size());
+
     //Give him all images
     auto *distribution = new std::vector<std::pair<ComputationHost *, int>>();
     //(*distribution).emplace_back(std::pair<ComputationHost *, int>(lowest.operator*().first, numOfImg));
     for (auto hostIt : hosts) {
-        if (hostIt.first->getName() == lowest.operator*().first->getName()) {
-            (*distribution).emplace_back(lowest.operator*().first, numOfImg);
+        if (std::find_if(allLowest.begin(), allLowest.end(), [&hostIt](ComputationHost* currentHost) {
+            return hostIt.first->getName() == currentHost->getName();
+        }) != allLowest.end()) {
+            int hostload = workload;
+            if (remainder > 0) {
+                hostload++;
+                remainder--;
+            }
+            distribution->emplace_back(hostIt.first, hostload);
         } else {
-            (*distribution).emplace_back(hostIt.first, 0);
+            distribution->emplace_back(hostIt.first, 0);
         }
     }
     return *distribution;
