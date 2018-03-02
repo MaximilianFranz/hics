@@ -56,5 +56,6 @@ public:
      * @return true
      */
     bool readyToCompute() override;
+
 };
 

@@ -100,9 +100,7 @@ public:
 
     void setPlatform(Platform *platform) override;
 
-    void setWeights(WeightWrapper* weights);
-
-    void setFunction(ConvolutionFunction* function);
+    long long int getDifficulty() override;
 
     // GETTER
 

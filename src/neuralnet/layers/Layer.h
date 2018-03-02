@@ -47,6 +47,7 @@ protected:
 
     bool computed = false;
     bool functionSet = false;
+    long long difficulty = 0; //! A relative sign for the difficulty of this layer / amount of computation
 
     LayerType type;
     std::vector<int> inputDimensions;
@@ -102,6 +103,15 @@ public:
     virtual bool isPlatformSet();
 
     /**
+     * Returns an indicator of difficulty of this layer.
+     * Roughly approximates the number of computation needed.
+     *
+     *
+     * @return long value: difficulty of this layer
+     */
+    virtual long long int getDifficulty() = 0;
+
+    /**
      * Initializes the default values of this layer
      *
      * This means: functionsSet is false
@@ -140,11 +150,11 @@ public:
      */
     virtual std::vector<int> getOutputDimensions() const;
 
-    virtual /**
+    /**
      * Returns a pointer to the previous layer
      * @return a pointer to the previous layer.
      */
-    Layer *getPreviousLayer() const;
+    virtual Layer *getPreviousLayer() const;
 
     /**
      *
@@ -181,6 +191,7 @@ public:
      * @return outputWrapper
      */
     DataWrapper *getOutputWrapper() const;
+
 
     /**
      * Resets the status of this Layer

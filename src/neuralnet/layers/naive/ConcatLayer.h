@@ -53,7 +53,6 @@ public:
     void setPreviousLayer(Layer *previousLayer) override;
 
     Layer *getPreviousLayer() const override;
-
 };
 
 

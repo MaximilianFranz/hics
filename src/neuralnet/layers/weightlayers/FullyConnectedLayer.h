@@ -76,8 +76,9 @@ public:
 
     void setWeights(WeightWrapper* weights);
 
-
     void setFunction(FullyConnectedFunction* function);
+
+    long long int getDifficulty() override;
 
 };
 

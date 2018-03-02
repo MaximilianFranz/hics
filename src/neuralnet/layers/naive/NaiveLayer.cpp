@@ -31,3 +31,8 @@ void NaiveLayer::setPlatform(Platform *platform) {
     this->functionSet = true;
 }
 
+long long int NaiveLayer::getDifficulty() {
+    return 1; // Naive layers don't perfom computation
+}
+
+
