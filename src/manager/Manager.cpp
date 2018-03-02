@@ -35,6 +35,7 @@
 #include "PerformanceCalculator.h"
 #include "HostPlacer.h"
 
+typedef unsigned int uint;
 
 std::string getHostAdress(std::string hostname);
 
@@ -117,7 +118,7 @@ ClassificationResult* Manager::update() {
     //Check which platforms of each host were selected
     auto hostPlatforms = std::vector<std::vector<PlatformInfo*>>(computationHosts.size());
     std::vector<PlatformInfo*> selectedPlatforms = request->getSelectedPlatforms();
-    for (int i = 0; i < computationHosts.size(); i++) {
+    for (uint i = 0; i < computationHosts.size(); i++) {
         for (auto hostPlatIt : computationHosts[i]->queryPlatform()) {
             auto platIt = std::find_if(selectedPlatforms.begin(), selectedPlatforms.end(),
                                        [&hostPlatIt](PlatformInfo* temp) {
@@ -131,7 +132,7 @@ ClassificationResult* Manager::update() {
 
     //Remove a computationHost if none of its Platforms are selected
     std::vector<ComputationHost*> availableHosts = computationHosts;
-    for (int i = 0; i < availableHosts.size(); i++) {
+    for (uint i = 0; i < availableHosts.size(); i++) {
         if (hostPlatforms[i].empty()) {
             ComputationHost* currentHost = availableHosts[i];
             availableHosts.erase(std::find_if(availableHosts.begin(),
@@ -170,7 +171,7 @@ ClassificationResult* Manager::update() {
 
     std::vector<std::thread> classifyThreads;
 
-    for (int i = 0; i < availableHosts.size(); i++) {
+    for (uint i = 0; i < availableHosts.size(); i++) {
         if (!batches[i].empty()) {
             time = std::chrono::steady_clock::now();
             std::thread t(runClassification, availableHosts[i],
@@ -189,7 +190,7 @@ ClassificationResult* Manager::update() {
         }
     }
 
-    for (int i = 0; i < classifyThreads.size(); i++) {
+    for (uint i = 0; i < classifyThreads.size(); i++) {
         classifyThreads[i].join();
     }
 
@@ -207,7 +208,7 @@ ClassificationResult* Manager::update() {
 
     auto hosts = std::vector<PerformanceCalculator::HostInfo*>();
 
-    for (int i = 0; i < availableHosts.size(); i++) {
+    for (uint i = 0; i < availableHosts.size(); i++) {
         auto newHost = new PerformanceCalculator::HostInfo(availableHosts[i]->getName(),
                                                            float(batches[i].size()) / float(processedImages.size()),
                                                            compTime[i]);
@@ -217,7 +218,7 @@ ClassificationResult* Manager::update() {
     std::vector<std::vector<std::pair<PlatformInfo*, float>>> calculateInfo;
 
     //Add the ComputationDistribution of each host to the calculateInfo
-    for (int i = 0; i < batches.size(); i++) {
+    for (uint i = 0; i < batches.size(); i++) {
         if (!batches[i].empty()) {
             std::vector<std::pair<PlatformInfo *, float>> distr = allResults[i].front()->getCompDistribution();
             calculateInfo.push_back(distr);
@@ -289,5 +290,5 @@ std::string getHostAdress(std::string hostname) {
             return compHostIt["host"];
         }
     }
-    throw new ResourceException("Host name not found in .json file");
+    throw ResourceException("Host name not found in .json file");
 }
