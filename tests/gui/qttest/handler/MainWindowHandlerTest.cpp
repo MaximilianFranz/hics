@@ -134,7 +134,7 @@ void MainWindowHandlerTest::testDisplayClassification() {
     //Get top result
     QCOMPARE(mainWindowHandler->getResultWidget()->getResultDisplays()[0]->topResult.first, (std::string)"Baukran");
 
-    QCOMPARE(mainWindowHandler->getDetailDialog()->getPowerConsumptionQLabel()->text().toStdString(), (std::string)"15 mW");
+    QCOMPARE(mainWindowHandler->getDetailDialog()->getPowerConsumptionQLabel()->text().toStdString(), (std::string)"15 Ws");
     QCOMPARE(mainWindowHandler->getDetailDialog()->getComputationTimeQLabel()->text().toStdString(), (std::string)"999 ms");
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(), mainWindowHandler->getResultWidget());
 }
