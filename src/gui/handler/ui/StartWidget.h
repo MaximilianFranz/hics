@@ -74,7 +74,7 @@ private:
     QString directoryPath = QDir::homePath(); /*!< The last opened directory path of the QFileDialog */
     QProgressBar* progressBar = nullptr;
     QPushButton* cancelProgressButton = nullptr;
-    bool selection = false;
+    bool isOneSelected = false;
     const int OFFSET_FILEPATH_DISPLAY = 20;
 
 private:
@@ -95,7 +95,8 @@ private:
 
     void renumerateImages();
 
-    bool checkSelection(bool unselected);
+    bool areAllSelected();
+
 public:
 
     /**
