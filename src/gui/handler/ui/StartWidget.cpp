@@ -287,7 +287,7 @@ void StartWidget::disableWidgets(bool disable) {
     ui->abortDeletionQPushButton->setDisabled(disable);
     ui->confirmDeletionQPushButton->setDisabled(disable);
 
-    for(unsigned int i = 0; i < ui->platformsQVBoxLayout->count(); ++i){
+    for(int i = 0; i < ui->platformsQVBoxLayout->count(); ++i){
         QLayoutItem *item = ui->platformsQVBoxLayout->itemAt(i);
         if(item->widget()){
             item->widget()->setDisabled(disable);

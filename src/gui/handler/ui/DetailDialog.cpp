@@ -55,8 +55,7 @@ void DetailDialog::insertDetails(const ClassificationResult *result) {
 
     //Add the used platforms and their usage to a QString
     QString platformText = "";
-    for (int i = 0; i < platformUsage.size(); ++i) {
-        std::pair<PlatformInfo *, float> pair = platformUsage[i];
+    for (std::pair<PlatformInfo *, float> pair : platformUsage) {
         platformText +=
             QString::fromStdString(pair.first->getDescription()) + ": " + QString::number(qRound(pair.second * 100)) +
             "%, ";
