@@ -79,7 +79,7 @@ QHBoxLayout *StartWidget::addInputImage(QImage *image, const QString &filePath) 
     auto layout = new QHBoxLayout();
     auto label = new QLabel(this);
 
-    auto checkBox = new QCheckBox(QString::number(ui->inputImagesQVBoxLayout->count() + 1), this);
+    auto checkBox = new QCheckBox(this);
     connect(checkBox, &QCheckBox::clicked, this, &StartWidget::checkImageSelection);
     layout->addWidget(checkBox, 0);
 
