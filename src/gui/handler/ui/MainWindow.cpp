@@ -25,6 +25,7 @@
  */
 
 #include <QSizePolicy>
+#include <QtWidgets/QMessageBox>
 #include "handler/ui/MainWindow.h"
 #include "ui_MainWindow.h"
 
@@ -38,6 +39,11 @@ MainWindow::MainWindow(QWidget *parent) :
     mainWindowQStackedWidget = new QStackedWidget(this);
 
     this->setCentralWidget(mainWindowQStackedWidget);
+
+    auto menu = menuBar()->addMenu(tr("More"));
+    auto action = new QAction("About", this);
+    connect(action, &QAction::triggered, this, &MainWindow::openAboutBox);
+    menu->addAction(action);
     this->show();
 }
 
@@ -65,4 +71,8 @@ MainWindow::~MainWindow(){
 
 QStackedWidget *MainWindow::getMainWindowQStackedWidget() const {
     return mainWindowQStackedWidget;
+}
+
+void MainWindow::openAboutBox() {
+    QMessageBox::about(this, "About", "Version: 1.0\n\nAuthors: John Doe");
 }
