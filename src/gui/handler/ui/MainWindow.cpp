@@ -26,13 +26,13 @@
 
 #include <QSizePolicy>
 #include <QtWidgets/QMessageBox>
+#include <fstream>
 #include "handler/ui/MainWindow.h"
 #include "ui_MainWindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
+    ui(new Ui::MainWindow) {
     ui->setupUi(this);
     this->setWindowTitle("HICS");
     this->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
@@ -47,24 +47,24 @@ MainWindow::MainWindow(QWidget *parent) :
     this->show();
 }
 
-void MainWindow::addWidgetToStack(QWidget* widget){
+void MainWindow::addWidgetToStack(QWidget *widget) {
     mainWindowQStackedWidget->addWidget(widget);
 }
 
-void MainWindow::removeWidgetFromStack(QWidget* widget) {
+void MainWindow::removeWidgetFromStack(QWidget *widget) {
     mainWindowQStackedWidget->removeWidget(widget);
 }
 
-void MainWindow::setCurrentWidget(QWidget* widget){
+void MainWindow::setCurrentWidget(QWidget *widget) {
     int index = mainWindowQStackedWidget->indexOf(widget);
 
     //Check if widget is inside mainWindowQStackedWidget
-    if(index >= 0){
+    if (index >= 0) {
         mainWindowQStackedWidget->setCurrentWidget(widget);
     }
 }
 
-MainWindow::~MainWindow(){
+MainWindow::~MainWindow() {
     delete ui;
 }
 
@@ -74,5 +74,11 @@ QStackedWidget *MainWindow::getMainWindowQStackedWidget() const {
 }
 
 void MainWindow::openAboutBox() {
-    QMessageBox::about(this, "About", "Version: 1.0\n\nAuthors: John Doe");
+    QMessageBox::about(this, "About", "Version: 1.0\n\nAuthors:\n"
+        "Jan Allmenroeder <jallmenroeder@gmail.com>\n"
+        "Michael Biebl <mbiebl@gmail.com>\n"
+        "David Culley <david.culley@student.kit.edu>\n"
+        "Patrick Deubel <patrick.deubel@gmail.com>\n"
+        "Maximilian Franz <franzmaximilian1996@gmail.com>\n"
+        "Kateryna Prokopenko <udewb@student.kit.edu>");
 }
