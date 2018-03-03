@@ -35,11 +35,13 @@
 #include <ClassificationResult.h>
 
 #include "MainWindowSubject.h"
-#include "Worker.h"
+#include "WorkerThread.h"
 #include "ui/MainWindow.h"
 #include "ui/StartWidget.h"
 #include "ui/ResultWidget.h"
 #include "ui/DetailDialog.h"
+
+class WorkerThread; /*!< Forward declaration for WorkerThread */
 
 /**
  * @class   MainWindowHandler
@@ -73,16 +75,20 @@ private:
 
     ClassificationRequest *classificationRequestState = nullptr;
 
-    QThread *workerThread = nullptr;
-    Worker *worker = nullptr;
+    WorkerThread *workerThread = nullptr;
 
     std::exception_ptr exceptionptr = nullptr;
+    bool cancelClassification = false;
 
 private:
 
     void connectAll();
 
     void disconnectAll();
+
+private slots:
+
+    void abortClassification();
 
 public:
 
@@ -144,6 +150,15 @@ public:
      */
     void setExceptionptr(const std::exception_ptr &exceptionptr);
 
+    /**
+     * @brief isClassificationAborted checks if the boolean for aborting the classification has been set
+     *
+     * The boolean is set by the user by pressing on the "Cancel" button during a classification.
+     *
+     * @return true if the classification shall be aborted, false if not
+     */
+    bool isClassificationAborted();
+
 public slots:
 
     /**
@@ -175,15 +190,4 @@ public slots:
      * @param errorMessage the to be displayed error message
      */
     void displayErrorMessage(const QString &errorMessage);
-
-signals:
-
-    /**
-     * @brief The startNotfiying signal gets emitted when the classification shall be started.
-     *
-     * This should only be emitted in combination with a QThread and Worker object to ensure a responsive GUI and a
-     * fully working software.
-     */
-    void startNotifying();
-
 };

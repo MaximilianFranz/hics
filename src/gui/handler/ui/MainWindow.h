@@ -78,4 +78,8 @@ private:
     Ui::MainWindow *ui;
 
     QStackedWidget* mainWindowQStackedWidget;
+
+    private slots:
+
+    void openAboutBox();
 };

@@ -87,5 +87,5 @@ private:
     Ui::DetailDialog *ui;
 
     const QString COMPUTATION_TIME_UNIT = "ms";
-    const QString POWER_CONSUMPTION_UNIT = "mW";
+    const QString POWER_CONSUMPTION_UNIT = "Ws";
 };

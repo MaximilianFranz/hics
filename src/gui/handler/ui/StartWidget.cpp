@@ -52,7 +52,14 @@ StartWidget::StartWidget(std::vector<NetInfo *> &neuralNets, std::vector<Platfor
 
     progressBar = new QProgressBar(this);
     progressBar->hide();
-    ui->buttonsLayout->addWidget(progressBar);
+    cancelProgressButton = new QPushButton("Cancel", this);
+    cancelProgressButton->hide();
+
+    auto layout = new QHBoxLayout();
+    layout->addWidget(progressBar, 90);
+    layout->addWidget(cancelProgressButton);
+
+    ui->buttonsLayout->addLayout(layout);
 }
 
 StartWidget::~StartWidget() {
@@ -70,9 +77,10 @@ StartWidget::~StartWidget() {
 
 QHBoxLayout *StartWidget::addInputImage(QImage *image, const QString &filePath) {
     auto layout = new QHBoxLayout();
-    auto checkBox = new QCheckBox(this);
     auto label = new QLabel(this);
 
+    auto checkBox = new QCheckBox(QString::number(ui->inputImagesQVBoxLayout->count() + 1), this);
+    connect(checkBox, &QCheckBox::clicked, this, &StartWidget::checkImageSelection);
     layout->addWidget(checkBox, 0);
 
     //Paint the QImage into a QLabel so that it can be displayed
@@ -118,6 +126,9 @@ void StartWidget::processInputImageButton() {
             delete image;
         }
     }
+
+    //Refresh select all button to match the current state of the images (all checked/all unchecked etc.)
+    checkImageSelection();
 }
 
 QStringList StartWidget::removeDuplicateSelectedImages(const QStringList &filePaths) {
@@ -160,18 +171,75 @@ void StartWidget::processConfirmDeletionButton() {
             }
         }
     }
+
+    if (areAllSelected() && (!images.empty())) {
+        ui->abortDeletionQPushButton->setText("Deselect all");
+    } else  {
+        ui->abortDeletionQPushButton->setText("Select all");
+    }
+
+    renumerateImages();
+}
+
+void StartWidget::renumerateImages() {
+    for (int i = 0; i < ui->inputImagesQVBoxLayout->count(); ++i) {
+        ((QCheckBox *) (ui->inputImagesQVBoxLayout->itemAt(i)->layout()->itemAt(0)->widget()))->setText(
+            QString::number(i + 1));
+    }
+}
+
+bool StartWidget::areAllSelected() {
+    //Returns true if all image checkboxes are unselected, false if at least one is checked
+    bool result = true;
+    QMapIterator<QPair<QImage *, QString>, QHBoxLayout *> it(images);
+    while (it.hasNext()) {
+        it.next();
+        QCheckBox *checkBox;
+        if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
+            if (!checkBox->isChecked()) {
+                result = false;
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+void StartWidget::checkImageSelection() {
+    //Check the current state of the checkboxes. Always say "Select all" unless all boxes are checked
+    if (areAllSelected()) {
+        ui->abortDeletionQPushButton->setText("Deselect all");
+    } else {
+        ui->abortDeletionQPushButton->setText("Select all");
+    }
 }
 
 void StartWidget::processAbortDeletionQPushButton() {
     QMapIterator<QPair<QImage *, QString>, QHBoxLayout *> it(images);
 
-    //Uncheck every image check box
-    while (it.hasNext()) {
-        it.next();
-        QCheckBox *checkBox;
-        if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
-            checkBox->setChecked(false);
+    //If all are selected we want to deselect all, else we want to select all
+    if (areAllSelected()) {
+        while (it.hasNext()) {
+            it.next();
+            QCheckBox *checkBox;
+            if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
+                if (checkBox->isChecked()) {
+                    checkBox->setChecked(false);
+                }
+            }
         }
+        if (!images.empty()) ui->abortDeletionQPushButton->setText("Select all");
+    } else {
+        while (it.hasNext()) {
+            it.next();
+            QCheckBox *checkBox;
+            if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
+                if (!checkBox->isChecked()) {
+                    checkBox->setChecked(true);
+                }
+            }
+        }
+        if (!images.empty()) ui->abortDeletionQPushButton->setText("Deselect all");
     }
 }
 
@@ -238,12 +306,13 @@ NetInfo StartWidget::getSelectedNeuralNet() {
     return *it->second;
 }
 
-void StartWidget::displayProgress(){
+void StartWidget::displayProgress() {
     ui->classificationQPushButton->hide();
     ui->selectInputImagesQPushButton->hide();
 
     progressBar->setRange(0, 0);
     progressBar->show();
+    cancelProgressButton->show();
 
     disableWidgets(true);
 
@@ -254,6 +323,7 @@ void StartWidget::resetProgressDisplay() {
     progressBar->setMaximum(100);
     progressBar->setValue(100);
     progressBar->hide();
+    cancelProgressButton->hide();
 
     ui->classificationQPushButton->show();
     ui->selectInputImagesQPushButton->show();
@@ -270,9 +340,9 @@ void StartWidget::disableWidgets(bool disable) {
     ui->abortDeletionQPushButton->setDisabled(disable);
     ui->confirmDeletionQPushButton->setDisabled(disable);
 
-    for(unsigned int i = 0; i < ui->platformsQVBoxLayout->count(); ++i){
+    for (int i = 0; i < ui->platformsQVBoxLayout->count(); ++i) {
         QLayoutItem *item = ui->platformsQVBoxLayout->itemAt(i);
-        if(item->widget()){
+        if (item->widget()) {
             item->widget()->setDisabled(disable);
         }
     }
@@ -281,7 +351,7 @@ void StartWidget::disableWidgets(bool disable) {
     //Get every QImage's check box inside the layout and set the disabled state
     while (it.hasNext()) {
         it.next();
-        if(it.value()->itemAt(0)->widget()){
+        if (it.value()->itemAt(0)->widget()) {
             it.value()->itemAt(0)->widget()->setDisabled(disable);
         }
     }
@@ -385,5 +455,9 @@ QCheckBox *StartWidget::getAggregateResultsQCheckBox() {
 
 QMap<QPair<QImage *, QString>, QHBoxLayout *> *StartWidget::getImagesMap() {
     return &images;
+}
+
+QPushButton *StartWidget::getCancelProgressButton() const {
+    return cancelProgressButton;
 };
 

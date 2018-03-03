@@ -88,7 +88,7 @@ void DetailDialogTest::testInsertDetails() {
     detailDialog->insertDetails(classificationResult);
 
     QCOMPARE(detailDialog->getComputationTimeQLabel()->text().toStdString(), (std::string)"999 ms");
-    QCOMPARE(detailDialog->getPowerConsumptionQLabel()->text().toStdString(), (std::string)"15 mW");
+    QCOMPARE(detailDialog->getPowerConsumptionQLabel()->text().toStdString(), (std::string)"15 Ws");
     QCOMPARE(detailDialog->getPlatformUsageQLabel()->text().toStdString(),
              (std::string)"CPU: 20%, FPGA1: 10%, GPU1: 1%, GPU2: 69%");
 }
