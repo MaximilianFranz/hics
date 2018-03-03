@@ -36,9 +36,7 @@ WeightWrapper *AlexNetWeightLoader::createWeightWrapper(const std::string &group
     h5cpp::Dataset dataset;
     h5cpp::Dataspace dataspace;
 
-    int count = 0;
-    int maxTries = 2;
-    while(true) {
+    while (true) {
         try {
             //Open the group which will contain the dataset and dataspace
             group = weightFile.root().open_group(groupName);
@@ -46,11 +44,9 @@ WeightWrapper *AlexNetWeightLoader::createWeightWrapper(const std::string &group
             dataset = group.open_dataset(datasetWeightName);
             dataspace = dataset.get_dataspace();;
             break;
-        } catch (std::exception &e) {
-            //TODO log error for false group name. Reason: false/corrupted weight file.
-            //Reload weights file and try again.
-            weightFile = h5cpp::File(filePath, "r");
-            if(++count == maxTries) throw e;
+        } catch (h5cpp::Exception &e) {
+            throw ResourceException("The AlexNet weight file <" + filePath + "> is corrupt or false. Please ask a HICS"
+                                    + " developer for the original weight file.");
         }
     }
 
@@ -74,8 +70,9 @@ WeightWrapper *AlexNetWeightLoader::createWeightWrapper(const std::string &group
         //Open the bias dataset and dataspace.
         dataset = group.open_dataset(datasetBiasName);
         dataspace = dataset.get_dataspace();
-    } catch (std::exception &e){
-        //TODO log this error
+    } catch (h5cpp::Exception &e) {
+        throw ResourceException("The AlexNet weight file <" + filePath + "> is corrupt or false. Please ask a HICS"
+                                + " developer for the original weight file.");
     }
 
     hsize_t biasDimensionArray[H5S_MAX_RANK];
@@ -90,41 +87,6 @@ WeightWrapper *AlexNetWeightLoader::createWeightWrapper(const std::string &group
     dataset.read(&biasData[0]);
 
     WeightWrapper *output = new WeightWrapper(weightDimensions, weightData, biasData, biasDimensions);
-
-    return output;
-}
-
-WeightWrapper *
-AlexNetWeightLoader::appendLayers(const std::string &groupNameFirst, const std::string &groupNameSecond) {
-
-    WeightWrapper *first = createWeightWrapper(groupNameFirst);
-    WeightWrapper *second = createWeightWrapper(groupNameSecond);
-
-    std::vector<float> firstWeights = first->getData();
-    const std::vector<float> secondWeights = second->getData();
-
-    std::vector<float> firstBias = first->getBias();
-    const std::vector<float> secondBias = second->getBias();
-
-    for (auto i : secondWeights) {
-        firstWeights.push_back(secondWeights.at((unsigned long) i));
-    }
-
-    for (auto i : secondBias) {
-        firstBias.push_back(secondBias.at((unsigned long) i));
-    }
-
-    //TODO watch out maybe other dimension attributes need to be changed aswell.
-
-    int firstWeightDimension = first->getDimensions().at(0) * 2;
-
-    std::vector<int> temp = first->getDimensions();
-    temp.at(0) = firstWeightDimension;
-
-    std::vector<int> temp2;
-    temp2.push_back((int) firstBias.size());
-
-    WeightWrapper *output = new WeightWrapper(temp, firstWeights, firstBias, temp2);
 
     return output;
 }
@@ -148,21 +110,18 @@ WeightWrapper *AlexNetWeightLoader::getWeights(LayerIdentifier layerId) {
             return createWeightWrapper("dense_2");
         case LayerIdentifier::FULLY_CON_3 :
             return createWeightWrapper("dense_3");
-        default:
-            //TODO throw exception here. Could happen when LayerIdentifier gets expanded but is forgotten here.
-            return nullptr;
     }
-    return nullptr; //DOES NOT HAPPEN
 }
-
 
 AlexNetWeightLoader::AlexNetWeightLoader(const std::string &filePath)
     : filePath(filePath) {
+
+    //Disable HDF5 error reporting
+    h5cpp::disableAutoErrorReporting();
     try {
         weightFile = h5cpp::File(filePath, "r");
     } catch (h5cpp::Exception &e) {
-        //Weight File Error is crucial
-        throw ResourceException();
-        //TODO act accordingly -> log
+        //Weight File cannot be accessed/read from
+        throw ResourceException("The AlexNet weights file <" + filePath + "> is not readable.");
     }
 }
