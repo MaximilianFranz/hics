@@ -80,6 +80,7 @@ QHBoxLayout *StartWidget::addInputImage(QImage *image, const QString &filePath) 
     auto label = new QLabel(this);
 
     auto checkBox = new QCheckBox(QString::number(ui->inputImagesQVBoxLayout->count() + 1), this);
+    connect(checkBox, &QCheckBox::clicked, this, &StartWidget::checkImageSelection);
     layout->addWidget(checkBox, 0);
 
     //Paint the QImage into a QLabel so that it can be displayed
@@ -167,6 +168,11 @@ void StartWidget::processConfirmDeletionButton() {
             }
         }
     }
+    if(checkSelection(true)){
+        ui->abortDeletionQPushButton->setText("Select all");
+    } else if(checkSelection(false)) {
+        ui->abortDeletionQPushButton->setText("Deselect all");
+    }
 
     renumerateImages();
 }
@@ -177,16 +183,74 @@ void StartWidget::renumerateImages() {
     }
 }
 
+bool StartWidget::checkSelection(bool unselected) {
+    if(unselected) {
+        bool result = true;
+        QMapIterator<QPair<QImage *, QString>, QHBoxLayout *> it(images);
+        while (it.hasNext()) {
+            it.next();
+            QCheckBox *checkBox;
+            if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
+                if (checkBox->isChecked()) result = false;
+                break;
+            }
+        }
+        return result;
+    } else {
+        bool result = true;
+        QMapIterator<QPair<QImage *, QString>, QHBoxLayout *> it(images);
+        while (it.hasNext()) {
+            it.next();
+            QCheckBox *checkBox;
+            if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
+                if (!checkBox->isChecked()){
+                    result = false;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+}
+
+void StartWidget::checkImageSelection() {
+    //True parameter means we want to check if all checkboxes are deselected
+    if(checkSelection(true)) {
+        ui->abortDeletionQPushButton->setText("Select all");
+    }
+
+    //False parameter means we want to check if all checkboxes are selected
+    if(checkSelection(false)){
+        ui->abortDeletionQPushButton->setText("Deselect all");
+    }
+}
+
 void StartWidget::processAbortDeletionQPushButton() {
     QMapIterator<QPair<QImage *, QString>, QHBoxLayout *> it(images);
 
-    //Uncheck every image check box
-    while (it.hasNext()) {
-        it.next();
-        QCheckBox *checkBox;
-        if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
-            checkBox->setChecked(false);
+    //False if no checkbox is selected, true if at least one is selected
+    bool selection = checkSelection(true);
+
+    if(selection) {
+        //Check every image check box
+        while (it.hasNext()) {
+            it.next();
+            QCheckBox *checkBox;
+            if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
+                if(!checkBox->isChecked()) checkBox->setChecked(true);
+            }
         }
+        if(images.size() > 0) ui->abortDeletionQPushButton->setText("Deselect all");
+    } else {
+        //Uncheck every image check box
+        while (it.hasNext()) {
+            it.next();
+            QCheckBox *checkBox;
+            if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
+                if(checkBox->isChecked())checkBox->setChecked(false);
+            }
+        }
+        ui->abortDeletionQPushButton->setText("Select all");
     }
 }
 
