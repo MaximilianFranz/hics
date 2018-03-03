@@ -36,7 +36,7 @@ PerformanceCalculator::calculatePerformance(std::vector<hostPlatformDistribution
     int powerConsumption = 0;
     std::vector<std::pair<PlatformInfo*, float>> overallDistribution;
 
-    for (int i = 0; i < platformDist.size(); i++) {
+    for (unsigned int i = 0; i < platformDist.size(); i++) {
         auto host = platformDist.begin() + i;
         for (auto platform : host.operator*()) {
             platform.second = platform.second * hostDistribution[i]->usage;
@@ -53,9 +53,9 @@ PerformanceCalculator::calculatePerformance(std::vector<hostPlatformDistribution
         float powerPerTime = float(hostData.powerConsumption) / float(hostData.timeConsumption);
         powerConsumption += powerPerTime * host->time;
     }
-    //mw * ms = 10^-3 mWs
-    //convert powerconsumption from mw * ms to mWs
-    powerConsumption = powerConsumption / 1000;
+    //mw * ms = 10^-6 Ws
+    //convert powerconsumption from mw * ms to Ws
+    powerConsumption = powerConsumption / 1000000;
 
     return PerformanceData(powerConsumption, computationTime, overallDistribution);
 

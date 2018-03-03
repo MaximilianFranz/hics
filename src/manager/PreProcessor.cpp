@@ -93,7 +93,7 @@ std::vector<ImageWrapper*> PreProcessor::processImages(std::map<QString, QImage>
         }
 
         //substract mean to normalize
-        for (int i = 0; i < bitmap.size(); i++) {
+        for (unsigned int i = 0; i < bitmap.size(); i++) {
             bitmap[i] = float(bitmap[i] - (meanR + meanG + meanB)/3);
         }
 

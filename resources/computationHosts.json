@@ -15,6 +15,11 @@
 			"name" : "GPU",
 			"power" : 17000,
 			"time" : 230
+		},
+		{
+			"name" : "test",
+			"power" : 24952,
+			"time" : 150
 		}
 	]
 }
