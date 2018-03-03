@@ -28,6 +28,7 @@
 
 
 #include <Executor.h>
+#include <spdlog/logger.h>
 #include "ManagerObserver.h"
 #include "handler/MainWindowHandler.h"
 
@@ -42,6 +43,8 @@ private:
     std::vector<ComputationHost*> computationHosts;
 
     MainWindowHandler *mainWindowHandler = nullptr;
+
+    std::shared_ptr<spdlog::logger> logger;
 
 public:
 

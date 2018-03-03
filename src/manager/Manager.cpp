@@ -29,6 +29,7 @@
 #include <thread>
 #include <fstream>
 #include <ResourceException.h>
+#include <spdlog/spdlog.h>
 
 #include "Manager.h"
 #include "PreProcessor.h"
@@ -61,6 +62,17 @@ void runClassification(ComputationHost* host,
 }
 
 Manager::Manager() {
+
+    //Logger creation
+    try {
+        // Create basic file logger (not rotated)
+        logger = spdlog::rotating_logger_mt("logger", "logs/log.txt", 1024 * 1024 * 5, 3);
+        logger->info("logger initialization successful");
+
+    } catch (const spdlog::spdlog_ex& ex) {
+        std::cout << "Log initialization failed: " << ex.what() << std::endl;
+    }
+
 
     std::string hostAdress;
     try {
