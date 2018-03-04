@@ -1,3 +1,4 @@
+<<<<<<< 6dc7fdc22fd3e352e8cb0eed9069866d321a6433
 /* Copyright 2018 The HICS Authors
  *
  * Permission is hereby granted, free of charge, to any person
