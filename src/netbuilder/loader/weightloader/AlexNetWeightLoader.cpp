@@ -60,11 +60,19 @@ WeightWrapper *AlexNetWeightLoader::createWeightWrapper(const std::string &group
     for (int i = 0; i < weightDimensionCount; i++) {
         weightDimensions.push_back((int) weightDimensionArray[i]);
     }
-    unsigned long elementCount = dataspace.get_npoints();
-    std::vector<float> weightData(elementCount);
 
-    //Read and store the weightData in the float vector.
-    dataset.read(&weightData[0]);
+    std::vector<float> weightData;
+
+    try {
+        std::vector<float> temp((unsigned long) dataspace.get_npoints());
+        weightData = temp;
+
+        //Read and store the weightData in the float vector.
+        dataset.read(&weightData[0]);
+    } catch (h5cpp::Exception &e) {
+        throw ResourceException("The AlexNet weight file <" + filePath + "> is corrupt or false. Please ask a HICS"
+                                + " developer for the original weight file.");
+    }
 
     try {
         //Open the bias dataset and dataspace.
@@ -83,8 +91,15 @@ WeightWrapper *AlexNetWeightLoader::createWeightWrapper(const std::string &group
         biasDimensions.push_back((int) biasDimensionArray[i]);
     }
 
-    std::vector<float> biasData((unsigned long) dataspace.get_npoints());
-    dataset.read(&biasData[0]);
+    std::vector<float> biasData;
+    try {
+        std::vector<float> temp((unsigned long) dataspace.get_npoints());
+        biasData = temp;
+        dataset.read(&biasData[0]);
+    } catch (h5cpp::Exception &e) {
+        throw ResourceException("The AlexNet weight file <" + filePath + "> is corrupt or false. Please ask a HICS"
+                                + " developer for the original weight file.");
+    }
 
     WeightWrapper *output = new WeightWrapper(weightDimensions, weightData, biasData, biasDimensions);
 
@@ -93,23 +108,23 @@ WeightWrapper *AlexNetWeightLoader::createWeightWrapper(const std::string &group
 
 WeightWrapper *AlexNetWeightLoader::getWeights(LayerIdentifier layerId) {
 
-    switch (layerId) {
-        case LayerIdentifier::CONV_1 :
-            return createWeightWrapper("conv_1");
-        case LayerIdentifier::CONV_2 :
-            return createWeightWrapper("conv_2");
-        case LayerIdentifier::CONV_3 :
-            return createWeightWrapper("conv_3");
-        case LayerIdentifier::CONV_4 :
-            return createWeightWrapper("conv_4");
-        case LayerIdentifier::CONV_5 :
-            return createWeightWrapper("conv_5");
-        case LayerIdentifier::FULLY_CON_1 :
-            return createWeightWrapper("dense_1");
-        case LayerIdentifier::FULLY_CON_2 :
-            return createWeightWrapper("dense_2");
-        case LayerIdentifier::FULLY_CON_3 :
-            return createWeightWrapper("dense_3");
+    if (layerId == LayerIdentifier::CONV_1) {
+        return createWeightWrapper("conv_1");
+    } else if (layerId == LayerIdentifier::CONV_2) {
+        return createWeightWrapper("conv_2");
+    } else if (layerId == LayerIdentifier::CONV_3) {
+        return createWeightWrapper("conv_3");
+    } else if (layerId == LayerIdentifier::CONV_4) {
+        return createWeightWrapper("conv_4");
+    } else if (layerId == LayerIdentifier::CONV_5) {
+        return createWeightWrapper("conv_5");
+    } else if (layerId == LayerIdentifier::FULLY_CON_1) {
+        return createWeightWrapper("dense_1");
+    } else if (layerId == LayerIdentifier::FULLY_CON_2) {
+        return createWeightWrapper("dense_2");
+    } else {
+        assert(layerId == LayerIdentifier::FULLY_CON_3);
+        return createWeightWrapper("dense_3");
     }
 }
 

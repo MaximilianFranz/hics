@@ -69,8 +69,6 @@ private:
      */
     WeightWrapper* createWeightWrapper(const std::string &groupName);
 
-    WeightWrapper* appendLayers(const std::string &groupNameFirst, const std::string &groupNameSecond);
-
 public:
 
     /**
