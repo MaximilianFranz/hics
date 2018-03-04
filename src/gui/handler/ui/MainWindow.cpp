@@ -27,6 +27,9 @@
 #include <QSizePolicy>
 #include <QtWidgets/QMessageBox>
 #include <fstream>
+
+#include "config.h"
+
 #include "handler/ui/MainWindow.h"
 #include "ui_MainWindow.h"
 
@@ -74,7 +77,9 @@ QStackedWidget *MainWindow::getMainWindowQStackedWidget() const {
 }
 
 void MainWindow::openAboutBox() {
-    QMessageBox::about(this, "About", "Version: 1.0\n\nAuthors:\n"
+    QMessageBox::about(this, "About", "HICS - Heterogenous Image Classification System\n\n"
+        "Version: " PROJECT_VERSION "\n\n"
+        "Authors:\n"
         "Jan Allmenroeder <jallmenroeder@gmail.com>\n"
         "Michael Biebl <mbiebl@gmail.com>\n"
         "David Culley <david.culley@student.kit.edu>\n"

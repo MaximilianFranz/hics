@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(HICS)
+project(HICS VERSION 0.2)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -11,6 +11,9 @@ set(CMAKE_CXX_STANDARD 11)
 if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-reorder -Wall")
 endif ()
+
+configure_file(${CMAKE_SOURCE_DIR}/cmake/config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
+include_directories(${CMAKE_BINARY_DIR})
 
 # those defines are expanded to absolute paths
 add_definitions(-DRES_DIR="${CMAKE_SOURCE_DIR}/resources/")
