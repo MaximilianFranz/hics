@@ -45,32 +45,11 @@ NetInfo NeuralNet::getInfo() {
     return info;
 }
 
-bool NeuralNet::isComputationComplete() {
-    for (Layer* l : layers) {
-        if (!l->isComputed())
-            return false;
-    }
-    return true;
-    // Alternatively: return (layers[last].isComputed())
-    // Can we guarantee consistency?
-}
-
 bool NeuralNet::isPlacementComplete() {
     for (Layer* l : layers) {
         if (!l->isPlatformSet()) {
             return false;
         }
-    }
-    return true;
-}
-
-bool NeuralNet::verifyConsistency() {
-    SimpleNetIterator it(this);
-    while (it.hasNext()) {
-        if (it.getElement()->getOutputDimensions() != it.getElement()->getNextLayer()->getInputDimensions())
-            return false;
-
-        it.next();
     }
     return true;
 }
