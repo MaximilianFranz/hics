@@ -30,6 +30,7 @@
 #include <fstream>
 #include <ResourceException.h>
 #include <spdlog/spdlog.h>
+#include <CommunicationException.h>
 
 #include "Manager.h"
 #include "PreProcessor.h"
@@ -42,6 +43,10 @@ std::string getHostAdress(std::string hostname);
 
 static std::exception_ptr exceptionptr = nullptr;
 
+static std::shared_ptr<spdlog::logger> logger;
+
+static char logfilepath[] = LOG_FILE_PATH "log.txt";
+
 void runClassification(ComputationHost* host,
                        std::vector<ImageResult*>& allResults,
                        std::vector<ImageWrapper*> img,
@@ -52,8 +57,8 @@ void runClassification(ComputationHost* host,
                        int& allTimes) {
     try {
         allResults = host->classify(std::move(img), std::move(net), mode, std::move(selecedPlatforms));
-    } catch (...) {
-        //TODO: handling
+    } catch (std::exception& e) {
+        logger->info("classification of host {} failed: {}", host->getName(), e.what());
         exceptionptr = std::current_exception();
     }
     std::chrono::steady_clock::time_point timeAfter = std::chrono::steady_clock::now();
@@ -63,39 +68,39 @@ void runClassification(ComputationHost* host,
 
 Manager::Manager() {
 
-    //Logger creation
     try {
         // Create basic file logger (not rotated)
-        logger = spdlog::rotating_logger_mt("logger", "logs/log.txt", 1024 * 1024 * 5, 3);
-        logger->info("logger initialization successful");
+        logger = spdlog::rotating_logger_mt("logger", logfilepath, 1024 * 1024 * 5, 3);
+        logger->flush_on(spdlog::level::info);
+        logger->info("found log file, logger initialization successful");
 
     } catch (const spdlog::spdlog_ex& ex) {
         std::cout << "Log initialization failed: " << ex.what() << std::endl;
+        return;
     }
-
 
     std::string hostAdress;
+    ComputationHost* client;
+    std::string clientName = "fpga";
     try {
-        hostAdress = getHostAdress("fpga");
-    } catch (ResourceException& r) {
-        //TODO: handling
-    }
-    ComputationHost* client = new Client("fpga", grpc::CreateChannel(
-            hostAdress, grpc::InsecureChannelCredentials()));
+        hostAdress = getHostAdress(clientName);
+        client = new Client(clientName, grpc::CreateChannel(
+                hostAdress, grpc::InsecureChannelCredentials()));
 
-    try {
-        client->queryNets();
-        computationHosts.push_back(client);
-    } catch (...) {
-        // If the client doesn't respond, it's most likely offline or not reachable
-        // TODO: make this more dynamic and allow for clients to show up any time
-        delete client;
+        try {
+            client->queryNets();
+            computationHosts.push_back(client);
+        } catch (CommunicationException& c) {
+            logger->warn("host at {} was not reachable, will be deleted", hostAdress);
+            delete client;
+        }
+    } catch (ResourceException& r) {
+        logger->warn("error while reading host adress of host {}: {}. Host will be disabled.",
+                     clientName, r.what());
     }
 
     ComputationHost* executor = new Executor("local");
     computationHosts.push_back(executor);
-   /* ComputationHost* executor1 = new Executor("fpga");
-    computationHosts.push_back(executor1);*/
 }
 
 void Manager::initGUI() {

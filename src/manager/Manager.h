@@ -44,8 +44,6 @@ private:
 
     MainWindowHandler *mainWindowHandler = nullptr;
 
-    std::shared_ptr<spdlog::logger> logger;
-
 public:
 
     Manager();

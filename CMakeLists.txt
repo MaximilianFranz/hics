@@ -18,6 +18,7 @@ include_directories(${CMAKE_BINARY_DIR})
 # those defines are expanded to absolute paths
 add_definitions(-DRES_DIR="${CMAKE_SOURCE_DIR}/resources/")
 add_definitions(-DTEST_RES_DIR="${CMAKE_SOURCE_DIR}/tests/resources/")
+add_definitions(-DLOG_FILE_PATH="${CMAKE_CURRENT_BINARY_DIR}/logs/")
 
 find_package(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
 
@@ -101,3 +102,5 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
     APPEND_COVERAGE_COMPILER_FLAGS()
 endif() #CMAKE_BUILD_TYPE STREQUAL "Coverage"
 endif()
+
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/logs)
