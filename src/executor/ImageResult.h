@@ -35,25 +35,40 @@
 
 class ImageResult {
 private:
+
     ImageWrapper image;
     std::vector<std::pair<std::string, float>> results; //! ordered list of labels and their probabilities
     std::vector<std::pair<PlatformInfo*, float>> compDistribution; //!Shows the distribution of computation on different platforms.
+
 public:
+
     /**
      * Getter for compDistribution, which Platform computed what in percentages.
      * @return compDistribution
      */
     const std::vector<std::pair<PlatformInfo*, float>> &getCompDistribution() const;
 
+    /**
+     * Setter for computation Distribution in case it has not been set with the constructor
+     *
+     * @param compDistribution
+     */
     void setCompDistribution(const std::vector<std::pair<PlatformInfo*, float>> &compDistribution);
 
-    /**\brief Constructor
+    /**\brief Constructor without distribution
      *
-     * @param results top X
-     * @param image
+     * @param results top X results of label and probability
+     * @param image the corresponding image to this result
      */
     ImageResult(std::vector<std::pair<std::string, float>> results, ImageWrapper &image);
 
+    /**
+     *\brief Constructor with distribution included
+     *
+     * @param results top X results of label and probability
+     * @param distribution used to classify this ImageResult
+     * @param image the corresponding image to this result
+     */
     ImageResult(std::vector<std::pair<std::string, float>> results,
                 std::vector<std::pair<PlatformInfo*, float>> distribution, ImageWrapper &image);
 
@@ -69,6 +84,11 @@ public:
      */
     const std::vector<std::pair<std::string, float>> &getResults() const;
 
+    /**
+     * Getter for the original ImageWrapper corresponding to this result
+     *
+     * @return ImageWrapper
+     */
     const ImageWrapper &getImage() const;
 
 };

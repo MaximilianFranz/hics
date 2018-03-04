@@ -125,3 +125,7 @@ Executor::~Executor() {
     }
 }
 
+std::string Executor::getName() {
+    return name;
+}
+

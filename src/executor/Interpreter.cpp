@@ -43,24 +43,26 @@ ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *original
         if (!labelMap.empty()) {
             for (int i = 0; i < output->getNumElements(); i++) {
                 // insert only as many results as exist
-                results.push_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output->getData())),
+                results.emplace_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output->getData())),
                                                             sortOut[i]));
             }
         }
         else {
             for (int i = 0; i < output->getNumElements(); i++) {
                 // dont insert label, because non exist
-                results.push_back(std::pair<std::string, float>("", sortOut[i]));
+                results.emplace_back(std::pair<std::string, float>("", sortOut[i]));
             }
         }
     }
-
-    
-    for (int i = 0; i < TOP_X; i++) {
-        // Add Top 5 probabilities and their labels to the list.
-        results.push_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output->getData())),
-                                                        sortOut[i]));
+    else {
+        for (int i = 0; i < TOP_X; i++) {
+            // Add Top 5 probabilities and their labels to the list.
+            results.push_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output->getData())),
+                                                            sortOut[i]));
+        }
     }
+
+
 
     ImageResult *i = new ImageResult(results, placer->getCompDistribution(), *originalImage);
 
@@ -70,18 +72,13 @@ ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *original
     return i;
 }
 
-void Interpreter::setLabels(std::map<int, std::string> &labelMap) {
-    this->labelMap = labelMap;
-}
-
-
 int Interpreter::getIndexOf(float value, std::vector<float> output) {
     for (int i = 0; i < output.size() ; i++) {
         if(output[i] == value) {
             return i;
         }
     }
-    return 0;
+    return 0; //Unreachable in this usage, since method is private this case cannot be tested.
 }
 
 const bool Interpreter::compareDesc(float a, float b) {

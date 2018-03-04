@@ -46,7 +46,7 @@ void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::
     compDistribution.clear();
 
     this->net = net;
-    this->currentPlatforms = platforms;
+    this->currentPlatforms = std::move(platforms);
     //TODO: Get only platforms previously selected!
 
     switch (mode) {
@@ -56,7 +56,8 @@ void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::
             break;
         case OperationMode::HighPower : placeHighPerformance();
             break;
-        default: placeEnergyEfficient();
+            // Omit default, because all cases are caught
+            // method cannot be called with illegal OperationMode argument
     }
 
 }
