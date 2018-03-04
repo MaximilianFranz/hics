@@ -53,7 +53,7 @@ public:
 
     void setPlatform(Platform *platform) override;
 
-    long long int getDifficulty() override;
+    int getDifficulty() override;
 
     float getRadius() const;
 

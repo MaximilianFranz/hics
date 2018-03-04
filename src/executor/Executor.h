@@ -138,9 +138,7 @@ public:
      */
     std::vector<NetInfo*> queryNets() override;
 
-    std::string getName() {
-        return name;
-    }
+    std::string getName() override;
 
     virtual ~Executor();
 };

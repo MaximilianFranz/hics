@@ -78,15 +78,6 @@ public:
      */
     SimpleNetIterator* createIterator() const;
 
-    /**
-     * Iterates over the network and verifies that input and output dimensions of connected layers match.
-     *
-     * The network may not be computed, if this returns false.
-     *
-     * @return true if the dimensions match, false otherwise.
-     */
-    bool verifyConsistency();
-
     long long getTotalDifficulty();
 
     /**
@@ -95,6 +86,11 @@ public:
      */
     const Layer *getLastLayer() const;
 
+    /**
+     *  Returns the number of layer in this neural net
+     *
+     * @return int number of layers
+     */
     const int getNumLayers() const;
 
     /**
