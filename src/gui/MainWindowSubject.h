@@ -52,14 +52,16 @@ private:
     std::vector<ManagerObserver*> observers;
 
 public:
-    //TODO add pointers
+
     /**
      * @brief A ManagerObserver can be attached to the observers list.
      *
      * @param manager is the to be attached ManagerObserver
      */
     virtual void attach(ManagerObserver* manager) {
-        observers.push_back(manager);
+        if(observers.empty()) {
+            observers.push_back(manager);
+        }
     }
 
     /**
@@ -81,9 +83,7 @@ public:
      */
     virtual ClassificationResult* notify(){
         ClassificationResult* result = nullptr;
-
-        //TODO ensure only one observer
-
+        
         for(ManagerObserver* observer : observers) {
             result = observer->update();
         }
