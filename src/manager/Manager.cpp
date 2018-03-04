@@ -58,7 +58,7 @@ void runClassification(ComputationHost* host,
     try {
         allResults = host->classify(std::move(img), std::move(net), mode, std::move(selecedPlatforms));
     } catch (std::exception& e) {
-        logger->info("classification of host {} failed: {}", host->getName(), e.what());
+        logger->warn("classification of host {} failed: {}", host->getName(), e.what());
         exceptionptr = std::current_exception();
     }
     std::chrono::steady_clock::time_point timeAfter = std::chrono::steady_clock::now();
@@ -76,7 +76,7 @@ Manager::Manager() {
 
     } catch (const spdlog::spdlog_ex& ex) {
         std::cout << "Log initialization failed: " << ex.what() << std::endl;
-        return;
+        exceptionptr = std::current_exception();
     }
 
     std::string hostAdress;
@@ -106,7 +106,18 @@ Manager::Manager() {
 void Manager::initGUI() {
     std::vector<std::vector<NetInfo*>> allNets;
     for (auto host : computationHosts) {
-        allNets.push_back(host->queryNets());
+        try {
+            allNets.push_back(host->queryNets());
+        } catch (CommunicationException& c) {
+            logger->warn("could not query nets from remote host {}, host will be deleted.",
+                         c.getFailedHost()->getName());
+            //remove failed host
+            computationHosts.erase(std::find(computationHosts.begin(), computationHosts.end(), c.getFailedHost()));
+            exceptionptr = std::current_exception();
+        } catch (ResourceException& r) {
+            logger->critical("error while querying nets: {}. Aborting!", r.what());
+            exceptionptr = std::current_exception();
+        }
     }
 
     auto nets = netIntersection(allNets);
@@ -119,6 +130,15 @@ void Manager::initGUI() {
     std::vector<OperationMode> modes{OperationMode::HighPower, OperationMode::LowPower, OperationMode::EnergyEfficient};
 
     mainWindowHandler = new MainWindowHandler(nets, platforms, modes);
+
+    //Check if exception occured while setting up System
+    if(exceptionptr) {
+        mainWindowHandler->setExceptionptr(exceptionptr);
+
+        //Null exceptionptr for next classification
+        exceptionptr = nullptr;
+    }
+
     mainWindowHandler->attach(this);
 }
 
@@ -160,7 +180,6 @@ ClassificationResult* Manager::update() {
             hostPlatforms.erase(hostPlatforms.begin() + i);
         }
     }
-    //TODO ClassifiationRequest, GUI change Platforms to pointer
 
     std::vector<std::pair<ComputationHost*, int>> hostDistribution =
             HostPlacer::place(availableHosts, (int)processedImages.size(), request->getSelectedOperationMode());
@@ -211,12 +230,22 @@ ClassificationResult* Manager::update() {
         classifyThreads[i].join();
     }
 
-    if(mainWindowHandler->isClassificationAborted()){
+    if (mainWindowHandler->isClassificationAborted()) {
         return nullptr;
     }
 
-    if(exceptionptr) {
+    if (exceptionptr) {
         mainWindowHandler->setExceptionptr(exceptionptr);
+
+        try {
+            std::rethrow_exception(exceptionptr);
+        } catch (CommunicationException& c) {
+            logger->warn("remove remote computation host {} because it failed the classification",
+                         c.getFailedHost()->getName());
+            computationHosts.erase(std::find(computationHosts.begin(), computationHosts.end(), c.getFailedHost()));
+        } catch (...) {
+            //If its not a communication exception there is nothing to handle
+        }
 
         //Null exceptionptr for next classification
         exceptionptr = nullptr;
