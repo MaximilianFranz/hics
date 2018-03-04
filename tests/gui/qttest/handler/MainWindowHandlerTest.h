@@ -70,6 +70,10 @@ private slots:
     
     void testUpdatePlatforms();
 
+    void testAbortClassification();
+
+    //void testSetClassificationRequestState();
+
 };
 
 TEST_DECLARE(MainWindowHandlerTest);

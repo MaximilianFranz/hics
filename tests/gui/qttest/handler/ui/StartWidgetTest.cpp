@@ -25,6 +25,7 @@
  */
 
 #include "StartWidgetTest.h"
+#include <QtWidgets/QMessageBox>
 #include <handler/ui/StartWidget.h>
 
 void StartWidgetTest::initTestCase() {
@@ -85,7 +86,11 @@ void StartWidgetTest::testConstructor() {
 }
 
 void StartWidgetTest::testImageFunctions() {
-    QSKIP("Select images works, skip to disable QFileSelector popup", SkipSingle);
+    //QSKIP("Select images works, skip to disable QFileSelector popup", SkipSingle);
+    QMessageBox box;
+    box.setText("Select three images");
+    box.show();
+
     startWidget->processInputImageButton();
     //Select 3 images
     QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 3);

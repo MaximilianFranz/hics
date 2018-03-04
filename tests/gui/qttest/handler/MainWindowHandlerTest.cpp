@@ -26,6 +26,7 @@
 
 #include <QtTest/QSignalSpy>
 #include <QtWidgets/QLabel>
+#include <QMessageBox>
 #include <iostream>
 #include <memory>
 #include "MainWindowHandlerTest.h"
@@ -112,7 +113,11 @@ void MainWindowHandlerTest::testConstructor() {
 }
 
 void MainWindowHandlerTest::testStartClassification() {
-    QSKIP("testStartClassification works, skipping to avoid QFileSelector popup", SkipSingle);
+    //QSKIP("testStartClassification works, skipping to avoid QFileSelector popup", SkipSingle);
+    QMessageBox box;
+    box.setText("Select one image");
+    box.show();
+
     mainWindowHandler->getStartWidget()->processInputImageButton();
     QTest::keyClick(mainWindowHandler->getStartWidget()->getNeuralNetsQComboBox(), Qt::Key_Down);
     ((QCheckBox*)(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->itemAt(1)->widget()))->setChecked(true);
@@ -179,3 +184,25 @@ void MainWindowHandlerTest::testUpdatePlatforms() {
 
     QCOMPARE(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->count(), 2);
 }
+
+void MainWindowHandlerTest::testAbortClassification() {
+    QCOMPARE(mainWindowHandler->isClassificationAborted(), false);
+    QTest::mouseClick(mainWindowHandler->getStartWidget()->getCancelProgressButton(), Qt::LeftButton);
+    QCOMPARE(mainWindowHandler->isClassificationAborted(), true);
+}
+
+//void MainWindowHandlerTest::testSetClassificationRequestState() {
+//    mainWindowHandler->setClassificationRequestState();
+//    //StartWidget is still active, since no image or platform has been selected
+//    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+//             mainWindowHandler->getStartWidget());
+//
+//    //Select a platform
+//    QTest::mouseClick(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->itemAt(0)->widget(),
+//                      Qt::LeftButton);
+//
+//    //Select an image
+//    mainWindowHandler->getStartWidget()->processInputImageButton();
+//
+//
+//}
