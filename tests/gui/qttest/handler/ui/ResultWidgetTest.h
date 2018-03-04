@@ -28,6 +28,7 @@
 
 #include <QtTest/QTest>
 #include <QObject>
+#include <MultiTests.hh>
 #include <handler/ui/ResultWidget.h>
 
 class ResultWidgetTest : public QObject {
@@ -52,3 +53,5 @@ private slots:
 
     void testAggregated();
 };
+
+TEST_DECLARE(ResultWidgetTest);

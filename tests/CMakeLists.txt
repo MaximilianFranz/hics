@@ -33,3 +33,24 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
     #Link against catchtest to use the Catch-main function.
     target_link_libraries(all_tests catchtest executor netbuilder manager communicator gui neuralnet platform)
 endif ()
+
+
+#set(TEST_SOURCES MainTest.cpp)
+#
+#file(GLOB_RECURSE testsrcs .
+#        gui/qttest/*.h
+#        gui/qttest/*.cpp)
+#
+## Create a test library which makes Catch available to all tests by linking
+## against it.
+#add_library(_qttest ${TEST_SOURCES})
+#add_subdirectory(gui)
+#
+#find_package(Qt5Test)
+#target_link_libraries(_qttest Qt5Test gui)
+#
+#add_executable(qttest_alltests ${testsrcs})
+#
+##Link against netbuilder lib to get access to symbols
+##Link against catchtest to use the Catch-main function.
+#target_link_libraries(qttest_alltests _qttest gui guitestsQt)

@@ -27,6 +27,7 @@
 #pragma once
 
 #include <QtTest/QtTest>
+#include <MultiTests.hh>
 #include <NetInfo.h>
 #include <PlatformInfo.h>
 #include <OperationMode.h>
@@ -67,3 +68,4 @@ private slots:
     void testIsAggregated();
 };
 
+TEST_DECLARE(StartWidgetTest);

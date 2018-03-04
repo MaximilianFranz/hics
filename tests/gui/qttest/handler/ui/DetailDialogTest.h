@@ -28,6 +28,7 @@
 
 #include <QtTest/QTest>
 #include <QObject>
+#include <MultiTests.hh>
 #include <handler/ui/DetailDialog.h>
 
 
@@ -52,3 +53,4 @@ private slots:
     void testInsertDetails();
 };
 
+TEST_DECLARE(DetailDialogTest);

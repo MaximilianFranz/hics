@@ -28,6 +28,7 @@
 
 #include <QtTest/QTest>
 #include <QObject>
+#include <MultiTests.hh>
 #include <OperationMode.h>
 #include <PlatformInfo.h>
 #include <NetInfo.h>
@@ -71,3 +72,4 @@ private slots:
 
 };
 
+TEST_DECLARE(MainWindowHandlerTest);
