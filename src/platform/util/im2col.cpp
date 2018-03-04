@@ -55,9 +55,9 @@ namespace helper {
     }
 
     template<typename Dtype>
-    void im2col_simple_version_cpu(const Dtype *data_image, const int channels, const int height, const int width,
-                                   const int kernel_size, const int padding, const int stride,
-                                   Dtype *data_column) {
+    void im2col_cpu(const Dtype *data_image, const int channels, const int height, const int width,
+                    const int kernel_size, const int padding, const int stride,
+                    Dtype *data_column) {
 
         int kernel_h, kernel_w;
         kernel_h = kernel_w = kernel_size;
@@ -94,14 +94,14 @@ namespace helper {
 
     // Explicit instantiation
     template void
-    im2col_simple_version_cpu<float>(const float *data_image, const int channels, const int height, const int width,
-                                     const int kernel_size, const int padding, const int stride,
-                                     float *data_column);
+    im2col_cpu<float>(const float *data_image, const int channels, const int height, const int width,
+                      const int kernel_size, const int padding, const int stride,
+                      float *data_column);
 
     template<typename Dtype>
-    void col2im_simple_version_cpu(const Dtype *data_column, const int channels, const int height, const int width,
-                                   const int kernel_size, const int padding, const int stride,
-                                   Dtype *data_image) {
+    void col2im_cpu(const Dtype *data_column, const int channels, const int height, const int width,
+                    const int kernel_size, const int padding, const int stride,
+                    Dtype *data_image) {
         int kernel_h, kernel_w;
         kernel_h = kernel_w = kernel_size;
 
@@ -116,10 +116,10 @@ namespace helper {
         int channels_col = kernel_h * kernel_w * channels;
 
         std::fill(data_image, data_image + width * height * channels, 0);
-        for (int c = 0; c < channels_col; ++c) {
-            int w_offset = c % kernel_w;
-            int h_offset = (c / kernel_w) % kernel_h;
-            int c_im = c / (kernel_h * kernel_w);
+        for (int channel = 0; channel < channels_col; ++channel) {
+            int w_offset = channel % kernel_w;
+            int h_offset = (channel / kernel_w) % kernel_h;
+            int c_im = channel / (kernel_h * kernel_w);
 
             for (int h = 0; h < height_col; ++h) {
                 for (int w = 0; w < width_col; ++w) {
@@ -127,12 +127,18 @@ namespace helper {
                     int w_pad = w * stride_w - pad_w + w_offset;
                     if (h_pad >= 0 && h_pad < height && w_pad >= 0 && w_pad < width) {
                         data_image[(c_im * height + h_pad) * width + w_pad] +=
-                                data_column[(c * height_col + h) * width_col + w];
+                                data_column[(channel * height_col + h) * width_col + w];
                     }
                 }
             }
         }
     }
+
+    // Explicit instantiation
+    template void
+    col2im_cpu<float>(const float *data_column, const int channels, const int height, const int width,
+                      const int kernel_size, const int padding, const int stride,
+                      float *data_image);
 
     template<typename Dtype>
     void add_bias(Dtype *data_matrix, const Dtype *bias, int rows, int columns) {
@@ -143,13 +149,7 @@ namespace helper {
         }
     }
 
-    template void
-    add_bias<float>(float *data_matrix, const float *bias, int rows, int columns);
-
-
     // Explicit instantiation
     template void
-    col2im_simple_version_cpu<float>(const float *data_column, const int channels, const int height, const int width,
-                                     const int kernel_size, const int padding, const int stride,
-                                     float *data_image);
+    add_bias<float>(float *data_matrix, const float *bias, int rows, int columns);
 }

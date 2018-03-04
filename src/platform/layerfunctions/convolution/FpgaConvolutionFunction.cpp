@@ -216,12 +216,12 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
 
     auto in = input.getData();
     auto we = weights.getData();
-    helper::im2col_simple_version_cpu(in.data(),
-                                      channels, input_size, input_size,
-                                      kernel_size,
-                                      padding,
-                                      stride,
-                                      patch_result.data());
+    helper::im2col_cpu(in.data(),
+                       channels, input_size, input_size,
+                       kernel_size,
+                       padding,
+                       stride,
+                       patch_result.data());
 
 
     float* A = we.data();
