@@ -18,6 +18,8 @@ add_executable(guitestsQt handler/ui/StartWidgetTest.cpp handler/ui/StartWidgetT
         handler/MainWindowHandlerTest.cpp handler/MainWindowHandlerTest.h
         handler/ui/ResultWidgetTest.cpp handler/ui/ResultWidgetTest.h
         handler/ui/DetailDialogTest.cpp handler/ui/DetailDialogTest.h
+        WorkerThreadTest.cpp
+        WorkerThreadTest.h
         main.cpp)
 
 find_package(Qt5Test)
