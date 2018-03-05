@@ -595,3 +595,18 @@ TEST_CASE("GEMM with padding") {
     delete [] unpaddedC;
 }
 
+
+TEST_CASE("transpose") {
+
+    const int size = 12;
+    float input[size];
+    for (int i = 0; i < size; i++) {
+        input[i] = i;
+    }
+    float *t = helper::transpose(4, 3, input);
+    float *u = helper::transpose(3, 4, t);
+
+    for (int i = 0; i < size; i++) {
+        REQUIRE(input[i] == u[i]);
+    }
+}
