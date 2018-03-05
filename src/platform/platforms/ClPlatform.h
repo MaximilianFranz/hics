@@ -35,7 +35,7 @@
 #include "Platform.h"
 
 
-class FpgaPlatform : public Platform {
+class ClPlatform : public Platform {
 private:
     cl_context context;
     cl_device_id device;
@@ -57,9 +57,9 @@ public:
 
     PlatformInfo &getPlatformInfo() override;
 
-    FpgaPlatform();
+    ClPlatform();
 
-    FpgaPlatform(PlatformInfo &info);
+    ClPlatform(PlatformInfo &info);
 
-    ~FpgaPlatform();
+    ~ClPlatform();
 };

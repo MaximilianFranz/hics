@@ -32,6 +32,7 @@
 
 #include "platforms/CpuPlatform.h"
 #include "platforms/FpgaPlatform.h"
+#include "platforms/ClPlatform.h"
 #include "platforms/Platform.h"
 #include "PlatformManager.h"
 
@@ -53,11 +54,18 @@ PlatformManager::PlatformManager() {
             // TODO: validate if given platform matches the actual CPU on the host
             PlatformInfo pi(desc, PlatformType::CPU, uuid, power, flops);
             platforms.push_back(new CpuPlatform(pi));
+#ifdef ALTERA
         } else if (type == "FPGA") {
             PlatformInfo pi(desc, PlatformType::FPGA, uuid, power, flops);
             platforms.push_back(new FpgaPlatform(pi));
+#else
         } else if (type == "GPU") {
-            // TODO: needs GPU implementtion and CL context
+            PlatformInfo pi(desc, PlatformType::GPU, uuid, power, flops);
+            platforms.push_back(new ClPlatform(pi));
+        } else if (type == "CL_CPU") {
+            PlatformInfo pi(desc, PlatformType::CL_CPU, uuid, power, flops);
+            platforms.push_back(new ClPlatform(pi));
+#endif
         }
 
     }

@@ -29,37 +29,32 @@
 #ifdef __APPLE__
 #include <OpenCL/opencl.h>
 #else
-#include "CL/opencl.h"
+#include <CL/opencl.h>
 #endif
 
-#include "Platform.h"
+#include "ConvolutionFunction.h"
 
-
-class FpgaPlatform : public Platform {
+class ClConvolutionFunction : public ConvolutionFunction {
 private:
     cl_context context;
     cl_device_id device;
-    ConvolutionFunction *c = nullptr;
-    void init();
+    cl_command_queue queue;
+    cl_program program;
+    cl_kernel kernel;
 
 public:
-    ActivationFunction *createActivationFunction(LayerType type) override;
+    void execute(const DataWrapper &input,
+                 DataWrapper &output,
+                 const WeightWrapper &weights,
+                 int stride,
+                 int filterSize,
+                 int numFilters,
+                 int zeroPadding) override;
 
-    ConvolutionFunction *createConvolutionFunction() override;
+    ClConvolutionFunction(cl_context c, cl_device_id d);
 
-    LossFunction *createLossFunction(LayerType type) override;
+    ~ClConvolutionFunction();
 
-    PoolingFunction *createPoolingFunction(LayerType type) override;
-
-    ResponseNormalizationFunction *createResponseNormalizationFunction(LayerType type) override;
-
-    FullyConnectedFunction *createFullyConnectedFunction() override;
-
-    PlatformInfo &getPlatformInfo() override;
-
-    FpgaPlatform();
-
-    FpgaPlatform(PlatformInfo &info);
-
-    ~FpgaPlatform();
 };
+
+

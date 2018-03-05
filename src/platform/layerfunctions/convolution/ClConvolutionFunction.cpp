@@ -29,9 +29,8 @@
 
 #include "AOCL_Utils.h"
 
-#include "FpgaConvolutionFunction.h"
+#include "ClConvolutionFunction.h"
 #include "util/im2col.h"
-
 
 // Threadblock sizes (e.g. for kernels myGEMM1 or myGEMM2)
 #define TS 32
@@ -128,20 +127,43 @@ void CheckError (cl_int error)
     }
 }
 
+std::string LoadKernel (const char* name)
+{
+    std::ifstream in (name);
+    std::string result (
+            (std::istreambuf_iterator<char> (in)),
+            std::istreambuf_iterator<char> ());
+    return result;
+}
+
+cl_program CreateProgram (const std::string& source,
+                          cl_context context)
+{
+    // http://www.khronos.org/registry/cl/sdk/1.1/docs/man/xhtml/clCreateProgramWithSource.html
+    size_t lengths [1] = { source.size () };
+    const char* sources [1] = { source.data () };
+
+    cl_int error = 0;
+    cl_program program = clCreateProgramWithSource (context, 1, sources, lengths, &error);
+    CheckError (error);
+
+    return program;
+}
 
 // =================================================================================================
 
-FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
+ClConvolutionFunction::ClConvolutionFunction(cl_context c, cl_device_id d)
         : context(c), device(d) {
 
     cl_int status = 0;
     queue = clCreateCommandQueue(context, device, 0, &status);
     aocl_utils::checkError(status, "Failed to create command queue");
 
-    std::string binary_file = aocl_utils::getBoardBinaryFile("gemm1_rowmajor", device);
-    program = aocl_utils::createProgramFromBinary(context, binary_file.c_str(), &device, 1);
+    program = CreateProgram(LoadKernel(RES_DIR "kernels/gemm1_rowmajor.cl"), context);
 
-    // We can't pass runtime parameters to the kernel, so just pass ""
+//    char cmdline[1024];
+//    snprintf(cmdline, 1024, "-DTS=%d -DWPT=%d -DRTS=%d", TS, WPT, TS/WPT);
+//    clBuildProgram(program, 0, NULL, cmdline, NULL, NULL);
     status = clBuildProgram(program, 0, NULL, "", NULL, NULL);
     aocl_utils::checkError(status, "Failed to build program");
 
@@ -160,7 +182,7 @@ FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
 
 
 
-void FpgaConvolutionFunction::execute(const DataWrapper &input,
+void ClConvolutionFunction::execute(const DataWrapper &input,
                                       DataWrapper &output,
                                       const WeightWrapper &weights,
                                       int stride,
@@ -260,11 +282,10 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
 //    free(B);
 //    free(C);
 
- }
+}
 
-FpgaConvolutionFunction::~FpgaConvolutionFunction() {
+ClConvolutionFunction::~ClConvolutionFunction() {
     clReleaseCommandQueue(queue);
     clReleaseProgram(program);
     clReleaseKernel(kernel);
 }
-
