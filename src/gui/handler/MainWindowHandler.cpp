@@ -68,9 +68,9 @@ void MainWindowHandler::setClassificationRequestState() {
     }
 }
 
-void MainWindowHandler::displayErrorMessage(const QString &errorMessage) {
+void MainWindowHandler::displayErrorMessage(const std::string &errorMessage) {
     startWidget->resetProgressDisplay();
-    startWidget->displayErrorMessage(errorMessage);
+    startWidget->displayErrorMessage(QString::fromStdString(errorMessage));
 }
 
 ClassificationRequest *MainWindowHandler::getClassificationRequestState() {
@@ -100,7 +100,7 @@ void MainWindowHandler::processClassificationResult(ClassificationResult *classi
                 std::rethrow_exception(exceptionptr);
             } catch (std::exception &e) {
                 //Display the error message and reset the loading state of the GUI to the normal starting page
-                displayErrorMessage(QString::fromStdString(e.what()));
+                displayErrorMessage(e.what());
                 exceptionptr = nullptr;
             }
         } else {

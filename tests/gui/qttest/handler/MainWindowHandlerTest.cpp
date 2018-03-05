@@ -191,18 +191,28 @@ void MainWindowHandlerTest::testAbortClassification() {
     QCOMPARE(mainWindowHandler->isClassificationAborted(), true);
 }
 
-//void MainWindowHandlerTest::testSetClassificationRequestState() {
-//    mainWindowHandler->setClassificationRequestState();
-//    //StartWidget is still active, since no image or platform has been selected
-//    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
-//             mainWindowHandler->getStartWidget());
-//
-//    //Select a platform
-//    QTest::mouseClick(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->itemAt(0)->widget(),
-//                      Qt::LeftButton);
-//
-//    //Select an image
-//    mainWindowHandler->getStartWidget()->processInputImageButton();
-//
-//
-//}
+void MainWindowHandlerTest::testFalseClassification() {
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
+    mainWindowHandler->processClassificationResult(nullptr);
+
+    //No Exception has been thrown but a nullptr is the parameter so just the progress screen is resetted.
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
+    std::exception_ptr exceptionptr = nullptr;
+
+    try {
+        throw std::logic_error("Sample error");
+    } catch (std::exception &e) {
+        exceptionptr = std::current_exception();
+    }
+
+    mainWindowHandler->setExceptionptr(exceptionptr);
+    mainWindowHandler->processClassificationResult(nullptr);
+
+    //Should now display an error message
+
+    //Since no real classification has been processed startWidget is still active
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
+}

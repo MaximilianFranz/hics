@@ -183,5 +183,5 @@ public slots:
      * @brief displayErrorMessage will send the error message to the startWidget's respective method to display it.
      * @param errorMessage the to be displayed error message
      */
-    void displayErrorMessage(const QString &errorMessage);
+    void displayErrorMessage(const std::string &errorMessage);
 };
