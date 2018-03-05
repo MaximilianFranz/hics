@@ -44,7 +44,7 @@ ActivationFunction *FpgaPlatform::createActivationFunction(LayerType type) {
         case LayerType::ACTIVATION_RELU:
             return new CpuReLUFunction();
         default:
-            throw IllegalArgumentException();
+            throw IllegalArgumentException(); // LCOV_EXCL_LINE
     }
 }
 
@@ -60,7 +60,7 @@ LossFunction *FpgaPlatform::createLossFunction(LayerType type) {
         case LayerType::LOSS_SOFTMAX:
             return new CpuSoftMaxLossFunction();
         default:
-            throw IllegalArgumentException();
+            throw IllegalArgumentException(); // LCOV_EXCL_LINE
     }
 }
 
@@ -69,7 +69,7 @@ PoolingFunction *FpgaPlatform::createPoolingFunction(LayerType type) {
         case LayerType::POOLING_MAX:
             return new CpuMaxPoolingFunction();
         default:
-            throw IllegalArgumentException();
+            throw IllegalArgumentException(); // LCOV_EXCL_LINE
     }
 }
 
@@ -78,7 +78,7 @@ ResponseNormalizationFunction *FpgaPlatform::createResponseNormalizationFunction
         case LayerType::NORMALIZATION_LOCALRESPONSE:
             return new CpuResponseNormalizationFunction();
         default:
-            throw IllegalArgumentException();
+            throw IllegalArgumentException(); // LCOV_EXCL_LINE
     }
 }
 
