@@ -29,5 +29,6 @@
 enum class PlatformType {
     CPU,
     FPGA,
-    GPU
+    GPU,
+    CL_CPU
 };
