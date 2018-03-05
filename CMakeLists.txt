@@ -17,8 +17,14 @@ include_directories(${CMAKE_BINARY_DIR})
 
 include(GNUInstallDirs)
 
+option(INSTALL "Set this to ON if you plan to install hics system wide via \"make install\"." OFF)
+
 # those defines are expanded to absolute paths
-add_definitions(-DRES_DIR="${CMAKE_SOURCE_DIR}/resources/")
+if (INSTALL)
+    add_definitions(-DRES_DIR="${CMAKE_INSTALL_SYSCONFDIR}/hics/")
+else()
+    add_definitions(-DRES_DIR="${CMAKE_SOURCE_DIR}/resources/")
+endif()
 add_definitions(-DTEST_RES_DIR="${CMAKE_SOURCE_DIR}/tests/resources/")
 add_definitions(-DLOG_FILE_PATH="${CMAKE_CURRENT_BINARY_DIR}/logs/")
 
