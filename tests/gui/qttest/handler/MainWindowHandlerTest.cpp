@@ -110,6 +110,9 @@ void MainWindowHandlerTest::testConstructor() {
              mainWindowHandler->getStartWidget());
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->widget(1),
              mainWindowHandler->getResultWidget());
+
+    //Opens About Box
+    mainWindowHandler->getMainWindow()->openAboutBox();
 }
 
 void MainWindowHandlerTest::testStartClassification() {

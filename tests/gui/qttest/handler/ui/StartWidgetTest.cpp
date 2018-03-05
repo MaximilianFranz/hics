@@ -144,5 +144,3 @@ void StartWidgetTest::testIsAggregated() {
     QTest::mouseClick(startWidget->getAggregateResultsQCheckBox(), Qt::LeftButton);
     QCOMPARE(startWidget->isAggregated(), false);
 }
-
-//QTEST_MAIN(StartWidgetTest)
