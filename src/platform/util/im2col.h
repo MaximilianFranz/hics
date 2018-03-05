@@ -69,6 +69,16 @@ namespace helper {
     float *remove_padding(int padding, int x, int y, const float *input);
 
     /**
+     * Transpose a matrix
+     *
+     * @param sizeX x dimension of the matrix
+     * @param sizeY y dimension of the matrix
+     * @param input pointer holding the data
+     * @return float pointer with the transposed data, needs to deallocated by the caller
+     */
+    float *transpose(int sizeX, int sizeY, const float *input);
+
+    /**
      * Performs the im2col algorithm on the CPU.
      *
      * @tparam Dtype                A data type representing a matrix.

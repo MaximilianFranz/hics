@@ -103,6 +103,22 @@ namespace helper {
         return out;
     }
 
+    float *transpose(int sizeX, int sizeY, const float *input) {
+
+        float* out = new float [sizeX*sizeY];
+
+        for (int y = 0; y < sizeY; y++) {
+            for (int x = 0; x < sizeX; x++ ) {
+                int index = x*sizeY + y;
+                float val = *input;
+                out[index] = val;
+                input++;
+            }
+        }
+
+        return out;
+    }
+
     template<typename Dtype>
     void im2col_cpu(const Dtype *data_image, const int channels, const int height, const int width,
                     const int kernel_size, const int padding, const int stride,
