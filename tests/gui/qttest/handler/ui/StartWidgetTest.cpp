@@ -107,10 +107,32 @@ void StartWidgetTest::testImageFunctions() {
     it.next();
     ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
 
+    it.next();
+    ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
+
+    //2 out of 2 images have been selected then the abort button should deselect all
+    startWidget->processAbortDeletionQPushButton();
+
+    ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(false);
+
     //1 out of 2 images left have been selected so the abort deletion button should select all
     startWidget->processAbortDeletionQPushButton();
     startWidget->processConfirmDeletionButton();
     QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 0);
+}
+
+void StartWidgetTest::testDuplicateSelectedImages() {
+    QMessageBox box;
+    box.setText("Select one image and then the same");
+    box.show();
+
+    startWidget->processInputImageButton();
+    //Select 1 image
+    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 1);
+
+    //Select the same image
+    startWidget->processInputImageButton();
+    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 1);
 }
 
 void StartWidgetTest::testSelectedPlatforms() {
