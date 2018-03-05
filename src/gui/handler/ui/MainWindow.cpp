@@ -78,7 +78,8 @@ QStackedWidget *MainWindow::getMainWindowQStackedWidget() const {
 
 void MainWindow::openAboutBox() {
     QMessageBox::about(this, "About", "HICS - Heterogenous Image Classification System\n\n"
-        "Version: " PROJECT_VERSION "\n\n"
+        "Version: " PROJECT_VERSION "\n"
+        "License: MIT\n\n"
         "Authors:\n"
         "Jan Allmenroeder <jallmenroeder@gmail.com>\n"
         "Michael Biebl <mbiebl@gmail.com>\n"
