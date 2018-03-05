@@ -35,14 +35,14 @@ std::map<int, std::string> LabelLoader::getLabelMap(std::string path) {
 
     char *resolved_path = realpath(path.c_str(), NULL);
     if (resolved_path == nullptr) {
-        throw ResourceException("Path to labels could not be resolved. Given relative path: " + path);
+        throw ResourceException("Path to labels could not be resolved. Given relative path: " + path); // LCOV_EXCL_LINE
     }
 
     try {
         file.open(resolved_path);
     }
-    catch (...) {
-        throw ResourceException("Could not read label file at: " + path);
+    catch (...) { // LCOV_EXCL_LINE
+        throw ResourceException("Could not read label file at: " + path); // LCOV_EXCL_LINE
     }
 
     std::string line;
@@ -55,7 +55,7 @@ std::map<int, std::string> LabelLoader::getLabelMap(std::string path) {
     }
 
     if (labelMap.empty()) {
-        throw ResourceException("No labels found in file: " + path);
+        throw ResourceException("No labels found in file: " + path); // LCOV_EXCL_LINE
     }
 
     free(resolved_path);
