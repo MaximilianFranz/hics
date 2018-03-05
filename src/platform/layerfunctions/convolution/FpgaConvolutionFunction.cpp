@@ -43,6 +43,7 @@
 
 const char *getErrorString(cl_int error)
 {
+    // LCOV_EXCL_START
     switch(error){
         // run-time and JIT compiler errors
         case 0: return "CL_SUCCESS";
@@ -116,13 +117,14 @@ const char *getErrorString(cl_int error)
         case -1005: return "CL_D3D10_RESOURCE_NOT_ACQUIRED_KHR";
         default: return "Unknown OpenCL error";
     }
+    // LCOV_EXCL_STOP
 }
 
 void CheckError (cl_int error)
 {
     if (error != CL_SUCCESS) {
-        std::cerr << "OpenCL call failed with error " << getErrorString(error) << std::endl;
-        std::exit (1);
+        std::cerr << "OpenCL call failed with error " << getErrorString(error) << std::endl; // LCOV_EXCL_LINE
+        std::exit (1); // LCOV_EXCL_LINE
     }
 }
 
