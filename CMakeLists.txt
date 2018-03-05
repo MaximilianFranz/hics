@@ -19,7 +19,7 @@ include_directories(${CMAKE_BINARY_DIR})
 add_definitions(-DRES_DIR="${CMAKE_SOURCE_DIR}/resources/")
 add_definitions(-DTEST_RES_DIR="${CMAKE_SOURCE_DIR}/tests/resources/")
 
-find_package(Qt5 COMPONENTS Core Widgets Gui)
+find_package(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
 
 # Required by the AlexNetWeightLoader
 find_package(HDF5 COMPONENTS C REQUIRED)
