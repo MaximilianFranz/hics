@@ -174,8 +174,8 @@ MainWindowHandler::~MainWindowHandler() {
     delete classificationRequestState;
 }
 
-void MainWindowHandler::removePlatform(const PlatformInfo *platform) {
-    startWidget->removePlatform(platform);
+void MainWindowHandler::updatePlatforms(std::vector<PlatformInfo *> platforms) {
+    startWidget->updatePlatforms(platforms);
 }
 
 bool MainWindowHandler::isClassificationAborted() {

@@ -119,10 +119,10 @@ public:
     ~StartWidget();
 
     /**
-     * @brief removePlatform erases a displayed platform from the GUI
-     * @param platform is the to be removed platform from the GUI
-     */
-    void removePlatform(const PlatformInfo *platform);
+    * @brief updatePlatforms refreshes the currently displayed platforms in the GUI
+    * @param platforms are the platforms that shall be displayed in the GUI
+    */
+    void updatePlatforms(std::vector<PlatformInfo *> platforms);
 
     /**
      * @brief Displays a QErrorDialog with the given error message.

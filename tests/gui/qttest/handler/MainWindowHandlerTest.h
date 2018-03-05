@@ -67,7 +67,7 @@ private slots:
 
     void testDetailButton();
     
-    void testRemovePlatform();
+    void testUpdatePlatforms();
 
 };
 

@@ -109,10 +109,10 @@ public:
     ~MainWindowHandler();
 
     /**
-    * @brief removePlatform erases a displayed platform from the GUI
-    * @param platform is the to be removed platform from the GUI
+    * @brief updatePlatforms refreshes the currently displayed platforms in the GUI
+    * @param platforms are the platforms that shall be displayed in the GUI
     */
-    void removePlatform(const PlatformInfo *platform);
+    void updatePlatforms(std::vector<PlatformInfo *> platforms);
 
     /**
      * @brief getClassificationRequestState returns the classificationRequest state attribute.

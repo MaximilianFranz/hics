@@ -75,33 +75,30 @@ StartWidget::~StartWidget() {
     }
 }
 
-void StartWidget::removePlatform(const PlatformInfo *platform) {
-    std::string platformName;
-
+void StartWidget::updatePlatforms(std::vector<PlatformInfo *> platforms) {
     std::map<QString, PlatformInfo *>::iterator it;
 
-    //Get the displayed name and remove the platform from the platforms map
+    //Delete the PlatformInfo objects if they are no longer usedn and then remove everything from the platformsMap to
+    //ensure that the map is empty
     for(it = platformMap.begin(); it != platformMap.end(); ++it){
-        if(it->second->getPlatformId() == platform->getPlatformId()){
-            platformName = it->second->getDescription();
-            delete it->second;
-            platformMap.erase(it);
-            break;
-        }
-    }
-
-    //Get the actual widget, a checkbox, and remove it from the layout
-    if(!platformName.empty()) {
-        for (int i = 0; i < ui->platformsQVBoxLayout->count(); ++i) {
-            if (ui->platformsQVBoxLayout->itemAt(i)->widget()) {
-                auto platformCheckBox = ((QCheckBox*)(ui->platformsQVBoxLayout->itemAt(i)->widget()));
-                if(platformCheckBox->text() == QString::fromStdString(platformName)) {
-                    delete ui->platformsQVBoxLayout->itemAt(i)->widget();
-                    break;
-                }
+        bool stillUsed = false;
+        for(PlatformInfo* platform : platforms){
+            if(platform->getPlatformId() == it->second->getPlatformId()){
+                stillUsed = true;
+                break;
             }
         }
+        if(!stillUsed){
+            delete it->second;
+        }
+        platformMap.erase(it);
     }
+
+    //Delete the allocated QCheckBoxes and simultaneously remove them from being displayed
+    clearLayout(ui->platformsQVBoxLayout);
+
+    //Add the new platforms to the layout/and map
+    addPlatforms(platforms);
 }
 
 QHBoxLayout *StartWidget::addInputImage(QImage *image, const QString &filePath) {
