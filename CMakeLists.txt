@@ -15,6 +15,8 @@ endif ()
 configure_file(${CMAKE_SOURCE_DIR}/cmake/config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
 include_directories(${CMAKE_BINARY_DIR})
 
+include(GNUInstallDirs)
+
 # those defines are expanded to absolute paths
 add_definitions(-DRES_DIR="${CMAKE_SOURCE_DIR}/resources/")
 add_definitions(-DTEST_RES_DIR="${CMAKE_SOURCE_DIR}/tests/resources/")
@@ -106,3 +108,14 @@ endif() #CMAKE_BUILD_TYPE STREQUAL "Coverage"
 endif()
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/logs)
+
+install(DIRECTORY resources/weights DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/
+        FILES_MATCHING PATTERN "*.h5")
+install(DIRECTORY resources/models DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/)
+install(DIRECTORY resources/kernels DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/)
+# Rename those files and install them as examples, as they will need explicit configuration
+install(FILES resources/platforms.json DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/
+        RENAME platforms.json.example)
+install(FILES resources/computationHosts.json DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/
+        RENAME computationHosts.json.example)
+
