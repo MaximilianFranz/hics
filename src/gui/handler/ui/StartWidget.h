@@ -119,6 +119,12 @@ public:
     ~StartWidget();
 
     /**
+     * @brief removePlatform erases a displayed platform from the GUI
+     * @param platform is the to be removed platform from the GUI
+     */
+    void removePlatform(const PlatformInfo *platform);
+
+    /**
      * @brief Displays a QErrorDialog with the given error message.
      *
      * @param message the to be displayed error message

@@ -75,6 +75,35 @@ StartWidget::~StartWidget() {
     }
 }
 
+void StartWidget::removePlatform(const PlatformInfo *platform) {
+    std::string platformName;
+
+    std::map<QString, PlatformInfo *>::iterator it;
+
+    //Get the displayed name and remove the platform from the platforms map
+    for(it = platformMap.begin(); it != platformMap.end(); ++it){
+        if(it->second->getPlatformId() == platform->getPlatformId()){
+            platformName = it->second->getDescription();
+            delete it->second;
+            platformMap.erase(it);
+            break;
+        }
+    }
+
+    //Get the actual widget, a checkbox, and remove it from the layout
+    if(!platformName.empty()) {
+        for (int i = 0; i < ui->platformsQVBoxLayout->count(); ++i) {
+            if (ui->platformsQVBoxLayout->itemAt(i)->widget()) {
+                auto platformCheckBox = ((QCheckBox*)(ui->platformsQVBoxLayout->itemAt(i)->widget()));
+                if(platformCheckBox->text() == QString::fromStdString(platformName)) {
+                    delete ui->platformsQVBoxLayout->itemAt(i)->widget();
+                    break;
+                }
+            }
+        }
+    }
+}
+
 QHBoxLayout *StartWidget::addInputImage(QImage *image, const QString &filePath) {
     auto layout = new QHBoxLayout();
     auto label = new QLabel(this);

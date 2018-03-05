@@ -165,3 +165,11 @@ void MainWindowHandlerTest::testDetailButton(){
 
     QCOMPARE(mainWindowHandler->getDetailDialog()->isVisible(), true);
 }
+
+void MainWindowHandlerTest::testRemovePlatform() {
+    QCOMPARE(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->count(), 3);
+    
+    mainWindowHandler->removePlatform(platforms[0]);
+    
+    QCOMPARE(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->count(), 2);
+}

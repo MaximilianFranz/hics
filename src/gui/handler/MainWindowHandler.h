@@ -103,10 +103,16 @@ public:
     * @param platforms the available platforms in the software
     * @param operationModes the available operation modes in the software
     */
-    MainWindowHandler(std::vector<NetInfo*> &neuralNets, std::vector<PlatformInfo*> &platforms,
+    MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::vector<PlatformInfo *> &platforms,
                       std::vector<OperationMode> &operationModes);
 
     ~MainWindowHandler();
+
+    /**
+    * @brief removePlatform erases a displayed platform from the GUI
+    * @param platform is the to be removed platform from the GUI
+    */
+    void removePlatform(const PlatformInfo *platform);
 
     /**
      * @brief getClassificationRequestState returns the classificationRequest state attribute.
