@@ -44,7 +44,7 @@ public:
      * @param biasNumDimensions
      * @param biasDimensions
      */
-    WeightWrapper(std::vector<int> dimensions, std::vector<float> &weights, std::vector<float> &bias,
+    explicit WeightWrapper(std::vector<int> dimensions, std::vector<float> &weights, std::vector<float> &bias,
                   std::vector<int> biasDimensions);
 
 
