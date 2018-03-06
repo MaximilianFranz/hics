@@ -70,8 +70,6 @@ private slots:
     
     void testUpdatePlatforms();
 
-    void testAbortClassification();
-
     void testFalseClassification();
 
 };

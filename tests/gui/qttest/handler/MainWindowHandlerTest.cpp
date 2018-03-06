@@ -188,12 +188,6 @@ void MainWindowHandlerTest::testUpdatePlatforms() {
     QCOMPARE(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->count(), 2);
 }
 
-void MainWindowHandlerTest::testAbortClassification() {
-    QCOMPARE(mainWindowHandler->isClassificationAborted(), false);
-    QTest::mouseClick(mainWindowHandler->getStartWidget()->getCancelProgressButton(), Qt::LeftButton);
-    QCOMPARE(mainWindowHandler->isClassificationAborted(), true);
-}
-
 void MainWindowHandlerTest::testFalseClassification() {
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
              mainWindowHandler->getStartWidget());
