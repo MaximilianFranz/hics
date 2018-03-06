@@ -53,6 +53,8 @@ void Util::platformInfoToMessage(const PlatformInfo *platform, PlatformInfoMessa
             break;
         case PlatformType::GPU  : messagePtr->set_type(PlatformInfoMessage::GPU);
             break;
+        case PlatformType::CL_CPU  : messagePtr->set_type(PlatformInfoMessage::CPU);
+            break;
     }
     messagePtr->set_platformid(platform->getPlatformId());
     messagePtr->set_powerconsumption(platform->getPowerConsumption());
