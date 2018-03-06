@@ -33,16 +33,19 @@
 #include "util/im2col.h"
 
 
-// Threadblock sizes (e.g. for kernels myGEMM1 or myGEMM2)
+// Threadblock sizes (e.g. for kernels GEMM1 or GEMM2)
 #define TS 32
 
 // RTS = TS / WPT
 #define WPT 8
 
+#define WIDTH 4
+
 // =================================================================================================
 
 const char *getErrorString(cl_int error)
 {
+    // LCOV_EXCL_START
     switch(error){
         // run-time and JIT compiler errors
         case 0: return "CL_SUCCESS";
@@ -116,38 +119,17 @@ const char *getErrorString(cl_int error)
         case -1005: return "CL_D3D10_RESOURCE_NOT_ACQUIRED_KHR";
         default: return "Unknown OpenCL error";
     }
+    // LCOV_EXCL_STOP
 }
 
 void CheckError (cl_int error)
 {
     if (error != CL_SUCCESS) {
-        std::cerr << "OpenCL call failed with error " << getErrorString(error) << std::endl;
-        std::exit (1);
+        std::cerr << "OpenCL call failed with error " << getErrorString(error) << std::endl; // LCOV_EXCL_LINE
+        std::exit (1); // LCOV_EXCL_LINE
     }
 }
 
-std::string LoadKernel (const char* name)
-{
-    std::ifstream in (name);
-    std::string result (
-            (std::istreambuf_iterator<char> (in)),
-            std::istreambuf_iterator<char> ());
-    return result;
-}
-
-cl_program CreateProgram (const std::string& source,
-                          cl_context context)
-{
-    // http://www.khronos.org/registry/cl/sdk/1.1/docs/man/xhtml/clCreateProgramWithSource.html
-    size_t lengths [1] = { source.size () };
-    const char* sources [1] = { source.data () };
-
-    cl_int error = 0;
-    cl_program program = clCreateProgramWithSource (context, 1, sources, lengths, &error);
-    CheckError (error);
-
-    return program;
-}
 
 // =================================================================================================
 
@@ -158,17 +140,10 @@ FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
     queue = clCreateCommandQueue(context, device, 0, &status);
     aocl_utils::checkError(status, "Failed to create command queue");
 
-    // TODO: Remove this ifdef once we have GPU platform
-#ifdef ALTERA
-    std::string binary_file = aocl_utils::getBoardBinaryFile("gemm1", device);
+    std::string binary_file = aocl_utils::getBoardBinaryFile("gemm4_fpga", device);
     program = aocl_utils::createProgramFromBinary(context, binary_file.c_str(), &device, 1);
-#else
-    program = CreateProgram(LoadKernel(RES_DIR "kernels/gemm1.cl"), context);
-#endif
 
-//    char cmdline[1024];
-//    snprintf(cmdline, 1024, "-DTS=%d -DWPT=%d -DRTS=%d", TS, WPT, TS/WPT);
-//    clBuildProgram(program, 0, NULL, cmdline, NULL, NULL);
+    // We can't pass runtime parameters to the kernel, so just pass ""
     status = clBuildProgram(program, 0, NULL, "", NULL, NULL);
     aocl_utils::checkError(status, "Failed to build program");
 
@@ -181,7 +156,7 @@ FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
     if (logSize > 10) { printf(">>> Compiler message: %s\n", messages); }
     free(messages);
 
-    kernel = clCreateKernel(program, "myGEMM1", NULL);
+    kernel = clCreateKernel(program, "GEMM4", NULL);
 
 }
 
@@ -216,28 +191,45 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
 
     auto in = input.getData();
     auto we = weights.getData();
-    helper::im2col_simple_version_cpu(in.data(),
-                                      channels, input_size, input_size,
-                                      kernel_size,
-                                      padding,
-                                      stride,
-                                      patch_result.data());
+    helper::im2col_cpu(in.data(),
+                       channels, input_size, input_size,
+                       kernel_size,
+                       padding,
+                       stride,
+                       patch_result.data());
 
-
-    float* A = we.data();
-    float* B = patch_result.data();
-    float *C = output.getDataArray();
-
-    // Bias
-    const float* D = weights.getBiasArray();
-
-
-
+    // Pad matrices and convert to column major format
     int K = weights_columns;
     int M = number_of_kernels;
     int N = patch_columns;
 
+    int paddedK = 0;
+    int paddedM = 0;
+    int paddedN = 0;
 
+    float *tempA = helper::add_padding(TS, K, M, we.data(), &paddedK, &paddedM);
+    float *A = helper::transpose(paddedK, paddedM, tempA);
+    delete tempA;
+
+    float *tempB = helper::add_padding(TS, N, K, patch_result.data(), &paddedN, &paddedK);
+    float *B = helper::transpose(paddedN, paddedK, tempB);
+    delete tempB;
+
+    float *C = new float[paddedM*paddedN];
+
+    // Bias
+    float *D = new float[paddedM];
+    memset(D, 0, paddedM*sizeof(float));
+    memcpy(D, weights.getBiasArray(), number_of_kernels*sizeof(float));
+
+
+    // Remember unpadded values, we'll need them again later for the unpadding
+    int unpaddedN = N;
+    int unpaddedM = M;
+
+    K = paddedK; //weights_columns;
+    M = paddedM; //number_of_kernels;
+    N = paddedN; //patch_columns;
 
     // Prepare OpenCL memory objects
     cl_mem bufA = clCreateBuffer(context, CL_MEM_READ_ONLY,  M*K*sizeof(float), NULL, NULL);
@@ -245,14 +237,14 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     cl_mem bufC = clCreateBuffer(context, CL_MEM_READ_WRITE, M*N*sizeof(float), NULL, NULL);
     cl_mem bufD = clCreateBuffer(context, CL_MEM_READ_ONLY,  M*sizeof(float), NULL, NULL);
 
-    // Copy matrices to the GPU
+    // Copy matrices to the FPGA
     clEnqueueWriteBuffer(queue, bufA, CL_TRUE, 0, M*K*sizeof(float), A, 0, NULL, NULL);
     clEnqueueWriteBuffer(queue, bufB, CL_TRUE, 0, K*N*sizeof(float), B, 0, NULL, NULL);
     clEnqueueWriteBuffer(queue, bufC, CL_TRUE, 0, M*N*sizeof(float), C, 0, NULL, NULL);
     clEnqueueWriteBuffer(queue, bufD, CL_TRUE, 0, M*sizeof(float), D, 0, NULL, NULL);
 
 
-    // Configure the myGEMM kernel and set its arguments
+    // Configure the GEMM kernel and set its arguments
     clSetKernelArg(kernel, 0, sizeof(int), (void*)&M);
     clSetKernelArg(kernel, 1, sizeof(int), (void*)&N);
     clSetKernelArg(kernel, 2, sizeof(int), (void*)&K);
@@ -261,10 +253,10 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     clSetKernelArg(kernel, 5, sizeof(cl_mem), (void*)&bufC);
     clSetKernelArg(kernel, 6, sizeof(cl_mem), (void*)&bufD);
 
-//    const size_t local[2] = { TS, TS };
-    const size_t global[2] = { M, N };
+    const size_t local[3] = { TS/WIDTH, TS, 1 };
+    const size_t global[2] = { M/WIDTH, N };
     cl_event event;
-    cl_int result = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, global, NULL, 0, NULL, &event);
+    cl_int result = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, global, local, 0, NULL, &event);
     CheckError(result);
 
     // Wait for calculations to be finished
@@ -272,6 +264,13 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
 
     // Copy the output matrix C back to the CPU memory
     clEnqueueReadBuffer(queue, bufC, CL_TRUE, 0, M*N*sizeof(float), C, 0, NULL, NULL);
+
+    // Remove padding and transform it back to row major format
+//    float *unpaddedC = helper::remove_padding(TS, unpaddedN, unpaddedM, C); // TODO: Why is this not necessary?
+    float *unpaddedC = helper::transpose(unpaddedM, unpaddedN, C);
+    memcpy(output.getDataArray(), unpaddedC, unpaddedN*unpaddedM*sizeof(float));
+
+    delete [] unpaddedC;
 
     // Free the OpenCL memory objects
     clReleaseMemObject(bufA);
@@ -283,11 +282,11 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     clReleaseEvent(event);
 
     // Free the host memory objects
-//    free(A);
-//    free(B);
-//    free(C);
-
- }
+    delete [] A;
+    delete [] B;
+    delete [] C;
+    delete [] D;
+}
 
 FpgaConvolutionFunction::~FpgaConvolutionFunction() {
     clReleaseCommandQueue(queue);

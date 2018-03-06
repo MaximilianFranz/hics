@@ -76,3 +76,11 @@ void LocalResponseNormLayer::setPlatform(Platform *platform) {
     this->functionSet = true;
 }
 
+int LocalResponseNormLayer::getDifficulty() {
+    inputWrapper = new DataWrapper(inputDimensions);
+    if (this->difficulty == 0) {
+        this->difficulty = 2*(int)radius*inputWrapper->getNumElements();
+    }
+    delete inputWrapper;
+    return this->difficulty;
+}

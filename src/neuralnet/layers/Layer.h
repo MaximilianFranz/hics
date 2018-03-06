@@ -47,6 +47,7 @@ protected:
 
     bool computed = false;
     bool functionSet = false;
+    int difficulty = 0; //! A relative sign for the difficulty of this layer / amount of computation
 
     LayerType type;
     std::vector<int> inputDimensions;
@@ -80,26 +81,19 @@ public:
     virtual void setPlatform(Platform *platform) = 0;
 
     /**
-     * Returns whether this Layer has been computed
-     *
-     * @return
-     */
-    virtual bool isComputed();
-
-    /**
-     * Sets the status of this Layer
-     *
-     * Is called from inside forward, when computation has worked succesfully.
-     * @param status to which to set the layer
-     * @return
-     */
-    virtual void setComputed(bool status);
-
-    /**
      *
      * @return
      */
     virtual bool isPlatformSet();
+
+    /**
+     * Returns an indicator of difficulty of this layer.
+     * Roughly approximates the number of computation needed.
+     *
+     *
+     * @return long value: difficulty of this layer
+     */
+    virtual int getDifficulty() = 0;
 
     /**
      * Initializes the default values of this layer
@@ -140,11 +134,11 @@ public:
      */
     virtual std::vector<int> getOutputDimensions() const;
 
-    virtual /**
+    /**
      * Returns a pointer to the previous layer
      * @return a pointer to the previous layer.
      */
-    Layer *getPreviousLayer() const;
+    virtual Layer *getPreviousLayer() const;
 
     /**
      *
@@ -165,12 +159,6 @@ public:
     const std::vector<int> &getInputDimensions() const;
 
     /**
-     * Getter for the pointer to inputWrapper
-     * @return
-     */
-    DataWrapper *getInputWrapper() const;
-
-    /**
      * Set inputWrapper explicitly
      * @param inputWrapper
      */
@@ -182,16 +170,11 @@ public:
      */
     DataWrapper *getOutputWrapper() const;
 
+
     /**
      * Resets the status of this Layer
      */
     void reset();
-
-    /**
-     * Checks whether this layer is ready to be executed
-     * @return whether layer is ready for forward() call
-     */
-    virtual bool readyToCompute();
 
     /**
      * Remove obsolete DataWrapper instances

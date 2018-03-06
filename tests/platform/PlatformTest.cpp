@@ -30,12 +30,17 @@
 #include <iterator>
 #include <cmath>
 #include <limits>
+#include <algorithm>
+#include <iomanip>
+#include <cstring>
 
 #include <wrapper/DataWrapper.h>
 
 #include <PlatformManager.h>
 #include <loader/weightloader/AlexNetWeightLoader.h>
-#include <algorithm>
+
+#include <FileHelper.h>
+#include <util/im2col.h>
 
 #include "PlatformTest.h"
 
@@ -144,35 +149,6 @@ TEST_CASE("Convolution test") {
 
 }
 
-template<typename T>
-std::vector<T> split(const std::string& line) {
-    std::istringstream is(line);
-    return std::vector<T>(std::istream_iterator<T>(is), std::istream_iterator<T>());
-}
-
-std::vector<float> getDataFromFile(std::string path) {
-    // Getting the real path from execution dir.
-    // We pass NULL and let realpath allocate the string which means we have to free() it later.
-    char *resolved_path = realpath(path.c_str(), NULL);
-    // TODO: check if resolved_path is NULL
-    // Open file
-    std::ifstream file(resolved_path);
-    std::string str;
-
-    file.seekg(0, std::ios::end);
-    str.reserve(static_cast<unsigned long>(file.tellg()));
-    file.seekg(0, std::ios::beg);
-
-    str.assign((std::istreambuf_iterator<char>(file)),
-               std::istreambuf_iterator<char>());
-
-    std::vector<float> data = split<float>(str);
-
-    free(resolved_path);
-
-    return data;
-}
-
 TEST_CASE("test with real data from AlexNet") {
     std::string img_data_path = TEST_RES_DIR "img_data.txt";
     std::string conv1_bias_path = TEST_RES_DIR "conv1_bias.txt";
@@ -181,10 +157,10 @@ TEST_CASE("test with real data from AlexNet") {
     std::string conv2_result_path = TEST_RES_DIR "conv2_data_out.txt";
     std::string weightspath = RES_DIR "weights/alexnet_weights.h5";
 
-    std::vector<float> weights = getDataFromFile(conv1_weights_path);
-    std::vector<float> bias = getDataFromFile(conv1_bias_path);
-    std::vector<float> result = getDataFromFile(conv1_result_path);
-    std::vector<float> image = getDataFromFile(img_data_path);
+    std::vector<float> weights = util::getDataFromFile(conv1_weights_path);
+    std::vector<float> bias = util::getDataFromFile(conv1_bias_path);
+    std::vector<float> result = util::getDataFromFile(conv1_result_path);
+    std::vector<float> image = util::getDataFromFile(img_data_path);
 
     std::vector<int> weightDim = {96,3,11,11};
     std::vector<int> biasDim = {96};
@@ -228,7 +204,7 @@ TEST_CASE("test with real data from AlexNet") {
     relu->execute(in, relu1_out);
 
     std::string relu1_result_path = TEST_RES_DIR "relu1_data_out.txt";
-    std::vector<float> relu1_result = getDataFromFile(relu1_result_path);
+    std::vector<float> relu1_result = util::getDataFromFile(relu1_result_path);
 
     DataWrapper relu1_expected(outDim, relu1_result);
     for (int i = 0; i < 55*55; i ++) { // Test the first layer fully
@@ -248,7 +224,7 @@ TEST_CASE("test with real data from AlexNet") {
     lrn->execute(in, lrn1_out, 2, 0.00002, 0.75, 1.0);
 
     std::string lrn1_result_path = TEST_RES_DIR "lrn1_data_out.txt";
-    std::vector<float> lrn1_result = getDataFromFile(lrn1_result_path);
+    std::vector<float> lrn1_result = util::getDataFromFile(lrn1_result_path);
 
     DataWrapper lrn1_expected(outDim, lrn1_result);
     for (int i = 0; i < 55*55; i ++) { // Test the first layer fully
@@ -267,7 +243,7 @@ TEST_CASE("test with real data from AlexNet") {
     maxpool->execute(in, maxpool1_out, 2, 3, 0);
 
     std::string maxpool1_result_path = TEST_RES_DIR "maxpool_data_out.txt";
-    std::vector<float> maxpool1_result = getDataFromFile(maxpool1_result_path);
+    std::vector<float> maxpool1_result = util::getDataFromFile(maxpool1_result_path);
 
     DataWrapper maxpool1_expected({96, 27, 27}, maxpool1_result);
     for (int i = 0; i < 27*27; i ++) { // Test the first layer fully
@@ -421,8 +397,8 @@ TEST_CASE("FullyConnected one with real data") {
     std::string weightFile = TEST_RES_DIR "fc1_weights.txt";
     std::string biasFile = TEST_RES_DIR "fc1_bias.txt";
 
-    std::vector<float> result = getDataFromFile(fc1_out);
-    std::vector<float> input = getDataFromFile(fc1_in);
+    std::vector<float> result = util::getDataFromFile(fc1_out);
+    std::vector<float> input = util::getDataFromFile(fc1_in);
 
     std::vector<int> inDim = {9216};
     std::vector<int> outDim = {4098};
@@ -465,8 +441,8 @@ TEST_CASE("FullyConnected two with real data") {
     std::string fc2_out = TEST_RES_DIR "fc7_out.txt";
     std::string weightspath = RES_DIR "weights/alexnet_weights.h5";
 
-    std::vector<float> result = getDataFromFile(fc2_out);
-    std::vector<float> input = getDataFromFile(fc2_in);
+    std::vector<float> result = util::getDataFromFile(fc2_out);
+    std::vector<float> input = util::getDataFromFile(fc2_in);
 
     std::vector<int> inDim = {9216};
     std::vector<int> outDim = {4096};
@@ -508,8 +484,8 @@ TEST_CASE("FullyConnected three with real data") {
     std::string fc3_out = TEST_RES_DIR "fc8_out.txt";
     std::string weightspath = RES_DIR "weights/alexnet_weights.h5";
 
-    std::vector<float> result = getDataFromFile(fc3_out);
-    std::vector<float> input = getDataFromFile(fc3_in);
+    std::vector<float> result = util::getDataFromFile(fc3_out);
+    std::vector<float> input = util::getDataFromFile(fc3_in);
 
 
     AlexNetWeightLoader loader(weightspath);
@@ -542,8 +518,8 @@ TEST_CASE("Softmax with real data") {
     std::string sm_out = TEST_RES_DIR "sm_out.txt";
     std::string weightspath = RES_DIR "weights/alexnet_weights.h5";
 
-    std::vector<float> result = getDataFromFile(sm_out);
-    std::vector<float> input = getDataFromFile(sm_in);
+    std::vector<float> result = util::getDataFromFile(sm_out);
+    std::vector<float> input = util::getDataFromFile(sm_in);
 
 
     AlexNetWeightLoader loader(weightspath);
@@ -574,4 +550,63 @@ TEST_CASE("Softmax with real data") {
         REQUIRE(std::fabs(out_sm.getData().at(i) - result.at(i)) < eps);
     }
 
+}
+
+TEST_CASE("GEMM with padding") {
+
+    const int M = 4;
+    const int K = 5;
+    const int N = 6;
+
+    float *A = new float[M*K];
+    float *B = new float[K*N];
+    float *C = new float[M*N];
+
+    for (int i = 0; i < M*K; i++) {
+        A[i] = i+1;
+    }
+    for (int i = 0; i < K*N; i++) {
+        B[i] = i;
+    }
+    std::memset(C, 0, M*N*sizeof(float));
+
+    helper::multiply_matrices_using_1d_vectors(A, M, K, B, K, N, C);
+
+    int paddedM = 0;
+    int paddedN = 0;
+    int paddedK = 0;
+    const int padding = 8;
+    float *paddedA = helper::add_padding(padding, K, M, A, &paddedK, &paddedM);
+    float *paddedB = helper::add_padding(padding, N, K, B, &paddedN, &paddedK);
+
+    float *paddedC = new float[paddedM*paddedK];
+    helper::multiply_matrices_using_1d_vectors(paddedA, paddedM, paddedK, paddedB, paddedK, paddedN, paddedC);
+
+    float *unpaddedC = helper::remove_padding(padding, N, M, paddedC);
+
+    for (int i = 0; i < M*N; i++) {
+        REQUIRE(C[i] == unpaddedC[i]);
+
+    }
+
+    delete [] paddedA;
+    delete [] paddedB;
+    delete [] paddedC;
+    delete [] unpaddedC;
+}
+
+
+TEST_CASE("transpose") {
+
+    const int size = 12;
+    float input[size];
+    for (int i = 0; i < size; i++) {
+        input[i] = i;
+    }
+    float *t = helper::transpose(4, 3, input);
+    float *u = helper::transpose(3, 4, t);
+
+    for (int i = 0; i < size; i++) {
+        REQUIRE(input[i] == u[i]);
+    }
 }

@@ -46,7 +46,5 @@ std::ostream &operator<<(std::ostream &os, const LayerType &layertype) {
             return os << "INPUT";
         case LayerType::CONCAT :
             return os << "CONCAT";
-        // omit default case to trigger compiler warning for missing cases
     }
-    return os << "<UNKNOWN>";
 }

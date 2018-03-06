@@ -56,7 +56,6 @@ private:
 
     const std::string filePath;
     h5cpp::File weightFile;
-    std::map<LayerIdentifier, WeightWrapper*> weightsMap;
 
     /**
      * @brief Creates a WeightWrapper out of a given groupName from the internally stored weightFile.
@@ -69,12 +68,6 @@ private:
      * @return the created WeightWrapper
      */
     WeightWrapper* createWeightWrapper(const std::string &groupName);
-
-    WeightWrapper* appendLayers(const std::string &groupNameFirst, const std::string &groupNameSecond);
-
-    void insertWeightWrapper(const LayerIdentifier &layerId, const WeightWrapper *weightWrapper);
-
-    void populateWeightsMap();
 
 public:
 

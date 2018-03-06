@@ -35,12 +35,16 @@ class ManagerObserver {
 
 public:
 
+    ManagerObserver() = default;
+
     /**
      * @brief Observer method for the manager to implement
      *
      * @return returns the computed ClassificationResult
      */
-    virtual ClassificationResult* update() = 0;
+    virtual ClassificationResult* update() {
+        return nullptr;
+    }
 
     /**
      * @brief Overloads operator==() function to compare two ManagerObserver's on their identity.
@@ -48,5 +52,7 @@ public:
      * @param managerObserver the to be compared ManagerObserver
      * @return true if they are equal, false if not.
      */
-    virtual bool operator==(const ManagerObserver &managerObserver) = 0;
+    virtual bool operator==(const ManagerObserver &managerObserver) {
+        return this == &managerObserver;
+    }
 };

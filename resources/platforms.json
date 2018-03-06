@@ -8,7 +8,7 @@
       "flops" : 500
     },
     {
-      "type" : "FPGA",
+      "type" : "CL_CPU",
       "description" : "OpenCL CPU",
       "uuid" : "bf11cc38-081f-11e8-bba2-abd6db15b367",
       "power_consumption" : 500,

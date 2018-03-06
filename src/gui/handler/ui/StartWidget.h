@@ -71,12 +71,13 @@ private:
     QMap<QPair<QImage *, QString>, QHBoxLayout *> images; /*!< Maps all loaded images to its layout */
     std::map<QString, NetInfo *> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
     std::map<QString, PlatformInfo *> platformMap; /*!< used to return the selected platform by using the displayed QString */
-
     QString directoryPath = QDir::homePath(); /*!< The last opened directory path of the QFileDialog */
-
+    QProgressBar* progressBar = nullptr;
+    QPushButton* cancelProgressButton = nullptr;
+    bool isOneSelected = false;
     const int OFFSET_FILEPATH_DISPLAY = 20;
 
-    QProgressBar* progressBar = nullptr;
+private:
 
     void addNeuralNets(std::vector<NetInfo *> &neuralNets);
 
@@ -91,6 +92,10 @@ private:
     void clearLayout(QLayout *layout);
 
     void disableWidgets(bool disable);
+
+    void renumerateImages();
+
+    bool areAllSelected();
 
 public:
 
@@ -112,6 +117,12 @@ public:
      * The destructor to delete all allocated memory on the heap.
      */
     ~StartWidget();
+
+    /**
+    * @brief updatePlatforms refreshes the currently displayed platforms in the GUI
+    * @param platforms are the platforms that shall be displayed in the GUI
+    */
+    void updatePlatforms(std::vector<PlatformInfo *> platforms);
 
     /**
      * @brief Displays a QErrorDialog with the given error message.
@@ -200,6 +211,12 @@ public:
      */
     QMap<QPair<QImage *, QString>, QHBoxLayout *> *getImagesMap();
 
+    /**
+     * @brief getCancelProgressButton returns a pointer to the QPushButton to cancel a classification
+     * @return the cancel QPushButton pointer
+     */
+    QPushButton *getCancelProgressButton() const;
+
 public slots:
 
     /**
@@ -230,5 +247,7 @@ protected:
 private slots:
 
     void widgetResized();
+
+    void checkImageSelection();
 
 };

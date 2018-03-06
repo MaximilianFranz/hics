@@ -95,19 +95,17 @@ void StartWidgetTest::testImageFunctions() {
     it.next();
     ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
 
-    it.next();
-    ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
-
-    startWidget->processAbortDeletionQPushButton();
-    startWidget->processConfirmDeletionButton();
-    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 3);
-
-    it.previous();
-    ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
-
     startWidget->processConfirmDeletionButton();
 
     QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 2);
+
+    it.next();
+    ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
+
+    //1 out of 2 images left have been selected so the abort deletion button should select all
+    startWidget->processAbortDeletionQPushButton();
+    startWidget->processConfirmDeletionButton();
+    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 0);
 }
 
 void StartWidgetTest::testSelectedPlatforms() {

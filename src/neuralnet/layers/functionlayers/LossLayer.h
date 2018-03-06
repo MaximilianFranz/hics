@@ -38,5 +38,7 @@ public:
     void forward() override;
 
     void setPlatform(Platform *platform) override;
+
+    int getDifficulty() override;
 };
 

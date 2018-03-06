@@ -24,5 +24,6 @@
  * SPDX-License-Identifier: MIT
  */
 
+#pragma once
 
 #include "catch.hpp"

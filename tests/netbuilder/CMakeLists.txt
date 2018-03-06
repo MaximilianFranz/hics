@@ -4,7 +4,9 @@ add_executable(netbuildertests
         LayerMakerTest.cpp
         LayerMakerTest.h
         NetBuilderTest.cpp
-        NetBuilderTest.h)
+        NetBuilderTest.h
+        AlexNetWeightLoaderTest.cpp
+        AlexNetWeightLoaderTest.h)
 
 #Link against netbuilder lib to get access to symbols
 #Link against catchtest to use the Catch-main function.

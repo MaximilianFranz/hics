@@ -76,7 +76,4 @@ public:
         return name;
     }
 
-    virtual ~ComputationHost() {
-
-    }
 };

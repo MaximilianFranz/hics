@@ -35,10 +35,13 @@
 #include <ClassificationResult.h>
 
 #include "MainWindowSubject.h"
+#include "WorkerThread.h"
 #include "ui/MainWindow.h"
 #include "ui/StartWidget.h"
 #include "ui/ResultWidget.h"
 #include "ui/DetailDialog.h"
+
+class WorkerThread; /*!< Forward declaration for WorkerThread */
 
 /**
  * @class   MainWindowHandler
@@ -72,9 +75,20 @@ private:
 
     ClassificationRequest *classificationRequestState = nullptr;
 
+    WorkerThread *workerThread = nullptr;
+
+    std::exception_ptr exceptionptr = nullptr;
+    bool cancelClassification = false;
+
+private:
+
     void connectAll();
 
     void disconnectAll();
+
+private slots:
+
+    void abortClassification();
 
 public:
 
@@ -89,10 +103,16 @@ public:
     * @param platforms the available platforms in the software
     * @param operationModes the available operation modes in the software
     */
-    MainWindowHandler(std::vector<NetInfo*> &neuralNets, std::vector<PlatformInfo*> &platforms,
+    MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::vector<PlatformInfo *> &platforms,
                       std::vector<OperationMode> &operationModes);
 
     ~MainWindowHandler();
+
+    /**
+    * @brief updatePlatforms refreshes the currently displayed platforms in the GUI
+    * @param platforms are the platforms that shall be displayed in the GUI
+    */
+    void updatePlatforms(std::vector<PlatformInfo *> platforms);
 
     /**
      * @brief getClassificationRequestState returns the classificationRequest state attribute.
@@ -105,8 +125,6 @@ public:
      * @param classificationResult contains the classification result and details which shall be displayed
      */
     void processClassificationResult(ClassificationResult *classificationResult);
-
-    //TODO here could be the displayErrorMessage(Exception e) method
 
     /**
      * @brief getStartWidget returns the startWidget which represents the starting page of the GUI.
@@ -131,6 +149,21 @@ public:
      * @return detailDialog
      */
     DetailDialog *getDetailDialog() const;
+
+    /**
+     * @brief setExceptionptr sets the exception pointer to a given exception which was thrown
+     * @param exceptionptr is the thrown exception
+     */
+    void setExceptionptr(const std::exception_ptr &exceptionptr);
+
+    /**
+     * @brief isClassificationAborted checks if the boolean for aborting the classification has been set
+     *
+     * The boolean is set by the user by pressing on the "Cancel" button during a classification.
+     *
+     * @return true if the classification shall be aborted, false if not
+     */
+    bool isClassificationAborted();
 
 public slots:
 
@@ -158,8 +191,9 @@ public slots:
      */
     void processDetailQPushButton();
 
-signals:
-
-    void startNotifying();
-
+    /**
+     * @brief displayErrorMessage will send the error message to the startWidget's respective method to display it.
+     * @param errorMessage the to be displayed error message
+     */
+    void displayErrorMessage(const QString &errorMessage);
 };

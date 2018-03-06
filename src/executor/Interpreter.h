@@ -59,14 +59,6 @@ public:
     ImageResult* getResult(DataWrapper *output, ImageWrapper *originalImage, PlatformPlacer* placer);
 
     /**
-     * \brief sets the labels to map the number of an output neuron to its corresponding label
-     *
-     * @param labelMap Map of all labels the NeuralNet can classify
-     * @see NetBuilder
-     */
-    void setLabels(std::map<int, std::string> &labelMap);
-
-    /**
      * Custom comparator for std::sort
      *
      * @param a float

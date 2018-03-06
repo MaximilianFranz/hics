@@ -42,8 +42,5 @@ void InputLayer::forward() {
     computed = true;
 }
 
-bool InputLayer::readyToCompute() {
-    return true;
-}
 
 

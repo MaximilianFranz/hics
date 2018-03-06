@@ -50,11 +50,5 @@ public:
 
     void forward() override;
 
-    /**
-     * Explicitly returns true for InputLayer
-     *
-     * @return true
-     */
-    bool readyToCompute() override;
 };
 

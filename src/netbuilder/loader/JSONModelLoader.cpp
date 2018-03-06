@@ -40,8 +40,8 @@ void JSONModelLoader::init() {
         std::ifstream jsonFile(this->pathToJSON);
         jsonFile >> this->model;
         this->layers = model["layers"];
-    } catch (...) {
-        throw ResourceException("Model JSON could not be read, file corrupted");
+    } catch (...) { // LCOV_EXCL_LINE
+        throw ResourceException("Model JSON could not be read, file corrupted"); // LCOV_EXCL_LINE
     }
 }
 

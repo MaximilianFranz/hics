@@ -28,14 +28,18 @@
 #include <Client.h>
 #include <thread>
 #include <fstream>
+#include <ResourceException.h>
 
 #include "Manager.h"
 #include "PreProcessor.h"
 #include "PerformanceCalculator.h"
 #include "HostPlacer.h"
 
+typedef unsigned int uint;
 
 std::string getHostAdress(std::string hostname);
+
+static std::exception_ptr exceptionptr = nullptr;
 
 void runClassification(ComputationHost* host,
                        std::vector<ImageResult*>& allResults,
@@ -45,7 +49,12 @@ void runClassification(ComputationHost* host,
                        std::vector<PlatformInfo*> selecedPlatforms,
                        std::chrono::steady_clock::time_point startTime,
                        int& allTimes) {
-    allResults = host->classify(img, net, mode, selecedPlatforms);
+    try {
+        allResults = host->classify(std::move(img), std::move(net), mode, std::move(selecedPlatforms));
+    } catch (...) {
+        //TODO: handling
+        exceptionptr = std::current_exception();
+    }
     std::chrono::steady_clock::time_point timeAfter = std::chrono::steady_clock::now();
     auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(timeAfter - startTime);
     allTimes = (int)diff.count();
@@ -53,9 +62,15 @@ void runClassification(ComputationHost* host,
 
 Manager::Manager() {
 
+    std::string hostAdress;
+    try {
+        hostAdress = getHostAdress("fpga");
+    } catch (ResourceException& r) {
+        //TODO: handling
+    }
     ComputationHost* client = new Client("fpga", grpc::CreateChannel(
-            getHostAdress("fpga"), grpc::InsecureChannelCredentials()));
-    std::cout << getHostAdress("fpga") << std::endl;
+            hostAdress, grpc::InsecureChannelCredentials()));
+
     try {
         client->queryNets();
         computationHosts.push_back(client);
@@ -103,7 +118,7 @@ ClassificationResult* Manager::update() {
     //Check which platforms of each host were selected
     auto hostPlatforms = std::vector<std::vector<PlatformInfo*>>(computationHosts.size());
     std::vector<PlatformInfo*> selectedPlatforms = request->getSelectedPlatforms();
-    for (int i = 0; i < computationHosts.size(); i++) {
+    for (uint i = 0; i < computationHosts.size(); i++) {
         for (auto hostPlatIt : computationHosts[i]->queryPlatform()) {
             auto platIt = std::find_if(selectedPlatforms.begin(), selectedPlatforms.end(),
                                        [&hostPlatIt](PlatformInfo* temp) {
@@ -117,7 +132,7 @@ ClassificationResult* Manager::update() {
 
     //Remove a computationHost if none of its Platforms are selected
     std::vector<ComputationHost*> availableHosts = computationHosts;
-    for (int i = 0; i < availableHosts.size(); i++) {
+    for (uint i = 0; i < availableHosts.size(); i++) {
         if (hostPlatforms[i].empty()) {
             ComputationHost* currentHost = availableHosts[i];
             availableHosts.erase(std::find_if(availableHosts.begin(),
@@ -156,7 +171,7 @@ ClassificationResult* Manager::update() {
 
     std::vector<std::thread> classifyThreads;
 
-    for (int i = 0; i < availableHosts.size(); i++) {
+    for (uint i = 0; i < availableHosts.size(); i++) {
         if (!batches[i].empty()) {
             time = std::chrono::steady_clock::now();
             std::thread t(runClassification, availableHosts[i],
@@ -175,13 +190,25 @@ ClassificationResult* Manager::update() {
         }
     }
 
-    for (int i = 0; i < classifyThreads.size(); i++) {
+    for (uint i = 0; i < classifyThreads.size(); i++) {
         classifyThreads[i].join();
+    }
+
+    if(mainWindowHandler->isClassificationAborted()){
+        return nullptr;
+    }
+
+    if(exceptionptr) {
+        mainWindowHandler->setExceptionptr(exceptionptr);
+
+        //Null exceptionptr for next classification
+        exceptionptr = nullptr;
+        return nullptr;
     }
 
     auto hosts = std::vector<PerformanceCalculator::HostInfo*>();
 
-    for (int i = 0; i < availableHosts.size(); i++) {
+    for (uint i = 0; i < availableHosts.size(); i++) {
         auto newHost = new PerformanceCalculator::HostInfo(availableHosts[i]->getName(),
                                                            float(batches[i].size()) / float(processedImages.size()),
                                                            compTime[i]);
@@ -191,7 +218,7 @@ ClassificationResult* Manager::update() {
     std::vector<std::vector<std::pair<PlatformInfo*, float>>> calculateInfo;
 
     //Add the ComputationDistribution of each host to the calculateInfo
-    for (int i = 0; i < batches.size(); i++) {
+    for (uint i = 0; i < batches.size(); i++) {
         if (!batches[i].empty()) {
             std::vector<std::pair<PlatformInfo *, float>> distr = allResults[i].front()->getCompDistribution();
             calculateInfo.push_back(distr);
@@ -263,4 +290,5 @@ std::string getHostAdress(std::string hostname) {
             return compHostIt["host"];
         }
     }
+    throw ResourceException("Host name not found in .json file");
 }

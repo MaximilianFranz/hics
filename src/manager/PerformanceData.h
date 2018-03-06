@@ -53,20 +53,20 @@ public:
                     const std::vector<std::pair<PlatformInfo*, float>> &platformUsage);
 
     /**
-     *
-     * @return
+     * Accesses the power consumption
+     * @return  power consumption
      */
     int getPowerConsumption() const;
 
     /**
-     *
-     * @return
+     * Accesses the computation time
+     * @return  computation time
      */
     int getComputationTime() const;
 
     /**
-     *
-     * @return
+     * Accesses the vector containing the platform usage
+     * @return platform usage
      */
     const std::vector<std::pair<PlatformInfo*, float>> &getPlatformUsage() const;
 };

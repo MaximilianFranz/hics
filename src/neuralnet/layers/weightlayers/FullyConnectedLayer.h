@@ -51,15 +51,6 @@ protected:
 public:
 
     /**
-     * Constructor for a FullyConnectedLayer without weights.
-     *
-     * Weights can be set afterwards.
-     *
-     * @param inputDimensions inputDimensions to this
-     */
-    explicit FullyConnectedLayer(std::vector<int> inputDimensions);
-
-    /**
      * Constructor for a FullyConnectedLayer with weights
      *
      * @param inputDimensions
@@ -74,10 +65,7 @@ public:
 
     void setPlatform(Platform *platform) override;
 
-    void setWeights(WeightWrapper* weights);
-
-
-    void setFunction(FullyConnectedFunction* function);
+    int getDifficulty() override;
 
 };
 

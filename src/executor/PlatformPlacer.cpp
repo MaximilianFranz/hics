@@ -32,6 +32,7 @@
 #include <layers/functionlayers/LocalResponseNormLayer.h>
 #include <layers/functionlayers/SoftMaxLossLayer.h>
 #include <layers/functionlayers/MaxPoolingLayer.h>
+#include <IllegalArgumentException.h>
 
 #include "PlatformPlacer.h"
 
@@ -45,8 +46,7 @@ void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::
     compDistribution.clear();
 
     this->net = net;
-    this->currentPlatforms = platforms;
-    //TODO: Get only platforms previously selected!
+    this->currentPlatforms = std::move(platforms);
 
     switch (mode) {
         case OperationMode::EnergyEfficient : placeEnergyEfficient();
@@ -55,7 +55,8 @@ void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::
             break;
         case OperationMode::HighPower : placeHighPerformance();
             break;
-        default: placeEnergyEfficient();
+            // Omit default, because all cases are caught
+            // method cannot be called with illegal OperationMode argument
     }
 
 }
@@ -73,24 +74,27 @@ const std::vector<std::pair<PlatformInfo *, float>> &PlatformPlacer::getCompDist
 
 PlatformInfo* PlatformPlacer::getDefaultPlatform() {
     //Preferably use CPU as Default.
-    for (auto pl : currentPlatforms) {
-        if(pl->getType() == PlatformType::CPU) {
-            return pl; //We assume for now that there always is a CPU platform!
+    if (! currentPlatforms.empty()) {
+        for (auto pl : currentPlatforms) {
+            if(pl->getType() == PlatformType::CPU) {
+                return pl; //We assume for now that there always is a CPU platform!
+            }
         }
-    }
-    // If no CPU found, choose the first as default
-    if (currentPlatforms.size() > 0)
+        // If no CPU found, choose the first as default
         return currentPlatforms.front();
+    }
     else {
-        return nullptr; // TODO: Make this an exception and handle it further up the hierarchy.
+        throw IllegalArgumentException("No platforms selected, can't compute without platforms");
     }
 }
 
 //TODO: can we give a layer a attribute that specifies it's difficutly?
 void PlatformPlacer::placeNetWith(PlatformInfo *perfomanceInfo, PlatformInfo *fallbackInfo) {
-    int perfomanceCount = 0;
-    int fallbackCount = 0;
+    float perfomanceDifficulty = 0;
+    float  fallbackDifficulty = 0;
 
+    long long totalDifficulty = net->getTotalDifficulty();
+    long long averageDifficulty = totalDifficulty / net->getNumLayers();
     
     Platform *perfomance = platformManager->getPlatformById(perfomanceInfo->getPlatformId());
     Platform *fallback = platformManager->getPlatformById(fallbackInfo->getPlatformId());
@@ -98,29 +102,40 @@ void PlatformPlacer::placeNetWith(PlatformInfo *perfomanceInfo, PlatformInfo *fa
     SimpleNetIterator *it = net->createIterator();
     do {
         Layer *currentLayer = it->getElement();
-        if (currentLayer->getType() == LayerType::CONVOLUTION || currentLayer->getType() == LayerType::FULLYCONNECTED) {
+
+        // If layer is relatively difficult, use the perfomance platform
+        if (currentLayer->getDifficulty() > averageDifficulty) {
             currentLayer->setPlatform(perfomance);
-            perfomanceCount++;
+            perfomanceDifficulty += currentLayer->getDifficulty();
         } else {
             currentLayer->setPlatform(fallback);
-            fallbackCount++;
+            fallbackDifficulty += currentLayer->getDifficulty();
         }
         it->next();
 
     } while(it->hasNext());
 
-    float layerCount = fallbackCount  + perfomanceCount;
+    float performanceDistribution = perfomanceDifficulty / totalDifficulty;
+    float fallbackDistribution = fallbackDifficulty / totalDifficulty;
 
-    // Calculate simple distribution.
+    // Calculate distribution.
     if (fallbackInfo->getPlatformId() != perfomanceInfo->getPlatformId()) {
         compDistribution.push_back(std::pair<PlatformInfo *, float>(perfomanceInfo,
-                                                                    perfomanceCount / layerCount));
+                                                                    performanceDistribution));
         compDistribution.push_back(std::pair<PlatformInfo *, float>(fallbackInfo,
-                                                                    fallbackCount / layerCount));
+                                                                    fallbackDistribution));
     } else {
         compDistribution.emplace_back(std::pair<PlatformInfo *, float>(perfomanceInfo, 1));
     }
 
+    // Add platforms that have not been used for completeness of the details tab.
+    for (auto p : currentPlatforms) {
+        // Platform selected but not used for placement
+        if (p->getPlatformId() != perfomanceInfo->getPlatformId()
+            && p->getPlatformId() != fallbackInfo->getPlatformId()) {
+            compDistribution.emplace_back(std::pair<PlatformInfo *, float>(p, 0));
+        }
+    }
 }
 
 

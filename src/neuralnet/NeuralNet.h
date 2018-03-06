@@ -73,26 +73,25 @@ public:
     void reset();
 
     /**
-     * TODO: Replace with NetIterator and get proper inheritance to work!
      *
      * @return an iterator
      */
     SimpleNetIterator* createIterator() const;
 
-    /**
-     * Iterates over the network and verifies that input and output dimensions of connected layers match.
-     *
-     * The network may not be computed, if this returns false.
-     *
-     * @return true if the dimensions match, false otherwise.
-     */
-    bool verifyConsistency();
+    long long getTotalDifficulty();
 
     /**
      *
      * @return last Layer of the network, which is the output.
      */
     const Layer *getLastLayer() const;
+
+    /**
+     *  Returns the number of layer in this neural net
+     *
+     * @return int number of layers
+     */
+    const int getNumLayers() const;
 
     /**
      * Desctructs this instance of NeuralNet an all layers in it.

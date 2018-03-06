@@ -25,7 +25,6 @@
  */
 
 #include <QtCore/QThread>
-#include "Worker.h"
 #include "MainWindowHandler.h"
 
 MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::vector<PlatformInfo *> &platforms,
@@ -46,6 +45,10 @@ MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::ve
     connectAll();
 }
 
+void MainWindowHandler::abortClassification() {
+    cancelClassification = true;
+}
+
 void MainWindowHandler::setClassificationRequestState() {
     delete classificationRequestState;
     classificationRequestState = nullptr;
@@ -59,32 +62,19 @@ void MainWindowHandler::setClassificationRequestState() {
     if (!platforms.empty() && !userImgs.empty()) {
         classificationRequestState = new ClassificationRequest(neuralNet, platforms, mode, aggregate, userImgs);
 
-        //Distribute the computation in a worker thread to ensure a responsive GUI
-        auto *workerThread = new QThread;
-        auto *worker = new Worker(getObservers());
-        worker->moveToThread(workerThread);
-
-        connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
-
-        //A signal must be connected to the workers method to ensure that the computation is run in the worker thread
-        connect(this, &MainWindowHandler::startNotifying, worker, &Worker::doWork);
-
-        //Receive the computed result
-        connect(worker, &Worker::workDone, this, &MainWindowHandler::processClassificationResult);
-
-        //Delete memory
-        connect(worker, &Worker::workDone, workerThread, &QThread::quit);
-        connect(worker, &Worker::workDone, worker, &Worker::deleteLater);
-        connect(worker, &Worker::workDone, workerThread, &QThread::deleteLater);
-
+        workerThread = new WorkerThread(this);
+        connect(workerThread, &WorkerThread::resultReady, this, &MainWindowHandler::processClassificationResult);
+        connect(workerThread, &WorkerThread::finished, workerThread, &QObject::deleteLater);
         workerThread->start();
-
-        //Emit that the classification shall start
-        emit startNotifying();
 
         //Displays a busy loading progress bar and disables all widgets
         startWidget->displayProgress();
     }
+}
+
+void MainWindowHandler::displayErrorMessage(const QString &errorMessage) {
+    startWidget->resetProgressDisplay();
+    startWidget->displayErrorMessage(errorMessage);
 }
 
 ClassificationRequest *MainWindowHandler::getClassificationRequestState() {
@@ -92,23 +82,44 @@ ClassificationRequest *MainWindowHandler::getClassificationRequestState() {
 }
 
 void MainWindowHandler::processClassificationResult(ClassificationResult *classificationResult) {
-    disconnectAll();
-    mainWindow->removeWidgetFromStack(resultWidget);
-    delete resultWidget;
-    resultWidget = new ResultWidget;
-    connectAll();
-    //Initialize the results in resultWidget
-    resultWidget->displayResults(classificationResult);
-    mainWindow->addWidgetToStack(resultWidget);
-    //Initialize the details in detailDialog
-    detailDialog->insertDetails(classificationResult);
-    //Change the currently displayed widget to resultWidget
-    mainWindow->setCurrentWidget(resultWidget);
+    //If classificationResult is a nullptr the classification went wrong
+    if (classificationResult) {
+        disconnectAll();
+        mainWindow->removeWidgetFromStack(resultWidget);
+        delete resultWidget;
+        resultWidget = new ResultWidget;
+        connectAll();
+        //Initialize the results in resultWidget
+        resultWidget->displayResults(classificationResult);
+        mainWindow->addWidgetToStack(resultWidget);
+        //Initialize the details in detailDialog
+        detailDialog->insertDetails(classificationResult);
+        //Change the currently displayed widget to resultWidget
+        mainWindow->setCurrentWidget(resultWidget);
+    } else {
+        //Check if an exception has been set during the classification
+        if (exceptionptr) {
+            try {
+                //Since the exception is stored as a exception pointer we need to rethrow it to catch the exception
+                std::rethrow_exception(exceptionptr);
+            } catch (std::exception &e) {
+                //Display the error message and reset the loading state of the GUI to the normal starting page
+                displayErrorMessage(QString::fromStdString(e.what()));
+                exceptionptr = nullptr;
+            }
+        } else {
+            //This case should never occur, but for safety measures the GUI should be resetted
+            startWidget->resetProgressDisplay();
+        }
+    }
+
+    cancelClassification = false;
 }
 
 void MainWindowHandler::processReturnQPushButton() {
     //Enable the widgets in StartWidget again and remove the progress bar
     startWidget->resetProgressDisplay();
+    cancelClassification = false;
 
     mainWindow->setCurrentWidget(startWidget);
 
@@ -133,6 +144,8 @@ void MainWindowHandler::connectAll() {
     connect(startWidget->getClassificationQPushButton(), SIGNAL(clicked(bool)), this,
             SLOT(setClassificationRequestState()));
 
+    connect(startWidget->getCancelProgressButton(), SIGNAL(clicked(bool)), this, SLOT(abortClassification()));
+
     //Deletes resultWidget
     connect(resultWidget->getReturnQPushButton(), SIGNAL(clicked(bool)), this, SLOT(processReturnQPushButton()));
 
@@ -146,6 +159,7 @@ void MainWindowHandler::connectAll() {
 void MainWindowHandler::disconnectAll() {
     disconnect(startWidget->getClassificationQPushButton(), SIGNAL(clicked()), this,
                SLOT(setClassificationRequestState()));
+    disconnect(startWidget->getCancelProgressButton(), SIGNAL(clicked()), this, SLOT(abortClassification()));
     disconnect(resultWidget->getReturnQPushButton(), SIGNAL(clicked()), this, SLOT(processReturnQPushButton()));
     disconnect(resultWidget->getDetailsQPushButton(), SIGNAL(clicked()), this, SLOT(processDetailQPushButton()));
     disconnect(resultWidget, SIGNAL(destroyed()), this, SLOT(processReturnQPushButton()));
@@ -158,6 +172,14 @@ MainWindowHandler::~MainWindowHandler() {
     delete startWidget;
     delete mainWindow;
     delete classificationRequestState;
+}
+
+void MainWindowHandler::updatePlatforms(std::vector<PlatformInfo *> platforms) {
+    startWidget->updatePlatforms(platforms);
+}
+
+bool MainWindowHandler::isClassificationAborted() {
+    return cancelClassification;
 }
 
 MainWindow *MainWindowHandler::getMainWindow() const {
@@ -174,4 +196,8 @@ ResultWidget *MainWindowHandler::getResultWidget() const {
 
 DetailDialog *MainWindowHandler::getDetailDialog() const {
     return detailDialog;
+}
+
+void MainWindowHandler::setExceptionptr(const std::exception_ptr &exceptionptr) {
+    MainWindowHandler::exceptionptr = exceptionptr;
 }

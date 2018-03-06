@@ -1,9 +1,9 @@
 // Increased the amount of work-per-thread by a factor WPT
-__kernel void myGEMM3(const int M, const int N, const int K,
-                      const __global float* A,
-                      const __global float* B,
-                      __global float* C,
-                      const __global float* W) {
+__kernel void GEMM3(const int M, const int N, const int K,
+                    const __global float* A,
+                    const __global float* B,
+                    __global float* C,
+                    const __global float* D) {
 
     // Thread identifiers
     const int row = get_local_id(0); // Local row ID (max: TS)
@@ -49,6 +49,6 @@ __kernel void myGEMM3(const int M, const int N, const int K,
 
     // Store the final results in C
     for (int w=0; w<WPT; w++) {
-        C[(globalCol + w*RTS)*M + globalRow] = acc[w] + W[globalRow];
+        C[(globalCol + w*RTS)*M + globalRow] = acc[w] + D[globalRow];
     }
 }

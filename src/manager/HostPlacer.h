@@ -42,6 +42,9 @@ using json = nlohmann::json;
 class HostPlacer {
 
 public:
+    /**
+     * This struct wraps up the performance of a computation host. Note that the powerConsumption is specified in watts.
+     */
     struct Performance {
         int powerConsumption;
         int timeConsumption;
@@ -50,14 +53,40 @@ public:
     };
 
 private:
+    /**
+     * Sub-function for place. In low power mode the host with the least power consumption per classification gets all
+     * images distributed.
+     * @param hosts     computation hosts
+     * @param numOfImg  number of images that should be classified
+     * @return          vector mapping each host to the number of images it should classify
+     */
     static std::vector<std::pair<ComputationHost*, int>>& placeLowPower(
             std::vector<std::pair<ComputationHost*, Performance>> &hosts, int numOfImg);
+
+    /**
+     * Sub-function for place. In high power mode the algorithm has a stack for each computation host time and
+     * distributes the images to build the smallest maximum stack.
+     * @param hosts     computation hosts
+     * @param numOfImg  number of images that should be classified
+     * @return          vector mapping each host to the number of images it should classify
+     */
     static std::vector<std::pair<ComputationHost*, int>>& placeHighPower(
             std::vector<std::pair<ComputationHost*, Performance>> &hosts, int numOfImg);
+
+    /**
+     * Sub-function for place. In energy efficient mode the algorithm calculates a cost coefficient for every
+     * classification according to the priority variables specified further down.
+     * @param hosts     computation hosts
+     * @param numOfImg  number of images that should be classified
+     * @return          vector mapping each host to the number of images it should classify
+     */
     static std::vector<std::pair<ComputationHost*, int>>& placeEnergyEfficient(
             std::vector<std::pair<ComputationHost*, Performance>> &hosts, int numOfImg);
 
-    static const int timePriority = 2;
+    /**
+     * These two variables specify the weighting of time and power consumption in the energy efficient mode.
+     */
+    static const int timePriority = 1;
     static const int powerPriority = 1;
 public:
     /**
@@ -72,9 +101,12 @@ public:
     OperationMode opMode);
 
 
+
     /**
-     * Reads the estimated performance of a ComputationHost.
-     * @param c
+     * This function reads power and time consumption of a host from the computationHosts.json. The power in the json file
+     * is given in watts. For the use in the hostPlacer the power is multiplied with the time of a classification to
+     * represent the power consumption of a whole classification
+     * @param hostName in jason
      * @return pair of integers, containing power and time consumption.
      */
     static Performance readComputationHostInfo(std::string hostName);
