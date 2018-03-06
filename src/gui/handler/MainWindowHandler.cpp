@@ -45,10 +45,6 @@ MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::ve
     connectAll();
 }
 
-void MainWindowHandler::abortClassification() {
-    cancelClassification = true;
-}
-
 void MainWindowHandler::setClassificationRequestState() {
     delete classificationRequestState;
     classificationRequestState = nullptr;
@@ -116,14 +112,11 @@ void MainWindowHandler::processClassificationResult(ClassificationResult *classi
             startWidget->updatePlatforms(*(updatedPlatforms.get()));
         }
     }
-
-    cancelClassification = false;
 }
 
 void MainWindowHandler::processReturnQPushButton() {
     //Enable the widgets in StartWidget again and remove the progress bar
     startWidget->resetProgressDisplay();
-    cancelClassification = false;
 
     mainWindow->setCurrentWidget(startWidget);
 
@@ -148,8 +141,6 @@ void MainWindowHandler::connectAll() {
     connect(startWidget->getClassificationQPushButton(), SIGNAL(clicked(bool)), this,
             SLOT(setClassificationRequestState()));
 
-    connect(startWidget->getCancelProgressButton(), SIGNAL(clicked(bool)), this, SLOT(abortClassification()));
-
     //Deletes resultWidget
     connect(resultWidget->getReturnQPushButton(), SIGNAL(clicked(bool)), this, SLOT(processReturnQPushButton()));
 
@@ -163,7 +154,6 @@ void MainWindowHandler::connectAll() {
 void MainWindowHandler::disconnectAll() {
     disconnect(startWidget->getClassificationQPushButton(), SIGNAL(clicked()), this,
                SLOT(setClassificationRequestState()));
-    disconnect(startWidget->getCancelProgressButton(), SIGNAL(clicked()), this, SLOT(abortClassification()));
     disconnect(resultWidget->getReturnQPushButton(), SIGNAL(clicked()), this, SLOT(processReturnQPushButton()));
     disconnect(resultWidget->getDetailsQPushButton(), SIGNAL(clicked()), this, SLOT(processDetailQPushButton()));
     disconnect(resultWidget, SIGNAL(destroyed()), this, SLOT(processReturnQPushButton()));
@@ -180,10 +170,6 @@ MainWindowHandler::~MainWindowHandler() {
 
 void MainWindowHandler::updatePlatforms(std::shared_ptr<std::vector<PlatformInfo *>> platforms) {
     updatedPlatforms = platforms;
-}
-
-bool MainWindowHandler::isClassificationAborted() {
-    return cancelClassification;
 }
 
 MainWindow *MainWindowHandler::getMainWindow() const {

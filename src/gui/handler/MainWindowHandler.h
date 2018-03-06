@@ -80,17 +80,12 @@ private:
 
     std::exception_ptr exceptionptr = nullptr;
     std::shared_ptr<std::vector<PlatformInfo *>> updatedPlatforms = nullptr;
-    bool cancelClassification = false;
 
 private:
 
     void connectAll();
 
     void disconnectAll();
-
-private slots:
-
-    void abortClassification();
 
 public:
 
@@ -157,15 +152,6 @@ public:
      * @param exceptionptr is the thrown exception
      */
     void setExceptionptr(const std::exception_ptr &exceptionptr);
-
-    /**
-     * @brief isClassificationAborted checks if the boolean for aborting the classification has been set
-     *
-     * The boolean is set by the user by pressing on the "Cancel" button during a classification.
-     *
-     * @return true if the classification shall be aborted, false if not
-     */
-    bool isClassificationAborted();
 
 public slots:
 

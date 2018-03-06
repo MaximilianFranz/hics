@@ -231,10 +231,6 @@ ClassificationResult* Manager::update() {
         classifyThreads[i].join();
     }
 
-    if (mainWindowHandler->isClassificationAborted()) {
-        return nullptr;
-    }
-
     //check if the classification went wrong
     if (exceptionptr) {
         mainWindowHandler->setExceptionptr(exceptionptr);
