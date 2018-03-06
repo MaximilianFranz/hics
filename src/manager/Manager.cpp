@@ -144,91 +144,102 @@ void Manager::initGUI() {
 }
 
 ClassificationResult* Manager::update() {
+    std::vector<ComputationHost *> availableHosts;
+    std::vector<std::vector<ImageWrapper *>> batches;
+    std::vector<int> compTime;
+    std::vector<std::vector<ImageResult *>> allResults;
 
-    ClassificationRequest* request = mainWindowHandler->getClassificationRequestState();
+    ClassificationRequest *request = mainWindowHandler->getClassificationRequestState();
 
     PreProcessor processor = PreProcessor();
     processor.setOutputSize(request->getSelectedNeuralNet().getImageDimension(),
                             request->getSelectedNeuralNet().getImageDimension());
 
-    std::vector<ImageWrapper*> processedImages = processor.processImages(request->getUserImages());
+    std::vector<ImageWrapper *> processedImages = processor.processImages(request->getUserImages());
 
     //Check which platforms of each host were selected
-    auto hostPlatforms = std::vector<std::vector<PlatformInfo*>>(computationHosts.size());
-    std::vector<PlatformInfo*> selectedPlatforms = request->getSelectedPlatforms();
-    for (uint i = 0; i < computationHosts.size(); i++) {
-        for (auto hostPlatIt : computationHosts[i]->queryPlatform()) {
-            auto platIt = std::find_if(selectedPlatforms.begin(), selectedPlatforms.end(),
-                                       [&hostPlatIt](PlatformInfo* temp) {
-                                           return temp->getPlatformId() == hostPlatIt->getPlatformId();
-                                       });
-            if (platIt != selectedPlatforms.end()) {
-                hostPlatforms[i].push_back(*platIt);
+    auto hostPlatforms = std::vector<std::vector<PlatformInfo *>>(computationHosts.size());
+    std::vector<PlatformInfo *> selectedPlatforms = request->getSelectedPlatforms();
+
+    try {
+        for (uint i = 0; i < computationHosts.size(); i++) {
+            for (auto hostPlatIt : computationHosts[i]->queryPlatform()) {
+                auto platIt = std::find_if(selectedPlatforms.begin(), selectedPlatforms.end(),
+                                           [&hostPlatIt](PlatformInfo *temp) {
+                                               return temp->getPlatformId() == hostPlatIt->getPlatformId();
+                                           });
+                if (platIt != selectedPlatforms.end()) {
+                    hostPlatforms[i].push_back(*platIt);
+                }
             }
         }
+    } catch (std::exception &e) {
+        exceptionptr = std::current_exception();
     }
 
-    //Remove a computationHost if none of its Platforms are selected
-    std::vector<ComputationHost*> availableHosts = computationHosts;
-    for (uint i = 0; i < availableHosts.size(); i++) {
-        if (hostPlatforms[i].empty()) {
-            ComputationHost* currentHost = availableHosts[i];
-            availableHosts.erase(std::find_if(availableHosts.begin(),
-                                              availableHosts.end(),
-                                              [&currentHost](ComputationHost* temp) {
-                                                  return temp->getName() == currentHost->getName();
-                                              }));
-            hostPlatforms.erase(hostPlatforms.begin() + i);
+    if (!exceptionptr) {
+        //Remove a computationHost if none of its Platforms are selected
+        availableHosts = computationHosts;
+        for (uint i = 0; i < availableHosts.size(); i++) {
+            if (hostPlatforms[i].empty()) {
+                ComputationHost *currentHost = availableHosts[i];
+                availableHosts.erase(std::find_if(availableHosts.begin(),
+                                                  availableHosts.end(),
+                                                  [&currentHost](ComputationHost *temp) {
+                                                      return temp->getName() == currentHost->getName();
+                                                  }));
+                hostPlatforms.erase(hostPlatforms.begin() + i);
+            }
         }
-    }
 
-    std::vector<std::pair<ComputationHost*, int>> hostDistribution =
-            HostPlacer::place(availableHosts, (int)processedImages.size(), request->getSelectedOperationMode());
+        std::vector<std::pair<ComputationHost *, int>> hostDistribution =
+                HostPlacer::place(availableHosts, (int) processedImages.size(), request->getSelectedOperationMode());
 
-    auto batches = std::vector<std::vector<ImageWrapper*>>(availableHosts.size());
-    int hostIndex = 0;
-    int imageIndex = 0;
-    for (auto imageIt : processedImages) {
-        if (imageIndex < hostDistribution[hostIndex].second) {
-            batches[hostIndex].push_back(imageIt);
-            imageIndex++;
-        } else {
-            hostIndex++;
-            imageIndex = 0;
-            batches[hostIndex].push_back(imageIt);
+        batches = std::vector<std::vector<ImageWrapper *>>(availableHosts.size());
+        int hostIndex = 0;
+        int imageIndex = 0;
+        for (auto imageIt : processedImages) {
+            if (imageIndex < hostDistribution[hostIndex].second) {
+                batches[hostIndex].push_back(imageIt);
+                imageIndex++;
+            } else {
+                hostIndex++;
+                imageIndex = 0;
+                batches[hostIndex].push_back(imageIt);
+            }
         }
-    }
 
-    auto allResults = std::vector<std::vector<ImageResult*>>(availableHosts.size());
+        allResults = std::vector<std::vector<ImageResult *>>(availableHosts.size());
 
-    std::chrono::steady_clock::time_point time, timeAfter;
-    std::chrono::milliseconds diff = std::chrono::milliseconds();
+        std::chrono::steady_clock::time_point time, timeAfter;
+        std::chrono::milliseconds diff = std::chrono::milliseconds();
 
-    auto compTime = std::vector<int>(availableHosts.size());
+        compTime = std::vector<int>(availableHosts.size());
 
-    std::vector<std::thread> classifyThreads;
+        std::vector<std::thread> classifyThreads;
 
-    for (uint i = 0; i < availableHosts.size(); i++) {
-        if (!batches[i].empty()) {
-            time = std::chrono::steady_clock::now();
-            std::thread t(runClassification, availableHosts[i],
-                                            std::ref(allResults[i]),
-                                            batches[i],
-                                            request->getSelectedNeuralNet(),
-                                            request->getSelectedOperationMode(),
-                                            hostPlatforms[i],
-                                            time,
-                                            std::ref(compTime[i]));
-            classifyThreads.push_back(std::move(t));
-        } else {
-            //dummy value for hosts that did not compute anything
-            allResults[i] = std::vector<ImageResult *>();
-            compTime[i] = 1;
+        for (uint i = 0; i < availableHosts.size(); i++) {
+            if (!batches[i].empty()) {
+                time = std::chrono::steady_clock::now();
+                std::thread t(runClassification, availableHosts[i],
+                              std::ref(allResults[i]),
+                              batches[i],
+                              request->getSelectedNeuralNet(),
+                              request->getSelectedOperationMode(),
+                              hostPlatforms[i],
+                              time,
+                              std::ref(compTime[i]));
+                classifyThreads.push_back(std::move(t));
+            } else {
+                //dummy value for hosts that did not compute anything
+                allResults[i] = std::vector<ImageResult *>();
+                compTime[i] = 1;
+            }
         }
-    }
 
-    for (uint i = 0; i < classifyThreads.size(); i++) {
-        classifyThreads[i].join();
+        for (uint i = 0; i < classifyThreads.size(); i++) {
+            classifyThreads[i].join();
+        }
     }
 
     //check if the classification went wrong

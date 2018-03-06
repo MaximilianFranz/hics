@@ -100,8 +100,7 @@ std::vector<PlatformInfo*> Client::queryPlatform() {
         }
         return platforms;
     } else {
-        //TODO: specific exeption
-        throw std::exception();
+        throw CommunicationException(this, "Could not query nets, maybe the host is unreachable?");
     }
 
 }
