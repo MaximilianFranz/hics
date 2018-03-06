@@ -26,6 +26,7 @@
 
 #include "LayerMaker.h"
 #include <IllegalArgumentException.h>
+#include <ResourceException.h>
 
 
 void LayerMaker::validateKernels(LayerConstructionParams lcp){
@@ -51,10 +52,16 @@ void LayerMaker::validateNumGroups(LayerConstructionParams lcp) {
     }
 }
 
-void LayerMaker::validateWeights(WeightWrapper *weights,
-                                 std::string layerName) {
+void LayerMaker::validateWeights(LayerConstructionParams lcp, WeightWrapper *weights) {
     if (weights == nullptr) {
-        throw IllegalArgumentException("Weights should not be NULL for " + layerName + " layer.");
+        throw IllegalArgumentException("Weights should not be NULL for " + lcp.type + " layer.");
+    }
+    if (lcp.type == "conv") {
+        if (weights->getDimensions()[0] != lcp.numFilters
+                                 || weights->getDimensions()[2] != lcp.filterSize
+                                 || weights->getDimensions()[3] != lcp.filterSize) {
+            throw ResourceException("Weights for " + lcp.type + " layer have invalid dimensions.");
+        }
     }
 }
 
@@ -65,10 +72,10 @@ void LayerMaker::validateData(LayerConstructionParams lcp,
         validateInputDims(inputDims, lcp.type);
         validateKernels(lcp);
         validateNumGroups(lcp);
-        validateWeights(weights, lcp.type);
+        validateWeights(lcp, weights);
     } else if (lcp.type == "fullyConnected"){
         validateInputDims(inputDims, lcp.type);
-        validateWeights(weights, lcp.type);
+        validateWeights(lcp, weights);
     } else {
         validateInputDims(inputDims, lcp.type);
     }

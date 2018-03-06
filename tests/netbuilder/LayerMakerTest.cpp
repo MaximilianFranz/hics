@@ -105,11 +105,13 @@ SCENARIO("Testing construction of Layers" , "[layermaker]") {
     }
 
     SECTION("FullyConnectedLayer") {
+        AlexNetWeightLoader loader(RES_DIR "weights/alexnet_weights.h5");
+        WeightWrapper *weights = loader.getWeights(WeightLoader::LayerIdentifier(5));
         LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(16);
         REQUIRE(lcp.type == "fullyConnected");
         REQUIRE(lcp.outputSize == 4096);
-        //FullyConnectedLayer* fc = l.createFCLayer(lcp, inputforFC, NULL); can not be tested, cause calculateOutput() throws the
-        //REQUIRE(fc->getInputDimensions() == inputforFC);                  notImplementedException
+        FullyConnectedLayer* fc = l.createFCLayer(lcp, inputforFC, weights);
+        REQUIRE(fc->getInputDimensions() == inputforFC);
     }
 
     SECTION("LossLayer") {
