@@ -30,8 +30,6 @@
 #include <ResourceException.h>
 
 #include "ModelCrawler.h"
-#include "ModelLoader.h"
-#include "JSONModelLoader.h"
 
 std::vector<std::string> ModelCrawler::getFilesInDir(std::string relPathToDir) {
     std::vector<std::string> results;
@@ -79,7 +77,16 @@ std::vector<NetInfo *> ModelCrawler::getValidNets(std::string path) {
             // Create ModelLoader to perfom basic check whether model is a valid neural net model
             JSONModelLoader l(filepath);
             if (l.isValid()) {
-                validNets.push_back(constructNetInfo(&l));
+                auto netInfo = constructNetInfo(&l);
+
+                // identifier does not match name
+                if (filepath.find(netInfo->getIdentifier() + ".json") == std::string::npos) {
+                    throw ResourceException("filename in " + filepath + " does not match the identifier.");
+                } else {
+                    validNets.push_back(netInfo);
+                }
+
+
             }
         }
     }
