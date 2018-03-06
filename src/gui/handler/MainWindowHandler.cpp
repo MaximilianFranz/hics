@@ -110,6 +110,7 @@ void MainWindowHandler::processClassificationResult(ClassificationResult *classi
 
         if(updatedPlatforms){
             startWidget->updatePlatforms(*(updatedPlatforms.get()));
+            updatedPlatforms = nullptr;
         }
     }
 }
