@@ -231,10 +231,6 @@ ClassificationResult* Manager::update() {
         classifyThreads[i].join();
     }
 
-    if (mainWindowHandler->isClassificationAborted()) {
-        return nullptr;
-    }
-
     //check if the classification went wrong
     if (exceptionptr) {
         mainWindowHandler->setExceptionptr(exceptionptr);
@@ -254,15 +250,17 @@ ClassificationResult* Manager::update() {
 
 
             //Update available platforms
-            std::vector<PlatformInfo*> availablePlatforms;
+            auto availablePlatforms = new std::vector<PlatformInfo *>;
             for (auto host : computationHosts) {
                 auto currentPlatforms = host->queryPlatform();
                 for (auto available : currentPlatforms) {
-                    availablePlatforms.push_back(available);
+                    availablePlatforms->push_back(available);
                     logger->debug("Platform {} still available", available->getDescription());
                 }
             }
-            mainWindowHandler->updatePlatforms(availablePlatforms);
+
+            std::shared_ptr<std::vector<PlatformInfo *>> updatedPlatforms(availablePlatforms);
+            mainWindowHandler->updatePlatforms(updatedPlatforms);
         } catch (...) {
             //If its not a communication exception there is nothing to handle
         }

@@ -52,12 +52,9 @@ StartWidget::StartWidget(std::vector<NetInfo *> &neuralNets, std::vector<Platfor
 
     progressBar = new QProgressBar(this);
     progressBar->hide();
-    cancelProgressButton = new QPushButton("Cancel", this);
-    cancelProgressButton->hide();
 
     auto layout = new QHBoxLayout();
-    layout->addWidget(progressBar, 90);
-    layout->addWidget(cancelProgressButton);
+    layout->addWidget(progressBar);
 
     ui->buttonsLayout->addLayout(layout);
 }
@@ -338,18 +335,14 @@ void StartWidget::displayProgress() {
 
     progressBar->setRange(0, 0);
     progressBar->show();
-    cancelProgressButton->show();
 
     disableWidgets(true);
-
-    //TODO add cancel button to the progressbar.
 }
 
 void StartWidget::resetProgressDisplay() {
     progressBar->setMaximum(100);
     progressBar->setValue(100);
     progressBar->hide();
-    cancelProgressButton->hide();
 
     ui->classificationQPushButton->show();
     ui->selectInputImagesQPushButton->show();
@@ -482,8 +475,3 @@ QCheckBox *StartWidget::getAggregateResultsQCheckBox() {
 QMap<QPair<QImage *, QString>, QHBoxLayout *> *StartWidget::getImagesMap() {
     return &images;
 }
-
-QPushButton *StartWidget::getCancelProgressButton() const {
-    return cancelProgressButton;
-};
-

@@ -73,8 +73,6 @@ private:
     std::map<QString, PlatformInfo *> platformMap; /*!< used to return the selected platform by using the displayed QString */
     QString directoryPath = QDir::homePath(); /*!< The last opened directory path of the QFileDialog */
     QProgressBar* progressBar = nullptr;
-    QPushButton* cancelProgressButton = nullptr;
-    bool isOneSelected = false;
     const int OFFSET_FILEPATH_DISPLAY = 20;
 
 private:
@@ -210,12 +208,6 @@ public:
      * @return the image map
      */
     QMap<QPair<QImage *, QString>, QHBoxLayout *> *getImagesMap();
-
-    /**
-     * @brief getCancelProgressButton returns a pointer to the QPushButton to cancel a classification
-     * @return the cancel QPushButton pointer
-     */
-    QPushButton *getCancelProgressButton() const;
 
 public slots:
 
