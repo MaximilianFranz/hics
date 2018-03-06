@@ -27,6 +27,7 @@
 #include <QtTest/QSignalSpy>
 #include <QtWidgets/QLabel>
 #include <iostream>
+#include <memory>
 #include "MainWindowHandlerTest.h"
 
 void MainWindowHandlerTest::initTestCase() {
@@ -169,8 +170,12 @@ void MainWindowHandlerTest::testDetailButton(){
 void MainWindowHandlerTest::testUpdatePlatforms() {
     QCOMPARE(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->count(), 3);
 
-    platforms.erase(platforms.begin());
-    mainWindowHandler->updatePlatforms(platforms);
-    
+    auto newPlatforms = new std::vector<PlatformInfo *>;
+    newPlatforms->push_back(platforms[0]);
+    newPlatforms->push_back(platforms[1]);
+    std::shared_ptr<std::vector<PlatformInfo *>> pointer(newPlatforms);
+    mainWindowHandler->updatePlatforms(pointer);
+    mainWindowHandler->processClassificationResult(nullptr);
+
     QCOMPARE(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->count(), 2);
 }

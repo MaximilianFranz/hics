@@ -26,8 +26,9 @@
 
 #pragma once
 
-#include <list>
 #include <QObject>
+#include <list>
+#include <memory>
 #include <NetInfo.h>
 #include <PlatformInfo.h>
 #include <OperationMode.h>
@@ -78,6 +79,7 @@ private:
     WorkerThread *workerThread = nullptr;
 
     std::exception_ptr exceptionptr = nullptr;
+    std::shared_ptr<std::vector<PlatformInfo *>> updatedPlatforms = nullptr;
     bool cancelClassification = false;
 
 private:
@@ -112,7 +114,7 @@ public:
     * @brief updatePlatforms refreshes the currently displayed platforms in the GUI
     * @param platforms are the platforms that shall be displayed in the GUI
     */
-    void updatePlatforms(std::vector<PlatformInfo *> platforms);
+    void updatePlatforms(std::shared_ptr<std::vector<PlatformInfo *>> platforms);
 
     /**
      * @brief getClassificationRequestState returns the classificationRequest state attribute.

@@ -111,6 +111,10 @@ void MainWindowHandler::processClassificationResult(ClassificationResult *classi
             //This case should never occur, but for safety measures the GUI should be resetted
             startWidget->resetProgressDisplay();
         }
+
+        if(updatedPlatforms){
+            startWidget->updatePlatforms(*(updatedPlatforms.get()));
+        }
     }
 
     cancelClassification = false;
@@ -174,8 +178,8 @@ MainWindowHandler::~MainWindowHandler() {
     delete classificationRequestState;
 }
 
-void MainWindowHandler::updatePlatforms(std::vector<PlatformInfo *> platforms) {
-    startWidget->updatePlatforms(platforms);
+void MainWindowHandler::updatePlatforms(std::shared_ptr<std::vector<PlatformInfo *>> platforms) {
+    updatedPlatforms = platforms;
 }
 
 bool MainWindowHandler::isClassificationAborted() {
