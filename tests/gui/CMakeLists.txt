@@ -1,2 +1,2 @@
 add_subdirectory(qttest)
-#add_subdirectory(catchtest)
+add_subdirectory(catchtest)
