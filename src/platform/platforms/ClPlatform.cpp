@@ -31,14 +31,14 @@
 #include <layerfunctions/CpuFullyConnectedFunction.h>
 #include <layerfunctions/pooling/CpuMaxPoolingFunction.h>
 #include <layerfunctions/activation/CpuReLUFunction.h>
-#include <layerfunctions/convolution/FpgaConvolutionFunction.h>
+#include <layerfunctions/convolution/ClConvolutionFunction.h>
 
 #include "AOCL_Utils.h"
 
-#include "FpgaPlatform.h"
+#include "ClPlatform.h"
 
 
-ActivationFunction *FpgaPlatform::createActivationFunction(LayerType type) {
+ActivationFunction *ClPlatform::createActivationFunction(LayerType type) {
     switch (type) {
         case LayerType::ACTIVATION_RELU:
             return new CpuReLUFunction();
@@ -47,14 +47,14 @@ ActivationFunction *FpgaPlatform::createActivationFunction(LayerType type) {
     }
 }
 
-ConvolutionFunction *FpgaPlatform::createConvolutionFunction() {
+ConvolutionFunction *ClPlatform::createConvolutionFunction() {
     if (c == nullptr) {
-        c = new FpgaConvolutionFunction(context, device);
+        c = new ClConvolutionFunction(context, device);
     }
     return c;
 }
 
-LossFunction *FpgaPlatform::createLossFunction(LayerType type) {
+LossFunction *ClPlatform::createLossFunction(LayerType type) {
     switch (type) {
         case LayerType::LOSS_SOFTMAX:
             return new CpuSoftMaxLossFunction();
@@ -63,7 +63,7 @@ LossFunction *FpgaPlatform::createLossFunction(LayerType type) {
     }
 }
 
-PoolingFunction *FpgaPlatform::createPoolingFunction(LayerType type) {
+PoolingFunction *ClPlatform::createPoolingFunction(LayerType type) {
     switch (type) {
         case LayerType::POOLING_MAX:
             return new CpuMaxPoolingFunction();
@@ -72,7 +72,7 @@ PoolingFunction *FpgaPlatform::createPoolingFunction(LayerType type) {
     }
 }
 
-ResponseNormalizationFunction *FpgaPlatform::createResponseNormalizationFunction(LayerType type) {
+ResponseNormalizationFunction *ClPlatform::createResponseNormalizationFunction(LayerType type) {
     switch (type) {
         case LayerType::NORMALIZATION_LOCALRESPONSE:
             return new CpuResponseNormalizationFunction();
@@ -81,19 +81,19 @@ ResponseNormalizationFunction *FpgaPlatform::createResponseNormalizationFunction
     }
 }
 
-FullyConnectedFunction *FpgaPlatform::createFullyConnectedFunction() {
+FullyConnectedFunction *ClPlatform::createFullyConnectedFunction() {
     return new CpuFullyConnectedFunction();
 }
 
-PlatformInfo &FpgaPlatform::getPlatformInfo() {
+PlatformInfo &ClPlatform::getPlatformInfo() {
     return this->platformInfo;
 }
 
-FpgaPlatform::FpgaPlatform(PlatformInfo &info) : Platform(info) {
+ClPlatform::ClPlatform(PlatformInfo &info) : Platform(info) {
     init();
 }
 
-void FpgaPlatform::init() {
+void ClPlatform::init() {
 
     cl_int status = 0;
     cl_platform_id platform = 0;
@@ -102,15 +102,20 @@ void FpgaPlatform::init() {
     aocl_utils::checkError(status, "Query for platform ids failed");
 
     device = 0;
-    // TODO: Switch filter platforms, error checking
-    status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 1, &device, NULL);
+    if(platformInfo.getType() == PlatformType::GPU) {
+        status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
+    } else if (platformInfo.getType() == PlatformType::CL_CPU) {
+        status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, NULL);
+    } else {
+        // TODO: throw exception?
+    }
     aocl_utils::checkError(status, "Query for device ids failed");
 
     context = clCreateContext(NULL, 1, &device, NULL, NULL, &status);
     aocl_utils::checkError(status, "Failed to create context");
 }
 
-FpgaPlatform::~FpgaPlatform() {
+ClPlatform::~ClPlatform() {
     clReleaseContext(context);
 }
 

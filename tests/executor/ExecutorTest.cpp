@@ -210,17 +210,22 @@ SCENARIO("Testing Executor Module") {
         std::vector<PlatformInfo*> infos = executor.queryPlatform();
 
         PlatformInfo* cpu = nullptr;
-        PlatformInfo* fpga = nullptr;
+        PlatformInfo* alt = nullptr;
 
-        // Specify CPU and FPGA Platform out of the available platforms
+        // Specify CPU and FPGA or CL_CPU Platform out of the available platforms
         for (auto p : infos) {
             if (p->getType() == PlatformType::CPU )
                 cpu = p;
+#ifdef ALTERA
             if (p->getType() == PlatformType::FPGA)
-                fpga = p;
+                alt = p;
+#else
+            if (p->getType() == PlatformType::CL_CPU)
+                alt = p;
+#endif
         }
 
-        REQUIRE(fpga != nullptr );
+        REQUIRE(alt != nullptr );
         REQUIRE(cpu != nullptr );
 
         SECTION("EnergyEfficient Mode with all platforms") {
@@ -242,7 +247,7 @@ SCENARIO("Testing Executor Module") {
             std::vector<ImageResult*> results = executor.classify({images.front()},
                                                                   alexnetinfo,
                                                                   OperationMode::EnergyEfficient,
-                                                                  {fpga});
+                                                                  {alt});
 
             // Distribution to only one platform
             REQUIRE(results.front()->getResults().front().first == "weasel");

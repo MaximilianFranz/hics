@@ -26,38 +26,35 @@
 
 #pragma once
 
-#include <string>
+#ifdef __APPLE__
+#include <OpenCL/opencl.h>
+#else
+#include <CL/opencl.h>
+#endif
 
+#include "ConvolutionFunction.h"
 
-#include <PlatformInfo.h>
-
-#include <layerfunctions/pooling/PoolingFunction.h>
-#include <layerfunctions/normalization/ResponseNormalizationFunction.h>
-#include <layerfunctions/activation/ActivationFunction.h>
-#include <layerfunctions/convolution/ConvolutionFunction.h>
-#include <layerfunctions/loss/LossFunction.h>
-#include <layerfunctions/FullyConnectedFunction.h>
-#include <layers/LayerType.h>
-#include "PlatformType.h"
-
-class Platform {
-protected:
-    Platform(PlatformInfo &info) : platformInfo(info) {};
-
-    PlatformInfo platformInfo;
+class ClConvolutionFunction : public ConvolutionFunction {
+private:
+    cl_context context;
+    cl_device_id device;
+    cl_command_queue queue;
+    cl_program program;
+    cl_kernel kernel;
 
 public:
-    virtual ActivationFunction *createActivationFunction(LayerType type) = 0;
+    void execute(const DataWrapper &input,
+                 DataWrapper &output,
+                 const WeightWrapper &weights,
+                 int stride,
+                 int filterSize,
+                 int numFilters,
+                 int zeroPadding) override;
 
-    virtual ConvolutionFunction *createConvolutionFunction() = 0;
+    ClConvolutionFunction(cl_context c, cl_device_id d);
 
-    virtual LossFunction *createLossFunction(LayerType type) = 0;
+    ~ClConvolutionFunction();
 
-    virtual PoolingFunction *createPoolingFunction(LayerType type) = 0;
-
-    virtual ResponseNormalizationFunction *createResponseNormalizationFunction(LayerType type) = 0;
-
-    virtual FullyConnectedFunction *createFullyConnectedFunction() = 0;
-
-    virtual PlatformInfo &getPlatformInfo() = 0;
 };
+
+
