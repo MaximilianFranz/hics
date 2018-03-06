@@ -44,9 +44,13 @@ void LayerMaker::validateInputDims(std::vector<int> inputDims,
     }
 }
 
-void LayerMaker::validateNumGroups(int numGroups) {
 
+void LayerMaker::validateNumGroups(LayerConstructionParams lcp) {
+    if (lcp.numGroups == 0) {
+        throw IllegalArgumentException("Number of groups should not be zero for " + lcp.type + " layer.");
+    }
 }
+
 void LayerMaker::validateWeights(WeightWrapper *weights,
                                  std::string layerName) {
     if (weights == nullptr) {
@@ -60,6 +64,7 @@ void LayerMaker::validateData(LayerConstructionParams lcp,
     if (lcp.type == "conv") {
         validateInputDims(inputDims, lcp.type);
         validateKernels(lcp);
+        validateNumGroups(lcp);
         validateWeights(weights, lcp.type);
     } else if (lcp.type == "fullyConnected"){
         validateInputDims(inputDims, lcp.type);

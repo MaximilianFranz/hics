@@ -55,7 +55,7 @@ private:
      */
     void validateInputDims(std::vector<int> inputDims, std::string layerName);
 
-    void LayerMaker::validateNumGroups(int numGroups);
+    void validateNumGroups(LayerConstructionParams lcp);
 
     /**
      * Checks if the weights are valid.

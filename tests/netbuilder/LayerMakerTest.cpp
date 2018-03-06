@@ -28,6 +28,7 @@
 #include <iostream>
 #include <loader/JSONModelLoader.h>
 #include "LayerMakerTest.h"
+#include <loader/weightloader/AlexNetWeightLoader.h>
 
 
 SCENARIO("Testing construction of Layers" , "[layermaker]") {
@@ -49,9 +50,11 @@ SCENARIO("Testing construction of Layers" , "[layermaker]") {
     }
 
     SECTION("ConvolutionLayer1") {
+        AlexNetWeightLoader loader(RES_DIR "weights/alexnet_weights.h5");
+        WeightWrapper *weights = loader.getWeights(WeightLoader::LayerIdentifier(0));
         LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(1);
         REQUIRE(lcp.type == "conv");
-        ConvolutionLayer* conv = l.createConvLayer(lcp, v, NULL);
+        ConvolutionLayer* conv = l.createConvLayer(lcp, v, weights);
         REQUIRE(conv->getInputDimensions() == v);
         REQUIRE(conv->getFilterSize() == 11);
         REQUIRE(conv->getStride() == 4);
@@ -61,9 +64,11 @@ SCENARIO("Testing construction of Layers" , "[layermaker]") {
     }
 
     SECTION("ConvolutionLayer2") {
+        AlexNetWeightLoader loader(RES_DIR "weights/alexnet_weights.h5");
+        WeightWrapper *weights = loader.getWeights(WeightLoader::LayerIdentifier(1));
         LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(5);
         REQUIRE(lcp.type == "conv");
-        ConvolutionLayer* conv = l.createConvLayer(lcp, v, NULL);
+        ConvolutionLayer* conv = l.createConvLayer(lcp, v, weights);
         REQUIRE(conv->getNumGroups() == 2);
     }
 
