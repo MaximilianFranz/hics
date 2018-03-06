@@ -28,7 +28,7 @@
 
 #include <QtTest/QTest>
 #include <QObject>
-#include <MultiTests.hh>
+
 class MainWindowHandler;
 class WorkerThread;
 
@@ -49,5 +49,3 @@ private slots:
     void testRun();
 
 };
-
-TEST_DECLARE(WorkerThreadTest);

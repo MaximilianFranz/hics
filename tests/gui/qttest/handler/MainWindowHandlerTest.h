@@ -28,7 +28,6 @@
 
 #include <QtTest/QTest>
 #include <QObject>
-#include <MultiTests.hh>
 #include <OperationMode.h>
 #include <PlatformInfo.h>
 #include <NetInfo.h>
@@ -73,5 +72,3 @@ private slots:
     void testFalseClassification();
 
 };
-
-TEST_DECLARE(MainWindowHandlerTest);
