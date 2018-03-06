@@ -162,10 +162,10 @@ FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
 
     // TODO: Remove this ifdef once we have GPU platform
 #ifdef ALTERA
-    std::string binary_file = aocl_utils::getBoardBinaryFile("gemm1", device);
+    std::string binary_file = aocl_utils::getBoardBinaryFile("gemm1_rowmajor", device);
     program = aocl_utils::createProgramFromBinary(context, binary_file.c_str(), &device, 1);
 #else
-    program = CreateProgram(LoadKernel(RES_DIR "kernels/gemm1.cl"), context);
+    program = CreateProgram(LoadKernel(RES_DIR "kernels/gemm1_rowmajor.cl"), context);
 #endif
 
 //    char cmdline[1024];
@@ -183,7 +183,7 @@ FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
     if (logSize > 10) { printf(">>> Compiler message: %s\n", messages); }
     free(messages);
 
-    kernel = clCreateKernel(program, "myGEMM1", NULL);
+    kernel = clCreateKernel(program, "GEMM1", NULL);
 
 }
 

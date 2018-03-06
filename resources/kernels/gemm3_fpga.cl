@@ -1,9 +1,18 @@
+// We can't define those parameters dynamically as we use
+// offline compilation for the FPGA.
+// Make sure the parameters match what's used in FpgaConvolutionFunction.
+#define TS 32
+#define WPT 8
+#define RTS TS/WPT
+
+__attribute__((reqd_work_group_size(TS, TS/WPT, 1)))
+
 // Increased the amount of work-per-thread by a factor WPT
 __kernel void GEMM3(const int M, const int N, const int K,
-                    const __global float* A,
-                    const __global float* B,
+                    const __global float* restrict A,
+                    const __global float* restrict B,
                     __global float* C,
-                    const __global float* D) {
+                    const __global float* restrict D) {
 
     // Thread identifiers
     const int row = get_local_id(0); // Local row ID (max: TS)
