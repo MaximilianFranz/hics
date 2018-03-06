@@ -31,7 +31,7 @@
 
 class JSONModelLoader: public ModelLoader {
 public:
-    JSONModelLoader(string path);
+    explicit JSONModelLoader(string path);
     void init();
     string getNetWorkName() override;
     string getNetWorkID() override;
