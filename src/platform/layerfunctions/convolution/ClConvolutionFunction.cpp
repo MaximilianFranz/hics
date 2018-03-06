@@ -32,7 +32,7 @@
 #include "ClConvolutionFunction.h"
 #include "util/im2col.h"
 
-// Threadblock sizes (e.g. for kernels myGEMM1 or myGEMM2)
+// Threadblock sizes (e.g. for kernels GEMM1 or GEMM2)
 #define TS 32
 
 // RTS = TS / WPT
@@ -159,12 +159,12 @@ ClConvolutionFunction::ClConvolutionFunction(cl_context c, cl_device_id d)
     queue = clCreateCommandQueue(context, device, 0, &status);
     aocl_utils::checkError(status, "Failed to create command queue");
 
-    program = CreateProgram(LoadKernel(RES_DIR "kernels/gemm1_rowmajor.cl"), context);
+    program = CreateProgram(LoadKernel(RES_DIR "kernels/gemm3.cl"), context);
 
-//    char cmdline[1024];
-//    snprintf(cmdline, 1024, "-DTS=%d -DWPT=%d -DRTS=%d", TS, WPT, TS/WPT);
-//    clBuildProgram(program, 0, NULL, cmdline, NULL, NULL);
-    status = clBuildProgram(program, 0, NULL, "", NULL, NULL);
+    char cmdline[1024];
+    snprintf(cmdline, 1024, "-DTS=%d -DWPT=%d -DRTS=%d", TS, WPT, TS/WPT);
+    clBuildProgram(program, 0, NULL, cmdline, NULL, NULL);
+//    status = clBuildProgram(program, 0, NULL, "", NULL, NULL);
     aocl_utils::checkError(status, "Failed to build program");
 
     // Check for compilation errors
@@ -176,19 +176,19 @@ ClConvolutionFunction::ClConvolutionFunction(cl_context c, cl_device_id d)
     if (logSize > 10) { printf(">>> Compiler message: %s\n", messages); }
     free(messages);
 
-    kernel = clCreateKernel(program, "GEMM1", NULL);
+    kernel = clCreateKernel(program, "GEMM3", NULL);
 
 }
 
 
 
 void ClConvolutionFunction::execute(const DataWrapper &input,
-                                      DataWrapper &output,
-                                      const WeightWrapper &weights,
-                                      int stride,
-                                      int filterSize,
-                                      int numFilters,
-                                      int zeroPadding) {
+                                    DataWrapper &output,
+                                    const WeightWrapper &weights,
+                                    int stride,
+                                    int filterSize,
+                                    int numFilters,
+                                    int zeroPadding) {
 
     int numPlanes = input.getDimensions()[0];
     int numRows = input.getDimensions()[1];
@@ -218,21 +218,38 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
                        stride,
                        patch_result.data());
 
-
-    float* A = we.data();
-    float* B = patch_result.data();
-    float *C = output.getDataArray();
-
-    // Bias
-    const float* D = weights.getBiasArray();
-
-
-
+    // Pad matrices and convert to column major format
     int K = weights_columns;
     int M = number_of_kernels;
     int N = patch_columns;
 
+    int paddedK = 0;
+    int paddedM = 0;
+    int paddedN = 0;
 
+    float *tempA = helper::add_padding(TS, K, M, we.data(), &paddedK, &paddedM);
+    float *A = helper::transpose(paddedK, paddedM, tempA);
+    delete tempA;
+
+    float *tempB = helper::add_padding(TS, N, K, patch_result.data(), &paddedN, &paddedK);
+    float *B = helper::transpose(paddedN, paddedK, tempB);
+    delete tempB;
+
+    float *C = new float[paddedM*paddedN];
+
+    // Bias
+    float *D = new float[paddedM];
+    memset(D, 0, paddedM*sizeof(float));
+    memcpy(D, weights.getBiasArray(), number_of_kernels*sizeof(float));
+
+
+    // Remember unpadded values, we'll need them again later for the unpadding
+    int unpaddedN = N;
+    int unpaddedM = M;
+
+    K = paddedK; //weights_columns;
+    M = paddedM; //number_of_kernels;
+    N = paddedN; //patch_columns;
 
     // Prepare OpenCL memory objects
     cl_mem bufA = clCreateBuffer(context, CL_MEM_READ_ONLY,  M*K*sizeof(float), NULL, NULL);
@@ -247,7 +264,7 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
     clEnqueueWriteBuffer(queue, bufD, CL_TRUE, 0, M*sizeof(float), D, 0, NULL, NULL);
 
 
-    // Configure the myGEMM kernel and set its arguments
+    // Configure the GEMM kernel and set its arguments
     clSetKernelArg(kernel, 0, sizeof(int), (void*)&M);
     clSetKernelArg(kernel, 1, sizeof(int), (void*)&N);
     clSetKernelArg(kernel, 2, sizeof(int), (void*)&K);
@@ -256,10 +273,10 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
     clSetKernelArg(kernel, 5, sizeof(cl_mem), (void*)&bufC);
     clSetKernelArg(kernel, 6, sizeof(cl_mem), (void*)&bufD);
 
-//    const size_t local[2] = { TS, TS };
-    const size_t global[2] = { M, N };
+    const size_t local[2] = { TS, TS/WPT };
+    const size_t global[2] = { M, N/WPT };
     cl_event event;
-    cl_int result = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, global, NULL, 0, NULL, &event);
+    cl_int result = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, global, local, 0, NULL, &event);
     CheckError(result);
 
     // Wait for calculations to be finished
@@ -267,6 +284,13 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
 
     // Copy the output matrix C back to the CPU memory
     clEnqueueReadBuffer(queue, bufC, CL_TRUE, 0, M*N*sizeof(float), C, 0, NULL, NULL);
+
+    // Remove padding and transform it back to row major format
+//    float *unpaddedC = helper::remove_padding(TS, unpaddedN, unpaddedM, C); // TODO: Why is this not necessary?
+    float *unpaddedC = helper::transpose(unpaddedM, unpaddedN, C);
+    memcpy(output.getDataArray(), unpaddedC, unpaddedN*unpaddedM*sizeof(float));
+
+    delete [] unpaddedC;
 
     // Free the OpenCL memory objects
     clReleaseMemObject(bufA);
@@ -278,10 +302,10 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
     clReleaseEvent(event);
 
     // Free the host memory objects
-//    free(A);
-//    free(B);
-//    free(C);
-
+    delete [] A;
+    delete [] B;
+    delete [] C;
+    delete [] D;
 }
 
 ClConvolutionFunction::~ClConvolutionFunction() {
