@@ -55,6 +55,11 @@ private:
      */
     void validateInputDims(std::vector<int> inputDims, std::string layerName);
 
+    /**
+     * Checks if the number of groups is valid.
+     *
+     * @param lcp an object of LayerConstructionParams the number of filters should be checked of
+     */
     void validateNumGroups(LayerConstructionParams lcp);
 
     /**
