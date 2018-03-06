@@ -61,11 +61,16 @@ enable_testing()
 
 add_subdirectory(tests)
 
+option(GUI_COVERAGE "Run Coverage for GUI." OFF)
+
+if (NOT GUI_COVERAGE)
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
     include(CodeCoverage)
     set(COVERAGE_EXCLUDES
             '/usr/*'
             '${CMAKE_SOURCE_DIR}/tests/*'
+            '${CMAKE_SOURCE_DIR}/src/gui/handler/*'
+            '${CMAKE_SOURCE_DIR}/src/gui/WorkerThread.*'
             '${CMAKE_SOURCE_DIR}/thirdparty/*'
             '${CMAKE_SOURCE_DIR}/catch/*'
             '${CMAKE_SOURCE_DIR}/cmake-build-*'
@@ -74,3 +79,25 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
 
     APPEND_COVERAGE_COMPILER_FLAGS()
 endif() #CMAKE_BUILD_TYPE STREQUAL "Coverage"
+else()
+if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+    include(CodeCoverage)
+    set(COVERAGE_EXCLUDES
+            '/usr/*'
+            '${CMAKE_SOURCE_DIR}/tests/*'
+            '${CMAKE_SOURCE_DIR}/src/communicator/*'
+            '${CMAKE_SOURCE_DIR}/src/exceptions/*'
+            '${CMAKE_SOURCE_DIR}/src/executor/*'
+            '${CMAKE_SOURCE_DIR}/src/manager/*'
+            '${CMAKE_SOURCE_DIR}/src/netbuilder/*'
+            '${CMAKE_SOURCE_DIR}/src/neuralnet/*'
+            '${CMAKE_SOURCE_DIR}/src/platform/*'
+            '${CMAKE_SOURCE_DIR}/thirdparty/*'
+            '${CMAKE_SOURCE_DIR}/catch/*'
+            '${CMAKE_SOURCE_DIR}/cmake-build-*'
+            '${CMAKE_BINARY_DIR}/*')
+    setup_target_for_coverage(NAME test_coverage EXECUTABLE guitestsQt)
+
+    APPEND_COVERAGE_COMPILER_FLAGS()
+endif() #CMAKE_BUILD_TYPE STREQUAL "Coverage"
+endif()

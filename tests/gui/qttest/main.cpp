@@ -45,5 +45,5 @@ int main(int argc, char *argv[])
     QTest::qExec(&test3, argc, argv);
     QTest::qExec(&test4, argc, argv);
 
-    return a.exec();
+    return 0;
 }
