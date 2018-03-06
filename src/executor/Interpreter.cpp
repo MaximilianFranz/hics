@@ -49,7 +49,7 @@ ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *original
         }
         else {
             for (int i = 0; i < output->getNumElements(); i++) {
-                // dont insert label, because non exist
+                // don't insert label, because not existing
                 results.emplace_back(std::pair<std::string, float>("", sortOut[i]));
             }
         }
@@ -78,7 +78,8 @@ int Interpreter::getIndexOf(float value, std::vector<float> output) {
             return i;
         }
     }
-    return 0; //Unreachable in this usage, since method is private this case cannot be tested.
+    return 0;
+    //Unreachable in this usage, since method is private this case cannot be tested.
 }
 
 const bool Interpreter::compareDesc(float a, float b) {

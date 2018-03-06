@@ -47,6 +47,11 @@ public:
      */
     static const int TOP_X = 5; //By convention from the ILSRVC we use 5
 
+    /**
+     * Constructor passing the required labelMap
+     *
+     * @param labelMap containing labels used to interpret results
+     */
     Interpreter(std::map<int, std::string> &labelMap);
 
     /**

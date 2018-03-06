@@ -97,7 +97,7 @@ DataWrapper *Executor::getImageData(ImageWrapper *imageWrapper) {
 
 void Executor::runDataForward(DataWrapper *data) {
     SimpleNetIterator* it = net->createIterator();
-    // SET INPUT TO FIRST LAYER EXPLICITLY!
+    // set input to first layer explicitly
     it->getElement()->setInputWrapper(data);
     do {
         Layer *layer = it->getElement();
@@ -106,7 +106,7 @@ void Executor::runDataForward(DataWrapper *data) {
         it->next();
     } while (it->hasNext());
 
-    // free unnecessary memory
+    // free memory
     delete data;
 }
 

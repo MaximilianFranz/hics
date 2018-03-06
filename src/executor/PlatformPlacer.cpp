@@ -77,7 +77,8 @@ PlatformInfo* PlatformPlacer::getDefaultPlatform() {
     if (! currentPlatforms.empty()) {
         for (auto pl : currentPlatforms) {
             if(pl->getType() == PlatformType::CPU) {
-                return pl; //We assume for now that there always is a CPU platform!
+                //We assume for now that there always is a CPU platform!
+                return pl;
             }
         }
         // If no CPU found, choose the first as default
@@ -88,7 +89,6 @@ PlatformInfo* PlatformPlacer::getDefaultPlatform() {
     }
 }
 
-//TODO: can we give a layer a attribute that specifies it's difficutly?
 void PlatformPlacer::placeNetWith(PlatformInfo *perfomanceInfo, PlatformInfo *fallbackInfo) {
     float perfomanceDifficulty = 0;
     float  fallbackDifficulty = 0;
@@ -139,7 +139,6 @@ void PlatformPlacer::placeNetWith(PlatformInfo *perfomanceInfo, PlatformInfo *fa
 }
 
 
-//TODO: CHANGE ALL placeXYMode() to use PlatformInfo and get respective platforms from PfManager
 void PlatformPlacer::placeLowPower() {
     PlatformInfo *fallback = getDefaultPlatform();
     PlatformInfo *performance = fallback;

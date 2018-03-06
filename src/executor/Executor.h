@@ -138,7 +138,16 @@ public:
      */
     std::vector<NetInfo*> queryNets() override;
 
+    /**
+     *  Getter for the name attribute
+     *
+     * @return name of this computation host / executor
+     */
     std::string getName() override;
 
+    /**
+     * Destructor to free memory when deleted
+     *
+     */
     virtual ~Executor();
 };
