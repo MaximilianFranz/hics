@@ -11,7 +11,7 @@ __attribute__((reqd_work_group_size(TS, TS/WPT, 1)))
 __kernel void GEMM3(const int M, const int N, const int K,
                     const __global float* restrict A,
                     const __global float* restrict B,
-                    __global float* C,
+                    __global float* restrict C,
                     const __global float* restrict D) {
 
     // Thread identifiers

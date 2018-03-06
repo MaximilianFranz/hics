@@ -10,7 +10,7 @@ __attribute__((reqd_work_group_size(TS/WIDTH, TS, 1)))
 __kernel void GEMM4(const int M, const int N, const int K,
                     const __global float4* restrict A,
                     const __global float4* restrict B,
-                    __global float4* C,
+                    __global float4* restrict C,
                     const __global float4* restrict D) {
 
     // Thread identifiers
