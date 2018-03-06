@@ -30,7 +30,7 @@
 #include "AOCL_Utils.h"
 
 #include "ClConvolutionFunction.h"
-#include "util/im2col.h"
+#include "Helper.h"
 
 // Threadblock sizes (e.g. for kernels GEMM1 or GEMM2)
 #define TS 32

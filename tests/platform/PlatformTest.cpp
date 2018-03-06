@@ -40,7 +40,7 @@
 #include <loader/weightloader/AlexNetWeightLoader.h>
 
 #include <FileHelper.h>
-#include <util/im2col.h>
+#include <Helper.h>
 
 #include "PlatformTest.h"
 
