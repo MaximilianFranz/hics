@@ -266,10 +266,12 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     clEnqueueReadBuffer(queue, bufC, CL_TRUE, 0, M*N*sizeof(float), C, 0, NULL, NULL);
 
     // Remove padding and transform it back to row major format
-//    float *unpaddedC = helper::remove_padding(TS, unpaddedN, unpaddedM, C); // TODO: Why is this not necessary?
-    float *unpaddedC = helper::transpose(unpaddedM, unpaddedN, C);
+    float *transC = helper::transpose(M, N, C);
+    float *unpaddedC = helper::remove_padding(TS, unpaddedN, unpaddedM, transC);
+
     memcpy(output.getDataArray(), unpaddedC, unpaddedN*unpaddedM*sizeof(float));
 
+    delete [] transC;
     delete [] unpaddedC;
 
     // Free the OpenCL memory objects
