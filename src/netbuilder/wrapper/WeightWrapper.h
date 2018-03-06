@@ -50,20 +50,6 @@ public:
 
     virtual ~WeightWrapper();
 
-    /** Cover method for readability and semantics.
-     *
-     * @return
-     */
-    std::vector<float> getWeights();
-    /**
-     * \brief Cover method for readability and semantics. Calls the getDataArray().
-     *
-     * This is passed by reference from the vector and is mutable.
-     *
-     * @return pointer to the raw weight array of this WeightWrapper.
-     */
-    float* getWeightArray();
-
     /**
      *\brief Get a pointer to the raw float array containing the bias of this wrapper.
      *
@@ -79,8 +65,6 @@ public:
      * @return the vector with the bias of this WeightWrapper.
      */
     std::vector<float> getBias();
-
-    const std::vector<float> getBias() const;
 
     const std::vector<int> &getBiasDimension() const;
 
