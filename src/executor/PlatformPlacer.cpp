@@ -47,7 +47,6 @@ void PlatformPlacer::placeComputations(NeuralNet *net, OperationMode mode, std::
 
     this->net = net;
     this->currentPlatforms = std::move(platforms);
-    //TODO: Get only platforms previously selected!
 
     switch (mode) {
         case OperationMode::EnergyEfficient : placeEnergyEfficient();
@@ -129,6 +128,14 @@ void PlatformPlacer::placeNetWith(PlatformInfo *perfomanceInfo, PlatformInfo *fa
         compDistribution.emplace_back(std::pair<PlatformInfo *, float>(perfomanceInfo, 1));
     }
 
+    // Add platforms that have not been used for completeness of the details tab.
+    for (auto p : currentPlatforms) {
+        // Platform selected but not used for placement
+        if (p->getPlatformId() != perfomanceInfo->getPlatformId()
+            && p->getPlatformId() != fallbackInfo->getPlatformId()) {
+            compDistribution.emplace_back(std::pair<PlatformInfo *, float>(p, 0));
+        }
+    }
 }
 
 
