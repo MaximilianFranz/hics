@@ -71,8 +71,9 @@ Manager::Manager() {
     try {
         // Create basic file logger (not rotated)
         logger = spdlog::rotating_logger_mt("logger", logfilepath, 1024 * 1024 * 5, 3);
-        logger->flush_on(spdlog::level::info);
+        logger->flush_on(spdlog::level::debug);
         logger->info("found log file, logger initialization successful");
+        logger->set_level(spdlog::level::debug);
 
     } catch (const spdlog::spdlog_ex& ex) {
         std::cout << "Log initialization failed: " << ex.what() << std::endl;
@@ -234,15 +235,34 @@ ClassificationResult* Manager::update() {
         return nullptr;
     }
 
+    //check if the classification went wrong
     if (exceptionptr) {
         mainWindowHandler->setExceptionptr(exceptionptr);
 
+        //if a communication exception occured, delete the associated computationHost
         try {
             std::rethrow_exception(exceptionptr);
         } catch (CommunicationException& c) {
             logger->warn("remove remote computation host {} because it failed the classification",
                          c.getFailedHost()->getName());
-            computationHosts.erase(std::find(computationHosts.begin(), computationHosts.end(), c.getFailedHost()));
+            auto failedHost = std::find(computationHosts.begin(), computationHosts.end(), c.getFailedHost());
+            computationHosts.erase(failedHost);
+            for (auto host : computationHosts) {
+                logger->debug("remaining host: {}", host->getName());
+            }
+            logger->debug("remaining hosts size: {}", computationHosts.size());
+
+
+            //Update available platforms
+            std::vector<PlatformInfo*> availablePlatforms;
+            for (auto host : computationHosts) {
+                auto currentPlatforms = host->queryPlatform();
+                for (auto available : currentPlatforms) {
+                    availablePlatforms.push_back(available);
+                    logger->debug("Platform {} still available", available->getDescription());
+                }
+            }
+            mainWindowHandler->updatePlatforms(availablePlatforms);
         } catch (...) {
             //If its not a communication exception there is nothing to handle
         }
