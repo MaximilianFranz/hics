@@ -34,7 +34,8 @@ void LayerMaker::validateKernels(LayerConstructionParams lcp){
     }
 }
 
-void LayerMaker::validateInputDims(std::vector<int> inputDims, std::string layerName) {
+void LayerMaker::validateInputDims(std::vector<int> inputDims,
+                                   std::string layerName) {
     for (int i:inputDims) {
         if (i == 0) {
             throw IllegalArgumentException("The " + std::to_string(i+1)
@@ -43,13 +44,19 @@ void LayerMaker::validateInputDims(std::vector<int> inputDims, std::string layer
     }
 }
 
-void LayerMaker::validateWeights(WeightWrapper *weights, std::string layerName) {
+void LayerMaker::validateNumGroups(int numGroups) {
+
+}
+void LayerMaker::validateWeights(WeightWrapper *weights,
+                                 std::string layerName) {
     if (weights == nullptr) {
         throw IllegalArgumentException("Weights should not be NULL for " + layerName + " layer.");
     }
 }
 
-void LayerMaker::validateData(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper *weights) {
+void LayerMaker::validateData(LayerConstructionParams lcp,
+                              std::vector<int> inputDims,
+                              WeightWrapper *weights) {
     if (lcp.type == "conv") {
         validateInputDims(inputDims, lcp.type);
         validateKernels(lcp);
