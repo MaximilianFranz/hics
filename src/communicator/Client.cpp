@@ -24,6 +24,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <CommunicationException.h>
 #include "Client.h"
 #include "Util.h"
 
@@ -72,8 +73,8 @@ std::vector<ImageResult*> Client::classify(std::vector<ImageWrapper *> images, N
                 results.push_back(Util::messageToImageResult(&(reply.results(i))));
             }
         } else {
-            //TODO: specific excepion
-            throw std::exception();
+            throw CommunicationException(this, "error while classifying, "
+                    "maybe the connection failed during classification?");
         }
     }
 
@@ -119,6 +120,6 @@ std::vector<NetInfo*> Client::queryNets() {
         }
         return nets;
     } else {
-        throw std::exception();
+        throw CommunicationException(this, "could not reach server");
     }
 }

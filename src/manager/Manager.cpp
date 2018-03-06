@@ -29,6 +29,8 @@
 #include <thread>
 #include <fstream>
 #include <ResourceException.h>
+#include <spdlog/spdlog.h>
+#include <CommunicationException.h>
 
 #include "Manager.h"
 #include "PreProcessor.h"
@@ -41,6 +43,10 @@ std::string getHostAdress(std::string hostname);
 
 static std::exception_ptr exceptionptr = nullptr;
 
+static std::shared_ptr<spdlog::logger> logger;
+
+static char logfilepath[] = LOG_FILE_PATH "log.txt";
+
 void runClassification(ComputationHost* host,
                        std::vector<ImageResult*>& allResults,
                        std::vector<ImageWrapper*> img,
@@ -51,8 +57,8 @@ void runClassification(ComputationHost* host,
                        int& allTimes) {
     try {
         allResults = host->classify(std::move(img), std::move(net), mode, std::move(selecedPlatforms));
-    } catch (...) {
-        //TODO: handling
+    } catch (std::exception& e) {
+        logger->warn("classification of host {} failed: {}", host->getName(), e.what());
         exceptionptr = std::current_exception();
     }
     std::chrono::steady_clock::time_point timeAfter = std::chrono::steady_clock::now();
@@ -62,34 +68,57 @@ void runClassification(ComputationHost* host,
 
 Manager::Manager() {
 
-    std::string hostAdress;
     try {
-        hostAdress = getHostAdress("fpga");
-    } catch (ResourceException& r) {
-        //TODO: handling
-    }
-    ComputationHost* client = new Client("fpga", grpc::CreateChannel(
-            hostAdress, grpc::InsecureChannelCredentials()));
+        // Create basic file logger (not rotated)
+        logger = spdlog::rotating_logger_mt("logger", logfilepath, 1024 * 1024 * 5, 3);
+        logger->flush_on(spdlog::level::debug);
+        logger->info("found log file, logger initialization successful");
+        logger->set_level(spdlog::level::debug);
 
+    } catch (const spdlog::spdlog_ex& ex) {
+        std::cout << "Log initialization failed: " << ex.what() << std::endl;
+        exceptionptr = std::current_exception();
+    }
+
+    std::string hostAdress;
+    ComputationHost* client;
+    std::string clientName = "fpga";
     try {
-        client->queryNets();
-        computationHosts.push_back(client);
-    } catch (...) {
-        // If the client doesn't respond, it's most likely offline or not reachable
-        // TODO: make this more dynamic and allow for clients to show up any time
-        delete client;
+        hostAdress = getHostAdress(clientName);
+        client = new Client(clientName, grpc::CreateChannel(
+                hostAdress, grpc::InsecureChannelCredentials()));
+
+        try {
+            client->queryNets();
+            computationHosts.push_back(client);
+        } catch (CommunicationException& c) {
+            logger->warn("host at {} was not reachable, will be deleted", hostAdress);
+            delete client;
+        }
+    } catch (ResourceException& r) {
+        logger->warn("error while reading host adress of host {}: {}. Host will be disabled.",
+                     clientName, r.what());
     }
 
     ComputationHost* executor = new Executor("local");
     computationHosts.push_back(executor);
-   /* ComputationHost* executor1 = new Executor("fpga");
-    computationHosts.push_back(executor1);*/
 }
 
 void Manager::initGUI() {
     std::vector<std::vector<NetInfo*>> allNets;
     for (auto host : computationHosts) {
-        allNets.push_back(host->queryNets());
+        try {
+            allNets.push_back(host->queryNets());
+        } catch (CommunicationException& c) {
+            logger->warn("could not query nets from remote host {}, host will be deleted.",
+                         c.getFailedHost()->getName());
+            //remove failed host
+            computationHosts.erase(std::find(computationHosts.begin(), computationHosts.end(), c.getFailedHost()));
+            exceptionptr = std::current_exception();
+        } catch (ResourceException& r) {
+            logger->critical("error while querying nets: {}. Aborting!", r.what());
+            exceptionptr = std::current_exception();
+        }
     }
 
     auto nets = netIntersection(allNets);
@@ -102,6 +131,15 @@ void Manager::initGUI() {
     std::vector<OperationMode> modes{OperationMode::HighPower, OperationMode::LowPower, OperationMode::EnergyEfficient};
 
     mainWindowHandler = new MainWindowHandler(nets, platforms, modes);
+
+    //Check if exception occured while setting up System
+    if(exceptionptr) {
+        mainWindowHandler->setExceptionptr(exceptionptr);
+
+        //Null exceptionptr for next classification
+        exceptionptr = nullptr;
+    }
+
     mainWindowHandler->attach(this);
 }
 
@@ -143,7 +181,6 @@ ClassificationResult* Manager::update() {
             hostPlatforms.erase(hostPlatforms.begin() + i);
         }
     }
-    //TODO ClassifiationRequest, GUI change Platforms to pointer
 
     std::vector<std::pair<ComputationHost*, int>> hostDistribution =
             HostPlacer::place(availableHosts, (int)processedImages.size(), request->getSelectedOperationMode());
@@ -194,12 +231,41 @@ ClassificationResult* Manager::update() {
         classifyThreads[i].join();
     }
 
-    if(mainWindowHandler->isClassificationAborted()){
+    if (mainWindowHandler->isClassificationAborted()) {
         return nullptr;
     }
 
-    if(exceptionptr) {
+    //check if the classification went wrong
+    if (exceptionptr) {
         mainWindowHandler->setExceptionptr(exceptionptr);
+
+        //if a communication exception occured, delete the associated computationHost
+        try {
+            std::rethrow_exception(exceptionptr);
+        } catch (CommunicationException& c) {
+            logger->warn("remove remote computation host {} because it failed the classification",
+                         c.getFailedHost()->getName());
+            auto failedHost = std::find(computationHosts.begin(), computationHosts.end(), c.getFailedHost());
+            computationHosts.erase(failedHost);
+            for (auto host : computationHosts) {
+                logger->debug("remaining host: {}", host->getName());
+            }
+            logger->debug("remaining hosts size: {}", computationHosts.size());
+
+
+            //Update available platforms
+            std::vector<PlatformInfo*> availablePlatforms;
+            for (auto host : computationHosts) {
+                auto currentPlatforms = host->queryPlatform();
+                for (auto available : currentPlatforms) {
+                    availablePlatforms.push_back(available);
+                    logger->debug("Platform {} still available", available->getDescription());
+                }
+            }
+            mainWindowHandler->updatePlatforms(availablePlatforms);
+        } catch (...) {
+            //If its not a communication exception there is nothing to handle
+        }
 
         //Null exceptionptr for next classification
         exceptionptr = nullptr;

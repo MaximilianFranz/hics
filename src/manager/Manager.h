@@ -28,6 +28,7 @@
 
 
 #include <Executor.h>
+#include <spdlog/logger.h>
 #include "ManagerObserver.h"
 #include "handler/MainWindowHandler.h"
 
