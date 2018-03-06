@@ -36,7 +36,7 @@ public:
     string getNetWorkName() override;
     string getNetWorkID() override;
     int getRequiredDimension() override;
-    string getLayerTypeByIndex(int index) override;
+
     LayerConstructionParams getLayerConstructionParamsByIndex(int index) override;
 
     json getLayerJSON(int index);

@@ -80,8 +80,6 @@ public:
 
     virtual int getRequiredDimension() = 0;
 
-    virtual string getLayerTypeByIndex(int index) = 0;
-
     /**
      * Returns Construction information of a layer
      *
