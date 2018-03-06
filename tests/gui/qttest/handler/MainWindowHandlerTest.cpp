@@ -26,6 +26,7 @@
 
 #include <QtTest/QSignalSpy>
 #include <QtWidgets/QLabel>
+#include <QMessageBox>
 #include <iostream>
 #include <memory>
 #include "MainWindowHandlerTest.h"
@@ -109,10 +110,17 @@ void MainWindowHandlerTest::testConstructor() {
              mainWindowHandler->getStartWidget());
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->widget(1),
              mainWindowHandler->getResultWidget());
+
+    //Opens About Box
+    mainWindowHandler->getMainWindow()->openAboutBox();
 }
 
 void MainWindowHandlerTest::testStartClassification() {
-    QSKIP("testStartClassification works, skipping to avoid QFileSelector popup", SkipSingle);
+    //QSKIP("testStartClassification works, skipping to avoid QFileSelector popup", SkipSingle);
+    QMessageBox box;
+    box.setText("Select one image");
+    box.show();
+
     mainWindowHandler->getStartWidget()->processInputImageButton();
     QTest::keyClick(mainWindowHandler->getStartWidget()->getNeuralNetsQComboBox(), Qt::Key_Down);
     ((QCheckBox*)(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->itemAt(1)->widget()))->setChecked(true);
@@ -178,4 +186,30 @@ void MainWindowHandlerTest::testUpdatePlatforms() {
     mainWindowHandler->processClassificationResult(nullptr);
 
     QCOMPARE(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->count(), 2);
+}
+
+void MainWindowHandlerTest::testFalseClassification() {
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
+    mainWindowHandler->processClassificationResult(nullptr);
+
+    //No Exception has been thrown but a nullptr is the parameter so just the progress screen is resetted.
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
+    std::exception_ptr exceptionptr = nullptr;
+
+    try {
+        throw std::logic_error("Sample error");
+    } catch (std::exception &e) {
+        exceptionptr = std::current_exception();
+    }
+
+    mainWindowHandler->setExceptionptr(exceptionptr);
+    mainWindowHandler->processClassificationResult(nullptr);
+
+    //Should now display an error message
+
+    //Since no real classification has been processed startWidget is still active
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
 }

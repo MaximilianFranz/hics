@@ -86,9 +86,11 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
     set(COVERAGE_EXCLUDES
             '/usr/*'
             '${CMAKE_SOURCE_DIR}/tests/*'
+            '${CMAKE_SOURCE_DIR}/src/main.cpp'
             '${CMAKE_SOURCE_DIR}/src/communicator/*'
             '${CMAKE_SOURCE_DIR}/src/exceptions/*'
             '${CMAKE_SOURCE_DIR}/src/executor/*'
+            '${CMAKE_SOURCE_DIR}/src/gui/MainWindowSubject.h'
             '${CMAKE_SOURCE_DIR}/src/manager/*'
             '${CMAKE_SOURCE_DIR}/src/netbuilder/*'
             '${CMAKE_SOURCE_DIR}/src/neuralnet/*'

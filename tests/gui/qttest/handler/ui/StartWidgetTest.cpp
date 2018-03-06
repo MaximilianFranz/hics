@@ -25,6 +25,7 @@
  */
 
 #include "StartWidgetTest.h"
+#include <QtWidgets/QMessageBox>
 #include <handler/ui/StartWidget.h>
 
 void StartWidgetTest::initTestCase() {
@@ -85,7 +86,11 @@ void StartWidgetTest::testConstructor() {
 }
 
 void StartWidgetTest::testImageFunctions() {
-    QSKIP("Select images works, skip to disable QFileSelector popup", SkipSingle);
+    //QSKIP("Select images works, skip to disable QFileSelector popup", SkipSingle);
+    QMessageBox box;
+    box.setText("Select three images");
+    box.show();
+
     startWidget->processInputImageButton();
     //Select 3 images
     QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 3);
@@ -102,10 +107,32 @@ void StartWidgetTest::testImageFunctions() {
     it.next();
     ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
 
+    it.next();
+    ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
+
+    //2 out of 2 images have been selected then the abort button should deselect all
+    startWidget->processAbortDeletionQPushButton();
+
+    ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(false);
+
     //1 out of 2 images left have been selected so the abort deletion button should select all
     startWidget->processAbortDeletionQPushButton();
     startWidget->processConfirmDeletionButton();
     QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 0);
+}
+
+void StartWidgetTest::testDuplicateSelectedImages() {
+    QMessageBox box;
+    box.setText("Select one image and then the same");
+    box.show();
+
+    startWidget->processInputImageButton();
+    //Select 1 image
+    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 1);
+
+    //Select the same image
+    startWidget->processInputImageButton();
+    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 1);
 }
 
 void StartWidgetTest::testSelectedPlatforms() {
@@ -139,5 +166,3 @@ void StartWidgetTest::testIsAggregated() {
     QTest::mouseClick(startWidget->getAggregateResultsQCheckBox(), Qt::LeftButton);
     QCOMPARE(startWidget->isAggregated(), false);
 }
-
-//QTEST_MAIN(StartWidgetTest)

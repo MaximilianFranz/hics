@@ -51,4 +51,3 @@ private slots:
 
     void testInsertDetails();
 };
-

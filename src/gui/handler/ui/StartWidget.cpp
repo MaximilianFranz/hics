@@ -75,19 +75,8 @@ StartWidget::~StartWidget() {
 void StartWidget::updatePlatforms(std::vector<PlatformInfo *> platforms) {
     std::map<QString, PlatformInfo *>::iterator it;
 
-    //Delete the PlatformInfo objects if they are no longer usedn and then remove everything from the platformsMap to
-    //ensure that the map is empty
+    //Remove everything from the platformsMap to ensure that the map is empty
     for(it = platformMap.begin(); it != platformMap.end(); ++it){
-        bool stillUsed = false;
-        for(PlatformInfo* platform : platforms){
-            if(platform->getPlatformId() == it->second->getPlatformId()){
-                stillUsed = true;
-                break;
-            }
-        }
-        if(!stillUsed){
-            delete it->second;
-        }
         platformMap.erase(it);
     }
 

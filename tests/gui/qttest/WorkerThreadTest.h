@@ -28,27 +28,24 @@
 
 #include <QtTest/QTest>
 #include <QObject>
-#include <handler/ui/ResultWidget.h>
 
-class ResultWidgetTest : public QObject {
+class MainWindowHandler;
+class WorkerThread;
 
+class WorkerThreadTest : public QObject {
 Q_OBJECT
 
 private:
 
-    ResultWidget *resultWidget = nullptr;
-
-    ClassificationResult *classificationResult = nullptr;
+    MainWindowHandler *mWH = nullptr;
+    WorkerThread *workerThread = nullptr;
 
 private slots:
 
     void initTestCase();
 
-    void init();
-
     void cleanup();
 
-    void testNotAggregated();
+    void testRun();
 
-    void testAggregated();
 };
