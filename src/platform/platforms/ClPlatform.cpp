@@ -89,10 +89,6 @@ PlatformInfo &ClPlatform::getPlatformInfo() {
     return this->platformInfo;
 }
 
-ClPlatform::ClPlatform() {
-    init();
-}
-
 ClPlatform::ClPlatform(PlatformInfo &info) : Platform(info) {
     init();
 }

@@ -89,10 +89,6 @@ PlatformInfo &FpgaPlatform::getPlatformInfo() {
     return this->platformInfo;
 }
 
-FpgaPlatform::FpgaPlatform() {
-    init();
-}
-
 FpgaPlatform::FpgaPlatform(PlatformInfo &info) : Platform(info) {
     init();
 }
