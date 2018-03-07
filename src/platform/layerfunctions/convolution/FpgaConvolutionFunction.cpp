@@ -140,7 +140,7 @@ FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
     queue = clCreateCommandQueue(context, device, 0, &status);
     aocl_utils::checkError(status, "Failed to create command queue");
 
-    std::string binary_file = aocl_utils::getBoardBinaryFile("gemm4_fpga", device);
+    std::string binary_file = aocl_utils::getBoardBinaryFile(RES_DIR "kernels/gemm4_fpga", device);
     program = aocl_utils::createProgramFromBinary(context, binary_file.c_str(), &device, 1);
 
     // We can't pass runtime parameters to the kernel, so just pass ""
