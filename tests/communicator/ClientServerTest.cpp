@@ -12,7 +12,7 @@ SCENARIO("Client Server Interaction") {
     SECTION("Classify one image on the client") {
         pid_t pid = fork();
         if (pid == 0) {
-            execl(HICS_SERVER "test-server", "test-server", (char*)0);
+            execl(HICS_SERVER "test-server", "test-server", (char *)'\0');
         } else {
             sleep(1);
             Client client = Client(grpc::CreateChannel(

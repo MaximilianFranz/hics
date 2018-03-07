@@ -8,7 +8,7 @@
 
 SCENARIO("System Test") {
     SECTION("Complete Test") {
-        char *argv[] = {"HICS", "arg1", "arg2", (char*)0};
+        char *argv[] = {(char*)"HICS-TEST", (char *)"arg1", (char *)"arg2", (char *)0};
         int argc = sizeof(argv) / sizeof(char*) - 1;
         QApplication a(argc, argv);
 
