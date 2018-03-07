@@ -53,6 +53,11 @@ public:
      */
     virtual std::vector<ImageResult*> classify(std::vector<ImageWrapper*> images, NetInfo net, OperationMode mode,
                                               std::vector<PlatformInfo*> selectedPlatforms) = 0;
+
+    virtual ~ComputationHost() {
+
+    }
+
     /**
      * Queries the platforms available to this ComputationHost implementation.
      *
