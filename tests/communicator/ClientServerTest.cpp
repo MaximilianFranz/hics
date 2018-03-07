@@ -5,6 +5,7 @@
 #include <Client.h>
 #include <FileHelper.h>
 #include <zconf.h>
+#include <CommunicationException.h>
 #include "ClientServerTest.h"
 
 SCENARIO("Client Server Interaction") {
@@ -34,6 +35,14 @@ SCENARIO("Client Server Interaction") {
             kill(pid, SIGTERM);
 
             REQUIRE(results[0]->getResults()[0].first == "weasel");
+
+            CommunicationException c(&client, "");
+
+            REQUIRE_THROWS(client.classify({img}, alexnetinfo, OperationMode::EnergyEfficient, platforms), c);
+
+            REQUIRE_THROWS(client.queryPlatform(), c);
+
+            REQUIRE_THROWS(client.queryNets(), c);
         }
     }
 }
