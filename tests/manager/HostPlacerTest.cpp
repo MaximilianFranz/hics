@@ -24,6 +24,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <ResourceException.h>
 #include "HostPlacerTest.h"
 
 SCENARIO("Read values from JSON") {
@@ -31,6 +32,7 @@ SCENARIO("Read values from JSON") {
     ComputationHost* localHost = new Executor("local");
     ComputationHost* fpgaHost = new Executor("fpga");
     ComputationHost *gpuHost = new Executor("GPU");
+    ComputationHost *failHost = new Executor("fail");
 
     REQUIRE(localHost->getName() == "local");
 
@@ -123,6 +125,11 @@ SCENARIO("Read values from JSON") {
         REQUIRE((distribution.begin() + 1).operator*().second == 0);
         REQUIRE((distribution.begin() + 2).operator*().first->getName() == "GPU");
         REQUIRE((distribution.begin() + 2).operator*().second == 0);
+    }
+
+    SECTION("Host not specified in .json") {
+        ResourceException r = ResourceException("");
+        REQUIRE_THROWS(HostPlacer::readComputationHostInfo(failHost->getName()), r);
     }
 
 }
