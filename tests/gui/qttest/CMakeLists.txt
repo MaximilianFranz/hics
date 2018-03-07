@@ -16,6 +16,4 @@ add_executable(guitestsQt
 
 find_package(Qt5Test)
 
-#add_test(NAME guitestQt COMMAND guitestsQt)
-
 target_link_libraries(guitestsQt gui manager util netbuilder executor Qt5::Test)
