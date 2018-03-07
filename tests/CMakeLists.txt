@@ -30,6 +30,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
             manager/ManagerTest.cpp
             manager/PerformanceCalculatorTest.cpp
             manager/PreProcessorTest.cpp
+            manager/ClassificationRequestTest.cpp
             netbuilder/*.cpp
             neuralnet/*.cpp
             platform/*.cpp)
