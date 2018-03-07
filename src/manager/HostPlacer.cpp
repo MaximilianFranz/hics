@@ -24,28 +24,16 @@
  * SPDX-License-Identifier: MIT
  */
 
-<<<<<<< HEAD
-#include <fstream>
-=======
 #include <iostream>
 #include <fstream>
 
->>>>>>> 0fa1803ea998a209f15ed778e747983915865019
 #include "HostPlacer.h"
 
 
 HostPlacer::Performance HostPlacer::readComputationHostInfo(std::string hostName) {
-<<<<<<< HEAD
-    std::ifstream jsonFile(RES_DIR "computationHosts.json");
-    std::ostringstream tmp;
-    tmp<<jsonFile.rdbuf();
-    std::string jsonStr = tmp.str();
-    json computationHostFile = json::parse(jsonStr);
-=======
     std::ifstream i(RES_DIR "computationHosts.json");
     json computationHostFile;
     i >> computationHostFile;
->>>>>>> 0fa1803ea998a209f15ed778e747983915865019
     json computationHost = computationHostFile["computationHosts"];
 
     for (auto compHostIt : computationHost) {

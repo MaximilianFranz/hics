@@ -5,7 +5,7 @@ set(TEST_SOURCES MainTest.cpp util/FileHelper.cpp)
 add_library(catchtest ${TEST_SOURCES})
 target_link_libraries(catchtest Catch platform neuralnet netbuilder executor)
 
-include_directories(util)
+
 
 add_subdirectory(communicator)
 add_subdirectory(executor)
