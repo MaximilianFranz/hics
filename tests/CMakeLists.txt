@@ -25,7 +25,11 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
             communicator/ClientServerTest.cpp
             executor/*.cpp
             gui/catchtest/*.cpp
-            manager/*.cpp
+            manager/ClassificationResultTest.cpp
+            manager/HostPlacerTest.cpp
+            manager/ManagerTest.cpp
+            manager/PerformanceCalculatorTest.cpp
+            manager/PreProcessorTest.cpp
             netbuilder/*.cpp
             neuralnet/*.cpp
             platform/*.cpp)
