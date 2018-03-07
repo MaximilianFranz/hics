@@ -72,6 +72,8 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
             '${CMAKE_SOURCE_DIR}/tests/*'
             '${CMAKE_SOURCE_DIR}/src/gui/handler/*'
             '${CMAKE_SOURCE_DIR}/src/gui/WorkerThread.*'
+            '${CMAKE_SOURCE_DIR}/src/communicator/ComputationServer.*'
+            '${CMAKE_SOURCE_DIR}/src/communicator/serverMain.cpp'
             '${CMAKE_SOURCE_DIR}/thirdparty/*'
             '${CMAKE_SOURCE_DIR}/catch/*'
             '${CMAKE_SOURCE_DIR}/cmake-build-*'
