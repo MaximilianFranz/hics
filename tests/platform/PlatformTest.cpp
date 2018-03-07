@@ -658,6 +658,5 @@ TEST_CASE("unknown layer types") {
             REQUIRE(false);
         }
 
-
     }
 }

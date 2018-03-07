@@ -120,4 +120,4 @@ ClPlatform::~ClPlatform() {
 }
 
 // Make AOCL_Utils happy
-void cleanup() {};
+void cleanup() {}; // LCOV_EXCL_LINE
