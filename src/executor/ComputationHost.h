@@ -73,6 +73,7 @@ public:
      */
     virtual std::vector<NetInfo*> queryNets() = 0;
 
+    // LCOV_EXCL_START
     /**
      * Getter for name
      * @return name of the platform
@@ -80,5 +81,6 @@ public:
     virtual std::string getName() {
         return name;
     }
+    //LCOV_EXCL_STOP
 
 };
