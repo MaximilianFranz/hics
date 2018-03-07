@@ -29,14 +29,14 @@
 #include <handler/ui/StartWidget.h>
 
 void StartWidgetTest::initTestCase() {
-    NetInfo* alexnet = new NetInfo("AlexNet", 227, "alexnet");
-    NetInfo* googlenet = new NetInfo("GoogLeNet", 300, "googlenet");
+    NetInfo *alexnet = new NetInfo("AlexNet", 227, "alexnet");
+    NetInfo *googlenet = new NetInfo("GoogLeNet", 300, "googlenet");
     nets.push_back(alexnet);
     nets.push_back(googlenet);
 
-    PlatformInfo* cpu = new PlatformInfo("CPU", PlatformType::CPU, "cpu", 100, 5);
-    PlatformInfo* fpga = new PlatformInfo("FPGA", PlatformType::FPGA, "fpga", 5, 20);
-    PlatformInfo* gpu = new PlatformInfo("Titan XP", PlatformType::FPGA, "titanxp", 250, 100);
+    PlatformInfo *cpu = new PlatformInfo("CPU", PlatformType::CPU, "cpu", 100, 5);
+    PlatformInfo *fpga = new PlatformInfo("FPGA", PlatformType::FPGA, "fpga", 5, 20);
+    PlatformInfo *gpu = new PlatformInfo("Titan XP", PlatformType::FPGA, "titanxp", 250, 100);
     platforms.push_back(cpu);
     platforms.push_back(fpga);
     platforms.push_back(gpu);
@@ -67,11 +67,11 @@ void StartWidgetTest::testConstructor() {
 
     /*--------------Operation Modes----------------*/
 
-    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(0).toStdString(), (std::string)"High power");
+    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(0).toStdString(), (std::string) "High power");
 
-    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(1).toStdString(), (std::string)"Energy efficient");
+    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(1).toStdString(), (std::string) "Energy efficient");
 
-    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(2).toStdString(), (std::string)"Low power");
+    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(2).toStdString(), (std::string) "Low power");
 
     /*--------------Platforms---------------------*/
 
@@ -93,7 +93,7 @@ void StartWidgetTest::testImageFunctions() {
 
     startWidget->processInputImageButton();
     //Select 3 images
-    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 3);
+    QCOMPARE((int) startWidget->getSelectedImages().size(), 3);
 
     QMapIterator<QPair<QImage *, QString>, QHBoxLayout *> it(*(startWidget->getImagesMap()));
 
@@ -102,7 +102,7 @@ void StartWidgetTest::testImageFunctions() {
 
     startWidget->processConfirmDeletionButton();
 
-    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 2);
+    QCOMPARE((int) startWidget->getSelectedImages().size(), 2);
 
     it.next();
     ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
@@ -118,7 +118,7 @@ void StartWidgetTest::testImageFunctions() {
     //1 out of 2 images left have been selected so the abort deletion button should select all
     startWidget->processAbortDeletionQPushButton();
     startWidget->processConfirmDeletionButton();
-    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 0);
+    QCOMPARE((int) startWidget->getSelectedImages().size(), 0);
 }
 
 void StartWidgetTest::testDuplicateSelectedImages() {
@@ -128,11 +128,11 @@ void StartWidgetTest::testDuplicateSelectedImages() {
 
     startWidget->processInputImageButton();
     //Select 1 image
-    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 1);
+    QCOMPARE((int) startWidget->getSelectedImages().size(), 1);
 
     //Select the same image
     startWidget->processInputImageButton();
-    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 1);
+    QCOMPARE((int) startWidget->getSelectedImages().size(), 1);
 }
 
 void StartWidgetTest::testSelectedPlatforms() {
