@@ -103,7 +103,7 @@ void ClPlatform::init() {
 
     device = 0;
     if(platformInfo.getType() == PlatformType::GPU) {
-        status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
+        status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL); // LCOV_EXCL_LINE
     } else if (platformInfo.getType() == PlatformType::CL_CPU) {
         status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, NULL);
     } else {

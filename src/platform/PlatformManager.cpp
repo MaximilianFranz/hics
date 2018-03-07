@@ -60,8 +60,8 @@ PlatformManager::PlatformManager() {
             platforms.push_back(new FpgaPlatform(pi));
 #else
         } else if (type == "GPU") {
-            PlatformInfo pi(desc, PlatformType::GPU, uuid, power, flops);
-            platforms.push_back(new ClPlatform(pi));
+            PlatformInfo pi(desc, PlatformType::GPU, uuid, power, flops); // LCOV_EXCL_LINE
+            platforms.push_back(new ClPlatform(pi));                      // LCOV_EXCL_LINE
         } else if (type == "CL_CPU") {
             PlatformInfo pi(desc, PlatformType::CL_CPU, uuid, power, flops);
             platforms.push_back(new ClPlatform(pi));
