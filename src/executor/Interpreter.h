@@ -47,7 +47,7 @@ public:
      */
     static const int TOP_X = 5; //By convention from the ILSRVC we use 5
 
-    Interpreter(std::map<int, std::string> &labelMap);
+    explicit Interpreter(std::map<int, std::string> &labelMap);
 
     /**
      * \brief maps the output of the network to the labels and returns an ImageResult
