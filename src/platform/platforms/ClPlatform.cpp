@@ -43,7 +43,7 @@ ActivationFunction *ClPlatform::createActivationFunction(LayerType type) {
         case LayerType::ACTIVATION_RELU:
             return new CpuReLUFunction();
         default:
-            throw IllegalArgumentException(); // LCOV_EXCL_LINE
+            throw IllegalArgumentException();
     }
 }
 
@@ -59,7 +59,7 @@ LossFunction *ClPlatform::createLossFunction(LayerType type) {
         case LayerType::LOSS_SOFTMAX:
             return new CpuSoftMaxLossFunction();
         default:
-            throw IllegalArgumentException(); // LCOV_EXCL_LINE
+            throw IllegalArgumentException();
     }
 }
 
@@ -68,7 +68,7 @@ PoolingFunction *ClPlatform::createPoolingFunction(LayerType type) {
         case LayerType::POOLING_MAX:
             return new CpuMaxPoolingFunction();
         default:
-            throw IllegalArgumentException(); // LCOV_EXCL_LINE
+            throw IllegalArgumentException();
     }
 }
 
@@ -77,7 +77,7 @@ ResponseNormalizationFunction *ClPlatform::createResponseNormalizationFunction(L
         case LayerType::NORMALIZATION_LOCALRESPONSE:
             return new CpuResponseNormalizationFunction();
         default:
-            throw IllegalArgumentException(); // LCOV_EXCL_LINE
+            throw IllegalArgumentException();
     }
 }
 
