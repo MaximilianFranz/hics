@@ -30,7 +30,7 @@
 
 Client::Client(std::shared_ptr<Channel> channel) : stub_(Communicator::NewStub(channel)) {}
 Client::Client(std::string name, std::shared_ptr<Channel> channel) : stub_(Communicator::NewStub(channel)) {
-    ComputationHost::name = name;
+    ComputationHost::name = std::move(name);
 }
 
 std::vector<ImageResult*> Client::classify(std::vector<ImageWrapper *> images, NetInfo net, OperationMode mode,
@@ -100,7 +100,7 @@ std::vector<PlatformInfo*> Client::queryPlatform() {
         }
         return platforms;
     } else {
-        throw CommunicationException(this, "Could not query nets, maybe the host is unreachable?");
+        throw CommunicationException(this, "Could not query platforms, maybe the host is unreachable?");
     }
 
 }
@@ -119,6 +119,6 @@ std::vector<NetInfo*> Client::queryNets() {
         }
         return nets;
     } else {
-        throw CommunicationException(this, "could not reach server");
+        throw CommunicationException(this, "Could not query neural nets, maybe the host is unreachable?");
     }
 }
