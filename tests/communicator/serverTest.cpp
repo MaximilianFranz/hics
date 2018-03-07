@@ -36,7 +36,7 @@ using grpc::ServerContext;
 using grpc::Status;
 
 int main() {
-    std::string server_address("0.0.0.0.:50052");
+    std::string server_address("0.0.0.0:50052");
     ComputationServer service;
     service.init();
 
