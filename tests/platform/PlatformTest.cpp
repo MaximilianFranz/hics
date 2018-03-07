@@ -40,7 +40,8 @@
 #include <loader/weightloader/AlexNetWeightLoader.h>
 
 #include <FileHelper.h>
-#include <util/im2col.h>
+#include <Helper.h>
+#include <IllegalArgumentException.h>
 
 #include "PlatformTest.h"
 
@@ -608,5 +609,54 @@ TEST_CASE("transpose") {
 
     for (int i = 0; i < size; i++) {
         REQUIRE(input[i] == u[i]);
+    }
+}
+
+TEST_CASE("unknown layer types") {
+    // Test all available platforms
+    PlatformManager &pm = PlatformManager::getInstance();
+    REQUIRE(pm.getPlatforms().size() >= 1);
+
+    for (unsigned int i = 0; i < pm.getPlatforms().size(); i++) {
+        Platform *p = pm.getPlatforms()[i];
+        REQUIRE(p != nullptr);
+
+        // Trigger exception by feeding it bogus data
+        try {
+            ActivationFunction *af = p->createActivationFunction(LayerType::LOSS_SOFTMAX);
+        } catch(IllegalArgumentException e) {
+            // This is expected
+        } catch(...) {
+            std::cerr << "Unknown exception caught" << std::endl;
+            REQUIRE(false);
+        }
+
+        try {
+            LossFunction *lf = p->createLossFunction(LayerType::ACTIVATION_RELU);
+        } catch(IllegalArgumentException e) {
+            // This is expected
+        } catch(...) {
+            std::cerr << "Unknown exception caught" << std::endl;
+            REQUIRE(false);
+        }
+
+        try {
+            PoolingFunction *pf = p->createPoolingFunction(LayerType::LOSS_SOFTMAX);
+        } catch(IllegalArgumentException e) {
+            // This is expected
+        } catch(...) {
+            std::cerr << "Unknown exception caught" << std::endl;
+            REQUIRE(false);
+        }
+
+        try {
+            ResponseNormalizationFunction *rnf = p->createResponseNormalizationFunction(LayerType::LOSS_SOFTMAX);
+        } catch(IllegalArgumentException e) {
+            // This is expected
+        } catch(...) {
+            std::cerr << "Unknown exception caught" << std::endl;
+            REQUIRE(false);
+        }
+
     }
 }

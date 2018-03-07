@@ -73,12 +73,12 @@ ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *original
 }
 
 int Interpreter::getIndexOf(float value, std::vector<float> output) {
-    for (int i = 0; i < output.size() ; i++) {
-        if(output[i] == value) {
-            return i;
-        }
+    auto index = distance(output.begin(), find(output.begin(), output.end(), value));
+    if(index >= output.size()) {
+        return -1; // value is not in vector
+    } else {
+        return static_cast<int>(index);
     }
-    return 0; //Unreachable in this usage, since method is private this case cannot be tested.
 }
 
 const bool Interpreter::compareDesc(float a, float b) {

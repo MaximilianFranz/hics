@@ -30,7 +30,7 @@
 #include "AOCL_Utils.h"
 
 #include "ClConvolutionFunction.h"
-#include "util/im2col.h"
+#include "Helper.h"
 
 // Threadblock sizes (e.g. for kernels GEMM1 or GEMM2)
 #define TS 32
@@ -39,10 +39,11 @@
 #define WPT 8
 
 // =================================================================================================
+// The following functions should be split out and moved into a separate name space
 
+// LCOV_EXCL_START
 const char *getErrorString(cl_int error)
 {
-    // LCOV_EXCL_START
     switch(error){
         // run-time and JIT compiler errors
         case 0: return "CL_SUCCESS";
@@ -116,8 +117,8 @@ const char *getErrorString(cl_int error)
         case -1005: return "CL_D3D10_RESOURCE_NOT_ACQUIRED_KHR";
         default: return "Unknown OpenCL error";
     }
-    // LCOV_EXCL_STOP
 }
+// LCOV_EXCL_STOP
 
 void CheckError (cl_int error)
 {

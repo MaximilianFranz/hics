@@ -64,6 +64,7 @@ private slots:
 
     void testImageFunctions();
 
+    void testDuplicateSelectedImages();
+
     void testIsAggregated();
 };
-

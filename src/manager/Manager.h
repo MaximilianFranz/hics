@@ -28,6 +28,7 @@
 
 
 #include <Executor.h>
+#include <spdlog/logger.h>
 #include "ManagerObserver.h"
 #include "handler/MainWindowHandler.h"
 
@@ -46,6 +47,8 @@ private:
 public:
 
     Manager();
+
+    virtual ~Manager();
 
     /**
      * called by GUI to update the Manager when the classify is pressed

@@ -41,7 +41,7 @@ ActivationFunction *CpuPlatform::createActivationFunction(LayerType type) {
         case LayerType::ACTIVATION_RELU:
             return new CpuReLUFunction();
         default:
-            throw IllegalArgumentException(); // LCOV_EXCL_LINE
+            throw IllegalArgumentException();
     }
 }
 
@@ -54,7 +54,7 @@ LossFunction *CpuPlatform::createLossFunction(LayerType type) {
         case LayerType::LOSS_SOFTMAX:
             return new CpuSoftMaxLossFunction();
         default:
-            throw IllegalArgumentException(); // LCOV_EXCL_LINE
+            throw IllegalArgumentException();
     }
 }
 
@@ -63,7 +63,7 @@ PoolingFunction *CpuPlatform::createPoolingFunction(LayerType type) {
         case LayerType::POOLING_MAX:
             return new CpuMaxPoolingFunction();
         default:
-            throw IllegalArgumentException(); // LCOV_EXCL_LINE
+            throw IllegalArgumentException();
     }
 }
 
@@ -72,7 +72,7 @@ ResponseNormalizationFunction *CpuPlatform::createResponseNormalizationFunction(
         case LayerType::NORMALIZATION_LOCALRESPONSE:
             return new CpuResponseNormalizationFunction();
         default:
-            throw IllegalArgumentException(); // LCOV_EXCL_LINE
+            throw IllegalArgumentException();
     }
 }
 

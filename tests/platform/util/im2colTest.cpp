@@ -30,7 +30,7 @@
 #include <cmath>
 
 #include <FileHelper.h>
-#include <util/im2col.h>
+#include <Helper.h>
 
 #include "im2colTest.h"
 

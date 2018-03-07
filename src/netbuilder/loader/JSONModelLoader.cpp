@@ -57,10 +57,6 @@ int JSONModelLoader::getRequiredDimension() {
     return model["requiredDimension"][1];
 }
 
-string JSONModelLoader::getLayerTypeByIndex(int index) {
-    return layers[index]["layerType"];
-}
-
 /**
  * Creates the LayerConstructionParams struct with the parameters, that are retrieved from a json neural net
  * description file.

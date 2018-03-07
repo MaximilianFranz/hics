@@ -43,7 +43,7 @@ ActivationFunction *ClPlatform::createActivationFunction(LayerType type) {
         case LayerType::ACTIVATION_RELU:
             return new CpuReLUFunction();
         default:
-            throw IllegalArgumentException(); // LCOV_EXCL_LINE
+            throw IllegalArgumentException();
     }
 }
 
@@ -59,7 +59,7 @@ LossFunction *ClPlatform::createLossFunction(LayerType type) {
         case LayerType::LOSS_SOFTMAX:
             return new CpuSoftMaxLossFunction();
         default:
-            throw IllegalArgumentException(); // LCOV_EXCL_LINE
+            throw IllegalArgumentException();
     }
 }
 
@@ -68,7 +68,7 @@ PoolingFunction *ClPlatform::createPoolingFunction(LayerType type) {
         case LayerType::POOLING_MAX:
             return new CpuMaxPoolingFunction();
         default:
-            throw IllegalArgumentException(); // LCOV_EXCL_LINE
+            throw IllegalArgumentException();
     }
 }
 
@@ -77,7 +77,7 @@ ResponseNormalizationFunction *ClPlatform::createResponseNormalizationFunction(L
         case LayerType::NORMALIZATION_LOCALRESPONSE:
             return new CpuResponseNormalizationFunction();
         default:
-            throw IllegalArgumentException(); // LCOV_EXCL_LINE
+            throw IllegalArgumentException();
     }
 }
 
@@ -103,7 +103,7 @@ void ClPlatform::init() {
 
     device = 0;
     if(platformInfo.getType() == PlatformType::GPU) {
-        status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
+        status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL); // LCOV_EXCL_LINE
     } else if (platformInfo.getType() == PlatformType::CL_CPU) {
         status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, NULL);
     } else {
@@ -120,4 +120,4 @@ ClPlatform::~ClPlatform() {
 }
 
 // Make AOCL_Utils happy
-void cleanup() {};
+void cleanup() {}; // LCOV_EXCL_LINE

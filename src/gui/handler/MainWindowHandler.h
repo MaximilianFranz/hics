@@ -26,8 +26,9 @@
 
 #pragma once
 
-#include <list>
 #include <QObject>
+#include <list>
+#include <memory>
 #include <NetInfo.h>
 #include <PlatformInfo.h>
 #include <OperationMode.h>
@@ -78,17 +79,13 @@ private:
     WorkerThread *workerThread = nullptr;
 
     std::exception_ptr exceptionptr = nullptr;
-    bool cancelClassification = false;
+    std::shared_ptr<std::vector<PlatformInfo *>> updatedPlatforms = nullptr;
 
 private:
 
     void connectAll();
 
     void disconnectAll();
-
-private slots:
-
-    void abortClassification();
 
 public:
 
@@ -112,7 +109,7 @@ public:
     * @brief updatePlatforms refreshes the currently displayed platforms in the GUI
     * @param platforms are the platforms that shall be displayed in the GUI
     */
-    void updatePlatforms(std::vector<PlatformInfo *> platforms);
+    void updatePlatforms(std::shared_ptr<std::vector<PlatformInfo *>> platforms);
 
     /**
      * @brief getClassificationRequestState returns the classificationRequest state attribute.
@@ -156,15 +153,6 @@ public:
      */
     void setExceptionptr(const std::exception_ptr &exceptionptr);
 
-    /**
-     * @brief isClassificationAborted checks if the boolean for aborting the classification has been set
-     *
-     * The boolean is set by the user by pressing on the "Cancel" button during a classification.
-     *
-     * @return true if the classification shall be aborted, false if not
-     */
-    bool isClassificationAborted();
-
 public slots:
 
     /**
@@ -195,5 +183,5 @@ public slots:
      * @brief displayErrorMessage will send the error message to the startWidget's respective method to display it.
      * @param errorMessage the to be displayed error message
      */
-    void displayErrorMessage(const QString &errorMessage);
+    void displayErrorMessage(const std::string &errorMessage);
 };

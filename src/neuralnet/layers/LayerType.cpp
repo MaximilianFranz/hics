@@ -25,7 +25,7 @@
  */
 
 #include <ostream>
-
+#include <cassert>
 #include "LayerType.h"
 
 std::ostream &operator<<(std::ostream &os, const LayerType &layertype) {
@@ -47,4 +47,5 @@ std::ostream &operator<<(std::ostream &os, const LayerType &layertype) {
         case LayerType::CONCAT :
             return os << "CONCAT";
     }
+    assert("Reached a supposed unreachable point" && 0);
 }

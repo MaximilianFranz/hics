@@ -45,10 +45,6 @@ MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::ve
     connectAll();
 }
 
-void MainWindowHandler::abortClassification() {
-    cancelClassification = true;
-}
-
 void MainWindowHandler::setClassificationRequestState() {
     delete classificationRequestState;
     classificationRequestState = nullptr;
@@ -72,9 +68,9 @@ void MainWindowHandler::setClassificationRequestState() {
     }
 }
 
-void MainWindowHandler::displayErrorMessage(const QString &errorMessage) {
+void MainWindowHandler::displayErrorMessage(const std::string &errorMessage) {
     startWidget->resetProgressDisplay();
-    startWidget->displayErrorMessage(errorMessage);
+    startWidget->displayErrorMessage(QString::fromStdString(errorMessage));
 }
 
 ClassificationRequest *MainWindowHandler::getClassificationRequestState() {
@@ -104,22 +100,24 @@ void MainWindowHandler::processClassificationResult(ClassificationResult *classi
                 std::rethrow_exception(exceptionptr);
             } catch (std::exception &e) {
                 //Display the error message and reset the loading state of the GUI to the normal starting page
-                displayErrorMessage(QString::fromStdString(e.what()));
+                displayErrorMessage(e.what());
                 exceptionptr = nullptr;
             }
         } else {
             //This case should never occur, but for safety measures the GUI should be resetted
             startWidget->resetProgressDisplay();
         }
-    }
 
-    cancelClassification = false;
+        if(updatedPlatforms){
+            startWidget->updatePlatforms(*(updatedPlatforms.get()));
+            updatedPlatforms = nullptr;
+        }
+    }
 }
 
 void MainWindowHandler::processReturnQPushButton() {
     //Enable the widgets in StartWidget again and remove the progress bar
     startWidget->resetProgressDisplay();
-    cancelClassification = false;
 
     mainWindow->setCurrentWidget(startWidget);
 
@@ -144,8 +142,6 @@ void MainWindowHandler::connectAll() {
     connect(startWidget->getClassificationQPushButton(), SIGNAL(clicked(bool)), this,
             SLOT(setClassificationRequestState()));
 
-    connect(startWidget->getCancelProgressButton(), SIGNAL(clicked(bool)), this, SLOT(abortClassification()));
-
     //Deletes resultWidget
     connect(resultWidget->getReturnQPushButton(), SIGNAL(clicked(bool)), this, SLOT(processReturnQPushButton()));
 
@@ -159,7 +155,6 @@ void MainWindowHandler::connectAll() {
 void MainWindowHandler::disconnectAll() {
     disconnect(startWidget->getClassificationQPushButton(), SIGNAL(clicked()), this,
                SLOT(setClassificationRequestState()));
-    disconnect(startWidget->getCancelProgressButton(), SIGNAL(clicked()), this, SLOT(abortClassification()));
     disconnect(resultWidget->getReturnQPushButton(), SIGNAL(clicked()), this, SLOT(processReturnQPushButton()));
     disconnect(resultWidget->getDetailsQPushButton(), SIGNAL(clicked()), this, SLOT(processDetailQPushButton()));
     disconnect(resultWidget, SIGNAL(destroyed()), this, SLOT(processReturnQPushButton()));
@@ -174,12 +169,8 @@ MainWindowHandler::~MainWindowHandler() {
     delete classificationRequestState;
 }
 
-void MainWindowHandler::updatePlatforms(std::vector<PlatformInfo *> platforms) {
-    startWidget->updatePlatforms(platforms);
-}
-
-bool MainWindowHandler::isClassificationAborted() {
-    return cancelClassification;
+void MainWindowHandler::updatePlatforms(std::shared_ptr<std::vector<PlatformInfo *>> platforms) {
+    updatedPlatforms = platforms;
 }
 
 MainWindow *MainWindowHandler::getMainWindow() const {

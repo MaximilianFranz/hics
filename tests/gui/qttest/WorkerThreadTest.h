@@ -24,7 +24,28 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include "ModelLoader.h"
+#pragma once
 
-ModelLoader::ModelLoader(string path) : pathToJSON{path} {}
+#include <QtTest/QTest>
+#include <QObject>
 
+class MainWindowHandler;
+class WorkerThread;
+
+class WorkerThreadTest : public QObject {
+Q_OBJECT
+
+private:
+
+    MainWindowHandler *mWH = nullptr;
+    WorkerThread *workerThread = nullptr;
+
+private slots:
+
+    void initTestCase();
+
+    void cleanup();
+
+    void testRun();
+
+};
