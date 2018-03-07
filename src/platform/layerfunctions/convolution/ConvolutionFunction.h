@@ -38,6 +38,8 @@ public:
                          int filterSize,
                          int numFilters,
                          int zeroPadding) = 0;
+
+    virtual ~ConvolutionFunction() = default;
 };
 
 

@@ -114,6 +114,9 @@ void ClPlatform::init() {
 }
 
 ClPlatform::~ClPlatform() {
+    // If the CL platform is destroyed, delete the ClFunction object as well,
+    // as the context will no longer be valid.
+    delete c;
     clReleaseContext(context);
 }
 

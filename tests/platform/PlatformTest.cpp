@@ -654,3 +654,15 @@ TEST_CASE("unknown layer types") {
 
     }
 }
+
+TEST_CASE("platform cleanup") {
+    // Test all available platforms
+    PlatformManager &pm = PlatformManager::getInstance();
+    REQUIRE(pm.getPlatforms().size() >= 1);
+
+    // Now reset all platforms, this should trigger various destructors.
+    pm.reset();
+
+    // We should still have at least one platform after a reset
+    REQUIRE(pm.getPlatforms().size() >= 1);
+}

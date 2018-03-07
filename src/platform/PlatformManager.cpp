@@ -40,6 +40,10 @@
 using json = nlohmann::json;
 
 PlatformManager::PlatformManager() {
+    init();
+}
+
+void PlatformManager::init() {
     json j;
 
     try {
@@ -74,7 +78,6 @@ PlatformManager::PlatformManager() {
         }
 
     }
-
 }
 
 std::vector<Platform*> PlatformManager::getPlatforms() {
@@ -103,4 +106,14 @@ Platform* PlatformManager::getPlatformById(std::string uuid) {
     // In case we don't find a platform for the given uuid, we return
     // a nullptr, which means the result should be checked by the caller.
     return nullptr;
+}
+
+void PlatformManager::reset() {
+    // Since we store pointers, we need to free the memory ourselves.
+    // std::vector.clear() will only do that for references.
+    for (auto p : platforms) {
+        delete p;
+    }
+    platforms.clear();
+    init();
 }
