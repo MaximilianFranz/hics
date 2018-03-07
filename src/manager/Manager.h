@@ -48,6 +48,8 @@ public:
 
     Manager();
 
+    virtual ~Manager();
+
     /**
      * called by GUI to update the Manager when the classify is pressed
      *

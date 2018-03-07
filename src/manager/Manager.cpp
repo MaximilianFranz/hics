@@ -350,6 +350,10 @@ std::vector<NetInfo *> Manager::netIntersection(std::vector<std::vector<NetInfo*
     return nets;
 }
 
+Manager::~Manager() {
+
+}
+
 /**
  * Reads the Adress from a computation host specified in the computations.json (only for remote hosts)
  * @param hostname  the name of the computationhost in the .json file
