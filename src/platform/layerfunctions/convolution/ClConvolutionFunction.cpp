@@ -44,20 +44,20 @@
 // =================================================================================================
 // The following functions should be split out and moved into a separate name space
 
-std::string LoadKernel(const char *name) {
-    std::ifstream in(name);
-    std::string result((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+std::string LoadKernel (const char* name) {
+    std::ifstream in (name);
+    std::string result ((std::istreambuf_iterator<char> (in)), std::istreambuf_iterator<char> ());
     return result;
 }
 
-cl_program CreateProgram(const std::string &source, cl_context context) {
+cl_program CreateProgram (const std::string& source, cl_context context) {
     // http://www.khronos.org/registry/cl/sdk/1.1/docs/man/xhtml/clCreateProgramWithSource.html
-    size_t lengths[1] = {source.size()};
-    const char *sources[1] = {source.data()};
+    size_t lengths [1] = { source.size () };
+    const char* sources [1] = { source.data () };
 
     cl_int error = 0;
-    cl_program program = clCreateProgramWithSource(context, 1, sources, lengths, &error);
-    helper::CheckError(error);
+    cl_program program = clCreateProgramWithSource (context, 1, sources, lengths, &error);
+    helper::CheckError (error);
 
     return program;
 }
@@ -74,7 +74,7 @@ ClConvolutionFunction::ClConvolutionFunction(cl_context c, cl_device_id d)
     program = CreateProgram(LoadKernel(RES_DIR "kernels/gemm3.cl"), context);
 
     char cmdline[1024];
-    snprintf(cmdline, 1024, "-DTS=%d -DWPT=%d -DRTS=%d", TS, WPT, TS / WPT);
+    snprintf(cmdline, 1024, "-DTS=%d -DWPT=%d -DRTS=%d", TS, WPT, TS/WPT);
     clBuildProgram(program, 0, NULL, cmdline, NULL, NULL);
 //    status = clBuildProgram(program, 0, NULL, "", NULL, NULL);
     aocl_utils::checkError(status, "Failed to build program");
@@ -82,7 +82,7 @@ ClConvolutionFunction::ClConvolutionFunction(cl_context c, cl_device_id d)
     // Check for compilation errors
     size_t logSize;
     clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, 0, NULL, &logSize);
-    auto *messages = (char *) malloc((1 + logSize) * sizeof(char));
+    auto * messages = (char*)malloc((1+logSize)*sizeof(char));
     clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, logSize, messages, NULL);
     messages[logSize] = '\0';
     if (logSize > 10) { printf(">>> Compiler message: %s\n", messages); }
@@ -91,6 +91,7 @@ ClConvolutionFunction::ClConvolutionFunction(cl_context c, cl_device_id d)
     kernel = clCreateKernel(program, "GEMM3", NULL);
 
 }
+
 
 
 void ClConvolutionFunction::execute(const DataWrapper &input,
@@ -146,12 +147,12 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
     float *B = helper::transpose(paddedN, paddedK, tempB);
     delete tempB;
 
-    auto *C = new float[paddedM * paddedN];
+    auto *C = new float[paddedM*paddedN];
 
     // Bias
     auto *D = new float[paddedM];
-    memset(D, 0, paddedM * sizeof(float));
-    memcpy(D, weights.getBiasArray(), number_of_kernels * sizeof(float));
+    memset(D, 0, paddedM*sizeof(float));
+    memcpy(D, weights.getBiasArray(), number_of_kernels*sizeof(float));
 
 
     // Remember unpadded values, we'll need them again later for the unpadding
@@ -163,28 +164,28 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
     N = paddedN; //patch_columns;
 
     // Prepare OpenCL memory objects
-    cl_mem bufA = clCreateBuffer(context, CL_MEM_READ_ONLY, M * K * sizeof(float), NULL, NULL);
-    cl_mem bufB = clCreateBuffer(context, CL_MEM_READ_ONLY, K * N * sizeof(float), NULL, NULL);
-    cl_mem bufC = clCreateBuffer(context, CL_MEM_READ_WRITE, M * N * sizeof(float), NULL, NULL);
-    cl_mem bufD = clCreateBuffer(context, CL_MEM_READ_ONLY, M * sizeof(float), NULL, NULL);
+    cl_mem bufA = clCreateBuffer(context, CL_MEM_READ_ONLY,  M*K*sizeof(float), NULL, NULL);
+    cl_mem bufB = clCreateBuffer(context, CL_MEM_READ_ONLY,  K*N*sizeof(float), NULL, NULL);
+    cl_mem bufC = clCreateBuffer(context, CL_MEM_READ_WRITE, M*N*sizeof(float), NULL, NULL);
+    cl_mem bufD = clCreateBuffer(context, CL_MEM_READ_ONLY,  M*sizeof(float), NULL, NULL);
 
     // Copy matrices to the GPU
-    clEnqueueWriteBuffer(queue, bufA, CL_TRUE, 0, M * K * sizeof(float), A, 0, NULL, NULL);
-    clEnqueueWriteBuffer(queue, bufB, CL_TRUE, 0, K * N * sizeof(float), B, 0, NULL, NULL);
-    clEnqueueWriteBuffer(queue, bufC, CL_TRUE, 0, M * N * sizeof(float), C, 0, NULL, NULL);
-    clEnqueueWriteBuffer(queue, bufD, CL_TRUE, 0, M * sizeof(float), D, 0, NULL, NULL);
+    clEnqueueWriteBuffer(queue, bufA, CL_TRUE, 0, M*K*sizeof(float), A, 0, NULL, NULL);
+    clEnqueueWriteBuffer(queue, bufB, CL_TRUE, 0, K*N*sizeof(float), B, 0, NULL, NULL);
+    clEnqueueWriteBuffer(queue, bufC, CL_TRUE, 0, M*N*sizeof(float), C, 0, NULL, NULL);
+    clEnqueueWriteBuffer(queue, bufD, CL_TRUE, 0, M*sizeof(float), D, 0, NULL, NULL);
 
 
     // Configure the GEMM kernel and set its arguments
-    clSetKernelArg(kernel, 0, sizeof(int), (void *) &M);
-    clSetKernelArg(kernel, 1, sizeof(int), (void *) &N);
-    clSetKernelArg(kernel, 2, sizeof(int), (void *) &K);
-    clSetKernelArg(kernel, 3, sizeof(cl_mem), (void *) &bufA);
-    clSetKernelArg(kernel, 4, sizeof(cl_mem), (void *) &bufB);
-    clSetKernelArg(kernel, 5, sizeof(cl_mem), (void *) &bufC);
-    clSetKernelArg(kernel, 6, sizeof(cl_mem), (void *) &bufD);
+    clSetKernelArg(kernel, 0, sizeof(int), (void*)&M);
+    clSetKernelArg(kernel, 1, sizeof(int), (void*)&N);
+    clSetKernelArg(kernel, 2, sizeof(int), (void*)&K);
+    clSetKernelArg(kernel, 3, sizeof(cl_mem), (void*)&bufA);
+    clSetKernelArg(kernel, 4, sizeof(cl_mem), (void*)&bufB);
+    clSetKernelArg(kernel, 5, sizeof(cl_mem), (void*)&bufC);
+    clSetKernelArg(kernel, 6, sizeof(cl_mem), (void*)&bufD);
 
-    const size_t local[2] = {TS, TS / WPT};
+    const size_t local[2] = { TS, TS/WPT };
     const size_t global[2] = {static_cast<const size_t>(M), static_cast<const size_t>(N) / WPT};
     cl_event event;
     cl_int result = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, global, local, 0, NULL, &event);
@@ -194,14 +195,14 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
     clWaitForEvents(1, &event);
 
     // Copy the output matrix C back to the CPU memory
-    clEnqueueReadBuffer(queue, bufC, CL_TRUE, 0, M * N * sizeof(float), C, 0, NULL, NULL);
+    clEnqueueReadBuffer(queue, bufC, CL_TRUE, 0, M*N*sizeof(float), C, 0, NULL, NULL);
 
     // Remove padding and transform it back to row major format
 //    float *unpaddedC = helper::remove_padding(TS, unpaddedN, unpaddedM, C); // TODO: Why is this not necessary?
     float *unpaddedC = helper::transpose(unpaddedM, unpaddedN, C);
-    memcpy(output.getDataArray(), unpaddedC, unpaddedN * unpaddedM * sizeof(float));
+    memcpy(output.getDataArray(), unpaddedC, unpaddedN*unpaddedM*sizeof(float));
 
-    delete[] unpaddedC;
+    delete [] unpaddedC;
 
     // Free the OpenCL memory objects
     clReleaseMemObject(bufA);
@@ -213,10 +214,10 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
     clReleaseEvent(event);
 
     // Free the host memory objects
-    delete[] A;
-    delete[] B;
-    delete[] C;
-    delete[] D;
+    delete [] A;
+    delete [] B;
+    delete [] C;
+    delete [] D;
 }
 
 ClConvolutionFunction::~ClConvolutionFunction() {
