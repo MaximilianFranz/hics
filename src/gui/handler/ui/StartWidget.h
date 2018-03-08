@@ -90,8 +90,6 @@ private:
 
     void clearLayout(QLayout *layout);
 
-    void disableWidgets(bool disable);
-
     void renumerateImages();
 
     bool areAllSelected();
@@ -116,6 +114,12 @@ public:
      * The destructor to delete all allocated memory on the heap.
      */
     ~StartWidget();
+
+    /**
+     * @brief disableWidgets disables or enables all widgets except for the images and scroll area
+     * @param disable, if true the widgets get disabled, if false they get enabled
+     */
+    void disableWidgets(bool disable);
 
     /**
     * @brief updatePlatforms refreshes the currently displayed platforms in the GUI

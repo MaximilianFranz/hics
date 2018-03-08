@@ -103,6 +103,7 @@ void MainWindowHandler::checkExceptionPtr() {
         } catch (ResourceException &e){
             //Display the error message to the user and shutdown the software when closing the message
             displayErrorMessage(e.what(), true);
+            startWidget->disableWidgets(true);
         } catch (std::exception &e) {
             //Display the error message and reset the loading state of the GUI to the normal starting page
             displayErrorMessage(e.what());
