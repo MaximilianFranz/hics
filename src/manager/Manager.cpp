@@ -45,8 +45,6 @@ static std::exception_ptr exceptionptr = nullptr;
 
 static std::shared_ptr<spdlog::logger> logger;
 
-static char logfilepath[] = LOG_FILE_PATH "log.txt";
-
 void runClassification(ComputationHost* host,
                        std::vector<ImageResult*>& allResults,
                        std::vector<ImageWrapper*> img,
