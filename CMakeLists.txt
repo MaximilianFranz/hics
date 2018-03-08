@@ -16,6 +16,7 @@ configure_file(${CMAKE_SOURCE_DIR}/cmake/config.h.cmake ${CMAKE_BINARY_DIR}/conf
 include_directories(${CMAKE_BINARY_DIR})
 
 include(GNUInstallDirs)
+include(ECMInstallIcons)
 
 option(INSTALL "Set this to ON if you plan to install hics system wide via \"make install\"." OFF)
 
@@ -114,9 +115,9 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
 endif() #CMAKE_BUILD_TYPE STREQUAL "Coverage"
 endif()
 
-install(DIRECTORY resources/weights DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/
+install(DIRECTORY resources/weights DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics
         FILES_MATCHING PATTERN "*.h5")
-install(DIRECTORY resources/models DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/)
+install(DIRECTORY resources/models DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics)
 install(FILES resources/kernels/gemm3.cl DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/kernels/)
 install(FILES resources/kernels/gemm4_fpga.cl DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/kernels/)
 # Rename those files and install them as examples, as they will need explicit configuration
@@ -124,6 +125,8 @@ install(FILES resources/platforms.json DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/h
         RENAME platforms.json.example)
 install(FILES resources/computationHosts.json DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/
         RENAME computationHosts.json.example)
+
 # Install a desktop file for hics, our main GUI
-install(FILES data/hics.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/256x256/apps/)
 install(FILES data/hics.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications/)
+ecm_install_icons(ICONS data/256-apps-hics.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/ THEME hicolor)
+
