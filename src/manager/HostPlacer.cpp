@@ -92,6 +92,7 @@ HostPlacer::placeLowPower(std::vector<std::pair<ComputationHost *, HostPlacer::P
             allLowest.push_back(host.first);
         }
     }
+    //distribute workload, if there are several hosts with the least amaount of power usage
     int workload = int(numOfImg / allLowest.size());
     int remainder = int(numOfImg % allLowest.size());
 

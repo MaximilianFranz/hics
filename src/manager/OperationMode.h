@@ -61,6 +61,11 @@ struct OperationModeString {
         }
     }
 
+    /**
+     * casts a string to OperationMode enum
+     * @param name string representation of enum value
+     * @return OperationMode enum type
+     */
     static OperationMode getMode(const std::string name) {
 
         if (name == "High power") {
