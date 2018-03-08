@@ -120,10 +120,8 @@ void PlatformPlacer::placeNetWith(PlatformInfo *perfomanceInfo, PlatformInfo *fa
 
     // Calculate distribution.
     if (fallbackInfo->getPlatformId() != perfomanceInfo->getPlatformId()) {
-        compDistribution.push_back(std::pair<PlatformInfo *, float>(perfomanceInfo,
-                                                                    performanceDistribution));
-        compDistribution.push_back(std::pair<PlatformInfo *, float>(fallbackInfo,
-                                                                    fallbackDistribution));
+        compDistribution.emplace_back(perfomanceInfo, performanceDistribution);
+        compDistribution.emplace_back(fallbackInfo, fallbackDistribution);
     } else {
         compDistribution.emplace_back(std::pair<PlatformInfo *, float>(perfomanceInfo, 1));
     }
