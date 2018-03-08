@@ -94,10 +94,10 @@ std::vector<int> ConvolutionLayer::splitDim(std::vector<int> in, int factor, int
     std::vector<int> out;
     for (int i = 0; i < in.size(); i++) {
         if (i == index) {
-            out.push_back(in.at(i)/factor);
+            out.push_back(in.at(static_cast<unsigned long>(i)) / factor);
         }
         else {
-            out.push_back(in.at(i)/1); // No idea why, but with /1 it works
+            out.push_back(in.at(static_cast<unsigned long>(i)) / 1); // No idea why, but with /1 it works
         }
     }
     return out;
@@ -219,9 +219,9 @@ void ConvolutionLayer::setPlatform(Platform *platform) {
 int ConvolutionLayer::getDifficulty() {
     outputWrapper = new DataWrapper(outputDimensions);
     if (this->difficulty == 0) {
-        this->difficulty = outputWrapper->getNumElements()
-                           * filterSize * filterSize
-                           * inputDimensions[Z_DIM];
+        this->difficulty = static_cast<int>(outputWrapper->getNumElements()
+                                            * filterSize * filterSize
+                                            * inputDimensions[Z_DIM]);
     }
     delete outputWrapper;
     return this->difficulty;

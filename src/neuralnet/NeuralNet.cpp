@@ -25,6 +25,7 @@
  */
 
 #include <iostream>
+#include <utility>
 #include "NeuralNet.h"
 
 // Include SimpleIterator only here in cpp to avoid build errors due to cyclic dependencies
@@ -54,7 +55,7 @@ bool NeuralNet::isPlacementComplete() {
     return true;
 }
 
-NeuralNet::NeuralNet(InputLayer *input, NetInfo info) : info(info) {
+NeuralNet::NeuralNet(InputLayer *input, NetInfo info) : info(std::move(info)) {
     layers.push_back(input);
 }
 

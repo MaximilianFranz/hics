@@ -120,5 +120,7 @@ ClPlatform::~ClPlatform() {
     clReleaseContext(context);
 }
 
+ClPlatform::ClPlatform() = default;
+
 // Make AOCL_Utils happy
 void cleanup() {}; // LCOV_EXCL_LINE

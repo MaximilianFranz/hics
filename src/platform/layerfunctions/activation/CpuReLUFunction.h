@@ -31,7 +31,6 @@
 class CpuReLUFunction : public ActivationFunction {
 public:
     void execute(const DataWrapper &input, DataWrapper &output) override;
-
 };
 
 

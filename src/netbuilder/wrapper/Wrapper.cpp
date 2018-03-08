@@ -26,7 +26,9 @@
 
 #include "Wrapper.h"
 
-//TODO: @Max: Redesign for new convention {channel, z, y, x}
+#include <utility>
+
+//TODO Redesign for new convention {channel, z, y, x}
 const float Wrapper::getElement(std::vector<int> location) {
     unsigned long pos = 0;
     for (int i = 0; i <= getNumDimensions() - 2; i++) {
@@ -46,7 +48,7 @@ unsigned long Wrapper::facultyOfDim(int dim) {
 
 Wrapper::Wrapper(std::vector<int> dimensions, std::vector<float> &data)
         :
-          dimensions(dimensions),
+          dimensions(std::move(dimensions)),
           data(data)
 {
     // Calculate total number of elements once
@@ -54,11 +56,11 @@ Wrapper::Wrapper(std::vector<int> dimensions, std::vector<float> &data)
 }
 
 Wrapper::Wrapper(std::vector<int> dimensions)
-        : dimensions(dimensions),
+        : dimensions(std::move(dimensions)),
           data(0)
 {
     numElements = calcTotalNumElements();
-    // data.reserve(numElements); //TODO: @Michael, this doesn't suffice (use this instead of line below an run test-case)
+    // data.reserve(numElements); //TODO this doesn't suffice (use this instead of line below an run test-case)
     data = std::vector<float>(numElements,0); //initialize 0-vector of required size - is in linear time
 }
 

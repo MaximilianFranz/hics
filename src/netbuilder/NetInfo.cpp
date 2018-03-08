@@ -26,11 +26,11 @@
 
 #include "NetInfo.h"
 
+#include <utility>
+
 
 NetInfo::NetInfo(std::string name, int imageDimension, std::string identifier)
-    : name(name), imageDimension(imageDimension), identifier(identifier) {
-    //
-}
+    : name(std::move(name)), imageDimension(imageDimension), identifier(std::move(identifier)) {}
 
 std::string NetInfo::getName() {
     return name;

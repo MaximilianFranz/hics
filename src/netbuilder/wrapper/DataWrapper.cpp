@@ -26,14 +26,16 @@
 
 #include "DataWrapper.h"
 
+#include <utility>
+
 
 DataWrapper::DataWrapper(std::vector<int> dimensions, std::vector<float> &data)
-    : Wrapper(dimensions, data) {
+    : Wrapper(std::move(dimensions), data) {
     // DataWrapper is the simplest form of Wrapper
 }
 
 DataWrapper::DataWrapper(std::vector<int> dimensions)
-        : Wrapper(dimensions) {
+        : Wrapper(std::move(dimensions)) {
     // DataWrapper is the simplest form of Wrapper
 }
 

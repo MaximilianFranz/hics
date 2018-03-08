@@ -31,7 +31,7 @@
 void CpuSoftMaxLossFunction::execute(const DataWrapper &input, DataWrapper &output) {
     auto in = input.getDataArray();
     auto out = output.getDataArray();
-    int n = input.getNumElements();
+    auto n = static_cast<int>(input.getNumElements());
 
     double sum = 0;
 

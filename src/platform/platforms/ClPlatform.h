@@ -59,7 +59,7 @@ public:
 
     ClPlatform();
 
-    ClPlatform(PlatformInfo &info);
+    explicit ClPlatform(PlatformInfo &info);
 
-    ~ClPlatform();
+    ~ClPlatform() override;
 };

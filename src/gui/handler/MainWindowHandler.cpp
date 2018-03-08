@@ -25,6 +25,7 @@
  */
 
 #include <QtCore/QThread>
+#include <utility>
 #include <CommunicationException.h>
 #include <ResourceException.h>
 #include "MainWindowHandler.h"
@@ -196,7 +197,7 @@ MainWindowHandler::~MainWindowHandler() {
 }
 
 void MainWindowHandler::updatePlatforms(std::shared_ptr<std::vector<PlatformInfo *>> platforms) {
-    updatedPlatforms = platforms;
+    updatedPlatforms = std::move(platforms);
 }
 
 MainWindow *MainWindowHandler::getMainWindow() const {

@@ -26,12 +26,14 @@
 
 #include "ImageWrapper.h"
 
+#include <utility>
+
 ImageWrapper::ImageWrapper(std::vector<int> &dimensions, std::string filepath)
-        : Wrapper(dimensions), filepath(filepath) {
+        : Wrapper(dimensions), filepath(std::move(filepath)) {
 }
 
 ImageWrapper::ImageWrapper(std::vector<int> dimensions, std::vector<float> &data, std::string filepath)
-            : Wrapper(dimensions, data), filepath(filepath) {
+            : Wrapper(std::move(dimensions), data), filepath(std::move(filepath)) {
 
 }
 

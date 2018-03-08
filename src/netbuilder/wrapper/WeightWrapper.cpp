@@ -26,6 +26,8 @@
 
 #include "WeightWrapper.h"
 
+#include <utility>
+
 
 const float *WeightWrapper::getBiasArray() const {
     return &bias[0];
@@ -41,9 +43,9 @@ const std::vector<int> &WeightWrapper::getBiasDimension() const {
 
 WeightWrapper::WeightWrapper(std::vector<int> dimensions, std::vector<float> &weights, std::vector<float> &bias,
                              std::vector<int> biasDimensions)
-        : Wrapper(dimensions, weights),
+        : Wrapper(std::move(dimensions), weights),
           bias(bias),
-          biasDimension(biasDimensions) {
+          biasDimension(std::move(biasDimensions)) {
 }
 
 WeightWrapper::~WeightWrapper() {

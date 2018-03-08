@@ -39,16 +39,15 @@ Layer *ConcatLayer::getPreviousLayer() const {
     return previousLayerList.at(0);
 }
 
-ConcatLayer::ConcatLayer(std::vector<std::vector<int>> inputLayersDimensions)
-{
-    this->inputLayersDimensions = std::move(inputLayersDimensions);
+ConcatLayer::ConcatLayer(std::vector<std::vector<int>> inputLayersDimensions) :
+        inputLayersDimensions{std::move(inputLayersDimensions)} {
     this->type = LayerType::CONCAT;
     this->outputDimensions = calcOutputDimensions();
 }
 
 // This concatenates multiple layer dimensions by putting them "behind" each other in z dimension
 std::vector<int> ConcatLayer::calcOutputDimensions() {
-    std::vector<int> outDim(3,0);
+    std::vector<int> outDim(3, 0);
     for (auto inDim : inputLayersDimensions) {
         outDim[D3_Z_DIM] += inDim[D3_Z_DIM];
         outDim[D3_Y_DIM] = inDim[D3_Y_DIM];

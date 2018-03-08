@@ -31,10 +31,10 @@
 
 class JSONModelLoader: public ModelLoader {
 public:
-    explicit JSONModelLoader(string path);
+    explicit JSONModelLoader(std::string path);
     void init();
-    string getNetWorkName() override;
-    string getNetWorkID() override;
+    std::string getNetWorkName() override;
+    std::string getNetWorkID() override;
     int getRequiredDimension() override;
 
     LayerConstructionParams getLayerConstructionParamsByIndex(int index) override;

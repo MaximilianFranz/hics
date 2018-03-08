@@ -34,8 +34,8 @@ void CpuFullyConnectedFunction::execute(const DataWrapper &input,
     auto w = weights.getDataArray();
     auto b = weights.getBiasArray();
 
-    int inSize = input.getNumElements();
-    int outSize = output.getNumElements();
+    auto inSize = static_cast<int>(input.getNumElements());
+    auto outSize = static_cast<int>(output.getNumElements());
 
     for (int row = 0; row < outSize; row++) {
         float sum = 0;

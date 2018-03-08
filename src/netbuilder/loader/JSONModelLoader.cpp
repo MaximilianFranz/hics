@@ -30,7 +30,7 @@
 #include "JSONModelLoader.h"
 
 
-JSONModelLoader::JSONModelLoader(string path) : ModelLoader(path){
+JSONModelLoader::JSONModelLoader(std::string path) : ModelLoader(path){
     this->init();
 }
 
@@ -44,11 +44,11 @@ void JSONModelLoader::init() {
     }
 }
 
-string JSONModelLoader::getNetWorkName() {
+std::string JSONModelLoader::getNetWorkName() {
     return ModelLoader::model["name"];
 }
 
-string JSONModelLoader::getNetWorkID() {
+std::string JSONModelLoader::getNetWorkID() {
     return model["identifier"];
 }
 
@@ -114,10 +114,5 @@ bool JSONModelLoader::isValid() {
     else if (model.count("requiredDimension") == 0) {
         return false;
     }
-    else if (model.count("layers") == 0) {
-        return false;
-    }
-    else {
-        return true;
-    }
+    else return model.count("layers") != 0;
 }

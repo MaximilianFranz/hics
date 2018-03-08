@@ -51,7 +51,7 @@ void ActivationLayer::setPlatform(Platform *platform) {
 int ActivationLayer::getDifficulty() {
     inputWrapper = new DataWrapper(inputDimensions);
     if (this->difficulty == 0)
-        this->difficulty = this->inputWrapper->getNumElements(); // Linear on input
+        this->difficulty = static_cast<int>(this->inputWrapper->getNumElements()); // Linear on input
     delete inputWrapper;
     return difficulty;
 }

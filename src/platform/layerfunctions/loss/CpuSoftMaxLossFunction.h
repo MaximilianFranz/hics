@@ -32,7 +32,6 @@
 class CpuSoftMaxLossFunction : public LossFunction {
 public:
     void execute(const DataWrapper &input, DataWrapper &output) override;
-
 };
 
 

@@ -53,7 +53,7 @@ public:
 
     ClConvolutionFunction(cl_context c, cl_device_id d);
 
-    ~ClConvolutionFunction();
+    ~ClConvolutionFunction() override;
 
 };
 

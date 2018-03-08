@@ -64,7 +64,7 @@ void PoolingLayer::setPlatform(Platform *platform) {
 int PoolingLayer::getDifficulty() {
     outputWrapper = new DataWrapper(outputDimensions);
     if (this->difficulty == 0) {
-        this->difficulty = filterSize * filterSize * outputWrapper->getNumElements();
+        this->difficulty = static_cast<int>(filterSize * filterSize * outputWrapper->getNumElements());
     }
     delete outputWrapper;
     return this->difficulty;
