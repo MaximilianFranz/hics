@@ -67,11 +67,11 @@ void MainWindowHandlerTest::setUpClassificationResult() {
     std::pair<std::string, float> pair3("Tiger", 0.09);
     std::pair<std::string, float> pair4("KIT", 0.016);
     std::pair<std::string, float> pair5("Baukran", 0.684);
-    results.push_back(pair1);
-    results.push_back(pair2);
-    results.push_back(pair3);
-    results.push_back(pair4);
     results.push_back(pair5);
+    results.push_back(pair2);
+    results.push_back(pair4);
+    results.push_back(pair3);
+    results.push_back(pair1);
 
     std::vector<int> dimensions{100, 100};
     ImageWrapper imageWrapper(dimensions, "/home/pselab/Dokumente/repo/hics/tests/resources/tf_data_script/dog.png");
@@ -141,6 +141,7 @@ void MainWindowHandlerTest::testDisplayClassification() {
     mainWindowHandler->processClassificationResult(classificationResult);
 
     //Get top result
+    std::string string = mainWindowHandler->getResultWidget()->getResultDisplays()[0]->topResult.first;
     QCOMPARE(mainWindowHandler->getResultWidget()->getResultDisplays()[0]->topResult.first, (std::string)"Baukran");
 
     QCOMPARE(mainWindowHandler->getDetailDialog()->getPowerConsumptionQLabel()->text().toStdString(), (std::string)"15 Ws");
