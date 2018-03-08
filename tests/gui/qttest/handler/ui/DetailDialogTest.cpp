@@ -35,9 +35,9 @@ void DetailDialogTest::initTestCase() {
     std::pair<std::string, float> pair5("Baukran", 0.684);
     results.push_back(pair5);
     results.push_back(pair2);
-    results.push_back(pair4);
     results.push_back(pair3);
     results.push_back(pair1);
+    results.push_back(pair4);
 
 
     std::vector<int> dimensions{100, 100};
