@@ -32,6 +32,9 @@
 #include "ClConvolutionFunction.h"
 #include <Helper.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 // Threadblock sizes (e.g. for kernels GEMM1 or GEMM2)
 #define TS 32
 
@@ -221,3 +224,5 @@ ClConvolutionFunction::~ClConvolutionFunction() {
     clReleaseProgram(program);
     clReleaseKernel(kernel);
 }
+
+#pragma GCC diagnostic pop
