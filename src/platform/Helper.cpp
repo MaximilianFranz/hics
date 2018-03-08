@@ -108,12 +108,9 @@ namespace helper {
 
         float* out = new float [sizeX*sizeY];
 
-        for (int y = 0; y < sizeY; y++) {
-            for (int x = 0; x < sizeX; x++ ) {
-                int index = x*sizeY + y;
-                float val = *input;
-                out[index] = val;
-                input++;
+        for (int x = 0; x < sizeX; x++) {
+            for (int y = 0; y < sizeY; y++) {
+                out[x*sizeY + y] = input[y*sizeX + x];
             }
         }
 
