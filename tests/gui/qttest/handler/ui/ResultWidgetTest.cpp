@@ -109,7 +109,6 @@ void ResultWidgetTest::testNotAggregated() {
 }
 
 void ResultWidgetTest::testAggregated() {
-    //TODO proper delete allocated memeory in ResultDisplays
     classificationResult->aggregateResults();
 
     resultWidget->displayResults(classificationResult);

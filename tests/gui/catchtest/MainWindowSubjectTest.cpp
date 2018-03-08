@@ -53,7 +53,5 @@ TEST_CASE("MainWindowSubject can attach, detach and notfiy ManagerObserver's", "
     SECTION("Method notify() test", "[notify]") {
         ClassificationResult *result = subject.notify();
         REQUIRE(result == nullptr);
-        //REQUIRE observe1 and observer 2 update has been called
-        //TODO add notify test when implemented
     }
 }

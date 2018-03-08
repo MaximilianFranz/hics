@@ -131,7 +131,7 @@ void MainWindowHandlerTest::testStartClassification() {
     QCOMPARE(request->getAggregateResults(), false);
 
     QCOMPARE(request->getSelectedNeuralNet().getIdentifier(), (std::string)"googlenet");
-    QCOMPARE(request->getSelectedOperationMode(), OperationMode::HighPower); //TODO change this when operation mode implemented
+    QCOMPARE(request->getSelectedOperationMode(), OperationMode::HighPower);
     QCOMPARE(request->getSelectedPlatforms().at(0)->getPlatformId(), (std::string)"fpga");
     QCOMPARE((int)request->getUserImages().size(), 1);
 }
