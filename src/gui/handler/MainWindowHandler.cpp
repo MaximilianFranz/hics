@@ -25,6 +25,8 @@
  */
 
 #include <QtCore/QThread>
+#include <CommunicationException.h>
+#include <ResourceException.h>
 #include "MainWindowHandler.h"
 
 MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::vector<PlatformInfo *> &platforms,
@@ -68,9 +70,14 @@ void MainWindowHandler::setClassificationRequestState() {
     }
 }
 
-void MainWindowHandler::displayErrorMessage(const std::string &errorMessage) {
+void MainWindowHandler::displayErrorMessage(const std::string &errorMessage, bool close) {
     startWidget->resetProgressDisplay();
-    startWidget->displayErrorMessage(QString::fromStdString(errorMessage));
+    auto errorDialog = startWidget->displayErrorMessage(QString::fromStdString(errorMessage));
+
+    //If an exception occured that need the program to be shut down
+    if(close){
+        connect(errorDialog, &QDialog::finished, mainWindow, &QMainWindow::close);
+    }
 }
 
 ClassificationRequest *MainWindowHandler::getClassificationRequestState() {
@@ -98,6 +105,8 @@ void MainWindowHandler::processClassificationResult(ClassificationResult *classi
             try {
                 //Since the exception is stored as a exception pointer we need to rethrow it to catch the exception
                 std::rethrow_exception(exceptionptr);
+            } catch (ResourceException &e){
+                displayErrorMessage(e.what(), true);
             } catch (std::exception &e) {
                 //Display the error message and reset the loading state of the GUI to the normal starting page
                 displayErrorMessage(e.what());

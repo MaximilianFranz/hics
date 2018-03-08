@@ -301,10 +301,11 @@ void StartWidget::clearLayout(QLayout *layout) {
     }
 }
 
-void StartWidget::displayErrorMessage(const QString message) {
+QErrorMessage* StartWidget::displayErrorMessage(const QString message) {
     auto error = new QErrorMessage(this);
     error->setWindowTitle("Error");
     error->showMessage(message);
+    return error;
 }
 
 NetInfo StartWidget::getSelectedNeuralNet() {
