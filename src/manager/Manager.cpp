@@ -112,14 +112,16 @@ void Manager::initGUI() {
                          c.getFailedHost()->getName());
             //remove failed host
             computationHosts.erase(std::find(computationHosts.begin(), computationHosts.end(), c.getFailedHost()));
-            exceptionptr = std::current_exception();
         } catch (ResourceException& r) {
             logger->critical("error while querying nets: {}. Aborting!", r.what());
             exceptionptr = std::current_exception();
         }
     }
 
-    auto nets = netIntersection(allNets);
+    std::vector<NetInfo*> nets;
+    if (!exceptionptr) {
+        nets = netIntersection(allNets);
+    }
 
     auto platforms = std::vector<PlatformInfo*>();
     for (auto host : computationHosts) {
@@ -146,6 +148,7 @@ ClassificationResult* Manager::update() {
     std::vector<std::vector<ImageWrapper *>> batches;
     std::vector<int> compTime;
     std::vector<std::vector<ImageResult *>> allResults;
+    std::vector<std::pair<ComputationHost *, int>> hostDistribution;
 
     ClassificationRequest *request = mainWindowHandler->getClassificationRequestState();
 
@@ -175,23 +178,28 @@ ClassificationResult* Manager::update() {
         exceptionptr = std::current_exception();
     }
 
-    if (!exceptionptr) {
-        //Remove a computationHost if none of its Platforms are selected
-        availableHosts = computationHosts;
-        for (uint i = 0; i < availableHosts.size(); i++) {
-            if (hostPlatforms[i].empty()) {
-                ComputationHost *currentHost = availableHosts[i];
-                availableHosts.erase(std::find_if(availableHosts.begin(),
-                                                  availableHosts.end(),
-                                                  [&currentHost](ComputationHost *temp) {
-                                                      return temp->getName() == currentHost->getName();
-                                                  }));
-                hostPlatforms.erase(hostPlatforms.begin() + i);
-            }
+    //Remove a computationHost if none of its Platforms are selected
+    availableHosts = computationHosts;
+    for (uint i = 0; i < availableHosts.size(); i++) {
+        if (hostPlatforms[i].empty()) {
+            ComputationHost *currentHost = availableHosts[i];
+            availableHosts.erase(std::find_if(availableHosts.begin(),
+                                              availableHosts.end(),
+                                              [&currentHost](ComputationHost *temp) {
+                                                  return temp->getName() == currentHost->getName();
+                                              }));
+            hostPlatforms.erase(hostPlatforms.begin() + i);
         }
+    }
+    try {
+        hostDistribution = HostPlacer::place(availableHosts, (int) processedImages.size(),
+                                             request->getSelectedOperationMode());
+    } catch (ResourceException &r) {
+        logger->critical(r.what());
+        exceptionptr = std::current_exception();
+    }
 
-        std::vector<std::pair<ComputationHost *, int>> hostDistribution =
-                HostPlacer::place(availableHosts, (int) processedImages.size(), request->getSelectedOperationMode());
+    if (!exceptionptr) {
 
         batches = std::vector<std::vector<ImageWrapper *>>(availableHosts.size());
         int hostIndex = 0;
@@ -358,9 +366,14 @@ Manager::~Manager() {
  * @return adress of the computationHost
  */
 std::string getHostAdress(std::string hostname) {
-    std::ifstream i(RES_DIR "computationHosts.json");
     json computationHostFile;
-    i >> computationHostFile;
+    try {
+        std::ifstream i(RES_DIR "computationHosts.json");
+        i >> computationHostFile;
+    } catch (...) {
+        throw ResourceException("Error while reading computationHosots.json");
+    }
+
     json computationHost = computationHostFile["computationHosts"];
     for (auto compHostIt : computationHost) {
         if (compHostIt["name"] == hostname) {

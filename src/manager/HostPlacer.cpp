@@ -32,9 +32,14 @@
 
 
 HostPlacer::Performance HostPlacer::readComputationHostInfo(std::string hostName) {
-    std::ifstream i(RES_DIR "computationHosts.json");
     json computationHostFile;
-    i >> computationHostFile;
+    try {
+        std::ifstream i(RES_DIR "computationHosts.json");
+        i >> computationHostFile;
+    } catch (...) {
+        throw ResourceException("Error while reading computationHosts.json, classification not possible");
+    }
+
     json computationHost = computationHostFile["computationHosts"];
 
     for (auto compHostIt : computationHost) {
