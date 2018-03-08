@@ -4,7 +4,6 @@ set(SOURCE_FILES
         platforms/Platform.h
         platforms/PlatformType.h
         platforms/CpuPlatform.cpp platforms/CpuPlatform.h
-        layerfunctions/CLFunction.cpp layerfunctions/CLFunction.h
         layerfunctions/activation/ActivationFunction.h
         layerfunctions/activation/CpuReLUFunction.cpp layerfunctions/activation/CpuReLUFunction.h
         layerfunctions/convolution/ConvolutionFunction.h
