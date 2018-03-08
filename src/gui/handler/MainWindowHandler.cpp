@@ -149,7 +149,7 @@ void MainWindowHandler::connectAll() {
     connect(resultWidget->getDetailsQPushButton(), SIGNAL(clicked(bool)), this, SLOT(processDetailQPushButton()));
 
     //Resets detailDialog and resultWidget when resultWidget is destroyed; display startWidget
-    connect(resultWidget, SIGNAL(destroyed()), this, SLOT(processReturnQPushButton())); //TODO Check if this works
+    connect(resultWidget, SIGNAL(destroyed()), this, SLOT(processReturnQPushButton()));
 }
 
 void MainWindowHandler::disconnectAll() {

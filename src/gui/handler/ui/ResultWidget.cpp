@@ -82,10 +82,6 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
 
         std::vector<std::pair<std::string, float>> result = imageResult.getResults();
 
-        //TODO remove sorting since results should already be sorted
-        //Sorts the results so that the result with the highest float percentage gets displayed first
-        result = sortVector(result);
-
         //If its not aggregated the individual result must be inside the QScrollArea
         if (!aggregated) {
             QFrame *resultLayout = createResultLayout(result, resultDisplay);
@@ -93,7 +89,6 @@ void ResultWidget::displayResults(ClassificationResult *classificationResult) {
         }
 
         ui->imagesQGridLayout->addWidget(imageLayout, i, 0);
-        //TODO check if the size of the displayed picture, text etc. is alright
     }
 
     //Display the aggregated result outside of the QScrollArea
@@ -127,7 +122,6 @@ QFrame *ResultWidget::createImageLayout(const std::string &filePath, ImageDispla
     //Displays the file path
     QLabel *filePathLabel = new QLabel(this);
 
-    //TODO maybe QString attribute unnecessary (auto cast std::string to QString?)
     QString q_filePath = QString::fromStdString(filePath);
 
     filePathLabel->setToolTip(q_filePath);
@@ -194,7 +188,7 @@ ResultWidget::createResultLayout(std::vector<std::pair<std::string, float>> &res
         layout->addWidget(name, (int) (i + 1), 0);
 
         QLabel *percentage = new QLabel(this);
-        //TODO when percentage too long round the number
+
         percentage->setText(QString::number(pair.second * 100) + "%");
 
         percentage->setAlignment(Qt::AlignRight);
@@ -232,24 +226,6 @@ QString ResultWidget::shortLink(const std::string &link) {
     }
 
     return output;
-}
-
-std::vector<std::pair<std::string, float>>
-ResultWidget::sortVector(std::vector<std::pair<std::string, float>> &vector) {
-
-    for (unsigned int i = 0; i < vector.size(); ++i) {
-        std::pair<std::string, float> *pair_i = &vector[i];
-
-        for (unsigned int j = 0; j < vector.size(); ++j) {
-            std::pair<std::string, float> *pair_j = &vector[j];
-
-            if ((i != j) && (pair_i->second > pair_j->second)) {
-                std::swap(*pair_i, *pair_j);
-            }
-        }
-    }
-
-    return vector;
 }
 
 void ResultWidget::clearLayout(QLayout *layout) {

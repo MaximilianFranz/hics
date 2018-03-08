@@ -93,8 +93,10 @@ public:
     * @brief This constructor initializes the GUI with the needed information on available data.
     *
     * The constructor gets the available neural nets, platforms and operation modes which will be displayed after
-    * the GUI is constructed.
-    * TODO more info
+    * the GUI is constructed. It creates a StartWidget with these objects and then a ResultWidget and DetailDialog.
+    * They all get added to the created mainWindow's QStackedWidget and initialy the StartWidgete is displayed. The
+    * necessary buttons get connected to their methods in connectAll() and then the GUI is shown via the constructor
+    * of mainWIndow.
     *
     * @param neuralNets the available neural nets in the software
     * @param platforms the available platforms in the software

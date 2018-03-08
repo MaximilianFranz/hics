@@ -28,7 +28,6 @@
 
 #include "ResponseNormalizationFunction.h"
 
-// TODO rename to CpuLocalResponseNormalizationFunction
 class CpuResponseNormalizationFunction : public ResponseNormalizationFunction {
 public:
     void execute(const DataWrapper &input,

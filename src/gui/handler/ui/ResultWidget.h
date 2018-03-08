@@ -104,8 +104,6 @@ private:
 
     QString shortLink(const std::string &link);
 
-    std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
-
     void clearLayout(QLayout *layout);
 
     void resize();
