@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=HICS
+Icon=hics
+Exec=hics
+Comment=Heterogenous Image Classification System
+Categories=Image Classification;Neural Networks;
+Terminal=false
+StartupWMClass=hics
