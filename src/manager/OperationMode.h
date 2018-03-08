@@ -56,8 +56,10 @@ struct OperationModeString {
             case EnergyEfficient:
                 return "Energy efficient";
 
+            // LCOV_EXCL_START
             default:
                 throw IllegalArgumentException("No such operation mode");
+            // LCOV_EXCL_STOP
         }
     }
 
