@@ -117,7 +117,8 @@ endif()
 install(DIRECTORY resources/weights DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/
         FILES_MATCHING PATTERN "*.h5")
 install(DIRECTORY resources/models DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/)
-install(DIRECTORY resources/kernels DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/)
+install(FILES resources/kernels/gemm3.cl DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/kernels/)
+install(FILES resources/kernels/gemm4_fpga.cl DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/kernels/)
 # Rename those files and install them as examples, as they will need explicit configuration
 install(FILES resources/platforms.json DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/
         RENAME platforms.json.example)
