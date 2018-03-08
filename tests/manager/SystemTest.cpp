@@ -12,8 +12,20 @@ SCENARIO("System Test") {
         int argc = sizeof(argv) / sizeof(char*) - 1;
         QApplication a(argc, argv);
 
-        Manager manager;
+        Manager manager = Manager();
         manager.initGUI();
         a.exec();
+
+        rename(RES_DIR "computationHosts.json", RES_DIR "c.json");
+        manager = Manager();
+        manager.initGUI();
+        a.exec();
+        rename(RES_DIR "c.json",RES_DIR "computationHosts.json");
+
+        rename(RES_DIR "models/alexnet.json", RES_DIR "models/c.json");
+        manager = Manager();
+        manager.initGUI();
+        a.exec();
+        rename(RES_DIR "models/c.json", RES_DIR "models/alexnet.json");
     }
 }
