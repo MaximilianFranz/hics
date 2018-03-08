@@ -105,13 +105,14 @@ void MainWindowHandlerTest::setUpClassificationResult() {
 
 
 void MainWindowHandlerTest::testConstructor() {
+    mainWindowHandler->init();
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->isVisible(), true);
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
              mainWindowHandler->getStartWidget());
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->widget(1),
              mainWindowHandler->getResultWidget());
 
-    //Opens About Box
+    //Should open About Box
     mainWindowHandler->getMainWindow()->openAboutBox();
 }
 
