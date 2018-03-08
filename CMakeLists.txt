@@ -126,4 +126,4 @@ install(FILES resources/computationHosts.json DESTINATION ${CMAKE_INSTALL_SYSCON
         RENAME computationHosts.json.example)
 # Install a desktop file for hics, our main GUI
 install(FILES data/hics.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/256x256/apps/)
-install(FILES data/hics.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/share/applications/)
+install(FILES data/hics.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications/)
