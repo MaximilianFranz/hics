@@ -110,6 +110,13 @@ public:
     ~MainWindowHandler();
 
     /**
+     * @brief init will start the displaying of the GUI
+     *
+     * When calling init the mainWindow's init method will be called and the GUI gets started.
+     */
+    void init();
+
+    /**
     * @brief updatePlatforms refreshes the currently displayed platforms in the GUI
     * @param platforms are the platforms that shall be displayed in the GUI
     */

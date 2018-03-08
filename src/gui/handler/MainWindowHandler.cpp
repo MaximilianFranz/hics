@@ -45,8 +45,14 @@ MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::ve
     mainWindow->setCurrentWidget(startWidget);
 
     connectAll();
+}
 
+void MainWindowHandler::init() {
     checkExceptionPtr();
+
+    if(mainWindow) {
+        mainWindow->init();
+    }
 }
 
 void MainWindowHandler::setClassificationRequestState() {
