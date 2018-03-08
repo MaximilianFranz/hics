@@ -199,9 +199,9 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
                        patch_result.data());
 
     // Pad matrices and convert to column major format
-    int K = weights_columns;
-    int M = number_of_kernels;
-    int N = patch_columns;
+    unsigned int K = weights_columns;
+    unsigned int M = number_of_kernels;
+    unsigned int N = patch_columns;
 
     int paddedK = 0;
     int paddedM = 0;

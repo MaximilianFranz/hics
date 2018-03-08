@@ -131,9 +131,9 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
                        patch_result.data());
 
     // Pad matrices and convert to column major format
-    int K = weights_columns;
-    int M = number_of_kernels;
-    int N = patch_columns;
+    unsigned int K = weights_columns;
+    unsigned int M = number_of_kernels;
+    unsigned int N = patch_columns;
 
     int paddedK = 0;
     int paddedM = 0;
@@ -186,7 +186,7 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
     clSetKernelArg(kernel, 6, sizeof(cl_mem), (void*)&bufD);
 
     const size_t local[2] = { TS, TS/WPT };
-    const size_t global[2] = {static_cast<const size_t>(M), static_cast<const size_t>(N) / WPT};
+    const size_t global[2] = { M, N/WPT };
     cl_event event;
     cl_int result = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, global, local, 0, NULL, &event);
     helper::CheckError(result);
