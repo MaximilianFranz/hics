@@ -51,7 +51,7 @@ const float eps = 0.001;
 
 TEST_CASE("Activation ReLU test") {
     PlatformManager& pm = PlatformManager::getInstance();
-    REQUIRE(pm.getPlatforms().size() >= 1);
+    REQUIRE(!pm.getPlatforms().empty());
 
     Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
@@ -121,7 +121,7 @@ TEST_CASE("Convolution test") {
     WeightWrapper weights(filterDim, filterData, biasData, biasDim);
 
     PlatformManager &pm = PlatformManager::getInstance();
-    REQUIRE(pm.getPlatforms().size() >= 1);
+    REQUIRE(!pm.getPlatforms().empty());
 
     Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
@@ -176,7 +176,7 @@ TEST_CASE("test with real data from AlexNet") {
     DataWrapper conv1_expected(outDim, result);
 
     PlatformManager &pm = PlatformManager::getInstance();
-    REQUIRE(pm.getPlatforms().size() >= 1);
+    REQUIRE(!pm.getPlatforms().empty());
 
     Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
@@ -279,7 +279,7 @@ TEST_CASE("Maxpooling test") {
 
 
     PlatformManager &pm = PlatformManager::getInstance();
-    REQUIRE(pm.getPlatforms().size() >= 1);
+    REQUIRE(!pm.getPlatforms().empty());
 
     Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
@@ -326,7 +326,7 @@ TEST_CASE("Softmax test") {
     DataWrapper output({1, 7});
 
     PlatformManager &pm = PlatformManager::getInstance();
-    REQUIRE(pm.getPlatforms().size() >= 1);
+    REQUIRE(!pm.getPlatforms().empty());
 
     Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
@@ -339,7 +339,7 @@ TEST_CASE("Softmax test") {
     REQUIRE(std::abs(output.getData()[0] - 0.024) < eps);
 
     float sum = 0;
-    int n = output.getNumElements();
+    int n = static_cast<int>(output.getNumElements());
     for (int i = 0; i < n; i++) {
         sum += output.getData()[i];
     }
@@ -361,7 +361,7 @@ TEST_CASE("FullyConnected") {
 
 
     PlatformManager &pm = PlatformManager::getInstance();
-    REQUIRE(pm.getPlatforms().size() >= 1);
+    REQUIRE(!pm.getPlatforms().empty());
 
     Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
@@ -405,7 +405,7 @@ TEST_CASE("FullyConnected one with real data") {
     WeightWrapper *transformedWeights = new WeightWrapper({4096,9216},weight, bias ,{4096} );
 
     PlatformManager &pm = PlatformManager::getInstance();
-    REQUIRE(pm.getPlatforms().size() >= 1);
+    REQUIRE(!pm.getPlatforms().empty());
 
     Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
@@ -447,7 +447,7 @@ TEST_CASE("FullyConnected two with real data") {
 
 
     PlatformManager &pm = PlatformManager::getInstance();
-    REQUIRE(pm.getPlatforms().size() >= 1);
+    REQUIRE(!pm.getPlatforms().empty());
 
     Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
@@ -488,7 +488,7 @@ TEST_CASE("FullyConnected three with real data") {
 
 
     PlatformManager &pm = PlatformManager::getInstance();
-    REQUIRE(pm.getPlatforms().size() >= 1);
+    REQUIRE(!pm.getPlatforms().empty());
 
     Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
@@ -521,7 +521,7 @@ TEST_CASE("Softmax with real data") {
 
 
     PlatformManager &pm = PlatformManager::getInstance();
-    REQUIRE(pm.getPlatforms().size() >= 1);
+    REQUIRE(!pm.getPlatforms().empty());
 
     Platform *p = pm.getPlatforms()[0];
     REQUIRE(p != nullptr);
@@ -609,7 +609,7 @@ TEST_CASE("transpose") {
 TEST_CASE("unknown layer types") {
     // Test all available platforms
     PlatformManager &pm = PlatformManager::getInstance();
-    REQUIRE(pm.getPlatforms().size() >= 1);
+    REQUIRE(!pm.getPlatforms().empty());
 
     for (unsigned int i = 0; i < pm.getPlatforms().size(); i++) {
         Platform *p = pm.getPlatforms()[i];
@@ -658,11 +658,11 @@ TEST_CASE("unknown layer types") {
 TEST_CASE("platform cleanup") {
     // Test all available platforms
     PlatformManager &pm = PlatformManager::getInstance();
-    REQUIRE(pm.getPlatforms().size() >= 1);
+    REQUIRE(!pm.getPlatforms().empty());
 
     // Now reset all platforms, this should trigger various destructors.
     pm.reset();
 
     // We should still have at least one platform after a reset
-    REQUIRE(pm.getPlatforms().size() >= 1);
+    REQUIRE(!pm.getPlatforms().empty());
 }
