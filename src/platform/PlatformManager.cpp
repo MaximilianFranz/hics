@@ -51,7 +51,6 @@ PlatformManager::PlatformManager() {
         int flops = it["flops"];
 
         if (type == "CPU") {
-            // TODO: validate if given platform matches the actual CPU on the host
             PlatformInfo pi(desc, PlatformType::CPU, uuid, power, flops);
             platforms.push_back(new CpuPlatform(pi));
 #ifdef ALTERA

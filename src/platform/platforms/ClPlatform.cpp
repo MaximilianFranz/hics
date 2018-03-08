@@ -106,8 +106,6 @@ void ClPlatform::init() {
         status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL); // LCOV_EXCL_LINE
     } else if (platformInfo.getType() == PlatformType::CL_CPU) {
         status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, NULL);
-    } else {
-        // TODO: throw exception?
     }
     aocl_utils::checkError(status, "Query for device ids failed");
 

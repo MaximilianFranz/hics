@@ -39,7 +39,7 @@ void CpuConvolutionFunction::execute(const DataWrapper &input,
     auto o = output.getDataArray();
 
 
-    // TODO: we assume filterSize is always odd, verify if that is true
+    // We assume filterSize is always odd
     int halfFilterSize = (filterSize -1 ) / 2;
     int numPlanes = input.getDimensions()[0];
     int numRows = input.getDimensions()[1];

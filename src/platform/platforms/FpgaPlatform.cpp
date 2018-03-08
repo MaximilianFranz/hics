@@ -102,7 +102,9 @@ void FpgaPlatform::init() {
     aocl_utils::checkError(status, "Query for platform ids failed");
 
     device = 0;
-    // TODO: Switch filter platforms, error checking
+    // We could filter for the platform name, but since the FpgaPlatform
+    // is only available on the board, this is not strictly necessary, so we
+    // just query for all available platforms.
     status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 1, &device, NULL);
     aocl_utils::checkError(status, "Query for device ids failed");
 
