@@ -73,7 +73,6 @@ HostPlacer::place(std::vector<ComputationHost*> &hosts, int numOfImg, OperationM
     }
 }
 
-//TODO: Case: Two or more Hosts have the least amaount of power usage
 std::vector<std::pair<ComputationHost *, int>> &
 HostPlacer::placeLowPower(std::vector<std::pair<ComputationHost *, HostPlacer::Performance>> &hosts, int numOfImg) {
     //Find the Host with the least power consumption

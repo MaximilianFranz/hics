@@ -52,8 +52,7 @@ Status ComputationServer::classify(::grpc::ServerContext *context, const ::Class
         case ClassifyRequest::EnergyEfficient   : mode = OperationMode::EnergyEfficient;
             break;
         default:
-            //TODO: specific exeption
-            throw std::exception();
+            throw IllegalArgumentException("Unknown operation mode");
     }
 
     std::vector<PlatformInfo*> platforms;
@@ -62,7 +61,6 @@ Status ComputationServer::classify(::grpc::ServerContext *context, const ::Class
         platforms.push_back(Util::messageToPlatformInfo(&(request->selectedplatforms(i))));
     }
 
-    //TODO: find way to include private attribute
     std::vector<ImageResult*> results = fpgaExecutor->classify(images, net, mode, platforms);
 
     //Set the new result in the message reply
