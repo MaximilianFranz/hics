@@ -46,7 +46,7 @@
 
 std::string LoadKernel(const char *name) {
     std::ifstream in(name);
-    std::string result(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
+    std::string result((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
     return result;
 }
 
