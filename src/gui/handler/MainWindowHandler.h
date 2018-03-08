@@ -87,6 +87,8 @@ private:
 
     void disconnectAll();
 
+    void checkExceptionPtr();
+
 public:
 
     /**

@@ -45,6 +45,8 @@ MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::ve
     mainWindow->setCurrentWidget(startWidget);
 
     connectAll();
+
+    checkExceptionPtr();
 }
 
 void MainWindowHandler::setClassificationRequestState() {
@@ -84,6 +86,26 @@ ClassificationRequest *MainWindowHandler::getClassificationRequestState() {
     return classificationRequestState;
 }
 
+void MainWindowHandler::checkExceptionPtr() {
+    //Check if an exception has been set during the classification
+    if (exceptionptr) {
+        try {
+            //Since the exception is stored as a exception pointer we need to rethrow it to catch the exception
+            std::rethrow_exception(exceptionptr);
+        } catch (ResourceException &e){
+            //Display the error message to the user and shutdown the software when closing the message
+            displayErrorMessage(e.what(), true);
+        } catch (std::exception &e) {
+            //Display the error message and reset the loading state of the GUI to the normal starting page
+            displayErrorMessage(e.what());
+            exceptionptr = nullptr;
+        }
+    } else {
+        //This case should never occur, but for safety measures the GUI should be resetted
+        startWidget->resetProgressDisplay();
+    }
+}
+
 void MainWindowHandler::processClassificationResult(ClassificationResult *classificationResult) {
     //If classificationResult is a nullptr the classification went wrong
     if (classificationResult) {
@@ -101,21 +123,7 @@ void MainWindowHandler::processClassificationResult(ClassificationResult *classi
         mainWindow->setCurrentWidget(resultWidget);
     } else {
         //Check if an exception has been set during the classification
-        if (exceptionptr) {
-            try {
-                //Since the exception is stored as a exception pointer we need to rethrow it to catch the exception
-                std::rethrow_exception(exceptionptr);
-            } catch (ResourceException &e){
-                displayErrorMessage(e.what(), true);
-            } catch (std::exception &e) {
-                //Display the error message and reset the loading state of the GUI to the normal starting page
-                displayErrorMessage(e.what());
-                exceptionptr = nullptr;
-            }
-        } else {
-            //This case should never occur, but for safety measures the GUI should be resetted
-            startWidget->resetProgressDisplay();
-        }
+        checkExceptionPtr();
 
         if(updatedPlatforms){
             startWidget->updatePlatforms(*(updatedPlatforms.get()));
