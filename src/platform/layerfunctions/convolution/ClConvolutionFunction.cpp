@@ -26,8 +26,7 @@
 
 #include <iostream>
 #include <fstream>
-
-#include "AOCL_Utils.h"
+#include <cstring>
 
 #include "ClConvolutionFunction.h"
 #include <Helper.h>
@@ -41,43 +40,20 @@
 // RTS = TS / WPT
 #define WPT 8
 
-// =================================================================================================
-// The following functions should be split out and moved into a separate name space
-
-std::string LoadKernel (const char* name) {
-    std::ifstream in (name);
-    std::string result ((std::istreambuf_iterator<char> (in)), std::istreambuf_iterator<char> ());
-    return result;
-}
-
-cl_program CreateProgram (const std::string& source, cl_context context) {
-    // http://www.khronos.org/registry/cl/sdk/1.1/docs/man/xhtml/clCreateProgramWithSource.html
-    size_t lengths [1] = { source.size () };
-    const char* sources [1] = { source.data () };
-
-    cl_int error = 0;
-    cl_program program = clCreateProgramWithSource (context, 1, sources, lengths, &error);
-    helper::CheckError (error);
-
-    return program;
-}
-
-// =================================================================================================
-
 ClConvolutionFunction::ClConvolutionFunction(cl_context c, cl_device_id d)
         : context(c), device(d) {
 
     cl_int status = 0;
     queue = clCreateCommandQueue(context, device, 0, &status);
-    aocl_utils::checkError(status, "Failed to create command queue");
+    helper::CheckError(status);
 
-    program = CreateProgram(LoadKernel(RES_DIR "kernels/gemm3.cl"), context);
+    program = helper::CreateProgram(helper::LoadKernel(RES_DIR "kernels/gemm3.cl"), context);
 
     char cmdline[1024];
     snprintf(cmdline, 1024, "-DTS=%d -DWPT=%d -DRTS=%d", TS, WPT, TS/WPT);
     clBuildProgram(program, 0, NULL, cmdline, NULL, NULL);
 //    status = clBuildProgram(program, 0, NULL, "", NULL, NULL);
-    aocl_utils::checkError(status, "Failed to build program");
+    helper::CheckError(status);
 
     // Check for compilation errors
     size_t logSize;
@@ -91,7 +67,6 @@ ClConvolutionFunction::ClConvolutionFunction(cl_context c, cl_device_id d)
     kernel = clCreateKernel(program, "GEMM3", NULL);
 
 }
-
 
 
 void ClConvolutionFunction::execute(const DataWrapper &input,

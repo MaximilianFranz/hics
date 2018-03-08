@@ -135,4 +135,8 @@ namespace helper {
     const char *getErrorString(cl_int error);
 
     void CheckError(cl_int error);
+
+    std::string LoadKernel (const char* name);
+
+    cl_program CreateProgram (const std::string& source, cl_context context);
 }
