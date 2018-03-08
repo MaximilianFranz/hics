@@ -57,7 +57,8 @@ std::vector<int> ConcatLayer::calcOutputDimensions() {
     return outDim;
 }
 
-//TODO: Implement by iterating over previousLayerList an concatenating outputs.
+// TODO: Implement this in order to use GoogleNet.
+// forward() adds up the input into one DataWrapper
 void ConcatLayer::forward() {
     throw NotImplementedException();
 

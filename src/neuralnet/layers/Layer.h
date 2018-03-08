@@ -64,7 +64,6 @@ public:
 
 
     /**
-     * //TODO: Use pointers for execute() signature? Because wrappers are held as pointers!
      * Triggers the computation of the forward propagation. Takes input from inputWrapper and writes to
      * outputWrapper
      *

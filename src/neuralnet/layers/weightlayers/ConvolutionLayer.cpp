@@ -45,7 +45,7 @@ ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPaddi
     this->inputDimensions = inputDimensions;
     this->type = LayerType::CONVOLUTION;
     this->outputDimensions = calcOutputDimensions();
-    init(); // TODO never call virtual functions in constructor
+    init();
 }
 
 std::vector<int> ConvolutionLayer::calcOutputDimensions() {

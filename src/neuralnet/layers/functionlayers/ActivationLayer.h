@@ -38,7 +38,6 @@ class ActivationLayer : public Layer {
 protected:
     ActivationFunction* function = nullptr;
 public:
-    // TODO: This is not technically correct, because ActivationsLayer should not be instantiated.
     explicit ActivationLayer(std::vector<int> &inputDimensions);
 
     std::vector<int> calcOutputDimensions() override;

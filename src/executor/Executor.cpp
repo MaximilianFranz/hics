@@ -74,8 +74,9 @@ ImageResult *Executor::classifyImage(ImageWrapper *image) {
 
 void Executor::setupIfChanged(NetInfo *netInfo, OperationMode mode, std::vector<PlatformInfo *> &selectedPlatforms) {
 
-    //Check if currently built net is correct!
-    if(netInfo->getIdentifier() != this->net->getInfo().getIdentifier()) { //TODO: Overide == operator in NetInfo
+    // Check if currently built net is correct!
+    // TODO: Overide == operator in NetInfo
+    if(netInfo->getIdentifier() != this->net->getInfo().getIdentifier()) {
         // free memory
         delete net;
         // create new NeuralNet as requested
