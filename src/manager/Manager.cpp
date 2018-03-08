@@ -68,7 +68,10 @@ Manager::Manager() {
 
     try {
         // Create basic file logger (not rotated)
-        logger = spdlog::stdout_color_mt("logger");
+        if (!logger) {
+            logger = spdlog::stdout_color_mt("logger");
+        }
+
         logger->set_level(spdlog::level::info);
         logger->flush_on(spdlog::level::info);
         logger->info("logger initialization successful");
@@ -97,9 +100,13 @@ Manager::Manager() {
         logger->warn("error while reading host adress of host {}: {}. Host will be disabled.",
                      clientName, r.what());
     }
-
-    ComputationHost* executor = new Executor("local");
-    computationHosts.push_back(executor);
+    try {
+        Executor *executor = new Executor("local");
+        computationHosts.push_back(executor);
+    } catch (ResourceException &r) {
+        logger->critical("could not read platforms of host {}, maybe the platforms.json is corrupted?");
+        exceptionptr = std::current_exception();
+    }
 }
 
 void Manager::initGUI() {
@@ -133,7 +140,7 @@ void Manager::initGUI() {
     mainWindowHandler = new MainWindowHandler(nets, platforms, modes);
 
     //Check if exception occured while setting up System
-    if(exceptionptr) {
+    if (exceptionptr) {
         mainWindowHandler->setExceptionptr(exceptionptr);
 
         //Null exceptionptr for next classification
