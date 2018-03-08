@@ -216,6 +216,7 @@ namespace helper {
     template void
     add_bias<float>(float *data_matrix, const float *bias, int rows, int columns);
 
+    // LCOV_EXCL_START
     const char *getErrorString(cl_int error)
     {
         switch(error){
@@ -292,12 +293,15 @@ namespace helper {
             default: return "Unknown OpenCL error";
         }
     }
+    // LCOV_EXCL_STOP
 
     void CheckError (cl_int error)
     {
         if (error != CL_SUCCESS) {
+            // LCOV_EXCL_START
             std::cerr << "OpenCL call failed with error " << getErrorString(error) << std::endl;
             std::exit (1);
+            // LCOV_EXCL_STOP
         }
     }
 }
