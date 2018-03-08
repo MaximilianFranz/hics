@@ -24,6 +24,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <hdf_wrapper.h>
 #include <ResourceException.h>
 #include "AlexNetWeightLoader.h"
 
@@ -39,7 +40,7 @@ WeightWrapper *AlexNetWeightLoader::createWeightWrapper(const std::string &group
     while (true) {
         try {
             //Open the group which will contain the dataset and dataspace
-            group = weightFile.root().open_group(groupName);
+            group = weightFile->root().open_group(groupName);
             //Open the weight dataset and dataspace.
             dataset = group.open_dataset(datasetWeightName);
             dataspace = dataset.get_dataspace();;
@@ -134,9 +135,13 @@ AlexNetWeightLoader::AlexNetWeightLoader(const std::string &filePath)
     //Disable HDF5 error reporting
     h5cpp::disableAutoErrorReporting();
     try {
-        weightFile = h5cpp::File(filePath, "r");
+        weightFile =  new h5cpp::File(filePath, "r");
     } catch (h5cpp::Exception &e) {
         //Weight File cannot be accessed/read from
         throw ResourceException("The AlexNet weights file <" + filePath + "> is not readable.");
     }
+}
+
+AlexNetWeightLoader::~AlexNetWeightLoader() {
+    delete weightFile;
 }
