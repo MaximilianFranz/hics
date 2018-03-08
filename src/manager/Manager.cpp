@@ -137,8 +137,8 @@ void Manager::initGUI() {
         //Null exceptionptr for next classification
         exceptionptr = nullptr;
     }
-
     mainWindowHandler->attach(this);
+    mainWindowHandler->init();
 }
 
 ClassificationResult* Manager::update() {

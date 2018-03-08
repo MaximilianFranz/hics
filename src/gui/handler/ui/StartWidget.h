@@ -43,6 +43,7 @@
 #include <QtCore/QDir>
 #include <QTimer>
 #include <QtWidgets/QProgressBar>
+#include <QtWidgets/QErrorMessage>
 
 namespace Ui {
     class StartWidget;
@@ -126,8 +127,9 @@ public:
      * @brief Displays a QErrorDialog with the given error message.
      *
      * @param message the to be displayed error message
+     * @return returns the opened QErrorMessage
      */
-    void displayErrorMessage(QString message);
+    QErrorMessage * displayErrorMessage(QString message);
 
     /**
      * @brief Removes the Classify and Select images button and displays a busy loading progress bar to indicate that a

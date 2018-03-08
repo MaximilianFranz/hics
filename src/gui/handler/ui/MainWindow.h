@@ -53,11 +53,20 @@ public:
     ~MainWindow();
 
     /**
+     * @brief init will start the displaying of the GUI
+     */
+    void init();
+
+    /**
      * @brief addWidgetToStack adds the given widget to mainWindowQStackedWidget.
      * @param widget is the to be added widget
      */
     void addWidgetToStack(QWidget* widget);
 
+    /**
+     * @brief removeWidgetFromStack removes the given widget from the QStackedWidget
+     * @param widget is the to be removed widget
+     */
     void removeWidgetFromStack(QWidget* widget);
 
     /**

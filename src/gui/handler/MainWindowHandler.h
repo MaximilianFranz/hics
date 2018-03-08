@@ -87,6 +87,8 @@ private:
 
     void disconnectAll();
 
+    void checkExceptionPtr();
+
 public:
 
     /**
@@ -106,6 +108,13 @@ public:
                       std::vector<OperationMode> &operationModes);
 
     ~MainWindowHandler();
+
+    /**
+     * @brief init will start the displaying of the GUI
+     *
+     * When calling init the mainWindow's init method will be called and the GUI gets started.
+     */
+    void init();
 
     /**
     * @brief updatePlatforms refreshes the currently displayed platforms in the GUI
@@ -184,6 +193,7 @@ public slots:
     /**
      * @brief displayErrorMessage will send the error message to the startWidget's respective method to display it.
      * @param errorMessage the to be displayed error message
+     * @param close defines whether to close the GUI or not, default is false
      */
-    void displayErrorMessage(const std::string &errorMessage);
+    void displayErrorMessage(const std::string &errorMessage, bool close = false);
 };
