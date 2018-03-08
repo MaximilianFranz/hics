@@ -70,10 +70,10 @@ Manager::Manager() {
 
     try {
         // Create basic file logger (not rotated)
-        logger = spdlog::rotating_logger_mt("logger", logfilepath, 1024 * 1024 * 5, 3);
-        logger->flush_on(spdlog::level::debug);
-        logger->info("found log file, logger initialization successful");
-        logger->set_level(spdlog::level::debug);
+        logger = spdlog::stdout_color_mt("logger");
+        logger->set_level(spdlog::level::info);
+        logger->flush_on(spdlog::level::info);
+        logger->info("logger initialization successful");
 
     } catch (const spdlog::spdlog_ex& ex) {
         std::cout << "Log initialization failed: " << ex.what() << std::endl;
