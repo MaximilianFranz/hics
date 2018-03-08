@@ -105,5 +105,12 @@ SCENARIO("aggregateResult for trivial test case") {
         REQUIRE(labelIt.operator*().first == "bird");
         REQUIRE(std::abs(labelIt.operator*().second - 0.0125f) < eps);
     }
+
+    SECTION("Test neural net getter") {
+        std::vector<ImageResult> results = {imgRes1};
+        ClassificationResult clasRes = ClassificationResult(results, net, perfData);
+
+        REQUIRE(clasRes.getUsedNeuralNet().getIdentifier() == net.getIdentifier());
+    }
     
 }

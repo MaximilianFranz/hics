@@ -26,7 +26,6 @@ else()
     add_definitions(-DRES_DIR="${CMAKE_SOURCE_DIR}/resources/")
 endif()
 add_definitions(-DTEST_RES_DIR="${CMAKE_SOURCE_DIR}/tests/resources/")
-add_definitions(-DLOG_FILE_PATH="${CMAKE_CURRENT_BINARY_DIR}/logs/")
 
 find_package(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
 
@@ -80,6 +79,8 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
             '${CMAKE_SOURCE_DIR}/tests/*'
             '${CMAKE_SOURCE_DIR}/src/gui/handler/*'
             '${CMAKE_SOURCE_DIR}/src/gui/WorkerThread.*'
+            '${CMAKE_SOURCE_DIR}/src/communicator/ComputationServer.*'
+            '${CMAKE_SOURCE_DIR}/src/communicator/serverMain.cpp'
             '${CMAKE_SOURCE_DIR}/thirdparty/*'
             '${CMAKE_SOURCE_DIR}/catch/*'
             '${CMAKE_SOURCE_DIR}/cmake-build-*'
@@ -113,8 +114,6 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
 endif() #CMAKE_BUILD_TYPE STREQUAL "Coverage"
 endif()
 
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/logs)
-
 install(DIRECTORY resources/weights DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/
         FILES_MATCHING PATTERN "*.h5")
 install(DIRECTORY resources/models DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/hics/)
@@ -127,4 +126,3 @@ install(FILES resources/computationHosts.json DESTINATION ${CMAKE_INSTALL_SYSCON
 # Install a desktop file for hics, our main GUI
 install(FILES data/hics.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/256x256/apps/)
 install(FILES data/hics.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/share/applications/)
-

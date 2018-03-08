@@ -1,5 +1,7 @@
 set(TEST_SOURCES MainTest.cpp util/FileHelper.cpp)
 
+add_definitions(-DHICS_SERVER="${CMAKE_BINARY_DIR}/tests/communicator/")
+
 # Create a test library which makes Catch available to all tests by linking
 # against it.
 add_library(catchtest ${TEST_SOURCES})
@@ -20,9 +22,17 @@ include_directories(${CMAKE_BINARY_DIR}/src/communicator)
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
     file(GLOB_RECURSE all_tests_srcs .
             communicator/UtilTest.cpp
+            communicator/ClientServerTest.cpp
             executor/*.cpp
             gui/catchtest/*.cpp
-            manager/*.cpp
+            manager/ClassificationResultTest.cpp
+            manager/HostPlacerTest.cpp
+            manager/ManagerTest.cpp
+            manager/PerformanceCalculatorTest.cpp
+            manager/PreProcessorTest.cpp
+            manager/ClassificationRequestTest.cpp
+            manager/OperationModeTest.cpp
+            #manager/SystemTest.cpp
             netbuilder/*.cpp
             neuralnet/*.cpp
             platform/*.cpp)

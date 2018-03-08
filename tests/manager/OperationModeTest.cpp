@@ -24,35 +24,18 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <iostream>
-#include <sstream>
-#include <fstream>
+#include "OperationModeTest.h"
+#include <OperationMode.h>
 
-#include <FileHelper.h>
 
-//#include <ClassificationRequest.h>
-#include "Client.h"
+SCENARIO("OperationMode tests") {
+    REQUIRE(OperationModeString::getName(OperationMode::EnergyEfficient) == "Energy efficient");
+    REQUIRE(OperationModeString::getName(OperationMode::LowPower) == "Low power");
+    REQUIRE(OperationModeString::getName(OperationMode::HighPower) == "High power");
+    REQUIRE_THROWS(OperationModeString::getMode(nullptr));
 
-namespace clientMain {
-    std::vector<ImageResult*> main();
-}
-
-std::vector<ImageResult*> clientMain::main() {
-    Client client = Client(grpc::CreateChannel(
-            "localhost:50053", grpc::InsecureChannelCredentials()));
-
-    std::vector<NetInfo*> nets = client.queryNets();
-    std::vector<PlatformInfo*> platforms = client.queryPlatform();
-    NetInfo alexnetinfo = *nets.at(0);
-
-    std::string img_data_path = TEST_RES_DIR "img_data.txt";
-
-    std::vector<float> image = util::getDataFromFile(img_data_path);
-
-    std::vector<int> imgDim = {3,227,227};
-    ImageWrapper *img = new ImageWrapper(imgDim, image, "filepath");
-
-    std::vector<ImageResult*> results;
-    results = client.classify({img}, alexnetinfo, OperationMode::EnergyEfficient, platforms);
-    return results;
+    REQUIRE(OperationModeString::getMode("Energy efficient") == OperationMode::EnergyEfficient);
+    REQUIRE(OperationModeString::getMode("Low power") == OperationMode::LowPower);
+    REQUIRE(OperationModeString::getMode("High power") == OperationMode::HighPower);
+    REQUIRE_THROWS(OperationModeString::getMode("fail"));
 }

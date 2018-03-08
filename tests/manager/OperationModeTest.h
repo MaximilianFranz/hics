@@ -24,35 +24,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <iostream>
-#include <sstream>
-#include <fstream>
+#pragma once
 
-#include <FileHelper.h>
-
-//#include <ClassificationRequest.h>
-#include "Client.h"
-
-namespace clientMain {
-    std::vector<ImageResult*> main();
-}
-
-std::vector<ImageResult*> clientMain::main() {
-    Client client = Client(grpc::CreateChannel(
-            "localhost:50053", grpc::InsecureChannelCredentials()));
-
-    std::vector<NetInfo*> nets = client.queryNets();
-    std::vector<PlatformInfo*> platforms = client.queryPlatform();
-    NetInfo alexnetinfo = *nets.at(0);
-
-    std::string img_data_path = TEST_RES_DIR "img_data.txt";
-
-    std::vector<float> image = util::getDataFromFile(img_data_path);
-
-    std::vector<int> imgDim = {3,227,227};
-    ImageWrapper *img = new ImageWrapper(imgDim, image, "filepath");
-
-    std::vector<ImageResult*> results;
-    results = client.classify({img}, alexnetinfo, OperationMode::EnergyEfficient, platforms);
-    return results;
-}
+#include "catch.hpp"

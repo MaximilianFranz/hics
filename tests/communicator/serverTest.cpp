@@ -25,34 +25,34 @@
  */
 
 #include <iostream>
-#include <sstream>
-#include <fstream>
+#include <grpc++/server_builder.h>
+#include <grpc++/security/server_credentials.h>
+#include <grpc++/server.h>
+#include "ComputationServer.h"
 
-#include <FileHelper.h>
+using grpc::Server;
+using grpc::ServerBuilder;
+using grpc::ServerContext;
+using grpc::Status;
 
-//#include <ClassificationRequest.h>
-#include "Client.h"
+int main() {
+    std::string server_address("0.0.0.0:50052");
+    ComputationServer service;
+    service.init();
 
-namespace clientMain {
-    std::vector<ImageResult*> main();
-}
+    ServerBuilder builder;
+    // Listen on the given address without any authentication mechanism.
+    builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
+    // Register "service" as the instance through which we'll communicate with
+    // clients. In this case it corresponds to an *synchronous* service.
+    builder.RegisterService(&service);
+    // Finally assemble the server.
+    std::unique_ptr<Server> server(builder.BuildAndStart());
+    std::cout << "Server listening on " << server_address << std::endl;
 
-std::vector<ImageResult*> clientMain::main() {
-    Client client = Client(grpc::CreateChannel(
-            "localhost:50053", grpc::InsecureChannelCredentials()));
+    // Wait for the server to shutdown. Note that some other thread must be
+    // responsible for shutting down the server for this call to ever return.
+    server->Wait();
 
-    std::vector<NetInfo*> nets = client.queryNets();
-    std::vector<PlatformInfo*> platforms = client.queryPlatform();
-    NetInfo alexnetinfo = *nets.at(0);
-
-    std::string img_data_path = TEST_RES_DIR "img_data.txt";
-
-    std::vector<float> image = util::getDataFromFile(img_data_path);
-
-    std::vector<int> imgDim = {3,227,227};
-    ImageWrapper *img = new ImageWrapper(imgDim, image, "filepath");
-
-    std::vector<ImageResult*> results;
-    results = client.classify({img}, alexnetinfo, OperationMode::EnergyEfficient, platforms);
-    return results;
+    return 0;
 }

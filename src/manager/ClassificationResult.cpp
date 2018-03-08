@@ -36,7 +36,7 @@ const std::vector<ImageResult> &ClassificationResult::getResults() const {
     return results;
 }
 
-const NetInfo &ClassificationResult::getUsedNeuralNet() const {
+NetInfo ClassificationResult::getUsedNeuralNet() const {
     return usedNet;
 }
 
@@ -46,11 +46,6 @@ const PerformanceData &ClassificationResult::getPerformance() const {
 
 const std::vector<std::pair<std::string, float>> &ClassificationResult::getAggregatedResults() const {
     return aggregatedResult;
-}
-
-
-bool isEqual(const std::pair<std::string, float>& element1, const std::pair<std::string, float>& element2) {
-    return element1.first == element2.first;
 }
 
 void ClassificationResult::aggregateResults() {
