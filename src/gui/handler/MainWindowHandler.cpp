@@ -48,10 +48,12 @@ MainWindowHandler::MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::ve
 }
 
 void MainWindowHandler::init() {
-    checkExceptionPtr();
-
-    if(mainWindow) {
-        mainWindow->init();
+    if(exceptionptr) {
+        checkExceptionPtr();
+    } else {
+        if (mainWindow) {
+            mainWindow->init();
+        }
     }
 }
 
