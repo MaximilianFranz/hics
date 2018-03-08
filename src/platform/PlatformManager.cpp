@@ -29,6 +29,7 @@
 #include <vector>
 
 #include <json.hpp>
+#include <ResourceException.h>
 
 #include "platforms/CpuPlatform.h"
 #include "platforms/FpgaPlatform.h"
@@ -39,9 +40,14 @@
 using json = nlohmann::json;
 
 PlatformManager::PlatformManager() {
-    std::ifstream i(RES_DIR "platforms.json");
     json j;
-    i >> j;
+
+    try {
+        std::ifstream i(RES_DIR "platforms.json");
+        i >> j;
+    } catch (...) { // LCOV_EXCL_LINE
+        throw ResourceException("Error while reading platforms.json, file not readable or corrupted"); // LCOV_EXCL_LINE
+    }
 
     for (auto it : j["platforms"]) {
         std::string type = it["type"];
