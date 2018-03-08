@@ -369,12 +369,6 @@ TEST_CASE("FullyConnected") {
     FullyConnectedFunction *fc = p->createFullyConnectedFunction();
     REQUIRE(fc != nullptr);
 
-//    ActivationFunction *relu = p->createActivationFunction(LayerType::ACTIVATION_RELU);
-//    REQUIRE(relu != nullptr);
-
-//    AlexNetWeightLoader loader(weightspath);
-//    WeightWrapper fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_1); //TODO: Change after merge to new enum!
-
     DataWrapper in({4}, easy_in);
     DataWrapper out_fc({5});
     std::vector<int> biasDim = {5};
@@ -405,7 +399,7 @@ TEST_CASE("FullyConnected one with real data") {
     std::vector<int> outDim = {4098};
 
     AlexNetWeightLoader loader(weightspath);
-    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_1); //TODO: Change after merge to new enum!
+    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_1);
     std::vector<float> weight = fc1_weights->getData();
     std::vector<float> bias = fc1_weights->getBias();
     WeightWrapper *transformedWeights = new WeightWrapper({4096,9216},weight, bias ,{4096} );
@@ -449,7 +443,7 @@ TEST_CASE("FullyConnected two with real data") {
     std::vector<int> outDim = {4096};
 
     AlexNetWeightLoader loader(weightspath);
-    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_2); //TODO: Change after merge to new enum!
+    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_2);
 
 
     PlatformManager &pm = PlatformManager::getInstance();
@@ -490,7 +484,7 @@ TEST_CASE("FullyConnected three with real data") {
 
 
     AlexNetWeightLoader loader(weightspath);
-    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_3); //TODO: Change after merge to new enum!
+    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_3);
 
 
     PlatformManager &pm = PlatformManager::getInstance();
