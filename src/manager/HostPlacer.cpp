@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <ResourceException.h>
 
 #include "HostPlacer.h"
 
@@ -45,8 +46,7 @@ HostPlacer::Performance HostPlacer::readComputationHostInfo(std::string hostName
             return {power, time};
         }
     }
-    //TODO: real execption
-    throw std::exception();
+    throw ResourceException("computation host not found in " RES_DIR "computationHosts.json");
 }
 
 std::vector<std::pair<ComputationHost*, int>>&
@@ -69,12 +69,10 @@ HostPlacer::place(std::vector<ComputationHost*> &hosts, int numOfImg, OperationM
         case HighPower :
             return placeHighPower(hostPerformance, numOfImg);
         default:
-            //TODO: real exception
-            throw std::exception();
+            throw IllegalArgumentException("No such OperationMode");
     }
 }
 
-//TODO: Case: Two or more Hosts have the least amaount of power usage
 std::vector<std::pair<ComputationHost *, int>> &
 HostPlacer::placeLowPower(std::vector<std::pair<ComputationHost *, HostPlacer::Performance>> &hosts, int numOfImg) {
     //Find the Host with the least power consumption

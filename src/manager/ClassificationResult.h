@@ -67,7 +67,7 @@ public:
      * Accesses the used neural net.
      * @return neural net
      */
-    const NetInfo &getUsedNeuralNet() const;
+    NetInfo getUsedNeuralNet() const;
 
     /**
      * Accesses the performanceData of a computation host.

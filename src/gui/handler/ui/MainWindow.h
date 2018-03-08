@@ -75,11 +75,12 @@ public:
     QStackedWidget *getMainWindowQStackedWidget() const;
 
 private:
+
     Ui::MainWindow *ui;
 
     QStackedWidget* mainWindowQStackedWidget;
 
-    private slots:
+public slots:
 
     void openAboutBox();
 };

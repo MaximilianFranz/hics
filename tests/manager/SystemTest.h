@@ -24,7 +24,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include "ModelLoader.h"
+#pragma once
 
-ModelLoader::ModelLoader(string path) : pathToJSON{path} {}
-
+#include "catch.hpp"

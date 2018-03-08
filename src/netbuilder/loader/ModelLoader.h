@@ -71,7 +71,7 @@ public:
      * Constructor
      * @param path
      */
-    ModelLoader(string path);
+    explicit ModelLoader(string path);
 
     //Methods for NetInfo construction
     virtual string getNetWorkName() = 0;
@@ -79,8 +79,6 @@ public:
     virtual string getNetWorkID() = 0;
 
     virtual int getRequiredDimension() = 0;
-
-    virtual string getLayerTypeByIndex(int index) = 0;
 
     /**
      * Returns Construction information of a layer

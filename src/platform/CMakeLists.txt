@@ -18,7 +18,7 @@ set(SOURCE_FILES
         layerfunctions/FullyConnectedFunction.h
         layerfunctions/CpuFullyConnectedFunction.h layerfunctions/CpuFullyConnectedFunction.cpp
         ../../thirdparty/AOCL_Utils.cpp ../../thirdparty/AOCL_Utils.h
-        util/im2col.cpp util/im2col.h)
+        Helper.cpp Helper.h)
 
 if(PLATFORM_ALTERA)
     list(APPEND SOURCE_FILES

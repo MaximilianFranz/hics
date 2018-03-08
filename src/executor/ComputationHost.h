@@ -52,6 +52,11 @@ public:
      */
     virtual std::vector<ImageResult*> classify(std::vector<ImageWrapper*> images, NetInfo net, OperationMode mode,
                                               std::vector<PlatformInfo*> selectedPlatforms) = 0;
+
+    virtual ~ComputationHost() {
+
+    }
+
     /**
      * Queries the platforms available to this ComputationHost implementation.
      *
@@ -67,6 +72,7 @@ public:
      */
     virtual std::vector<NetInfo*> queryNets() = 0;
 
+    // LCOV_EXCL_START
     /**
      * Getter for name
      * @return name of the platform
@@ -74,4 +80,5 @@ public:
     virtual std::string getName() {
         return name;
     }
+    //LCOV_EXCL_STOP
 };

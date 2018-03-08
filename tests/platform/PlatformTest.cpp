@@ -40,7 +40,8 @@
 #include <loader/weightloader/AlexNetWeightLoader.h>
 
 #include <FileHelper.h>
-#include <util/im2col.h>
+#include <Helper.h>
+#include <IllegalArgumentException.h>
 
 #include "PlatformTest.h"
 
@@ -368,12 +369,6 @@ TEST_CASE("FullyConnected") {
     FullyConnectedFunction *fc = p->createFullyConnectedFunction();
     REQUIRE(fc != nullptr);
 
-//    ActivationFunction *relu = p->createActivationFunction(LayerType::ACTIVATION_RELU);
-//    REQUIRE(relu != nullptr);
-
-//    AlexNetWeightLoader loader(weightspath);
-//    WeightWrapper fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_1); //TODO: Change after merge to new enum!
-
     DataWrapper in({4}, easy_in);
     DataWrapper out_fc({5});
     std::vector<int> biasDim = {5};
@@ -404,7 +399,7 @@ TEST_CASE("FullyConnected one with real data") {
     std::vector<int> outDim = {4098};
 
     AlexNetWeightLoader loader(weightspath);
-    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_1); //TODO: Change after merge to new enum!
+    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_1);
     std::vector<float> weight = fc1_weights->getData();
     std::vector<float> bias = fc1_weights->getBias();
     WeightWrapper *transformedWeights = new WeightWrapper({4096,9216},weight, bias ,{4096} );
@@ -448,7 +443,7 @@ TEST_CASE("FullyConnected two with real data") {
     std::vector<int> outDim = {4096};
 
     AlexNetWeightLoader loader(weightspath);
-    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_2); //TODO: Change after merge to new enum!
+    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_2);
 
 
     PlatformManager &pm = PlatformManager::getInstance();
@@ -489,7 +484,7 @@ TEST_CASE("FullyConnected three with real data") {
 
 
     AlexNetWeightLoader loader(weightspath);
-    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_3); //TODO: Change after merge to new enum!
+    WeightWrapper *fc1_weights = loader.getWeights(WeightLoader::LayerIdentifier::FULLY_CON_3);
 
 
     PlatformManager &pm = PlatformManager::getInstance();
@@ -608,5 +603,54 @@ TEST_CASE("transpose") {
 
     for (int i = 0; i < size; i++) {
         REQUIRE(input[i] == u[i]);
+    }
+}
+
+TEST_CASE("unknown layer types") {
+    // Test all available platforms
+    PlatformManager &pm = PlatformManager::getInstance();
+    REQUIRE(pm.getPlatforms().size() >= 1);
+
+    for (unsigned int i = 0; i < pm.getPlatforms().size(); i++) {
+        Platform *p = pm.getPlatforms()[i];
+        REQUIRE(p != nullptr);
+
+        // Trigger exception by feeding it bogus data
+        try {
+            ActivationFunction *af = p->createActivationFunction(LayerType::LOSS_SOFTMAX);
+        } catch(IllegalArgumentException e) {
+            // This is expected
+        } catch(...) {
+            std::cerr << "Unknown exception caught" << std::endl;
+            REQUIRE(false);
+        }
+
+        try {
+            LossFunction *lf = p->createLossFunction(LayerType::ACTIVATION_RELU);
+        } catch(IllegalArgumentException e) {
+            // This is expected
+        } catch(...) {
+            std::cerr << "Unknown exception caught" << std::endl;
+            REQUIRE(false);
+        }
+
+        try {
+            PoolingFunction *pf = p->createPoolingFunction(LayerType::LOSS_SOFTMAX);
+        } catch(IllegalArgumentException e) {
+            // This is expected
+        } catch(...) {
+            std::cerr << "Unknown exception caught" << std::endl;
+            REQUIRE(false);
+        }
+
+        try {
+            ResponseNormalizationFunction *rnf = p->createResponseNormalizationFunction(LayerType::LOSS_SOFTMAX);
+        } catch(IllegalArgumentException e) {
+            // This is expected
+        } catch(...) {
+            std::cerr << "Unknown exception caught" << std::endl;
+            REQUIRE(false);
+        }
+
     }
 }

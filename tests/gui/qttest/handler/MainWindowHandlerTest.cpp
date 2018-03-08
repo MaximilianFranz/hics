@@ -26,7 +26,9 @@
 
 #include <QtTest/QSignalSpy>
 #include <QtWidgets/QLabel>
+#include <QMessageBox>
 #include <iostream>
+#include <memory>
 #include "MainWindowHandlerTest.h"
 
 void MainWindowHandlerTest::initTestCase() {
@@ -108,10 +110,17 @@ void MainWindowHandlerTest::testConstructor() {
              mainWindowHandler->getStartWidget());
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->widget(1),
              mainWindowHandler->getResultWidget());
+
+    //Opens About Box
+    mainWindowHandler->getMainWindow()->openAboutBox();
 }
 
 void MainWindowHandlerTest::testStartClassification() {
-    QSKIP("testStartClassification works, skipping to avoid QFileSelector popup", SkipSingle);
+    //QSKIP("testStartClassification works, skipping to avoid QFileSelector popup", SkipSingle);
+    QMessageBox box;
+    box.setText("Select one image");
+    box.show();
+
     mainWindowHandler->getStartWidget()->processInputImageButton();
     QTest::keyClick(mainWindowHandler->getStartWidget()->getNeuralNetsQComboBox(), Qt::Key_Down);
     ((QCheckBox*)(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->itemAt(1)->widget()))->setChecked(true);
@@ -124,7 +133,7 @@ void MainWindowHandlerTest::testStartClassification() {
     QCOMPARE(request->getSelectedNeuralNet().getIdentifier(), (std::string)"googlenet");
     QCOMPARE(request->getSelectedOperationMode(), OperationMode::HighPower); //TODO change this when operation mode implemented
     QCOMPARE(request->getSelectedPlatforms().at(0)->getPlatformId(), (std::string)"fpga");
-    QCOMPARE(request->getUserImages().size(), (unsigned long) 1);
+    QCOMPARE((int)request->getUserImages().size(), 1);
 }
 
 void MainWindowHandlerTest::testDisplayClassification() {
@@ -169,8 +178,38 @@ void MainWindowHandlerTest::testDetailButton(){
 void MainWindowHandlerTest::testUpdatePlatforms() {
     QCOMPARE(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->count(), 3);
 
-    platforms.erase(platforms.begin());
-    mainWindowHandler->updatePlatforms(platforms);
-    
+    auto newPlatforms = new std::vector<PlatformInfo *>;
+    newPlatforms->push_back(platforms[0]);
+    newPlatforms->push_back(platforms[1]);
+    std::shared_ptr<std::vector<PlatformInfo *>> pointer(newPlatforms);
+    mainWindowHandler->updatePlatforms(pointer);
+    mainWindowHandler->processClassificationResult(nullptr);
+
     QCOMPARE(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->count(), 2);
+}
+
+void MainWindowHandlerTest::testFalseClassification() {
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
+    mainWindowHandler->processClassificationResult(nullptr);
+
+    //No Exception has been thrown but a nullptr is the parameter so just the progress screen is resetted.
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
+    std::exception_ptr exceptionptr = nullptr;
+
+    try {
+        throw std::logic_error("Sample error");
+    } catch (std::exception &e) {
+        exceptionptr = std::current_exception();
+    }
+
+    mainWindowHandler->setExceptionptr(exceptionptr);
+    mainWindowHandler->processClassificationResult(nullptr);
+
+    //Should now display an error message
+
+    //Since no real classification has been processed startWidget is still active
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
 }

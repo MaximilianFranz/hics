@@ -24,12 +24,13 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <CommunicationException.h>
 #include "Client.h"
 #include "Util.h"
 
 Client::Client(std::shared_ptr<Channel> channel) : stub_(Communicator::NewStub(channel)) {}
 Client::Client(std::string name, std::shared_ptr<Channel> channel) : stub_(Communicator::NewStub(channel)) {
-    ComputationHost::name = name;
+    ComputationHost::name = std::move(name);
 }
 
 std::vector<ImageResult*> Client::classify(std::vector<ImageWrapper *> images, NetInfo net, OperationMode mode,
@@ -72,8 +73,8 @@ std::vector<ImageResult*> Client::classify(std::vector<ImageWrapper *> images, N
                 results.push_back(Util::messageToImageResult(&(reply.results(i))));
             }
         } else {
-            //TODO: specific excepion
-            throw std::exception();
+            throw CommunicationException(this, "error while classifying, "
+                    "maybe the connection failed during classification?");
         }
     }
 
@@ -99,8 +100,7 @@ std::vector<PlatformInfo*> Client::queryPlatform() {
         }
         return platforms;
     } else {
-        //TODO: specific exeption
-        throw std::exception();
+        throw CommunicationException(this, "Could not query platforms, maybe the host is unreachable?");
     }
 
 }
@@ -119,6 +119,6 @@ std::vector<NetInfo*> Client::queryNets() {
         }
         return nets;
     } else {
-        throw std::exception();
+        throw CommunicationException(this, "Could not query neural nets, maybe the host is unreachable?");
     }
 }

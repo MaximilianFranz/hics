@@ -33,12 +33,16 @@
 //#include <ClassificationRequest.h>
 #include "Client.h"
 
+namespace clientMain {
+    std::vector<ImageResult*> main();
+}
 
-int main() {
+std::vector<ImageResult*> clientMain::main() {
     Client client = Client(grpc::CreateChannel(
-            "localhost:50051", grpc::InsecureChannelCredentials()));
+            "localhost:50053", grpc::InsecureChannelCredentials()));
 
     std::vector<NetInfo*> nets = client.queryNets();
+    std::vector<PlatformInfo*> platforms = client.queryPlatform();
     NetInfo alexnetinfo = *nets.at(0);
 
     std::string img_data_path = TEST_RES_DIR "img_data.txt";
@@ -49,16 +53,6 @@ int main() {
     ImageWrapper *img = new ImageWrapper(imgDim, image, "filepath");
 
     std::vector<ImageResult*> results;
-    std::vector<PlatformInfo*> info_mock;
-    results = client.classify({img}, alexnetinfo, OperationMode::EnergyEfficient, info_mock);
-
-    //ClassificationRequest request = ClassificationRequest()
-
-    std::cout << nets[0]->getName() << std::endl;
-
-    std::vector<PlatformInfo*> platforms = client.queryPlatform();
-
-    std::cout << platforms[0]->getDescription() << std::endl;
-
-    std::cout << results[0]->getResults()[0].first << std::endl;
+    results = client.classify({img}, alexnetinfo, OperationMode::EnergyEfficient, platforms);
+    return results;
 }

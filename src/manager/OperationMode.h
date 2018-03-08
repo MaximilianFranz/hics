@@ -26,6 +26,8 @@
 
 #pragma once
 
+#include <IllegalArgumentException.h>
+
 /**
  * Enum to specify the three different OperationModes. HighPower mode tries to reach the shortest possible computation
  * time without considering the power consumption, LowPower tries to classify with the least amount of power possible
@@ -55,7 +57,7 @@ struct OperationModeString {
                 return "Energy efficient";
 
             default:
-                return "Operation mode";
+                throw IllegalArgumentException("No such operation mode");
         }
     }
 
@@ -68,7 +70,7 @@ struct OperationModeString {
         } else if (name == "Energy efficient") {
             return EnergyEfficient;
         } else {
-            throw std::exception();
+            throw IllegalArgumentException("No such operation mode");
         }
     }
 };

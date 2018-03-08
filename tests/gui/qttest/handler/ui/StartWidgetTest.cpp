@@ -25,17 +25,18 @@
  */
 
 #include "StartWidgetTest.h"
+#include <QtWidgets/QMessageBox>
 #include <handler/ui/StartWidget.h>
 
 void StartWidgetTest::initTestCase() {
-    NetInfo* alexnet = new NetInfo("AlexNet", 227, "alexnet");
-    NetInfo* googlenet = new NetInfo("GoogLeNet", 300, "googlenet");
+    NetInfo *alexnet = new NetInfo("AlexNet", 227, "alexnet");
+    NetInfo *googlenet = new NetInfo("GoogLeNet", 300, "googlenet");
     nets.push_back(alexnet);
     nets.push_back(googlenet);
 
-    PlatformInfo* cpu = new PlatformInfo("CPU", PlatformType::CPU, "cpu", 100, 5);
-    PlatformInfo* fpga = new PlatformInfo("FPGA", PlatformType::FPGA, "fpga", 5, 20);
-    PlatformInfo* gpu = new PlatformInfo("Titan XP", PlatformType::FPGA, "titanxp", 250, 100);
+    PlatformInfo *cpu = new PlatformInfo("CPU", PlatformType::CPU, "cpu", 100, 5);
+    PlatformInfo *fpga = new PlatformInfo("FPGA", PlatformType::FPGA, "fpga", 5, 20);
+    PlatformInfo *gpu = new PlatformInfo("Titan XP", PlatformType::FPGA, "titanxp", 250, 100);
     platforms.push_back(cpu);
     platforms.push_back(fpga);
     platforms.push_back(gpu);
@@ -66,11 +67,11 @@ void StartWidgetTest::testConstructor() {
 
     /*--------------Operation Modes----------------*/
 
-    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(0).toStdString(), (std::string)"High power");
+    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(0).toStdString(), (std::string) "High power");
 
-    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(1).toStdString(), (std::string)"Energy efficient");
+    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(1).toStdString(), (std::string) "Energy efficient");
 
-    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(2).toStdString(), (std::string)"Low power");
+    QCOMPARE(startWidget->getOperationModesQComboBox()->itemText(2).toStdString(), (std::string) "Low power");
 
     /*--------------Platforms---------------------*/
 
@@ -85,10 +86,14 @@ void StartWidgetTest::testConstructor() {
 }
 
 void StartWidgetTest::testImageFunctions() {
-    QSKIP("Select images works, skip to disable QFileSelector popup", SkipSingle);
+    //QSKIP("Select images works, skip to disable QFileSelector popup", SkipSingle);
+    QMessageBox box;
+    box.setText("Select three images");
+    box.show();
+
     startWidget->processInputImageButton();
     //Select 3 images
-    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 3);
+    QCOMPARE((int) startWidget->getSelectedImages().size(), 3);
 
     QMapIterator<QPair<QImage *, QString>, QHBoxLayout *> it(*(startWidget->getImagesMap()));
 
@@ -97,15 +102,37 @@ void StartWidgetTest::testImageFunctions() {
 
     startWidget->processConfirmDeletionButton();
 
-    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 2);
+    QCOMPARE((int) startWidget->getSelectedImages().size(), 2);
 
     it.next();
     ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
 
+    it.next();
+    ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(true);
+
+    //2 out of 2 images have been selected then the abort button should deselect all
+    startWidget->processAbortDeletionQPushButton();
+
+    ((QCheckBox *) (it.value()->itemAt(0)->widget()))->setChecked(false);
+
     //1 out of 2 images left have been selected so the abort deletion button should select all
     startWidget->processAbortDeletionQPushButton();
     startWidget->processConfirmDeletionButton();
-    QCOMPARE(startWidget->getSelectedImages().size(), (unsigned long) 0);
+    QCOMPARE((int) startWidget->getSelectedImages().size(), 0);
+}
+
+void StartWidgetTest::testDuplicateSelectedImages() {
+    QMessageBox box;
+    box.setText("Select one image and then the same");
+    box.show();
+
+    startWidget->processInputImageButton();
+    //Select 1 image
+    QCOMPARE((int) startWidget->getSelectedImages().size(), 1);
+
+    //Select the same image
+    startWidget->processInputImageButton();
+    QCOMPARE((int) startWidget->getSelectedImages().size(), 1);
 }
 
 void StartWidgetTest::testSelectedPlatforms() {
@@ -139,5 +166,3 @@ void StartWidgetTest::testIsAggregated() {
     QTest::mouseClick(startWidget->getAggregateResultsQCheckBox(), Qt::LeftButton);
     QCOMPARE(startWidget->isAggregated(), false);
 }
-
-//QTEST_MAIN(StartWidgetTest)

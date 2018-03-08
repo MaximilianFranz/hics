@@ -33,6 +33,7 @@ SCENARIO("Test") {
     PlatformInfo cpu = PlatformInfo("internal CPU", PlatformType::CPU, "0", 500, 20000);
     PlatformInfo gpu = PlatformInfo("internal GPU", PlatformType::GPU, "1", 1000, 40000);
     PlatformInfo fpga = PlatformInfo("remote FPGA", PlatformType::FPGA, "2", 50, 200);
+    PlatformInfo cl_cpu = PlatformInfo("CL CPU", PlatformType::CL_CPU, "3", 100, 400);
 
     std::vector<PlatformInfo*> platforms = {&cpu, &gpu, &fpga};
 
@@ -70,7 +71,7 @@ SCENARIO("Test") {
     ImageResult imgRes3 = ImageResult(labels, dist3, img);
 
     SECTION("PlatformInfo to message") {
-        PlatformInfoMessage *platMes = new PlatformInfoMessage();
+        auto *platMes = new PlatformInfoMessage();
 
         Util::platformInfoToMessage(&cpu, platMes);
 
@@ -99,6 +100,16 @@ SCENARIO("Test") {
         REQUIRE(platMes->platformid() == "2");
         REQUIRE(platMes->powerconsumption() == 50);
         REQUIRE(platMes->flops() == 200);
+
+        platMes = new PlatformInfoMessage();
+
+        Util::platformInfoToMessage(&cl_cpu, platMes);
+
+        REQUIRE(platMes->description() == "CL CPU");
+        REQUIRE(platMes->type() == PlatformInfoMessage::CL_CPU);
+        REQUIRE(platMes->platformid() == "3");
+        REQUIRE(platMes->powerconsumption() == 100);
+        REQUIRE(platMes->flops() == 400);
 
     }
 
@@ -161,7 +172,7 @@ SCENARIO("Test") {
     }
 
     SECTION("Message to Platform") {
-        PlatformInfoMessage *platMes = new PlatformInfoMessage();
+        auto *platMes = new PlatformInfoMessage();
 
         Util::platformInfoToMessage(&cpu, platMes);
 
@@ -171,6 +182,39 @@ SCENARIO("Test") {
         REQUIRE(plat->getPlatformId() == "0");
         REQUIRE(plat->getPowerConsumption() == 500);
         REQUIRE(plat->getFlops() == 20000);
+
+        platMes = new PlatformInfoMessage();
+
+        Util::platformInfoToMessage(&gpu, platMes);
+
+        plat = Util::messageToPlatformInfo(platMes);
+        REQUIRE(plat->getDescription() == "internal GPU");
+        REQUIRE(plat->getType() == PlatformType::GPU);
+        REQUIRE(plat->getPlatformId() == "1");
+        REQUIRE(plat->getPowerConsumption() == 1000);
+        REQUIRE(plat->getFlops() == 40000);
+
+        platMes = new PlatformInfoMessage();
+
+        Util::platformInfoToMessage(&fpga, platMes);
+
+        plat = Util::messageToPlatformInfo(platMes);
+        REQUIRE(plat->getDescription() == "remote FPGA");
+        REQUIRE(plat->getType() == PlatformType::FPGA);
+        REQUIRE(plat->getPlatformId() == "2");
+        REQUIRE(plat->getPowerConsumption() == 50);
+        REQUIRE(plat->getFlops() == 200);
+
+        platMes = new PlatformInfoMessage();
+
+        Util::platformInfoToMessage(&cl_cpu, platMes);
+
+        plat = Util::messageToPlatformInfo(platMes);
+        REQUIRE(plat->getDescription() == "CL CPU");
+        REQUIRE(plat->getType() == PlatformType::CL_CPU);
+        REQUIRE(plat->getPlatformId() == "3");
+        REQUIRE(plat->getPowerConsumption() == 100);
+        REQUIRE(plat->getFlops() == 400);
     }
 
     SECTION("Message to NetInfo") {

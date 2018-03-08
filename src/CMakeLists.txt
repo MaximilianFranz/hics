@@ -9,3 +9,5 @@ add_subdirectory(platform)
 add_executable(hics main.cpp)
 
 target_link_libraries(hics gui executor netbuilder platform manager neuralnet)
+
+install(TARGETS hics DESTINATION ${CMAKE_INSTALL_BINDIR})

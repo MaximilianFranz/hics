@@ -25,6 +25,8 @@
  */
 
 #include <NotImplementedException.h>
+
+#include <utility>
 #include "ConcatLayer.h"
 
 
@@ -39,7 +41,7 @@ Layer *ConcatLayer::getPreviousLayer() const {
 
 ConcatLayer::ConcatLayer(std::vector<std::vector<int>> inputLayersDimensions)
 {
-    this->inputLayersDimensions = inputLayersDimensions;
+    this->inputLayersDimensions = std::move(inputLayersDimensions);
     this->type = LayerType::CONCAT;
     this->outputDimensions = calcOutputDimensions();
 }

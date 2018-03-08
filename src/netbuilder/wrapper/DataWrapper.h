@@ -40,14 +40,14 @@ public:
      * @param dimensions
      * @param data
      */
-    DataWrapper(std::vector<int> dimensions, std::vector<float> &data);
+    explicit DataWrapper(std::vector<int> dimensions, std::vector<float> &data);
 
     /**
      * Construct empty DataWrapper
      *
      * @param dimensions
      */
-    DataWrapper(std::vector<int> dimensions);
+    explicit DataWrapper(std::vector<int> dimensions);
 
     /**
      * Construct DataWrapper from another Wrapper.
