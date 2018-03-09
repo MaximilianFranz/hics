@@ -43,11 +43,11 @@ std::vector<std::string> ModelCrawler::getFilesInDir(std::string relPathToDir) {
 
     if ((dir = opendir (resolved_path)) != nullptr) {
         // print all the files and directories within directory
-        while ((ent = readdir (dir)) != nullptr) {
+        while ((ent = readdir (dir)) != NULL) {
             //Remove "." and ".." entries which occur often.
             if (strcmp(ent->d_name, ".") != 0 && strcmp(ent->d_name, "..") != 0 ) {
                 std::string filename = ent->d_name;
-                std::string fullPath = relPathToDir.append("/").append(filename);
+                std::string fullPath = relPathToDir + "/" + filename;
                 results.push_back(fullPath);
 
             }
@@ -66,7 +66,7 @@ std::vector<std::string> ModelCrawler::getFilesInDir(std::string relPathToDir) {
     return results;
 }
 
-std::vector<NetInfo *> ModelCrawler::getValidNets(const std::string &path) {
+std::vector<NetInfo *> ModelCrawler::getValidNets(std::string path) {
     std::vector<NetInfo*> validNets;
     std::vector<std::string> pathNames = getFilesInDir(path);
 

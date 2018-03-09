@@ -42,9 +42,7 @@
 
 class Platform {
 protected:
-    Platform() = default;
-
-    explicit Platform(PlatformInfo &info) : platformInfo(info) {};
+    Platform(PlatformInfo &info) : platformInfo(info) {};
 
     PlatformInfo platformInfo;
 

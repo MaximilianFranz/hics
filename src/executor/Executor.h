@@ -49,6 +49,8 @@ private:
     PlatformPlacer *placer = nullptr;
     Interpreter *interpreter = nullptr;
 
+    std::string name;
+
     /**
      * Ensures that required settings are met and satisfies missing settings by building or configuring them.
      *

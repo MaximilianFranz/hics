@@ -106,9 +106,9 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
                        patch_result.data());
 
     // Pad matrices and convert to column major format
-    auto K = static_cast<unsigned int>(weights_columns);
-    auto M = static_cast<unsigned int>(number_of_kernels);
-    auto N = static_cast<unsigned int>(patch_columns);
+    unsigned int K = weights_columns;
+    unsigned int M = number_of_kernels;
+    unsigned int N = patch_columns;
 
     int paddedK = 0;
     int paddedM = 0;
@@ -134,9 +134,9 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
     int unpaddedN = N;
     int unpaddedM = M;
 
-    K = static_cast<unsigned int>(paddedK); //weights_columns;
-    M = static_cast<unsigned int>(paddedM); //number_of_kernels;
-    N = static_cast<unsigned int>(paddedN); //patch_columns;
+    K = paddedK; //weights_columns;
+    M = paddedM; //number_of_kernels;
+    N = paddedN; //patch_columns;
 
     // Prepare OpenCL memory objects
     cl_mem bufA = clCreateBuffer(context, CL_MEM_READ_ONLY,  M*K*sizeof(float), NULL, NULL);

@@ -26,12 +26,11 @@
 
 #include "MaxPoolingLayer.h"
 
-#include <utility>
 
 
 MaxPoolingLayer::MaxPoolingLayer(std::vector<int> inputDimensions, int stride, int filterSize, int zeroPadding) {
 
-    this->inputDimensions = std::move(inputDimensions);
+    this->inputDimensions = inputDimensions;
     this->stride = stride;
     this->filterSize = filterSize;
     this->zeroPadding = zeroPadding;

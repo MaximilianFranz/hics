@@ -53,6 +53,6 @@ public:
      * @return list of valid nets as NetInfo
      * @throws ResourceException if no valid nets where found
      */
-    static std::vector<NetInfo*> getValidNets(const std::string &path);
+    static std::vector<NetInfo*> getValidNets(std::string path);
 };
 

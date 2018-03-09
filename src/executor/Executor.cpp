@@ -120,7 +120,10 @@ Executor::~Executor() {
     delete net;
     delete builder;
     delete placer;
-    delete interpreter;
+    // Check if interpreter was set before deletion
+    if (interpreter != nullptr) {
+        delete interpreter;
+    }
 }
 
 std::string Executor::getName() {

@@ -57,7 +57,7 @@ public:
 
     PlatformInfo &getPlatformInfo() override;
 
-    explicit FpgaPlatform(PlatformInfo &info);
+    FpgaPlatform(PlatformInfo &info);
 
     ~FpgaPlatform();
 };

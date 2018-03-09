@@ -45,7 +45,7 @@ using namespace std;
  * Since the NetBuilder "knows" the type of Layer anyways, it will only access the fields it requires.
  */
 struct LayerConstructionParams {
-    std::string type;
+    string type;
     int inputSize = 0;
     int outputSize = 0;
     int inputChannels= 0;
@@ -54,14 +54,14 @@ struct LayerConstructionParams {
     int stride = 0;
     int paddingSize = 0;
     int numGroups = 1;
-    std::string actFctType = "none"; // eg. relu, tanh, sigmoid, ...
-    std::string normFctType = "none";
+    string actFctType = "none"; // eg. relu, tanh, sigmoid, ...
+    string normFctType = "none";
     nlohmann::basic_json<> normParams = {{"radius", 0}, {"alpha", 0}, {"beta", 0}, {"bias", 0}};
 };
 
 class ModelLoader {
 protected:
-    std::string pathToJSON;
+    string pathToJSON;
     json model;
     json layers;
 
@@ -71,12 +71,12 @@ public:
      * Constructor
      * @param path
      */
-    explicit ModelLoader(std::string path);
+    explicit ModelLoader(string path);
 
     //Methods for NetInfo construction
-    virtual std::string getNetWorkName() = 0;
+    virtual string getNetWorkName() = 0;
 
-    virtual std::string getNetWorkID() = 0;
+    virtual string getNetWorkID() = 0;
 
     virtual int getRequiredDimension() = 0;
 

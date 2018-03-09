@@ -35,7 +35,7 @@
  */
 class NetIterator {
 protected:
-    int index{};
+    int index;
 public:
     virtual void first() = 0;
     virtual void next() = 0;

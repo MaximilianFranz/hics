@@ -63,6 +63,8 @@ public:
 
     NetInfo getInfo();
 
+    bool isComputationComplete();
+
     bool isPlacementComplete();
 
     /**

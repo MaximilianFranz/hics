@@ -26,7 +26,5 @@
 
 #include "ModelLoader.h"
 
-#include <utility>
-
-ModelLoader::ModelLoader(std::string path) : pathToJSON{std::move(path)} {}
+ModelLoader::ModelLoader(string path) : pathToJSON{path} {}
 

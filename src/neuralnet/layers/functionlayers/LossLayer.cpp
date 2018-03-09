@@ -45,7 +45,7 @@ void LossLayer::setPlatform(Platform *platform) {
 int LossLayer::getDifficulty() {
     inputWrapper = new DataWrapper(inputDimensions);
     if (this->difficulty == 0)
-        this->difficulty = static_cast<int>(inputWrapper->getNumElements()); // Linear to input
+        this->difficulty = inputWrapper->getNumElements(); // Linear to input
     delete inputWrapper;
     return difficulty;
 }
