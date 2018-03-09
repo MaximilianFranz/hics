@@ -68,8 +68,10 @@ SCENARIO("Testing Netbuilder methods") {
         REQUIRE(net->getLastLayer()->getType() == LayerType::LOSS_SOFTMAX);
     }
 
-    SECTION("Querying available nets") {
+    SECTION("Querying available nets & testing methods of NetInfo") {
         std::vector<NetInfo*> availableNets = n.queryAvailableNets();
         REQUIRE(availableNets[0]->getIdentifier() == "alexnet");
+        REQUIRE(availableNets[0]->getName() == "AlexNet - 8 Layer Convolutional Neural Net");
+        REQUIRE(availableNets[0]->getImageDimension() == 227);
     }
 }
