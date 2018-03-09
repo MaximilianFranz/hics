@@ -26,6 +26,9 @@
 
 #pragma once
 
-class ResultException : public std::exception {
-    ResultException(std::string message) : std::exception(message) {}
+#include <stdexcept>
+
+class ResultException : public std::runtime_error {
+public:
+    ResultException(std::string message) : std::runtime_error(message) {}
 };

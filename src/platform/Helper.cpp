@@ -35,6 +35,8 @@
 #include <fstream>
 #include <cstring>
 #include <algorithm>
+#include <ResultException.h>
+#include <ResourceException.h>
 
 #include "Helper.h"
 
@@ -361,14 +363,19 @@ namespace helper {
     }
     // LCOV_EXCL_STOP
 
-    void CheckError(cl_int error) {
+    template<typename T>
+    void CheckError(cl_int error, const std::string &message) {
         if (error != CL_SUCCESS) {
-            // LCOV_EXCL_START
-            std::cerr << "OpenCL call failed with error " << getErrorString(error) << std::endl;
-            std::exit(1);
-            // LCOV_EXCL_STOP
+            throw T(message + " OpenCL message: " + getErrorString(error)); // LCOV_EXCL_LINE
         }
     }
+
+    // Explicit instantiation
+    template void
+    CheckError<ResultException>(cl_int error, const std::string &message);
+
+    template void
+    CheckError<ResourceException>(cl_int error, const std::string &message);
 
     std::string LoadKernel(const char *name) {
         std::ifstream in(name);
@@ -383,7 +390,7 @@ namespace helper {
 
         cl_int error = 0;
         cl_program program = clCreateProgramWithSource (context, 1, sources, lengths, &error);
-        helper::CheckError (error);
+        helper::CheckError<ResourceException>(error, "Failed to create program.");
 
         return program;
     }
