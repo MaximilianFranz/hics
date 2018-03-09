@@ -44,5 +44,5 @@ public:
 
     PlatformInfo &getPlatformInfo() override;
 
-    CpuPlatform(PlatformInfo &info);
+    explicit CpuPlatform(PlatformInfo &info);
 };

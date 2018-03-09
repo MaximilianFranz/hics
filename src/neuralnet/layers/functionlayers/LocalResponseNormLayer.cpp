@@ -27,14 +27,14 @@
 #include "LocalResponseNormLayer.h"
 
 
-LocalResponseNormLayer::LocalResponseNormLayer(std::vector<int> inputDimensions, float radius, float alpha, float beta,
+LocalResponseNormLayer::LocalResponseNormLayer(std::vector<int> &inputDimensions, float radius, float alpha, float beta,
                                                float bias)
 
         :
-          radius(radius),
-          alpha(alpha),
-          beta(beta),
-          bias(bias)
+          radius{radius},
+          alpha{alpha},
+          beta{beta},
+          bias{bias}
 {
     this->inputDimensions = inputDimensions;
     this->outputDimensions = calcOutputDimensions();

@@ -120,7 +120,7 @@ public:
     * @brief updatePlatforms refreshes the currently displayed platforms in the GUI
     * @param platforms are the platforms that shall be displayed in the GUI
     */
-    void updatePlatforms(std::shared_ptr<std::vector<PlatformInfo *>> platforms);
+    void updatePlatforms(std::shared_ptr<std::vector<PlatformInfo *>> &platforms);
 
     /**
      * @brief getClassificationRequestState returns the classificationRequest state attribute.

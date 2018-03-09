@@ -89,6 +89,8 @@ PlatformInfo &ClPlatform::getPlatformInfo() {
     return this->platformInfo;
 }
 
+ClPlatform::ClPlatform() = default;
+
 ClPlatform::ClPlatform(PlatformInfo &info) : Platform(info) {
     init();
 }

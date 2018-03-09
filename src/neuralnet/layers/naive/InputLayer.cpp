@@ -26,7 +26,7 @@
 
 #include "InputLayer.h"
 
-InputLayer::InputLayer(std::vector<int> inputDimensions) {
+InputLayer::InputLayer(std::vector<int> &inputDimensions) {
     this->inputDimensions = inputDimensions;
     this->functionSet = true; // Naive Layers don't have functions
     this->type = LayerType::INPUT;

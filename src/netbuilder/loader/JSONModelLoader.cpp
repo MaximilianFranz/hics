@@ -114,10 +114,5 @@ bool JSONModelLoader::isValid() {
     else if (model.count("requiredDimension") == 0) {
         return false;
     }
-    else if (model.count("layers") == 0) {
-        return false;
-    }
-    else {
-        return true;
-    }
+    else return model.count("layers") != 0;
 }

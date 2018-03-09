@@ -26,50 +26,43 @@
 
 #include "LayerMaker.h"
 
-InputLayer* LayerMaker::createInputLayer(LayerConstructionParams lcp){
+InputLayer* LayerMaker::createInputLayer(LayerConstructionParams &lcp){
     std::vector<int> inputDim = {lcp.inputChannels, lcp.inputSize, lcp.inputSize};
-    InputLayer* input = new InputLayer(inputDim);
-    return input;
+    return new InputLayer(inputDim);
 }
 
 //TODO: Do line-breaks everywhere like this!
-ConvolutionLayer* LayerMaker::createConvLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights){
-    ConvolutionLayer* conv = new ConvolutionLayer(lcp.numFilters,
+ConvolutionLayer* LayerMaker::createConvLayer(LayerConstructionParams &lcp, std::vector<int> &inputDims, WeightWrapper* weights){
+    return new ConvolutionLayer(lcp.numFilters,
                                                   lcp.filterSize,
                                                   lcp.paddingSize,
                                                   lcp.stride,
                                                   lcp.numGroups,
                                                   inputDims,
                                                   weights);
-    return conv;
 }
 
-MaxPoolingLayer* LayerMaker::createMaxPoolLayer(LayerConstructionParams lcp, std::vector<int> inputDims) {
-    MaxPoolingLayer* maxPool = new MaxPoolingLayer(inputDims, lcp.stride, lcp.filterSize, lcp.paddingSize);
-    return maxPool;
+MaxPoolingLayer* LayerMaker::createMaxPoolLayer(LayerConstructionParams &lcp, std::vector<int> &inputDims) {
+    return new MaxPoolingLayer(inputDims, lcp.stride, lcp.filterSize, lcp.paddingSize);
 }
 
-LocalResponseNormLayer* LayerMaker::createLocalResponseNormLayer(LayerConstructionParams lcp, std::vector<int> inputDims) {
-    LocalResponseNormLayer* localresp = new LocalResponseNormLayer(inputDims, lcp.normParams["radius"],
+LocalResponseNormLayer* LayerMaker::createLocalResponseNormLayer(LayerConstructionParams &lcp, std::vector<int> &inputDims) {
+    return new LocalResponseNormLayer(inputDims, lcp.normParams["radius"],
                                                                    lcp.normParams["alpha"], lcp.normParams["beta"],
                                                                    lcp.normParams["bias"]);
-    return localresp;
 }
 
-ReLUActivationLayer* LayerMaker::createReLuActivationLayer(LayerConstructionParams lcp, std::vector<int> inputDims) {
-    ReLUActivationLayer* relu = new ReLUActivationLayer(inputDims);
-    return relu;
+ReLUActivationLayer* LayerMaker::createReLuActivationLayer(LayerConstructionParams &lcp, std::vector<int> &inputDims) {
+    return new ReLUActivationLayer(inputDims);
 }
 
 // Always return pointers to large objects because otherwise they would be copied every time.
-SoftMaxLossLayer* LayerMaker::createSoftmaxLossLayer(LayerConstructionParams lcp, std::vector<int> inputDims) {
-    SoftMaxLossLayer* softmax = new SoftMaxLossLayer(inputDims); // Create Layer with "new", so that scope handling is manual
-    return softmax;
+SoftMaxLossLayer* LayerMaker::createSoftmaxLossLayer(LayerConstructionParams &lcp, std::vector<int> &inputDims) {
+    return new SoftMaxLossLayer(inputDims); // Create Layer with "new", so that scope handling is manual
 }
 
-FullyConnectedLayer* LayerMaker::createFCLayer(LayerConstructionParams lcp, std::vector<int> inputDims, WeightWrapper* weights) {
-    FullyConnectedLayer* fullycon = new FullyConnectedLayer(inputDims, weights);
-    return fullycon;
+FullyConnectedLayer* LayerMaker::createFCLayer(LayerConstructionParams &lcp, std::vector<int> &inputDims, WeightWrapper* weights) {
+    return new FullyConnectedLayer(inputDims, weights);
 }
 
 

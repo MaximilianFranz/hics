@@ -57,7 +57,7 @@ public:
      * @param weights
      * @param bias
      */
-    FullyConnectedLayer(std::vector<int> inputDimensions, WeightWrapper *weights);
+    FullyConnectedLayer(std::vector<int> &inputDimensions, WeightWrapper *weights);
 
     std::vector<int> calcOutputDimensions() override;
 

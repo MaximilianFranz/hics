@@ -43,7 +43,7 @@ std::vector<std::string> ModelCrawler::getFilesInDir(std::string relPathToDir) {
 
     if ((dir = opendir (resolved_path)) != nullptr) {
         // print all the files and directories within directory
-        while ((ent = readdir (dir)) != NULL) {
+        while ((ent = readdir (dir)) != nullptr) {
             //Remove "." and ".." entries which occur often.
             if (strcmp(ent->d_name, ".") != 0 && strcmp(ent->d_name, "..") != 0 ) {
                 std::string filename = ent->d_name;
