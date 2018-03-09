@@ -57,8 +57,6 @@ public:
 
     PlatformInfo &getPlatformInfo() override;
 
-    ClPlatform();
-
     explicit ClPlatform(PlatformInfo &info);
 
     ~ClPlatform();
