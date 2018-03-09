@@ -24,11 +24,18 @@
  * SPDX-License-Identifier: MIT
  */
 
-#pragma once
+#include "OperationModeTest.h"
+#include <OperationMode.h>
 
 
-class CLFunction {
+SCENARIO("OperationMode tests") {
+    REQUIRE(OperationModeString::getName(OperationMode::EnergyEfficient) == "Energy efficient");
+    REQUIRE(OperationModeString::getName(OperationMode::LowPower) == "Low power");
+    REQUIRE(OperationModeString::getName(OperationMode::HighPower) == "High power");
+    REQUIRE_THROWS(OperationModeString::getMode(nullptr));
 
-};
-
-
+    REQUIRE(OperationModeString::getMode("Energy efficient") == OperationMode::EnergyEfficient);
+    REQUIRE(OperationModeString::getMode("Low power") == OperationMode::LowPower);
+    REQUIRE(OperationModeString::getMode("High power") == OperationMode::HighPower);
+    REQUIRE_THROWS(OperationModeString::getMode("fail"));
+}

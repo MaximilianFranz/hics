@@ -38,7 +38,6 @@ protected:
     FullyConnectedFunction* function;
     WeightWrapper* weights;
 
-    // TODO: Move to a util class (and make it modular?)
     /**
      * Stretches out the given input in the format the
      * AlexNet requires as input to FullyConnected layers.
@@ -47,6 +46,7 @@ protected:
      * @return
      */
     DataWrapper* stretchInput(DataWrapper* input);
+    //Move to a util class (and make it more modular -- see TensorFlow)
 
 public:
 

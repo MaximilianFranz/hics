@@ -26,6 +26,8 @@
 
 #pragma once
 
+#include <IllegalArgumentException.h>
+
 /**
  * Enum to specify the three different OperationModes. HighPower mode tries to reach the shortest possible computation
  * time without considering the power consumption, LowPower tries to classify with the least amount of power possible
@@ -54,11 +56,18 @@ struct OperationModeString {
             case EnergyEfficient:
                 return "Energy efficient";
 
+            // LCOV_EXCL_START
             default:
-                return "Operation mode";
+                throw IllegalArgumentException("No such operation mode");
+            // LCOV_EXCL_STOP
         }
     }
 
+    /**
+     * casts a string to OperationMode enum
+     * @param name string representation of enum value
+     * @return OperationMode enum type
+     */
     static OperationMode getMode(const std::string name) {
 
         if (name == "High power") {
@@ -68,7 +77,7 @@ struct OperationModeString {
         } else if (name == "Energy efficient") {
             return EnergyEfficient;
         } else {
-            throw std::exception();
+            throw IllegalArgumentException("No such operation mode");
         }
     }
 };

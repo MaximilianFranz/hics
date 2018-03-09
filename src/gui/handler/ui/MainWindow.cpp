@@ -47,6 +47,9 @@ MainWindow::MainWindow(QWidget *parent) :
     auto action = new QAction("About", this);
     connect(action, &QAction::triggered, this, &MainWindow::openAboutBox);
     menu->addAction(action);
+}
+
+void MainWindow::init() {
     this->show();
 }
 

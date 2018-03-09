@@ -53,6 +53,8 @@ SCENARIO("Testing Layer") {
         auto lastLayer = alexnet->getLastLayer();
         auto secondLastLayer = lastLayer->getPreviousLayer();
 
+        delete builder;
+
         REQUIRE(lastLayer->getPreviousLayer()->getType() == LayerType::FULLYCONNECTED);
         REQUIRE(secondLastLayer->getNextLayer()->getType() == LayerType::LOSS_SOFTMAX);
     }

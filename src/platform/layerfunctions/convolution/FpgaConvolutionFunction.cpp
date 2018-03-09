@@ -140,7 +140,7 @@ FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
     queue = clCreateCommandQueue(context, device, 0, &status);
     aocl_utils::checkError(status, "Failed to create command queue");
 
-    std::string binary_file = aocl_utils::getBoardBinaryFile("gemm4_fpga", device);
+    std::string binary_file = aocl_utils::getBoardBinaryFile(RES_DIR "kernels/gemm4_fpga", device);
     program = aocl_utils::createProgramFromBinary(context, binary_file.c_str(), &device, 1);
 
     // We can't pass runtime parameters to the kernel, so just pass ""
@@ -199,9 +199,9 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
                        patch_result.data());
 
     // Pad matrices and convert to column major format
-    int K = weights_columns;
-    int M = number_of_kernels;
-    int N = patch_columns;
+    unsigned int K = weights_columns;
+    unsigned int M = number_of_kernels;
+    unsigned int N = patch_columns;
 
     int paddedK = 0;
     int paddedM = 0;
@@ -266,10 +266,12 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     clEnqueueReadBuffer(queue, bufC, CL_TRUE, 0, M*N*sizeof(float), C, 0, NULL, NULL);
 
     // Remove padding and transform it back to row major format
-//    float *unpaddedC = helper::remove_padding(TS, unpaddedN, unpaddedM, C); // TODO: Why is this not necessary?
-    float *unpaddedC = helper::transpose(unpaddedM, unpaddedN, C);
+    float *transC = helper::transpose(M, N, C);
+    float *unpaddedC = helper::remove_padding(TS, unpaddedN, unpaddedM, transC);
+
     memcpy(output.getDataArray(), unpaddedC, unpaddedN*unpaddedM*sizeof(float));
 
+    delete [] transC;
     delete [] unpaddedC;
 
     // Free the OpenCL memory objects

@@ -25,6 +25,7 @@
  */
 
 #include <iostream>
+#include <IllegalArgumentException.h>
 #include "PreProcessor.h"
 
 void PreProcessor::setOutputSize(int w, int h) {
@@ -81,9 +82,7 @@ std::vector<ImageWrapper*> PreProcessor::processImages(std::map<QString, QImage>
                                 currentPixel = qBlue(currentImg.pixel(y, x));
                                 meanB += currentPixel / (height * width);
                                 break;
-                            default:
-                                //TODO: specify exception
-                                throw std::exception();
+                            default: throw IllegalArgumentException("Error while pre processing image"); //wont happen
                         }
                     }
                     bitmap[index] = (currentPixel);

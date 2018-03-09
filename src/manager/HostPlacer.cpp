@@ -26,14 +26,20 @@
 
 #include <iostream>
 #include <fstream>
+#include <ResourceException.h>
 
 #include "HostPlacer.h"
 
 
 HostPlacer::Performance HostPlacer::readComputationHostInfo(std::string hostName) {
-    std::ifstream i(RES_DIR "computationHosts.json");
     json computationHostFile;
-    i >> computationHostFile;
+    try {
+        std::ifstream i(RES_DIR "computationHosts.json");
+        i >> computationHostFile;
+    } catch (...) {
+        throw ResourceException("Error while reading computationHosts.json, classification not possible");
+    }
+
     json computationHost = computationHostFile["computationHosts"];
 
     for (auto compHostIt : computationHost) {
@@ -45,8 +51,7 @@ HostPlacer::Performance HostPlacer::readComputationHostInfo(std::string hostName
             return {power, time};
         }
     }
-    //TODO: real execption
-    throw std::exception();
+    throw ResourceException("computation host not found in " RES_DIR "computationHosts.json");
 }
 
 std::vector<std::pair<ComputationHost*, int>>&
@@ -69,12 +74,10 @@ HostPlacer::place(std::vector<ComputationHost*> &hosts, int numOfImg, OperationM
         case HighPower :
             return placeHighPower(hostPerformance, numOfImg);
         default:
-            //TODO: real exception
-            throw std::exception();
+            throw IllegalArgumentException("No such OperationMode");
     }
 }
 
-//TODO: Case: Two or more Hosts have the least amaount of power usage
 std::vector<std::pair<ComputationHost *, int>> &
 HostPlacer::placeLowPower(std::vector<std::pair<ComputationHost *, HostPlacer::Performance>> &hosts, int numOfImg) {
     //Find the Host with the least power consumption
@@ -89,6 +92,7 @@ HostPlacer::placeLowPower(std::vector<std::pair<ComputationHost *, HostPlacer::P
             allLowest.push_back(host.first);
         }
     }
+    //distribute workload, if there are several hosts with the least amaount of power usage
     int workload = int(numOfImg / allLowest.size());
     int remainder = int(numOfImg % allLowest.size());
 

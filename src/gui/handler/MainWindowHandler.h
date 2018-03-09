@@ -87,14 +87,18 @@ private:
 
     void disconnectAll();
 
+    void checkExceptionPtr();
+
 public:
 
     /**
     * @brief This constructor initializes the GUI with the needed information on available data.
     *
     * The constructor gets the available neural nets, platforms and operation modes which will be displayed after
-    * the GUI is constructed.
-    * TODO more info
+    * the GUI is constructed. It creates a StartWidget with these objects and then a ResultWidget and DetailDialog.
+    * They all get added to the created mainWindow's QStackedWidget and initialy the StartWidgete is displayed. The
+    * necessary buttons get connected to their methods in connectAll() and then the GUI is shown via the constructor
+    * of mainWIndow.
     *
     * @param neuralNets the available neural nets in the software
     * @param platforms the available platforms in the software
@@ -104,6 +108,13 @@ public:
                       std::vector<OperationMode> &operationModes);
 
     ~MainWindowHandler();
+
+    /**
+     * @brief init will start the displaying of the GUI
+     *
+     * When calling init the mainWindow's init method will be called and the GUI gets started.
+     */
+    void init();
 
     /**
     * @brief updatePlatforms refreshes the currently displayed platforms in the GUI
@@ -182,6 +193,7 @@ public slots:
     /**
      * @brief displayErrorMessage will send the error message to the startWidget's respective method to display it.
      * @param errorMessage the to be displayed error message
+     * @param close defines whether to close the GUI or not, default is false
      */
-    void displayErrorMessage(const std::string &errorMessage);
+    void displayErrorMessage(const std::string &errorMessage, bool close = false);
 };

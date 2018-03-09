@@ -39,7 +39,7 @@ LocalResponseNormLayer::LocalResponseNormLayer(std::vector<int> inputDimensions,
     this->inputDimensions = inputDimensions;
     this->outputDimensions = calcOutputDimensions();
     this->type = LayerType::NORMALIZATION_LOCALRESPONSE;
-    this->init(); // TODO never call virtual functions in constructor
+    this->init();
 }
 
 std::vector<int> LocalResponseNormLayer::calcOutputDimensions() {

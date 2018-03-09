@@ -24,34 +24,35 @@
  * SPDX-License-Identifier: MIT
  */
 
-#pragma once
+#include <iostream>
+#include <grpc++/server_builder.h>
+#include <grpc++/security/server_credentials.h>
+#include <grpc++/server.h>
+#include "ComputationServer.h"
 
-#include "layers/Layer.h"
-#include "NaiveLayer.h"
+using grpc::Server;
+using grpc::ServerBuilder;
+using grpc::ServerContext;
+using grpc::Status;
 
-/**
- * Allows to concatenate multiple outputs from more than one previous layer into one.
- */
-class ConcatLayer : public NaiveLayer {
-protected:
-    std::vector<std::vector<int>> inputLayersDimensions;
-    std::vector<Layer*> previousLayerList;
-public:
+int main() {
+    std::string server_address("0.0.0.0:50052");
+    ComputationServer service;
+    service.init();
 
-    /**
-     * Constructor for a ConcatLayer given the dimensions of all input layers.
-     *
-     * @param inputLayersDimensions dimensions of all layers that are concatenated by this layer.
-     */
-    explicit ConcatLayer(std::vector<std::vector<int>> inputLayersDimensions);
+    ServerBuilder builder;
+    // Listen on the given address without any authentication mechanism.
+    builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
+    // Register "service" as the instance through which we'll communicate with
+    // clients. In this case it corresponds to an *synchronous* service.
+    builder.RegisterService(&service);
+    // Finally assemble the server.
+    std::unique_ptr<Server> server(builder.BuildAndStart());
+    std::cout << "Server listening on " << server_address << std::endl;
 
-    std::vector<int> calcOutputDimensions() override;
+    // Wait for the server to shutdown. Note that some other thread must be
+    // responsible for shutting down the server for this call to ever return.
+    server->Wait();
 
-    void forward() override;
-
-    void setPreviousLayer(Layer *previousLayer) override;
-
-    Layer *getPreviousLayer() const override;
-};
-
-
+    return 0;
+}

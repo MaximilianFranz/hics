@@ -24,4 +24,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include "CLFunction.h"
+#pragma once
+
+#include "catch.hpp"

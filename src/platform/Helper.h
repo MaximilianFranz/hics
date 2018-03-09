@@ -26,6 +26,14 @@
 
 #pragma once
 
+#ifdef __APPLE__
+
+#include <OpenCL/opencl.h>
+
+#else
+#include <CL/opencl.h>
+#endif
+
 namespace helper {
 
     /**
@@ -124,4 +132,11 @@ namespace helper {
     template<typename Dtype>
     void add_bias(Dtype *data_matrix, const Dtype *bias, int number_of_rows, int number_of_columns);
 
+    const char *getErrorString(cl_int error);
+
+    void CheckError(cl_int error);
+
+    std::string LoadKernel (const char* name);
+
+    cl_program CreateProgram (const std::string& source, cl_context context);
 }

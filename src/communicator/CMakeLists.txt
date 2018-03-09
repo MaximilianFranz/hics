@@ -15,3 +15,5 @@ add_executable(hics-server serverMain.cpp)
 
 target_link_libraries(communicator ${Protobuf_LIBRARIES})
 target_link_libraries(hics-server communicator executor platform neuralnet netbuilder protobuf grpc grpc++)
+
+install(TARGETS hics-server DESTINATION ${CMAKE_INSTALL_BINDIR})

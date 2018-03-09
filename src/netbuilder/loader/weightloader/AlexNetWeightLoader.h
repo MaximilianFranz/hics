@@ -29,8 +29,6 @@
 #include <string>
 #include <map>
 
-#include <hdf_wrapper.h>
-
 #include "loader/weightloader/WeightLoader.h"
 
 /**
@@ -50,12 +48,14 @@
  *
  */
 
+namespace h5cpp {class File;};
+
 class AlexNetWeightLoader : public WeightLoader {
 
 private:
 
     const std::string filePath;
-    h5cpp::File weightFile;
+    h5cpp::File *weightFile;
 
     /**
      * @brief Creates a WeightWrapper out of a given groupName from the internally stored weightFile.
@@ -80,6 +80,11 @@ public:
     * @param filePath is the weight file for the AlexNet in HDF5 format
     */
     explicit AlexNetWeightLoader(const std::string &filePath);
+
+    /**
+     * @brief The destructor deletes the weight file.
+     */
+    ~AlexNetWeightLoader();
 
     /**
      * @brief Returns the WeightWrapper corresponding to the LayerIdentifier parameter.

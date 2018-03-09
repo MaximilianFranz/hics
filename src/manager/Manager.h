@@ -46,6 +46,9 @@ private:
 
 public:
 
+    /**
+     * Creates a new manager
+     */
     Manager();
 
     virtual ~Manager();
@@ -57,8 +60,16 @@ public:
      */
     virtual ClassificationResult* update();
 
+    /**
+     * Queries info from the computation hosts and initialises the GUi with the gathered data
+     */
     void initGUI();
 
+    /**
+     * Compares managerObservers by reference
+     * @param managerObserver
+     * @return true if the object is the same
+     */
     bool operator==(const ManagerObserver &managerObserver) override;
 
     /**

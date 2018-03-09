@@ -30,6 +30,6 @@
 ReLUActivationLayer::ReLUActivationLayer(std::vector<int> &inputDimension) : ActivationLayer(inputDimension) {
     this->type = LayerType::ACTIVATION_RELU;
     this->outputDimensions = calcOutputDimensions();
-    init(); // TODO never call virtual functions in constructor
+    init();
 
 }

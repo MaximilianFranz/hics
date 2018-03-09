@@ -24,34 +24,30 @@
  * SPDX-License-Identifier: MIT
  */
 
-#pragma once
+#include <Manager.h>
+#include <QtWidgets/QApplication>
+#include "SystemTest.h"
 
-#include "layers/Layer.h"
-#include "NaiveLayer.h"
+SCENARIO("System Test") {
+    SECTION("Complete Test") {
+        char *argv[] = {(char*)"HICS-TEST", (char *)"arg1", (char *)"arg2", (char *)0};
+        int argc = sizeof(argv) / sizeof(char*) - 1;
+        QApplication a(argc, argv);
 
-/**
- * Allows to concatenate multiple outputs from more than one previous layer into one.
- */
-class ConcatLayer : public NaiveLayer {
-protected:
-    std::vector<std::vector<int>> inputLayersDimensions;
-    std::vector<Layer*> previousLayerList;
-public:
+        Manager manager = Manager();
+        manager.initGUI();
+        a.exec();
 
-    /**
-     * Constructor for a ConcatLayer given the dimensions of all input layers.
-     *
-     * @param inputLayersDimensions dimensions of all layers that are concatenated by this layer.
-     */
-    explicit ConcatLayer(std::vector<std::vector<int>> inputLayersDimensions);
+        rename(RES_DIR "computationHosts.json", RES_DIR "c.json");
+        manager = Manager();
+        manager.initGUI();
+        a.exec();
+        rename(RES_DIR "c.json",RES_DIR "computationHosts.json");
 
-    std::vector<int> calcOutputDimensions() override;
-
-    void forward() override;
-
-    void setPreviousLayer(Layer *previousLayer) override;
-
-    Layer *getPreviousLayer() const override;
-};
-
-
+        rename(RES_DIR "models/alexnet.json", RES_DIR "models/c.json");
+        manager = Manager();
+        manager.initGUI();
+        a.exec();
+        rename(RES_DIR "models/c.json", RES_DIR "models/alexnet.json");
+    }
+}

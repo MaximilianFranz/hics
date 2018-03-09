@@ -35,6 +35,9 @@ using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
 
+/**
+ * main function that runs a computation server
+ */
 int main() {
     std::string server_address("0.0.0.0:50051");
     ComputationServer service;

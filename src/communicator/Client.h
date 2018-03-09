@@ -47,10 +47,21 @@ using grpc::Status;
 class Client : public ComputationHost {
 private:
     std::unique_ptr<Communicator::Stub> stub_;
-    std::string ComputationHost::name;
 public:
+
+    /**
+     * Creates a new Client
+     * @param channel   channel on which the client communicates
+     */
     explicit Client(std::shared_ptr<Channel> channel);
+
+    /**
+     * Creates a new Client with a specific name
+     * @param name      name of the client
+     * @param channel   channel on which the client communicates
+     */
     Client(std::string name, std::shared_ptr<Channel> channel);
+
 
     std::vector<ImageResult*> classify(std::vector<ImageWrapper*> images, NetInfo net, OperationMode mode,
                                       std::vector<PlatformInfo*> selectedPlatforms) override;

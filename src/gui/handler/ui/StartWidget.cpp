@@ -173,13 +173,14 @@ void StartWidget::processConfirmDeletionButton() {
     while (it.hasNext()) {
         it.next();
         QCheckBox *checkBox;
-        //TODO maybe check for it.value()->itemAt(0) if this is a valid pointer
-        if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
-            if (checkBox->isChecked()) {
-                clearLayout(it.value());
-                delete it.value();
-                delete it.key().first;
-                images.remove(it.key());
+        if(it.value()->itemAt(0)->widget()) {
+            if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
+                if (checkBox->isChecked()) {
+                    clearLayout(it.value());
+                    delete it.value();
+                    delete it.key().first;
+                    images.remove(it.key());
+                }
             }
         }
     }
@@ -300,10 +301,11 @@ void StartWidget::clearLayout(QLayout *layout) {
     }
 }
 
-void StartWidget::displayErrorMessage(const QString message) {
+QErrorMessage* StartWidget::displayErrorMessage(const QString message) {
     auto error = new QErrorMessage(this);
     error->setWindowTitle("Error");
     error->showMessage(message);
+    return error;
 }
 
 NetInfo StartWidget::getSelectedNeuralNet() {
@@ -311,7 +313,6 @@ NetInfo StartWidget::getSelectedNeuralNet() {
     auto it = neuralNetMap.find(name);
 
     if (it == neuralNetMap.end()) {
-        //TODO throw exception here
         displayErrorMessage(QString("Please select a neural net for the classification."));
     }
 
@@ -409,7 +410,6 @@ void StartWidget::resizeEvent(QResizeEvent *event) {
 }
 
 void StartWidget::widgetResized() {
-    //TODO resize file labels
     QMapIterator<QPair<QImage *, QString>, QHBoxLayout *> it(images);
 
     while (it.hasNext()) {

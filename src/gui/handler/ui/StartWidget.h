@@ -43,6 +43,7 @@
 #include <QtCore/QDir>
 #include <QTimer>
 #include <QtWidgets/QProgressBar>
+#include <QtWidgets/QErrorMessage>
 
 namespace Ui {
     class StartWidget;
@@ -89,8 +90,6 @@ private:
 
     void clearLayout(QLayout *layout);
 
-    void disableWidgets(bool disable);
-
     void renumerateImages();
 
     bool areAllSelected();
@@ -117,6 +116,12 @@ public:
     ~StartWidget();
 
     /**
+     * @brief disableWidgets disables or enables all widgets except for the images and scroll area
+     * @param disable, if true the widgets get disabled, if false they get enabled
+     */
+    void disableWidgets(bool disable);
+
+    /**
     * @brief updatePlatforms refreshes the currently displayed platforms in the GUI
     * @param platforms are the platforms that shall be displayed in the GUI
     */
@@ -126,8 +131,9 @@ public:
      * @brief Displays a QErrorDialog with the given error message.
      *
      * @param message the to be displayed error message
+     * @return returns the opened QErrorMessage
      */
-    void displayErrorMessage(QString message);
+    QErrorMessage * displayErrorMessage(QString message);
 
     /**
      * @brief Removes the Classify and Select images button and displays a busy loading progress bar to indicate that a

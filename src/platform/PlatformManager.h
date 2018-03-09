@@ -36,6 +36,7 @@ private:
     // Private constructor
     PlatformManager();
     std::vector<Platform*> platforms;
+    void init();
 
 public:
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
@@ -49,4 +50,6 @@ public:
     std::vector<PlatformInfo*> getPlatformInfos();
 
     Platform* getPlatformById(std::string uuid);
+
+    void reset();
 };

@@ -26,11 +26,13 @@
 
 #include <iostream>
 #include <fstream>
-
-#include "AOCL_Utils.h"
+#include <cstring>
 
 #include "ClConvolutionFunction.h"
-#include "Helper.h"
+#include <Helper.h>
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 // Threadblock sizes (e.g. for kernels GEMM1 or GEMM2)
 #define TS 32
@@ -38,140 +40,25 @@
 // RTS = TS / WPT
 #define WPT 8
 
-// =================================================================================================
-// The following functions should be split out and moved into a separate name space
-
-// LCOV_EXCL_START
-const char *getErrorString(cl_int error)
-{
-    switch(error){
-        // run-time and JIT compiler errors
-        case 0: return "CL_SUCCESS";
-        case -1: return "CL_DEVICE_NOT_FOUND";
-        case -2: return "CL_DEVICE_NOT_AVAILABLE";
-        case -3: return "CL_COMPILER_NOT_AVAILABLE";
-        case -4: return "CL_MEM_OBJECT_ALLOCATION_FAILURE";
-        case -5: return "CL_OUT_OF_RESOURCES";
-        case -6: return "CL_OUT_OF_HOST_MEMORY";
-        case -7: return "CL_PROFILING_INFO_NOT_AVAILABLE";
-        case -8: return "CL_MEM_COPY_OVERLAP";
-        case -9: return "CL_IMAGE_FORMAT_MISMATCH";
-        case -10: return "CL_IMAGE_FORMAT_NOT_SUPPORTED";
-        case -11: return "CL_BUILD_PROGRAM_FAILURE";
-        case -12: return "CL_MAP_FAILURE";
-        case -13: return "CL_MISALIGNED_SUB_BUFFER_OFFSET";
-        case -14: return "CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST";
-        case -15: return "CL_COMPILE_PROGRAM_FAILURE";
-        case -16: return "CL_LINKER_NOT_AVAILABLE";
-        case -17: return "CL_LINK_PROGRAM_FAILURE";
-        case -18: return "CL_DEVICE_PARTITION_FAILED";
-        case -19: return "CL_KERNEL_ARG_INFO_NOT_AVAILABLE";
-
-            // compile-time errors
-        case -30: return "CL_INVALID_VALUE";
-        case -31: return "CL_INVALID_DEVICE_TYPE";
-        case -32: return "CL_INVALID_PLATFORM";
-        case -33: return "CL_INVALID_DEVICE";
-        case -34: return "CL_INVALID_CONTEXT";
-        case -35: return "CL_INVALID_QUEUE_PROPERTIES";
-        case -36: return "CL_INVALID_COMMAND_QUEUE";
-        case -37: return "CL_INVALID_HOST_PTR";
-        case -38: return "CL_INVALID_MEM_OBJECT";
-        case -39: return "CL_INVALID_IMAGE_FORMAT_DESCRIPTOR";
-        case -40: return "CL_INVALID_IMAGE_SIZE";
-        case -41: return "CL_INVALID_SAMPLER";
-        case -42: return "CL_INVALID_BINARY";
-        case -43: return "CL_INVALID_BUILD_OPTIONS";
-        case -44: return "CL_INVALID_PROGRAM";
-        case -45: return "CL_INVALID_PROGRAM_EXECUTABLE";
-        case -46: return "CL_INVALID_KERNEL_NAME";
-        case -47: return "CL_INVALID_KERNEL_DEFINITION";
-        case -48: return "CL_INVALID_KERNEL";
-        case -49: return "CL_INVALID_ARG_INDEX";
-        case -50: return "CL_INVALID_ARG_VALUE";
-        case -51: return "CL_INVALID_ARG_SIZE";
-        case -52: return "CL_INVALID_KERNEL_ARGS";
-        case -53: return "CL_INVALID_WORK_DIMENSION";
-        case -54: return "CL_INVALID_WORK_GROUP_SIZE";
-        case -55: return "CL_INVALID_WORK_ITEM_SIZE";
-        case -56: return "CL_INVALID_GLOBAL_OFFSET";
-        case -57: return "CL_INVALID_EVENT_WAIT_LIST";
-        case -58: return "CL_INVALID_EVENT";
-        case -59: return "CL_INVALID_OPERATION";
-        case -60: return "CL_INVALID_GL_OBJECT";
-        case -61: return "CL_INVALID_BUFFER_SIZE";
-        case -62: return "CL_INVALID_MIP_LEVEL";
-        case -63: return "CL_INVALID_GLOBAL_WORK_SIZE";
-        case -64: return "CL_INVALID_PROPERTY";
-        case -65: return "CL_INVALID_IMAGE_DESCRIPTOR";
-        case -66: return "CL_INVALID_COMPILER_OPTIONS";
-        case -67: return "CL_INVALID_LINKER_OPTIONS";
-        case -68: return "CL_INVALID_DEVICE_PARTITION_COUNT";
-
-            // extension errors
-        case -1000: return "CL_INVALID_GL_SHAREGROUP_REFERENCE_KHR";
-        case -1001: return "CL_PLATFORM_NOT_FOUND_KHR";
-        case -1002: return "CL_INVALID_D3D10_DEVICE_KHR";
-        case -1003: return "CL_INVALID_D3D10_RESOURCE_KHR";
-        case -1004: return "CL_D3D10_RESOURCE_ALREADY_ACQUIRED_KHR";
-        case -1005: return "CL_D3D10_RESOURCE_NOT_ACQUIRED_KHR";
-        default: return "Unknown OpenCL error";
-    }
-}
-// LCOV_EXCL_STOP
-
-void CheckError (cl_int error)
-{
-    if (error != CL_SUCCESS) {
-        std::cerr << "OpenCL call failed with error " << getErrorString(error) << std::endl; // LCOV_EXCL_LINE
-        std::exit (1); // LCOV_EXCL_LINE
-    }
-}
-
-std::string LoadKernel (const char* name)
-{
-    std::ifstream in (name);
-    std::string result (
-            (std::istreambuf_iterator<char> (in)),
-            std::istreambuf_iterator<char> ());
-    return result;
-}
-
-cl_program CreateProgram (const std::string& source,
-                          cl_context context)
-{
-    // http://www.khronos.org/registry/cl/sdk/1.1/docs/man/xhtml/clCreateProgramWithSource.html
-    size_t lengths [1] = { source.size () };
-    const char* sources [1] = { source.data () };
-
-    cl_int error = 0;
-    cl_program program = clCreateProgramWithSource (context, 1, sources, lengths, &error);
-    CheckError (error);
-
-    return program;
-}
-
-// =================================================================================================
-
 ClConvolutionFunction::ClConvolutionFunction(cl_context c, cl_device_id d)
         : context(c), device(d) {
 
     cl_int status = 0;
     queue = clCreateCommandQueue(context, device, 0, &status);
-    aocl_utils::checkError(status, "Failed to create command queue");
+    helper::CheckError(status);
 
-    program = CreateProgram(LoadKernel(RES_DIR "kernels/gemm3.cl"), context);
+    program = helper::CreateProgram(helper::LoadKernel(RES_DIR "kernels/gemm3.cl"), context);
 
     char cmdline[1024];
     snprintf(cmdline, 1024, "-DTS=%d -DWPT=%d -DRTS=%d", TS, WPT, TS/WPT);
     clBuildProgram(program, 0, NULL, cmdline, NULL, NULL);
 //    status = clBuildProgram(program, 0, NULL, "", NULL, NULL);
-    aocl_utils::checkError(status, "Failed to build program");
+    helper::CheckError(status);
 
     // Check for compilation errors
     size_t logSize;
     clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, 0, NULL, &logSize);
-    char* messages = (char*)malloc((1+logSize)*sizeof(char));
+    auto * messages = (char*)malloc((1+logSize)*sizeof(char));
     clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, logSize, messages, NULL);
     messages[logSize] = '\0';
     if (logSize > 10) { printf(">>> Compiler message: %s\n", messages); }
@@ -180,7 +67,6 @@ ClConvolutionFunction::ClConvolutionFunction(cl_context c, cl_device_id d)
     kernel = clCreateKernel(program, "GEMM3", NULL);
 
 }
-
 
 
 void ClConvolutionFunction::execute(const DataWrapper &input,
@@ -220,9 +106,9 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
                        patch_result.data());
 
     // Pad matrices and convert to column major format
-    int K = weights_columns;
-    int M = number_of_kernels;
-    int N = patch_columns;
+    unsigned int K = weights_columns;
+    unsigned int M = number_of_kernels;
+    unsigned int N = patch_columns;
 
     int paddedK = 0;
     int paddedM = 0;
@@ -236,10 +122,10 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
     float *B = helper::transpose(paddedN, paddedK, tempB);
     delete tempB;
 
-    float *C = new float[paddedM*paddedN];
+    auto *C = new float[paddedM*paddedN];
 
     // Bias
-    float *D = new float[paddedM];
+    auto *D = new float[paddedM];
     memset(D, 0, paddedM*sizeof(float));
     memcpy(D, weights.getBiasArray(), number_of_kernels*sizeof(float));
 
@@ -278,7 +164,7 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
     const size_t global[2] = { M, N/WPT };
     cl_event event;
     cl_int result = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, global, local, 0, NULL, &event);
-    CheckError(result);
+    helper::CheckError(result);
 
     // Wait for calculations to be finished
     clWaitForEvents(1, &event);
@@ -287,10 +173,12 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
     clEnqueueReadBuffer(queue, bufC, CL_TRUE, 0, M*N*sizeof(float), C, 0, NULL, NULL);
 
     // Remove padding and transform it back to row major format
-//    float *unpaddedC = helper::remove_padding(TS, unpaddedN, unpaddedM, C); // TODO: Why is this not necessary?
-    float *unpaddedC = helper::transpose(unpaddedM, unpaddedN, C);
+    float *transC = helper::transpose(M, N, C);
+    float *unpaddedC = helper::remove_padding(TS, unpaddedN, unpaddedM, transC);
+
     memcpy(output.getDataArray(), unpaddedC, unpaddedN*unpaddedM*sizeof(float));
 
+    delete [] transC;
     delete [] unpaddedC;
 
     // Free the OpenCL memory objects
@@ -314,3 +202,5 @@ ClConvolutionFunction::~ClConvolutionFunction() {
     clReleaseProgram(program);
     clReleaseKernel(kernel);
 }
+
+#pragma GCC diagnostic pop

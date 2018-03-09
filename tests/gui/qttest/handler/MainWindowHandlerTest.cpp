@@ -67,11 +67,11 @@ void MainWindowHandlerTest::setUpClassificationResult() {
     std::pair<std::string, float> pair3("Tiger", 0.09);
     std::pair<std::string, float> pair4("KIT", 0.016);
     std::pair<std::string, float> pair5("Baukran", 0.684);
-    results.push_back(pair1);
+    results.push_back(pair5);
     results.push_back(pair2);
     results.push_back(pair3);
+    results.push_back(pair1);
     results.push_back(pair4);
-    results.push_back(pair5);
 
     std::vector<int> dimensions{100, 100};
     ImageWrapper imageWrapper(dimensions, "/home/pselab/Dokumente/repo/hics/tests/resources/tf_data_script/dog.png");
@@ -105,13 +105,14 @@ void MainWindowHandlerTest::setUpClassificationResult() {
 
 
 void MainWindowHandlerTest::testConstructor() {
+    mainWindowHandler->init();
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->isVisible(), true);
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
              mainWindowHandler->getStartWidget());
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->widget(1),
              mainWindowHandler->getResultWidget());
 
-    //Opens About Box
+    //Should open About Box
     mainWindowHandler->getMainWindow()->openAboutBox();
 }
 
@@ -131,9 +132,9 @@ void MainWindowHandlerTest::testStartClassification() {
     QCOMPARE(request->getAggregateResults(), false);
 
     QCOMPARE(request->getSelectedNeuralNet().getIdentifier(), (std::string)"googlenet");
-    QCOMPARE(request->getSelectedOperationMode(), OperationMode::HighPower); //TODO change this when operation mode implemented
+    QCOMPARE(request->getSelectedOperationMode(), OperationMode::HighPower);
     QCOMPARE(request->getSelectedPlatforms().at(0)->getPlatformId(), (std::string)"fpga");
-    QCOMPARE(request->getUserImages().size(), (unsigned long) 1);
+    QCOMPARE((int)request->getUserImages().size(), 1);
 }
 
 void MainWindowHandlerTest::testDisplayClassification() {

@@ -29,6 +29,7 @@
 #include <vector>
 
 #include <json.hpp>
+#include <ResourceException.h>
 
 #include "platforms/CpuPlatform.h"
 #include "platforms/FpgaPlatform.h"
@@ -39,9 +40,18 @@
 using json = nlohmann::json;
 
 PlatformManager::PlatformManager() {
-    std::ifstream i(RES_DIR "platforms.json");
+    init();
+}
+
+void PlatformManager::init() {
     json j;
-    i >> j;
+
+    try {
+        std::ifstream i(RES_DIR "platforms.json");
+        i >> j;
+    } catch (...) { // LCOV_EXCL_LINE
+        throw ResourceException("Error while reading platforms.json, file not readable or corrupted"); // LCOV_EXCL_LINE
+    }
 
     for (auto it : j["platforms"]) {
         std::string type = it["type"];
@@ -51,7 +61,6 @@ PlatformManager::PlatformManager() {
         int flops = it["flops"];
 
         if (type == "CPU") {
-            // TODO: validate if given platform matches the actual CPU on the host
             PlatformInfo pi(desc, PlatformType::CPU, uuid, power, flops);
             platforms.push_back(new CpuPlatform(pi));
 #ifdef ALTERA
@@ -69,7 +78,6 @@ PlatformManager::PlatformManager() {
         }
 
     }
-
 }
 
 std::vector<Platform*> PlatformManager::getPlatforms() {
@@ -98,4 +106,14 @@ Platform* PlatformManager::getPlatformById(std::string uuid) {
     // In case we don't find a platform for the given uuid, we return
     // a nullptr, which means the result should be checked by the caller.
     return nullptr;
+}
+
+void PlatformManager::reset() {
+    // Since we store pointers, we need to free the memory ourselves.
+    // std::vector.clear() will only do that for references.
+    for (auto p : platforms) {
+        delete p;
+    }
+    platforms.clear();
+    init();
 }

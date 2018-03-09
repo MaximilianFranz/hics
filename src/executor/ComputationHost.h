@@ -39,17 +39,16 @@ class ComputationHost {
 protected:
     std::string name;
 public:
-    // Must have pure virtual methods
     /**
      * Classifies the given images with the specified neural net, operation mode and selected Platforms.
      *
      * selectedPlatforms must be a subset of queryPlatforms() results.
      *
-     * @param images
-     * @param net
-     * @param mode
-     * @param selectedPlatforms
-     * @return
+     * @param images            to be classified
+     * @param net               to use for classifcation
+     * @param mode              under which to place the neuralnet
+     * @param selectedPlatforms to use for the computation
+     * @return classfied images with their respective labels bundled in ImageResults
      */
     virtual std::vector<ImageResult*> classify(std::vector<ImageWrapper*> images, NetInfo net, OperationMode mode,
                                               std::vector<PlatformInfo*> selectedPlatforms) = 0;
@@ -82,5 +81,4 @@ public:
         return name;
     }
     //LCOV_EXCL_STOP
-
 };

@@ -45,8 +45,7 @@ static std::exception_ptr exceptionptr = nullptr;
 
 static std::shared_ptr<spdlog::logger> logger;
 
-static char logfilepath[] = LOG_FILE_PATH "log.txt";
-
+//function for thread to run classification in
 void runClassification(ComputationHost* host,
                        std::vector<ImageResult*>& allResults,
                        std::vector<ImageWrapper*> img,
@@ -69,17 +68,21 @@ void runClassification(ComputationHost* host,
 Manager::Manager() {
 
     try {
-        // Create basic file logger (not rotated)
-        logger = spdlog::rotating_logger_mt("logger", logfilepath, 1024 * 1024 * 5, 3);
-        logger->flush_on(spdlog::level::debug);
-        logger->info("found log file, logger initialization successful");
-        logger->set_level(spdlog::level::debug);
+        // Create stdout logger, if not existent
+        if (!logger) {
+            logger = spdlog::stdout_color_mt("logger");
+        }
+
+        logger->set_level(spdlog::level::info);
+        logger->flush_on(spdlog::level::info);
+        logger->info("logger initialization successful");
 
     } catch (const spdlog::spdlog_ex& ex) {
         std::cout << "Log initialization failed: " << ex.what() << std::endl;
         exceptionptr = std::current_exception();
     }
 
+    //try to reach the fpga server, delete fpga host if it fails
     std::string hostAdress;
     ComputationHost* client;
     std::string clientName = "fpga";
@@ -100,11 +103,18 @@ Manager::Manager() {
                      clientName, r.what());
     }
 
-    ComputationHost* executor = new Executor("local");
-    computationHosts.push_back(executor);
+    //initialize the local computation host
+    try {
+        Executor *executor = new Executor("local");
+        computationHosts.push_back(executor);
+    } catch (ResourceException &r) {
+        logger->critical("could not read platforms of host {}, maybe the platforms.json is corrupted?");
+        exceptionptr = std::current_exception();
+    }
 }
 
 void Manager::initGUI() {
+    //query all nets
     std::vector<std::vector<NetInfo*>> allNets;
     for (auto host : computationHosts) {
         try {
@@ -114,15 +124,19 @@ void Manager::initGUI() {
                          c.getFailedHost()->getName());
             //remove failed host
             computationHosts.erase(std::find(computationHosts.begin(), computationHosts.end(), c.getFailedHost()));
-            exceptionptr = std::current_exception();
         } catch (ResourceException& r) {
             logger->critical("error while querying nets: {}. Aborting!", r.what());
             exceptionptr = std::current_exception();
         }
     }
 
-    auto nets = netIntersection(allNets);
+    //only show nets available on all hosts
+    std::vector<NetInfo*> nets;
+    if (!exceptionptr) {
+        nets = netIntersection(allNets);
+    }
 
+    //query platforms
     auto platforms = std::vector<PlatformInfo*>();
     for (auto host : computationHosts) {
         auto newPlatforms = host->queryPlatform();
@@ -130,17 +144,19 @@ void Manager::initGUI() {
     }
     std::vector<OperationMode> modes{OperationMode::HighPower, OperationMode::LowPower, OperationMode::EnergyEfficient};
 
+    //initialize GUI main window
     mainWindowHandler = new MainWindowHandler(nets, platforms, modes);
 
     //Check if exception occured while setting up System
-    if(exceptionptr) {
+    if (exceptionptr) {
         mainWindowHandler->setExceptionptr(exceptionptr);
 
         //Null exceptionptr for next classification
         exceptionptr = nullptr;
     }
-
+    //attach the manager as an observer to the GUI
     mainWindowHandler->attach(this);
+    mainWindowHandler->init();
 }
 
 ClassificationResult* Manager::update() {
@@ -148,9 +164,11 @@ ClassificationResult* Manager::update() {
     std::vector<std::vector<ImageWrapper *>> batches;
     std::vector<int> compTime;
     std::vector<std::vector<ImageResult *>> allResults;
+    std::vector<std::pair<ComputationHost *, int>> hostDistribution;
 
     ClassificationRequest *request = mainWindowHandler->getClassificationRequestState();
 
+    //preprocess images
     PreProcessor processor = PreProcessor();
     processor.setOutputSize(request->getSelectedNeuralNet().getImageDimension(),
                             request->getSelectedNeuralNet().getImageDimension());
@@ -177,24 +195,32 @@ ClassificationResult* Manager::update() {
         exceptionptr = std::current_exception();
     }
 
-    if (!exceptionptr) {
-        //Remove a computationHost if none of its Platforms are selected
-        availableHosts = computationHosts;
-        for (uint i = 0; i < availableHosts.size(); i++) {
-            if (hostPlatforms[i].empty()) {
-                ComputationHost *currentHost = availableHosts[i];
-                availableHosts.erase(std::find_if(availableHosts.begin(),
-                                                  availableHosts.end(),
-                                                  [&currentHost](ComputationHost *temp) {
-                                                      return temp->getName() == currentHost->getName();
-                                                  }));
-                hostPlatforms.erase(hostPlatforms.begin() + i);
-            }
+    //Remove a computationHost if none of its Platforms are selected
+    availableHosts = computationHosts;
+    for (uint i = 0; i < availableHosts.size(); i++) {
+        if (hostPlatforms[i].empty()) {
+            ComputationHost *currentHost = availableHosts[i];
+            availableHosts.erase(std::find_if(availableHosts.begin(),
+                                              availableHosts.end(),
+                                              [&currentHost](ComputationHost *temp) {
+                                                  return temp->getName() == currentHost->getName();
+                                              }));
+            hostPlatforms.erase(hostPlatforms.begin() + i);
         }
+    }
 
-        std::vector<std::pair<ComputationHost *, int>> hostDistribution =
-                HostPlacer::place(availableHosts, (int) processedImages.size(), request->getSelectedOperationMode());
+    //place the images to computation hosts
+    try {
+        hostDistribution = HostPlacer::place(availableHosts, (int) processedImages.size(),
+                                             request->getSelectedOperationMode());
+    } catch (ResourceException &r) {
+        logger->critical(r.what());
+        exceptionptr = std::current_exception();
+    }
 
+    if (!exceptionptr) {
+
+        //create batches for each computation host according to the host placement
         batches = std::vector<std::vector<ImageWrapper *>>(availableHosts.size());
         int hostIndex = 0;
         int imageIndex = 0;
@@ -209,6 +235,7 @@ ClassificationResult* Manager::update() {
             }
         }
 
+        //initialize result and time variables to be set in the classification
         allResults = std::vector<std::vector<ImageResult *>>(availableHosts.size());
 
         std::chrono::steady_clock::time_point time, timeAfter;
@@ -218,6 +245,8 @@ ClassificationResult* Manager::update() {
 
         std::vector<std::thread> classifyThreads;
 
+        //create a thread for each computationhost to run the classification in parallel
+        //since every host represents a whole system, there are no shared resoures to worry about
         for (uint i = 0; i < availableHosts.size(); i++) {
             if (!batches[i].empty()) {
                 time = std::chrono::steady_clock::now();
@@ -237,6 +266,7 @@ ClassificationResult* Manager::update() {
             }
         }
 
+        //join all classification threads
         for (uint i = 0; i < classifyThreads.size(); i++) {
             classifyThreads[i].join();
         }
@@ -273,7 +303,7 @@ ClassificationResult* Manager::update() {
             std::shared_ptr<std::vector<PlatformInfo *>> updatedPlatforms(availablePlatforms);
             mainWindowHandler->updatePlatforms(updatedPlatforms);
         } catch (...) {
-            //If its not a communication exception there is nothing to handle
+            //If its not a communication exception there is nothing to handle, the gui already has the exception pointer
         }
 
         //Null exceptionptr for next classification
@@ -283,6 +313,7 @@ ClassificationResult* Manager::update() {
 
     auto hosts = std::vector<PerformanceCalculator::HostInfo*>();
 
+    //read performance of each host
     for (uint i = 0; i < availableHosts.size(); i++) {
         auto newHost = new PerformanceCalculator::HostInfo(availableHosts[i]->getName(),
                                                            float(batches[i].size()) / float(processedImages.size()),
@@ -306,10 +337,12 @@ ClassificationResult* Manager::update() {
         }
     }
 
+    //calculate the performance data for the classification
     PerformanceData performanceData = PerformanceCalculator::calculatePerformance(calculateInfo, hosts);
 
     std::vector<ImageResult> newResults;
 
+    //merge the results from each host back together to one large result vector
     for (auto hostResults : allResults){
             for (auto singleResult : hostResults) {
                 newResults.push_back(*singleResult);
@@ -360,9 +393,14 @@ Manager::~Manager() {
  * @return adress of the computationHost
  */
 std::string getHostAdress(std::string hostname) {
-    std::ifstream i(RES_DIR "computationHosts.json");
     json computationHostFile;
-    i >> computationHostFile;
+    try {
+        std::ifstream i(RES_DIR "computationHosts.json");
+        i >> computationHostFile;
+    } catch (...) {
+        throw ResourceException("Error while reading computationHosots.json");
+    }
+
     json computationHost = computationHostFile["computationHosts"];
     for (auto compHostIt : computationHost) {
         if (compHostIt["name"] == hostname) {

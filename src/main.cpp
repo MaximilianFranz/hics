@@ -27,6 +27,7 @@
 #include <QApplication>
 #include <Manager.h>
 
+// LCOV_EXCL_START
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -35,3 +36,4 @@ int main(int argc, char *argv[])
     manager.initGUI();
     return a.exec();
 }
+// LCOV_EXCL_STOP
