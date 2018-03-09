@@ -31,10 +31,10 @@ LocalResponseNormLayer::LocalResponseNormLayer(std::vector<int> &inputDimensions
                                                float bias)
 
         :
-          radius(radius),
-          alpha(alpha),
-          beta(beta),
-          bias(bias)
+          radius{radius},
+          alpha{alpha},
+          beta{beta},
+          bias{bias}
 {
     this->inputDimensions = inputDimensions;
     this->outputDimensions = calcOutputDimensions();
