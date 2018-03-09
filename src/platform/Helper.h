@@ -132,9 +132,24 @@ namespace helper {
     template<typename Dtype>
     void add_bias(Dtype *data_matrix, const Dtype *bias, int number_of_rows, int number_of_columns);
 
+    /**
+     * Returns the corresponding OpenCL error message for a given OpenCL error code.
+     *
+     * @param error                 The OpenCL error code of a OpenCL function.
+     * @return                      Returns the corresponding OpenCL error message.
+     */
     const char *getErrorString(cl_int error);
 
-    void CheckError(cl_int error);
+    /**
+     * Takes the return code of a OpenCL function and checks whether the OpenCL function was successful.
+     * If the OpenCL function was not succesful, an exception of kind @T with the message @message is thrown.
+     *
+     * @tparam T        The kind of exception that should be thrown in case a OpenCL function was not successful.
+     * @param error     The OpenCL error code returned by a OpenCL function.
+     * @param message   A user-defined descriptive error message that will be the exception message.
+     */
+    template<typename T>
+    void CheckError(cl_int error, const std::string &message);
 
     std::string LoadKernel (const char* name);
 

@@ -30,5 +30,5 @@
 
 class ResourceException : public std::runtime_error {
 public:
-    ResourceException(std::string message) : std::runtime_error(message) {};
+    ResourceException(std::string message) : std::runtime_error(message) {}
 };
