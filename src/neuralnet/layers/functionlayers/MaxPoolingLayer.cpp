@@ -28,7 +28,7 @@
 
 
 
-MaxPoolingLayer::MaxPoolingLayer(std::vector<int> inputDimensions, int stride, int filterSize, int zeroPadding) {
+MaxPoolingLayer::MaxPoolingLayer(std::vector<int> &inputDimensions, int stride, int filterSize, int zeroPadding) {
 
     this->inputDimensions = inputDimensions;
     this->stride = stride;
