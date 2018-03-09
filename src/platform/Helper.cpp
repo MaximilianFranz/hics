@@ -37,10 +37,16 @@
 #include <algorithm>
 #include <ResultException.h>
 #include <ResourceException.h>
+#include <unistd.h>
 
 #include "Helper.h"
 
 namespace helper {
+
+    static const char *const VERSION_STR = "140";
+
+    // This is the minimum alignment requirement to ensure DMA can be used.
+    const unsigned AOCL_ALIGNMENT = 64;
 
     void multiply_matrices_using_1d_vectors(const float *matrix_left,
                                             const int matrix_left_rows, const int matrix_left_columns,
@@ -383,15 +389,250 @@ namespace helper {
         return result;
     }
 
-    cl_program CreateProgram (const std::string& source, cl_context context) {
+    cl_program CreateProgram(const std::string &source, cl_context context) {
         // http://www.khronos.org/registry/cl/sdk/1.1/docs/man/xhtml/clCreateProgramWithSource.html
-        size_t lengths [1] = { source.size () };
-        const char* sources [1] = { source.data () };
+        size_t lengths[1] = {source.size()};
+        const char *sources[1] = {source.data()};
 
         cl_int error = 0;
-        cl_program program = clCreateProgramWithSource (context, 1, sources, lengths, &error);
+        cl_program program = clCreateProgramWithSource(context, 1, sources, lengths, &error);
         helper::CheckError<ResourceException>(error, "Failed to create program.");
 
         return program;
     }
+
+    void *alignedMalloc(size_t size) {
+        void *result = NULL;
+        posix_memalign(&result, AOCL_ALIGNMENT, size);
+        return result;
+    }
+
+    void alignedFree(void *ptr) {
+        free(ptr);
+    }
+
+    // Sets the current working directory to be the same as the directory containing the running executable.
+    bool setCwdToExeDir() {
+        // Get path of executable.
+        char path[256];
+        if (readlink("/proc/self/exe", path, sizeof(path) / sizeof(path[0])) < 0) {
+            return false;
+        }
+
+        // Find the last '\' or '/' and terminate the path there; it is now
+        // the directory containing the executable.
+        size_t i;
+        for (i = strlen(path) - 1; i > 0 && path[i] != '/' && path[i] != '\\'; --i);
+        path[i] = '\0';
+
+        // Change the current directory.
+        chdir(path);
+
+        return true;
+    }
+
+    // Searches all platforms for the first platform whose name contains the search string (case-insensitive).
+    cl_platform_id findPlatform(const char *platform_name_search) {
+        cl_int status;
+
+        std::string search = platform_name_search;
+        std::transform(search.begin(), search.end(), search.begin(), tolower);
+
+        // Get number of platforms.
+        cl_uint num_platforms;
+        status = clGetPlatformIDs(0, NULL, &num_platforms);
+        helper::CheckError<ResourceException>(status, "Query for number of platforms failed");
+
+        // Get a list of all platform ids.
+        scoped_array<cl_platform_id> pids(num_platforms);
+        status = clGetPlatformIDs(num_platforms, pids, NULL); // TODO
+        helper::CheckError<ResourceException>(status, "Query for all platform ids failed");
+
+        // For each platform, get name and compare against the search string.
+        for (unsigned i = 0; i < num_platforms; ++i) {
+            std::string name = getPlatformName(pids[i]);
+
+            // Convert to lower case.
+            std::transform(name.begin(), name.end(), name.begin(), tolower);
+
+            if (name.find(search) != std::string::npos) {
+                // Found!
+                return pids[i];
+            }
+        }
+
+        // No platform found.
+        return NULL;
+    }
+
+    // Returns the platform name.
+    std::string getPlatformName(cl_platform_id pid) {
+        cl_int status;
+
+        size_t sz;
+        status = clGetPlatformInfo(pid, CL_PLATFORM_NAME, 0, NULL, &sz);
+        helper::CheckError<ResourceException>(status, "Query for platform name size failed");
+
+        scoped_array<char> name(sz);
+        status = clGetPlatformInfo(pid, CL_PLATFORM_NAME, sz, name, NULL); // TODO
+        helper::CheckError<ResourceException>(status, "Query for platform name failed");
+
+        return name.get();
+    }
+
+    std::string getDeviceName(cl_device_id did) {
+        cl_int status;
+
+        size_t sz;
+        status = clGetDeviceInfo(did, CL_DEVICE_NAME, 0, NULL, &sz);
+        helper::CheckError<ResourceException>(status, "Failed to get device name size");
+
+        scoped_array<char> name(sz);
+        status = clGetDeviceInfo(did, CL_DEVICE_NAME, sz, name, NULL); // TODO
+        helper::CheckError<ResourceException>(status, "Failed to get device name");
+
+        return name.get();
+    }
+
+    // Returns the list of all devices.
+    cl_device_id *getDevices(cl_platform_id pid, cl_device_type dev_type, cl_uint *num_devices) {
+        cl_int status;
+
+        status = clGetDeviceIDs(pid, dev_type, 0, NULL, num_devices);
+        helper::CheckError<ResourceException>(status, "Query for number of devices failed");
+
+        cl_device_id *dids = new cl_device_id[*num_devices];
+        status = clGetDeviceIDs(pid, dev_type, *num_devices, dids, NULL);
+        helper::CheckError<ResourceException>(status, "Query for device ids");
+
+        return dids;
+    }
+
+    // Create a program for all devices associated with the context.
+    cl_program createProgramFromBinary(cl_context context, const char *binary_file_name, const cl_device_id *devices,
+                                       unsigned num_devices) {
+        // Early exit for potentially the most common way to fail: AOCX does not exist.
+        if (!fileExists(binary_file_name)) {
+            printf("AOCX file '%s' does not exist.\n", binary_file_name);
+            helper::CheckError<ResourceException>(CL_INVALID_PROGRAM, "Failed to load binary file");
+        }
+
+        // Load the binary.
+        size_t binary_size;
+        scoped_array<unsigned char> binary(loadBinaryFile(binary_file_name, &binary_size));
+        if (binary == NULL) { // TODO
+            helper::CheckError<ResourceException>(CL_INVALID_PROGRAM, "Failed to load binary file");
+        }
+
+        scoped_array<size_t> binary_lengths(num_devices);
+        scoped_array<unsigned char *> binaries(num_devices);
+        for (unsigned i = 0; i < num_devices; ++i) {
+            binary_lengths[i] = binary_size;
+            binaries[i] = binary; // TODO
+        }
+
+        cl_int status;
+        scoped_array<cl_int> binary_status(num_devices);
+
+        cl_program program = clCreateProgramWithBinary(context, num_devices, devices, binary_lengths, // TODO
+                                                       (const unsigned char **) binaries.get(), binary_status, &status); // TODO
+        helper::CheckError<ResourceException>(status, "Failed to create program with binary");
+        for (unsigned i = 0; i < num_devices; ++i) {
+            helper::CheckError<ResourceException>(binary_status[i], "Failed to load binary for device");
+        }
+
+        return program;
+    }
+
+
+    // Loads a file in binary form.
+    unsigned char *loadBinaryFile(const char *file_name, size_t *size) {
+        // Open the File
+        FILE *fp;
+        fp = fopen(file_name, "rb");
+        if (fp == 0) {
+            return NULL;
+        }
+
+        // Get the size of the file
+        fseek(fp, 0, SEEK_END);
+        *size = ftell(fp);
+
+        // Allocate space for the binary
+        unsigned char *binary = new unsigned char[*size];
+
+        // Go back to the file start
+        rewind(fp);
+
+        // Read the file into the binary
+        if (fread((void *) binary, *size, 1, fp) == 0) {
+            delete[] binary;
+            fclose(fp);
+            return NULL;
+        }
+
+        return binary;
+    }
+
+
+    bool fileExists(const char *file_name) {
+        return access(file_name, R_OK) != -1;
+    }
+
+
+    std::string getBoardBinaryFile(const char *prefix, cl_device_id device) {
+        // First check if <prefix>.aocx exists. Use it if it does.
+        std::string file_name = std::string(prefix) + ".aocx";
+        if (fileExists(file_name.c_str())) {
+            return file_name;
+        }
+
+        // Now get the name of the board. For Altera SDK for OpenCL boards,
+        // the name of the device is presented as:
+        //  <board name> : ...
+        std::string device_name = getDeviceName(device);
+
+        // Now search for the " :" in the device name.
+        size_t end = device_name.find(" :");
+        if (end != std::string::npos) {
+            std::string board_name(device_name, 0, end);
+
+            // Look for a AOCX with the name <prefix>_<board_name>_<version>.aocx.
+            file_name = std::string(prefix) + "_" + board_name + "_" + VERSION_STR + ".aocx";
+            if (fileExists(file_name.c_str())) {
+                return file_name;
+            }
+        }
+
+        // At this point just use <prefix>.aocx. This file doesn't exist
+        // and this should trigger an error later.
+        return std::string(prefix) + ".aocx";
+    }
+
+    // High-resolution timer.
+    double getCurrentTimestamp() {
+        timespec a;
+        clock_gettime(CLOCK_MONOTONIC, &a);
+        return (double(a.tv_nsec) * 1.0e-9) + double(a.tv_sec);
+    }
+
+    cl_ulong getStartEndTime(cl_event event) {
+        cl_int status;
+
+        cl_ulong start, end;
+        status = clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_START, sizeof(start), &start, NULL);
+        helper::CheckError<ResourceException>(status, "Failed to query event start time");
+        status = clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_END, sizeof(end), &end, NULL);
+        helper::CheckError<ResourceException>(status, "Failed to query event end time");
+
+        return end - start;
+    }
+
+    void waitMilliseconds(unsigned ms) {
+        timespec sleeptime = {0};
+        sleeptime.tv_sec = ms / 1000;
+        sleeptime.tv_nsec = long(ms % 1000) * 1000000L;  // convert to nanoseconds
+        nanosleep(&sleeptime, NULL);
+    }
+
 }

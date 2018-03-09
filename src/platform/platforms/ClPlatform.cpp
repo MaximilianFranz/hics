@@ -32,8 +32,8 @@
 #include <layerfunctions/pooling/CpuMaxPoolingFunction.h>
 #include <layerfunctions/activation/CpuReLUFunction.h>
 #include <layerfunctions/convolution/ClConvolutionFunction.h>
-
-#include "AOCL_Utils.h"
+#include <Helper.h>
+#include <ResourceException.h>
 
 #include "ClPlatform.h"
 
@@ -99,7 +99,7 @@ void ClPlatform::init() {
     cl_platform_id platform = 0;
 
     status = clGetPlatformIDs(1, &platform, NULL);
-    aocl_utils::checkError(status, "Query for platform ids failed");
+    helper::CheckError<ResourceException>(status, "Query for platform ids failed");
 
     device = 0;
     if(platformInfo.getType() == PlatformType::GPU) {
@@ -107,10 +107,10 @@ void ClPlatform::init() {
     } else if (platformInfo.getType() == PlatformType::CL_CPU) {
         status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, NULL);
     }
-    aocl_utils::checkError(status, "Query for device ids failed");
+    helper::CheckError<ResourceException>(status, "Query for device ids failed");
 
     context = clCreateContext(NULL, 1, &device, NULL, NULL, &status);
-    aocl_utils::checkError(status, "Failed to create context");
+    helper::CheckError<ResourceException>(status, "Failed to create context");
 }
 
 ClPlatform::~ClPlatform() {
@@ -119,6 +119,3 @@ ClPlatform::~ClPlatform() {
     delete c;
     clReleaseContext(context);
 }
-
-// Make AOCL_Utils happy
-void cleanup() {}; // LCOV_EXCL_LINE
