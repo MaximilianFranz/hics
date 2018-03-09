@@ -40,8 +40,7 @@ Layer *ConcatLayer::getPreviousLayer() const {
 }
 
 ConcatLayer::ConcatLayer(std::vector<std::vector<int>> &inputLayersDimensions)
-{
-    this->inputLayersDimensions = inputLayersDimensions;
+        : inputLayersDimensions{inputLayersDimensions} {
     this->type = LayerType::CONCAT;
     this->outputDimensions = calcOutputDimensions();
 }
