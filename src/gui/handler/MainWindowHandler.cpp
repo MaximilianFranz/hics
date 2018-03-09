@@ -195,7 +195,7 @@ MainWindowHandler::~MainWindowHandler() {
     delete classificationRequestState;
 }
 
-void MainWindowHandler::updatePlatforms(std::shared_ptr<std::vector<PlatformInfo *>> platforms) {
+void MainWindowHandler::updatePlatforms(std::shared_ptr<std::vector<PlatformInfo *>> &platforms) {
     updatedPlatforms = platforms;
 }
 
