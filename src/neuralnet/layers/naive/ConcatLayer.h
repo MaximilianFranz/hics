@@ -43,7 +43,7 @@ public:
      *
      * @param inputLayersDimensions dimensions of all layers that are concatenated by this layer.
      */
-    explicit ConcatLayer(std::vector<std::vector<int>> inputLayersDimensions);
+    explicit ConcatLayer(std::vector<std::vector<int>> &inputLayersDimensions);
 
     std::vector<int> calcOutputDimensions() override;
 

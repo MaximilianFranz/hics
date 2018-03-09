@@ -39,9 +39,9 @@ Layer *ConcatLayer::getPreviousLayer() const {
     return previousLayerList.at(0);
 }
 
-ConcatLayer::ConcatLayer(std::vector<std::vector<int>> inputLayersDimensions)
+ConcatLayer::ConcatLayer(std::vector<std::vector<int>> &inputLayersDimensions)
 {
-    this->inputLayersDimensions = std::move(inputLayersDimensions);
+    this->inputLayersDimensions = inputLayersDimensions;
     this->type = LayerType::CONCAT;
     this->outputDimensions = calcOutputDimensions();
 }
