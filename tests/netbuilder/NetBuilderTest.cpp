@@ -67,4 +67,9 @@ SCENARIO("Testing Netbuilder methods") {
         NeuralNet* net =  n.buildNeuralNet(*netInfo);
         REQUIRE(net->getLastLayer()->getType() == LayerType::LOSS_SOFTMAX);
     }
+
+    SECTION("Querying available nets") {
+        std::vector<NetInfo*> availableNets = n.queryAvailableNets();
+        REQUIRE(availableNets[0]->getIdentifier() == "alexnet");
+    }
 }
