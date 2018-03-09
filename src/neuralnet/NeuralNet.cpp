@@ -54,7 +54,7 @@ bool NeuralNet::isPlacementComplete() {
     return true;
 }
 
-NeuralNet::NeuralNet(InputLayer *input, NetInfo info) : info(info) {
+NeuralNet::NeuralNet(InputLayer *input, NetInfo info) : info{info} {
     layers.push_back(input);
 }
 
