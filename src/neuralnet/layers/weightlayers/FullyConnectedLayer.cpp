@@ -26,7 +26,7 @@
 
 #include "FullyConnectedLayer.h"
 
-FullyConnectedLayer::FullyConnectedLayer(std::vector<int> inputDimensions, WeightWrapper *weights) {
+FullyConnectedLayer::FullyConnectedLayer(std::vector<int> &inputDimensions, WeightWrapper *weights) {
     this->inputDimensions = inputDimensions;
     this->weights = weights;
     this->outputDimensions = calcOutputDimensions();
