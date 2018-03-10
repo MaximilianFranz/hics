@@ -99,7 +99,7 @@ public:
      *
      * @param name of this Executor
      */
-    Executor(std::string name);
+    explicit Executor(std::string name);
 
     /**
      * Default constructor ensuring that PlatformPlacer and NetBuilder are available
