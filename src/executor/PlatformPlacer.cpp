@@ -89,24 +89,24 @@ PlatformInfo* PlatformPlacer::getDefaultPlatform() {
     }
 }
 
-void PlatformPlacer::placeNetWith(PlatformInfo *perfomanceInfo, PlatformInfo *fallbackInfo) {
-    float perfomanceDifficulty = 0;
+void PlatformPlacer::placeNetWith(PlatformInfo *performanceInfo, PlatformInfo *fallbackInfo) {
+    float performanceDifficulty = 0;
     float  fallbackDifficulty = 0;
 
     long long totalDifficulty = net->getTotalDifficulty();
     long long averageDifficulty = totalDifficulty / net->getNumLayers();
     
-    Platform *perfomance = platformManager->getPlatformById(perfomanceInfo->getPlatformId());
+    Platform *performance = platformManager->getPlatformById(performanceInfo->getPlatformId());
     Platform *fallback = platformManager->getPlatformById(fallbackInfo->getPlatformId());
 
     SimpleNetIterator *it = net->createIterator();
     do {
         Layer *currentLayer = it->getElement();
 
-        // If layer is relatively difficult, use the perfomance platform
+        // If layer is relatively difficult, use the performance platform
         if (currentLayer->getDifficulty() > averageDifficulty) {
-            currentLayer->setPlatform(perfomance);
-            perfomanceDifficulty += currentLayer->getDifficulty();
+            currentLayer->setPlatform(performance);
+            performanceDifficulty += currentLayer->getDifficulty();
         } else {
             currentLayer->setPlatform(fallback);
             fallbackDifficulty += currentLayer->getDifficulty();
@@ -115,21 +115,21 @@ void PlatformPlacer::placeNetWith(PlatformInfo *perfomanceInfo, PlatformInfo *fa
 
     } while(it->hasNext());
 
-    float performanceDistribution = perfomanceDifficulty / totalDifficulty;
+    float performanceDistribution = performanceDifficulty / totalDifficulty;
     float fallbackDistribution = fallbackDifficulty / totalDifficulty;
 
     // Calculate distribution.
-    if (fallbackInfo->getPlatformId() != perfomanceInfo->getPlatformId()) {
-        compDistribution.emplace_back(perfomanceInfo, performanceDistribution);
+    if (fallbackInfo->getPlatformId() != performanceInfo->getPlatformId()) {
+        compDistribution.emplace_back(performanceInfo, performanceDistribution);
         compDistribution.emplace_back(fallbackInfo, fallbackDistribution);
     } else {
-        compDistribution.emplace_back(std::pair<PlatformInfo *, float>(perfomanceInfo, 1));
+        compDistribution.emplace_back(std::pair<PlatformInfo *, float>(performanceInfo, 1));
     }
 
     // Add platforms that have not been used for completeness of the details tab.
     for (auto p : currentPlatforms) {
         // Platform selected but not used for placement
-        if (p->getPlatformId() != perfomanceInfo->getPlatformId()
+        if (p->getPlatformId() != performanceInfo->getPlatformId()
             && p->getPlatformId() != fallbackInfo->getPlatformId()) {
             compDistribution.emplace_back(std::pair<PlatformInfo *, float>(p, 0));
         }
