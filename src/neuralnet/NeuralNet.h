@@ -76,6 +76,11 @@ public:
      */
     SimpleNetIterator* createIterator() const;
 
+    /**
+     * Calculate the totalized difficulty of all layer in a network to get a more accurate distribution of computations.
+     *
+     * @return the total difficulty of the neural net
+     */
     long long getTotalDifficulty();
 
     /**
