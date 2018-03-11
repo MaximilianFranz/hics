@@ -25,6 +25,8 @@
  */
 
 #include <IllegalArgumentException.h>
+#include <ResourceException.h>
+#include <Helper.h>
 
 #include <layerfunctions/loss/CpuSoftMaxLossFunction.h>
 #include <layerfunctions/normalization/CpuResponseNormalizationFunction.h>
@@ -32,8 +34,6 @@
 #include <layerfunctions/pooling/CpuMaxPoolingFunction.h>
 #include <layerfunctions/activation/CpuReLUFunction.h>
 #include <layerfunctions/convolution/FpgaConvolutionFunction.h>
-
-#include "AOCL_Utils.h"
 
 #include "FpgaPlatform.h"
 
@@ -99,22 +99,19 @@ void FpgaPlatform::init() {
     cl_platform_id platform = 0;
 
     status = clGetPlatformIDs(1, &platform, NULL);
-    aocl_utils::checkError(status, "Query for platform ids failed");
+    helper::CheckError<ResourceException>(status, "Query for platform ids failed.");
 
     device = 0;
     // We could filter for the platform name, but since the FpgaPlatform
     // is only available on the board, this is not strictly necessary, so we
     // just query for all available platforms.
     status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 1, &device, NULL);
-    aocl_utils::checkError(status, "Query for device ids failed");
+    helper::CheckError<ResourceException>(status, "Query for device ids failed.");
 
     context = clCreateContext(NULL, 1, &device, NULL, NULL, &status);
-    aocl_utils::checkError(status, "Failed to create context");
+    helper::CheckError<ResourceException>(status, "Failed to create context.");
 }
 
 FpgaPlatform::~FpgaPlatform() {
     clReleaseContext(context);
 }
-
-// Make AOCL_Utils happy
-void cleanup() {}; // LCOV_EXCL_LINE

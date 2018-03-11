@@ -16,11 +16,11 @@ set(SOURCE_FILES
         layerfunctions/normalization/CpuResponseNormalizationFunction.cpp layerfunctions/normalization/CpuResponseNormalizationFunction.h
         layerfunctions/FullyConnectedFunction.h
         layerfunctions/CpuFullyConnectedFunction.h layerfunctions/CpuFullyConnectedFunction.cpp
-        ../../thirdparty/AOCL_Utils.cpp ../../thirdparty/AOCL_Utils.h
         Helper.cpp Helper.h)
 
 if(PLATFORM_ALTERA)
     list(APPEND SOURCE_FILES
+            ../../thirdparty/AOCL_Utils.cpp ../../thirdparty/AOCL_Utils.h
             platforms/FpgaPlatform.cpp platforms/FpgaPlatform.h
             layerfunctions/convolution/FpgaConvolutionFunction.cpp layerfunctions/convolution/FpgaConvolutionFunction.h)
 else()

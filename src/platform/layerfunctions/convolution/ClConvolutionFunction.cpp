@@ -27,11 +27,12 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+
 #include <ResultException.h>
 #include <ResourceException.h>
+#include <Helper.h>
 
 #include "ClConvolutionFunction.h"
-#include <Helper.h>
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
