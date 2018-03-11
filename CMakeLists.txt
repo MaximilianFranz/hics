@@ -46,6 +46,7 @@ else()
     # Required by the CL platform
     find_package(OpenCL REQUIRED)
 endif()
+include_directories(${OpenCL_INCLUDE_DIRS})
 
 # This allows us to use direct includes instead of using relative paths
 include_directories(src/communicator)
