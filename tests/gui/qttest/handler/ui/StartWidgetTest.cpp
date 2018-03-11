@@ -136,6 +136,8 @@ void StartWidgetTest::testDuplicateSelectedImages() {
 }
 
 void StartWidgetTest::testSelectedPlatforms() {
+    QCOMPARE((int)startWidget->getSelectedPlatforms().size(), 0);
+
     QTest::mouseClick(startWidget->getPlatformsQVBoxLayout()->itemAt(0)->widget(), Qt::LeftButton);
     QTest::mouseClick(startWidget->getPlatformsQVBoxLayout()->itemAt(1)->widget(), Qt::LeftButton);
 
@@ -149,6 +151,12 @@ void StartWidgetTest::testSelectedNeuralNet() {
     QTest::keyClick(startWidget->getNeuralNetsQComboBox(), Qt::Key_Down);
 
     QCOMPARE(startWidget->getSelectedNeuralNet().getIdentifier(), (std::string) "googlenet");
+
+    delete startWidget;
+    nets.clear();
+    startWidget = new StartWidget(nets, platforms, modes);
+
+    QCOMPARE(startWidget->getSelectedNeuralNet().getIdentifier(), (std::string)"NULL");
 }
 
 void StartWidgetTest::testSelectedOperationMode() {
@@ -166,3 +174,4 @@ void StartWidgetTest::testIsAggregated() {
     QTest::mouseClick(startWidget->getAggregateResultsQCheckBox(), Qt::LeftButton);
     QCOMPARE(startWidget->isAggregated(), false);
 }
+

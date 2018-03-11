@@ -314,6 +314,7 @@ NetInfo StartWidget::getSelectedNeuralNet() {
 
     if (it == neuralNetMap.end()) {
         displayErrorMessage(QString("Please select a neural net for the classification."));
+        return NetInfo("", 0, "NULL");
     }
 
     return *it->second;

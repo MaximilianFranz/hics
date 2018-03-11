@@ -52,8 +52,6 @@ private slots:
 
     void cleanup();
 
-    //void classifyButtonClicked();
-
     void testConstructor();
 
     void testSelectedPlatforms();

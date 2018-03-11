@@ -67,7 +67,7 @@ void MainWindowHandler::setClassificationRequestState() {
     bool aggregate = startWidget->isAggregated();
     std::map<QString, QImage> userImgs = startWidget->getSelectedImages();
 
-    if (!platforms.empty() && !userImgs.empty()) {
+    if ((!platforms.empty()) && (!userImgs.empty()) && (neuralNet.getIdentifier() != "NULL")) {
         classificationRequestState = new ClassificationRequest(neuralNet, platforms, mode, aggregate, userImgs);
 
         workerThread = new WorkerThread(this);
