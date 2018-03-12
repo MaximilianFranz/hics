@@ -45,9 +45,17 @@ public:
      */
     explicit InputLayer(std::vector<int> &inputDimensions);
 
-
+    /**
+     * Calculates the output dimensions of the layer given the inputDimensions of this instance and it's parameters.
+     *
+     * @return the Dimensions the output Wrapper has to have.
+     */
     std::vector<int> calcOutputDimensions() override;
 
+    /**
+     * Triggers the computation of the forward propagation. Takes input from inputWrapper and writes to outputWrapper.
+     * The Executor knows the size the output Wrapper needs by querying getOutputDimensions()
+     */
     void forward() override;
 
 };

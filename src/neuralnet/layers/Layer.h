@@ -64,18 +64,15 @@ public:
 
 
     /**
-     * Triggers the computation of the forward propagation. Takes input from inputWrapper and writes to
-     * outputWrapper
-     *
+     * Triggers the computation of the forward propagation. Takes input from inputWrapper and writes to outputWrapper.
      * The Executor knows the size the output Wrapper needs by querying getOutputDimensions()
-     *
      */
     virtual void forward() = 0;
 
     /**
-     * Set platform which is used to generate the corresponding function
+     * Set the platform to be used to create the function that performs the computations of the layer.
      *
-     * @param platform to be used as a LayerFunction factory
+     * @param platform      The platform to be used as a LayerFunction factory.
      */
     virtual void setPlatform(Platform *platform) = 0;
 
@@ -86,9 +83,7 @@ public:
     virtual bool isPlatformSet();
 
     /**
-     * Returns an indicator of difficulty of this layer.
-     * Roughly approximates the number of computation needed.
-     *
+     * Returns an approximation of the number of necessary computations in this layer, which indicates the difficulty of this layer.
      *
      * @return long value: difficulty of this layer
      */
@@ -104,13 +99,13 @@ public:
     void init();
 
     /**
-     * Set previous layer by giving a pointer
+     * Set the preceeding layer of a layer.
      *
-     * @param previousLayer which to set as preceeding layer.
+     * @param previousLayer     A pointer to the preceeding layer.
      */
     virtual void setPreviousLayer(Layer *previousLayer);
 
-     /**
+    /**
      * Set next layer by providing a pointer
      *
      * @param nextLayer which to append to this one.

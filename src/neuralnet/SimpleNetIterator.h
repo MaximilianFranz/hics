@@ -37,14 +37,36 @@ class SimpleNetIterator : NetIterator {
 private:
     const NeuralNet *net; // Why does this not recognize NeuralNet????
 public:
+
+    /**
+     * Constructor
+     *
+     * @param net   The neural network that the NetIterator should traverse.
+     */
     explicit SimpleNetIterator(const NeuralNet *net);
 
+    /**
+     * Sets the index to the index of the very first layer in the neural network.
+     */
     void first() override;
 
+    /**
+     * Sets the index to the index of the layer subsequent the current layer.
+     */
     void next() override;
 
+    /**
+     * Checks if the current layer has a subsequent layer.
+     *
+     * @return true if the current layer has a subsequent layer and false if it is the last layer in the neural network.
+     */
     bool hasNext() override;
 
+    /**
+     * Returns the layer the NetIterator currently tracks.
+     *
+     * @return the layer with the index that the NetIterator currently tracks.
+     */
     Layer* getElement() override;
 
 };

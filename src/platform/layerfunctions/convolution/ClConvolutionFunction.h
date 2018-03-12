@@ -43,6 +43,18 @@ private:
     cl_kernel kernel;
 
 public:
+
+    /**
+     * Performs the computations of a convolutional layer on a local OpenCL platform. Takes the @input and saves the results as @output.
+     *
+     * @param input         The input of the convolutional layer
+     * @param output        The output of the convolutional layer
+     * @param weights       The weights for the convolutional layer
+     * @param stride        The stride for this layer
+     * @param filterSize    The size of the filter for this layer
+     * @param numFilters    The number of filters for this layer
+     * @param zeroPadding   The padding for this layer
+     */
     void execute(const DataWrapper &input,
                  DataWrapper &output,
                  const WeightWrapper &weights,

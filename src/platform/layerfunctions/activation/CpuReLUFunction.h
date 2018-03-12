@@ -30,6 +30,13 @@
 
 class CpuReLUFunction : public ActivationFunction {
 public:
+
+    /**
+     * Performs the computations of an activation layer with the ReLU function on the CPU. Takes the @input and saves the results as @output.
+     *
+     * @param input     The input of the activation layer
+     * @param output    The output of the activation layer
+     */
     void execute(const DataWrapper &input, DataWrapper &output) override;
 
 };

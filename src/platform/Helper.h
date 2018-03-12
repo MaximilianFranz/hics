@@ -151,7 +151,20 @@ namespace helper {
     template<typename T>
     void CheckError(cl_int error, const std::string &message);
 
+    /**
+     * Loads the OpenCL kernel.
+     *
+     * @param name
+     * @return
+     */
     std::string LoadKernel (const char* name);
 
+    /**
+     * Creates the OpenCL program.
+     *
+     * @param source
+     * @param context
+     * @return
+     */
     cl_program CreateProgram (const std::string& source, cl_context context);
 }

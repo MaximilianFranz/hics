@@ -30,6 +30,17 @@
 
 class CpuResponseNormalizationFunction : public ResponseNormalizationFunction {
 public:
+
+    /**
+     * Performs the computations of a normalization layer with local response normalization on the CPU. Takes the @input and saves the results as @output.
+     *
+     * @param input     The input of the normalization layer
+     * @param output    The output of the normalization layer
+     * @param radius    The radius
+     * @param alpha     The alpha
+     * @param beta      The beta
+     * @param bias      The bias
+     */
     void execute(const DataWrapper &input,
                  DataWrapper &output,
                  float radius,

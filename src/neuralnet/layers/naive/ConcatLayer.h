@@ -45,10 +45,24 @@ public:
      */
     explicit ConcatLayer(std::vector<std::vector<int>> &inputLayersDimensions);
 
+    /**
+     * Calculates the output dimensions of the layer given the inputDimensions of this instance and it's parameters.
+     *
+     * @return the Dimensions the output Wrapper has to have.
+     */
     std::vector<int> calcOutputDimensions() override;
 
+    /**
+     * Triggers the computation of the forward propagation. Takes input from inputWrapper and writes to outputWrapper.
+     * The Executor knows the size the output Wrapper needs by querying getOutputDimensions()
+     */
     void forward() override;
 
+    /**
+     * Set the preceeding layer of a layer.
+     *
+     * @param previousLayer     A pointer to the preceeding layer.
+     */
     void setPreviousLayer(Layer *previousLayer) override;
 
     Layer *getPreviousLayer() const override;

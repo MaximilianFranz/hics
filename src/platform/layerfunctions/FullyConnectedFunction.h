@@ -31,6 +31,14 @@
 
 class FullyConnectedFunction {
 public:
+
+    /**
+     * Performs the computations of a fully connected layer. Takes the @input and saves the results as @output.
+     *
+     * @param input         The input of the fully connected layer
+     * @param output        The output of the fully connected layer
+     * @param weights       The weights for the fully connected layer
+     */
     virtual void execute(const DataWrapper &input,
                          DataWrapper &output,
                          const WeightWrapper &weights) = 0;

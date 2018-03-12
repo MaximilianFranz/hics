@@ -54,8 +54,7 @@ public:
 
     /**
      * Currently naive implementation to link the added layer to last layer in the net
-     * TODO: To support multiple preceeding layers, this has to be changed and layer dependencies have
-     * to be defined in the model and set by an advances NetBuilder.
+     * TODO: To support multiple preceeding layers, this has to be changed and layer dependencies have to be defined in the model and set by an advances NetBuilder.
      * @param layer
      */
     void addLayer(Layer* layer);
@@ -90,7 +89,7 @@ public:
     const Layer *getLastLayer() const;
 
     /**
-     *  Returns the number of layer in this neural net
+     * Returns the number of layer in this neural net
      *
      * @return int number of layers
      */

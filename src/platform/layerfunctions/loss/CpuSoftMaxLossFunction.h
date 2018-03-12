@@ -31,6 +31,13 @@
 
 class CpuSoftMaxLossFunction : public LossFunction {
 public:
+
+    /**
+     * Performs the computations of a loss layer with the softmax function on the CPU. Takes the @input and saves the results as @output.
+     *
+     * @param input     The input of the loss layer
+     * @param output    The output of the loss layer
+     */
     void execute(const DataWrapper &input, DataWrapper &output) override;
 
 };

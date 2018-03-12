@@ -47,16 +47,54 @@ protected:
     PlatformInfo platformInfo;
 
 public:
+    /**
+     * Creates a function that performs the computations of an activation layer on the specific kind of platform.
+     * We use the ReLU activation function.
+     *
+     * @param type  The kind of activation function, e.g. the ReLU function
+     * @return      A function that performs the computations of an activation layer by the specified activation @type
+     */
     virtual ActivationFunction *createActivationFunction(LayerType type) = 0;
 
+    /**
+     * Creates a function that performs the computations of a convolution layer on the specific kind of platform.
+     *
+     * @return      A function that performs the computations of a convolutional layer
+     */
     virtual ConvolutionFunction *createConvolutionFunction() = 0;
 
+    /**
+     * Creates a function that performs the computations of a loss layer on the specific kind of platform.
+     * We use the softmax function.
+     *
+     * @param type  The kind of loss function, e.g. the softmax function
+     * @return      A function that performs the computations of a loss layer by the specified loss @type
+     */
     virtual LossFunction *createLossFunction(LayerType type) = 0;
 
+    /**
+     * Creates a function that performs the computations of a pooling layer on the specific kind of platform.
+     * We use max-pooling.
+     *
+     * @param type  The kind of pooling function, e.g. max-pooling
+     * @return      A function that performs the computations of a pooling layer by the specified pooling @type
+     */
     virtual PoolingFunction *createPoolingFunction(LayerType type) = 0;
 
+    /**
+     * Creates a function that performs the computations of a normalization layer on the specific kind of platform.
+     * We use local response normalization.
+     *
+     * @param type  The kind of normalization function, e.g. local response normalization
+     * @return      A function that performs the computations of a normalization layer by the specified normalization @type
+     */
     virtual ResponseNormalizationFunction *createResponseNormalizationFunction(LayerType type) = 0;
 
+    /**
+     * Creates a function that performs the computations of a fully connected layer on the specific kind of platform.
+     *
+     * @return      A function that performs the computations of a fully connected layer
+     */
     virtual FullyConnectedFunction *createFullyConnectedFunction() = 0;
 
     virtual PlatformInfo &getPlatformInfo() = 0;

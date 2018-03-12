@@ -59,12 +59,31 @@ public:
      */
     FullyConnectedLayer(std::vector<int> &inputDimensions, WeightWrapper *weights);
 
+    /**
+     * Calculates the output dimensions of the layer given the inputDimensions of this instance and it's parameters.
+     *
+     * @return the Dimensions the output Wrapper has to have.
+     */
     std::vector<int> calcOutputDimensions() override;
 
+    /**
+     * Triggers the computation of the forward propagation. Takes input from inputWrapper and writes to outputWrapper.
+     * The Executor knows the size the output Wrapper needs by querying getOutputDimensions()
+     */
     void forward() override;
 
+    /**
+     * Set the platform to be used to create the function that performs the computations of the layer.
+     *
+     * @param platform      The platform to be used as a LayerFunction factory.
+     */
     void setPlatform(Platform *platform) override;
 
+    /**
+     * Returns an approximation of the number of necessary computations in this layer, which indicates the difficulty of this layer.
+     *
+     * @return long value: difficulty of this layer
+     */
     int getDifficulty() override;
 
 };

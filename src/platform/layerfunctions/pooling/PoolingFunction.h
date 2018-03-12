@@ -31,6 +31,16 @@
 
 class PoolingFunction {
 public:
+
+    /**
+     * Performs the computations of a pooling layer. Takes the @input and saves the results as @output.
+     *
+     * @param input         The input of the pooling layer
+     * @param output        The input of the pooling layer
+     * @param stride        The stride of the pooling filter
+     * @param filterSize    The size of the pooling filter
+     * @param zeroPadding   The padding of the pooling filter
+     */
     virtual void execute(const DataWrapper &input,
                          DataWrapper &output,
                          int stride,
