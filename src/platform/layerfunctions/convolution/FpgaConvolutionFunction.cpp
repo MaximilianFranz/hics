@@ -26,8 +26,7 @@
 
 #include <iostream>
 #include <fstream>
-
-#include "AOCL_Utils.h"
+#include <cstring>
 
 #include <ResultException.h>
 #include <ResourceException.h>
@@ -51,8 +50,8 @@ FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
     queue = clCreateCommandQueue(context, device, 0, &status);
     helper::CheckError<ResourceException>(status, "Failed to create command queue.");
 
-    std::string binary_file = aocl_utils::getBoardBinaryFile(RES_DIR "kernels/gemm4_fpga", device);
-    program = aocl_utils::createProgramFromBinary(context, binary_file.c_str(), &device, 1);
+    std::string binary_file = helper::getBoardBinaryFile(RES_DIR "kernels/gemm4_fpga", device);
+    program = helper::createProgramFromBinary(context, binary_file.c_str(), &device, 1);
 
     // We can't pass runtime parameters to the kernel, so just pass ""
     status = clBuildProgram(program, 0, NULL, "", NULL, NULL);
@@ -206,6 +205,3 @@ FpgaConvolutionFunction::~FpgaConvolutionFunction() {
     clReleaseProgram(program);
     clReleaseKernel(kernel);
 }
-
-// Make AOCL_Utils happy
-void cleanup() {}; // LCOV_EXCL_LINE

@@ -35,6 +35,8 @@
 #include <fstream>
 #include <cstring>
 #include <algorithm>
+#include <unistd.h>
+
 #include <ResultException.h>
 #include <ResourceException.h>
 
@@ -394,4 +396,123 @@ namespace helper {
 
         return program;
     }
+
+    // ================================================================================================
+    // private helper functions
+    bool fileExists(const char *file_name) {
+        return access(file_name, R_OK) != -1;
+    }
+
+    // Loads a file in binary form.
+    unsigned char *loadBinaryFile(const char *file_name, size_t *size) {
+        // Open the File
+        FILE *fp;
+        fp = fopen(file_name, "rb");
+        if (fp == 0) {
+            return NULL;
+        }
+
+        // Get the size of the file
+        fseek(fp, 0, SEEK_END);
+        *size = ftell(fp);
+
+        // Allocate space for the binary
+        unsigned char *binary = new unsigned char[*size];
+
+        // Go back to the file start
+        rewind(fp);
+
+        // Read the file into the binary
+        if (fread((void *) binary, *size, 1, fp) == 0) {
+            delete [] binary;
+            fclose(fp);
+            return NULL;
+        }
+
+        return binary;
+    }
+
+    std::string getDeviceName(cl_device_id did) {
+        cl_int status;
+
+        size_t sz;
+        status = clGetDeviceInfo(did, CL_DEVICE_NAME, 0, NULL, &sz);
+        helper::CheckError<ResourceException>(status, "Failed to get device name size.");
+
+        char *name = new char[sz];
+        status = clGetDeviceInfo(did, CL_DEVICE_NAME, sz, name, NULL);
+        helper::CheckError<ResourceException>(status, "Failed to get device name.");
+
+        return std::string(name);
+    }
+    // =================================================================================================
+
+    std::string getBoardBinaryFile(const char *prefix, cl_device_id device) {
+        const char *const VERSION_STR = "140";
+
+        // First check if <prefix>.aocx exists. Use it if it does.
+        std::string file_name = std::string(prefix) + ".aocx";
+        if (fileExists(file_name.c_str())) {
+            return file_name;
+        }
+
+        // Now get the name of the board. For Altera SDK for OpenCL boards,
+        // the name of the device is presented as:
+        //  <board name> : ...
+        std::string device_name = getDeviceName(device);
+
+        // Now search for the " :" in the device name.
+        size_t end = device_name.find(" :");
+        if (end != std::string::npos) {
+            std::string board_name(device_name, 0, end);
+
+            // Look for a AOCX with the name <prefix>_<board_name>_<version>.aocx.
+            file_name = std::string(prefix) + "_" + board_name + "_" + VERSION_STR + ".aocx";
+            if (fileExists(file_name.c_str())) {
+                return file_name;
+            }
+        }
+
+        // At this point just use <prefix>.aocx. This file doesn't exist
+        // and this should trigger an error later.
+        return std::string(prefix) + ".aocx";
+    }
+
+    // Create a program for all devices associated with the context.
+    cl_program createProgramFromBinary(cl_context context, const char *binary_file_name, const cl_device_id *devices,
+                                       unsigned num_devices) {
+        // Early exit for potentially the most common way to fail: AOCX does not exist.
+        if (!fileExists(binary_file_name)) {
+            helper::CheckError<ResourceException>(CL_INVALID_PROGRAM, "Failed to load binary file, AOCX file does not exist.");
+        }
+
+        // Load the binary.
+        size_t binary_size;
+        unsigned char *binary = loadBinaryFile(binary_file_name, &binary_size);
+        if (binary == NULL) {
+            helper::CheckError<ResourceException>(CL_INVALID_PROGRAM, "Failed to load binary file.");
+        }
+
+        size_t binary_lengths[num_devices];
+        unsigned char *binaries[num_devices];
+        for (unsigned i = 0; i < num_devices; ++i) {
+            binary_lengths[i] = binary_size;
+            binaries[i] = binary;
+        }
+
+        cl_int status;
+        cl_int binary_status[num_devices];
+
+        cl_program program = clCreateProgramWithBinary(context, num_devices, devices, binary_lengths,
+                                                       (const unsigned char **) binaries, binary_status, &status);
+        helper::CheckError<ResourceException>(status, "Failed to create program with binary.");
+        for (unsigned i = 0; i < num_devices; ++i) {
+            helper::CheckError<ResourceException>(binary_status[i], "Failed to load binary for device.");
+        }
+
+        delete [] binary;
+
+        return program;
+    }
+
 }

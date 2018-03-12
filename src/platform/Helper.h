@@ -167,4 +167,25 @@ namespace helper {
      * @return
      */
     cl_program CreateProgram (const std::string& source, cl_context context);
+
+    /*
+     * Create a OpenCL program from a binary file.
+     * The program is created for all given devices associated with the context. The same
+     * binary is used for all devices.
+     */
+    cl_program createProgramFromBinary(cl_context context, const char *binary_file_name, const cl_device_id *devices,
+                                       unsigned num_devices);
+
+    /*
+     * Returns the path to the AOCX file to use for the given device.
+     * This is special handling for examples for the Altera SDK for OpenCL.
+     * It uses the device name to get the board name and then looks for a
+     * corresponding AOCX file. Specifically, it gets the device name and
+     * extracts the board name assuming the device name has the following format:
+     * <board> : ...
+     *
+     * Then the AOCX file is <prefix>_<version>_<board>.aocx. If this
+     * file does not exist, then the file name defaults to <prefix>.aocx.
+     */
+    std::string getBoardBinaryFile(const char *prefix, cl_device_id device);
 }
