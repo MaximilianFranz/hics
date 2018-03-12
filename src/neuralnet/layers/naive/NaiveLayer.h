@@ -35,18 +35,8 @@
 class NaiveLayer : public Layer{
 public:
 
-    /**
-     * Set the platform to be used to create the function that performs the computations of the layer.
-     *
-     * @param platform      The platform to be used as a LayerFunction factory.
-     */
     void setPlatform(Platform *platform) override;
 
-    /**
-     * Returns an approximation of the number of necessary computations in this layer, which indicates the difficulty of this layer.
-     *
-     * @return long value: difficulty of this layer
-     */
     int getDifficulty() override;
 };
 

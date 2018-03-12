@@ -32,13 +32,6 @@
 class CpuFullyConnectedFunction : public FullyConnectedFunction {
 public:
 
-    /**
-     * Performs the computations of a fully connected layer on the CPU. Takes the @input and saves the results as @output.
-     *
-     * @param input         The input of the fully connected layer
-     * @param output        The output of the fully connected layer
-     * @param weights       The weights for the fully connected layer
-     */
     void execute(const DataWrapper &input, DataWrapper &output, const WeightWrapper &weights) override;
 };
 

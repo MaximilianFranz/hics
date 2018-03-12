@@ -31,15 +31,6 @@
 class CpuMaxPoolingFunction : public PoolingFunction {
 public:
 
-    /**
-     * Performs the computations of a pooling layer with max-pooling on the CPU. Takes the @input and saves the results as @output.
-     *
-     * @param input         The input of the pooling layer
-     * @param output        The input of the pooling layer
-     * @param stride        The stride of the pooling filter
-     * @param filterSize    The size of the pooling filter
-     * @param zeroPadding   The padding of the pooling filter
-     */
     void execute(const DataWrapper &input,
                  DataWrapper &output,
                  int stride,
