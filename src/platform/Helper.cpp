@@ -397,6 +397,7 @@ namespace helper {
         return program;
     }
 
+    // LCOV_EXCL_START
     // ================================================================================================
     // private helper functions
     bool fileExists(const char *file_name) {
@@ -514,5 +515,6 @@ namespace helper {
 
         return program;
     }
+    // LCOV_EXCL_STOP
 
 }
