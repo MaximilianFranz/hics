@@ -27,23 +27,11 @@
 #include "WeightWrapper.h"
 
 
-std::vector<float> WeightWrapper::getWeights() {
-    return std::vector<float>();
-}
-
-float *WeightWrapper::getWeightArray() {
-    return getDataArray();
-}
-
 const float *WeightWrapper::getBiasArray() const {
     return &bias[0];
 }
 
 std::vector<float> WeightWrapper::getBias() {
-    return bias;
-}
-
-const std::vector<float> WeightWrapper::getBias() const {
     return bias;
 }
 

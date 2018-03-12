@@ -24,6 +24,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <IllegalArgumentException.h>
 #include "Util.h"
 
 void Util::imageWrapperToMessage(const ImageWrapper *img, ImageWrapperMessage *messagePtr) {
@@ -53,6 +54,9 @@ void Util::platformInfoToMessage(const PlatformInfo *platform, PlatformInfoMessa
             break;
         case PlatformType::GPU  : messagePtr->set_type(PlatformInfoMessage::GPU);
             break;
+        case PlatformType::CL_CPU : messagePtr->set_type(PlatformInfoMessage::CL_CPU);
+            break;
+        //default: throw IllegalArgumentException("Unknown PlatformType enum value");
     }
     messagePtr->set_platformid(platform->getPlatformId());
     messagePtr->set_powerconsumption(platform->getPowerConsumption());
@@ -102,8 +106,9 @@ PlatformInfo* Util::messageToPlatformInfo(const PlatformInfoMessage *platMes) {
             break;
         case PlatformInfoMessage::FPGA  : type = PlatformType::FPGA;
             break;
-            //TODO: exception
-        default: throw std::exception();
+        case PlatformInfoMessage::CL_CPU : type = PlatformType::CL_CPU;
+            break;
+        default: throw IllegalArgumentException("Unknown PlatformType enum value");
     }
 
     return new PlatformInfo(platMes->description(), type, platMes->platformid(), platMes->powerconsumption(),

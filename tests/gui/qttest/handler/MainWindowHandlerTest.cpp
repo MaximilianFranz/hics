@@ -26,7 +26,9 @@
 
 #include <QtTest/QSignalSpy>
 #include <QtWidgets/QLabel>
+#include <QMessageBox>
 #include <iostream>
+#include <memory>
 #include "MainWindowHandlerTest.h"
 
 void MainWindowHandlerTest::initTestCase() {
@@ -65,11 +67,11 @@ void MainWindowHandlerTest::setUpClassificationResult() {
     std::pair<std::string, float> pair3("Tiger", 0.09);
     std::pair<std::string, float> pair4("KIT", 0.016);
     std::pair<std::string, float> pair5("Baukran", 0.684);
-    results.push_back(pair1);
+    results.push_back(pair5);
     results.push_back(pair2);
     results.push_back(pair3);
+    results.push_back(pair1);
     results.push_back(pair4);
-    results.push_back(pair5);
 
     std::vector<int> dimensions{100, 100};
     ImageWrapper imageWrapper(dimensions, "/home/pselab/Dokumente/repo/hics/tests/resources/tf_data_script/dog.png");
@@ -103,15 +105,23 @@ void MainWindowHandlerTest::setUpClassificationResult() {
 
 
 void MainWindowHandlerTest::testConstructor() {
+    mainWindowHandler->init();
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->isVisible(), true);
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
              mainWindowHandler->getStartWidget());
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->widget(1),
              mainWindowHandler->getResultWidget());
+
+    //Should open About Box
+    mainWindowHandler->getMainWindow()->openAboutBox();
 }
 
 void MainWindowHandlerTest::testStartClassification() {
-    QSKIP("testStartClassification works, skipping to avoid QFileSelector popup", SkipSingle);
+    //QSKIP("testStartClassification works, skipping to avoid QFileSelector popup", SkipSingle);
+    QMessageBox box;
+    box.setText("Select one image");
+    box.show();
+
     mainWindowHandler->getStartWidget()->processInputImageButton();
     QTest::keyClick(mainWindowHandler->getStartWidget()->getNeuralNetsQComboBox(), Qt::Key_Down);
     ((QCheckBox*)(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->itemAt(1)->widget()))->setChecked(true);
@@ -122,9 +132,9 @@ void MainWindowHandlerTest::testStartClassification() {
     QCOMPARE(request->getAggregateResults(), false);
 
     QCOMPARE(request->getSelectedNeuralNet().getIdentifier(), (std::string)"googlenet");
-    QCOMPARE(request->getSelectedOperationMode(), OperationMode::HighPower); //TODO change this when operation mode implemented
+    QCOMPARE(request->getSelectedOperationMode(), OperationMode::HighPower);
     QCOMPARE(request->getSelectedPlatforms().at(0)->getPlatformId(), (std::string)"fpga");
-    QCOMPARE(request->getUserImages().size(), (unsigned long) 1);
+    QCOMPARE((int)request->getUserImages().size(), 1);
 }
 
 void MainWindowHandlerTest::testDisplayClassification() {
@@ -134,7 +144,7 @@ void MainWindowHandlerTest::testDisplayClassification() {
     //Get top result
     QCOMPARE(mainWindowHandler->getResultWidget()->getResultDisplays()[0]->topResult.first, (std::string)"Baukran");
 
-    QCOMPARE(mainWindowHandler->getDetailDialog()->getPowerConsumptionQLabel()->text().toStdString(), (std::string)"15 mW");
+    QCOMPARE(mainWindowHandler->getDetailDialog()->getPowerConsumptionQLabel()->text().toStdString(), (std::string)"15 Ws");
     QCOMPARE(mainWindowHandler->getDetailDialog()->getComputationTimeQLabel()->text().toStdString(), (std::string)"999 ms");
     QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(), mainWindowHandler->getResultWidget());
 }
@@ -164,4 +174,43 @@ void MainWindowHandlerTest::testDetailButton(){
     QTest::mouseClick(mainWindowHandler->getResultWidget()->getDetailsQPushButton(), Qt::LeftButton);
 
     QCOMPARE(mainWindowHandler->getDetailDialog()->isVisible(), true);
+}
+
+void MainWindowHandlerTest::testUpdatePlatforms() {
+    QCOMPARE(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->count(), 3);
+
+    auto newPlatforms = new std::vector<PlatformInfo *>;
+    newPlatforms->push_back(platforms[0]);
+    newPlatforms->push_back(platforms[1]);
+    std::shared_ptr<std::vector<PlatformInfo *>> pointer(newPlatforms);
+    mainWindowHandler->updatePlatforms(pointer);
+    mainWindowHandler->processClassificationResult(nullptr);
+
+    QCOMPARE(mainWindowHandler->getStartWidget()->getPlatformsQVBoxLayout()->count(), 2);
+}
+
+void MainWindowHandlerTest::testFalseClassification() {
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
+    mainWindowHandler->processClassificationResult(nullptr);
+
+    //No Exception has been thrown but a nullptr is the parameter so just the progress screen is resetted.
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
+    std::exception_ptr exceptionptr = nullptr;
+
+    try {
+        throw std::logic_error("Sample error");
+    } catch (std::exception &e) {
+        exceptionptr = std::current_exception();
+    }
+
+    mainWindowHandler->setExceptionptr(exceptionptr);
+    mainWindowHandler->processClassificationResult(nullptr);
+
+    //Should now display an error message
+
+    //Since no real classification has been processed startWidget is still active
+    QCOMPARE(mainWindowHandler->getMainWindow()->getMainWindowQStackedWidget()->currentWidget(),
+             mainWindowHandler->getStartWidget());
 }

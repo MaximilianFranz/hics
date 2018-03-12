@@ -43,7 +43,7 @@ private:
     std::vector<PlatformInfo *> platforms;
     std::vector<OperationMode> modes;
 
-    MainWindowHandler *mainWindowHandler;
+    MainWindowHandler *mainWindowHandler = nullptr;
 
     ClassificationResult *classificationResult = nullptr;
 
@@ -66,6 +66,9 @@ private slots:
     void testReturnButton();
 
     void testDetailButton();
+    
+    void testUpdatePlatforms();
+
+    void testFalseClassification();
 
 };
-

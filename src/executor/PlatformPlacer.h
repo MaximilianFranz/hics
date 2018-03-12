@@ -42,7 +42,7 @@ private:
     std::vector<std::pair<PlatformInfo*, float>> compDistribution; //! Distribution of computation to different platforms
 
     PlatformManager* platformManager;   //! The platformManager is the access point to get available platforms
-    NeuralNet *net;                     //! the net that has been configured in the last excectuion
+    NeuralNet *net;                     //! the net that has been configured in the last execution
 
     /**
      *
@@ -56,22 +56,22 @@ private:
     void placeLowPower();
 
     /**
-     * Chooses platforms for energy effiecient mode and configures net accordingly
+     * Chooses platforms for energy efficient mode and configures net accordingly
      */
     void placeEnergyEfficient();
 
     /**
-     * Chooses platforms for high perfomance mode and configures net accordingly
+     * Chooses platforms for high performance mode and configures net accordingly
      */
     void placeHighPerformance();
 
     /**
      * Places the net sequentially with the given platforms.
      *
-     * Perfomance platform is used for computationally difficult tasks and fallback is usually CPU used for
+     * Performance platform is used for computationally difficult tasks and fallback is usually CPU used for
      * all other tasks, where
      */
-    void placeNetWith(PlatformInfo* perfomance, PlatformInfo* fallback);
+    void placeNetWith(PlatformInfo* performanceInfo, PlatformInfo* fallbackInfo);
 
 
 public:

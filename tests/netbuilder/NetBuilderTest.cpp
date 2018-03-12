@@ -47,12 +47,6 @@ TEST_CASE("Testing LabelLoader on alexnet labels") {
 }
 
 
-TEST_CASE("Testing ModelCrawler file listing") {
-    std::vector<std::string> filenames = ModelCrawler::getFilesInDir(MODEL_DIR);
-    REQUIRE(std::find(filenames.begin(), filenames.end(), MODEL_DIR + "/alexnet_labels.txt") != filenames.end());
-    REQUIRE(std::find(filenames.begin(), filenames.end(), MODEL_DIR + "/alexnet.json") != filenames.end());
-}
-
 TEST_CASE("Testing ModelCrawler NetInfo creation") {
     std::vector<NetInfo*> availableNets = ModelCrawler::getValidNets(MODEL_DIR);
     REQUIRE(availableNets.size() != 0);

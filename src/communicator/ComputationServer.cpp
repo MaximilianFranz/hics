@@ -52,8 +52,7 @@ Status ComputationServer::classify(::grpc::ServerContext *context, const ::Class
         case ClassifyRequest::EnergyEfficient   : mode = OperationMode::EnergyEfficient;
             break;
         default:
-            //TODO: specific exeption
-            throw std::exception();
+            throw IllegalArgumentException("Unknown operation mode");
     }
 
     std::vector<PlatformInfo*> platforms;
@@ -61,8 +60,7 @@ Status ComputationServer::classify(::grpc::ServerContext *context, const ::Class
     for (int i = 0; i < request->selectedplatforms_size(); i++) {
         platforms.push_back(Util::messageToPlatformInfo(&(request->selectedplatforms(i))));
     }
-
-    //TODO: find way to include private attribute
+    //call the classify function in the fpga executor
     std::vector<ImageResult*> results = fpgaExecutor->classify(images, net, mode, platforms);
 
     //Set the new result in the message reply
@@ -96,15 +94,18 @@ ComputationServer::queryNets(grpc::ServerContext *context, const NullMessage *re
 }
 
 Status
-ComputationServer::queryPlatformsRequest(::grpc::ServerContext *context, const ::NullMessage *request, ::PlatformReply *reply) {
+ComputationServer::queryPlatformsRequest(::grpc::ServerContext *context, const ::NullMessage *request,
+                                         ::PlatformReply *reply) {
     return ComputationServer::queryPlatforms(context, request, reply);
 }
 
-Status ComputationServer::queryNetsRequest(::grpc::ServerContext *context, const ::NullMessage *request, ::NetInfoReply *reply) {
+Status ComputationServer::queryNetsRequest(::grpc::ServerContext *context, const ::NullMessage *request,
+                                           ::NetInfoReply *reply) {
     return ComputationServer::queryNets(context, request, reply);
 }
 
 Status
-ComputationServer::classifyRequest(::grpc::ServerContext *context, const ::ClassifyRequest *request, ::ClassifyReply *response) {
+ComputationServer::classifyRequest(::grpc::ServerContext *context, const ::ClassifyRequest *request,
+                                   ::ClassifyReply *response) {
     return ComputationServer::classify(context, request, response);
 }

@@ -31,6 +31,13 @@
 
 class ActivationFunction  {
 public:
+
+    /**
+     * Performs the computations of an activation layer. Takes the @input and saves the results as @output.
+     *
+     * @param input     The input of the activation layer
+     * @param output    The output of the activation layer
+     */
     virtual void execute(const DataWrapper &input, DataWrapper &output) = 0;
 };
 

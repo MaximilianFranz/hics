@@ -26,14 +26,6 @@
 
 #include "Layer.h"
 
-bool Layer::isComputed() {
-    return computed;
-}
-
-void Layer::setComputed(bool status) {
-    computed = status;
-}
-
 bool Layer::isPlatformSet() {
     return functionSet;
 }
@@ -41,11 +33,6 @@ bool Layer::isPlatformSet() {
 void Layer::reset() {
     this->functionSet = false;
     this->computed = false;
-}
-
-
-bool Layer::readyToCompute() {
-    return previousLayer->isComputed() && functionSet;
 }
 
 void Layer::init() {
@@ -79,10 +66,6 @@ void Layer::setNextLayer(Layer *nextLayer) {
 
 LayerType Layer::getType() const {
     return type;
-}
-
-DataWrapper *Layer::getInputWrapper() const {
-    return inputWrapper;
 }
 
 void Layer::setInputWrapper(DataWrapper *inputWrapper) {

@@ -52,8 +52,6 @@ private slots:
 
     void cleanup();
 
-    //void classifyButtonClicked();
-
     void testConstructor();
 
     void testSelectedPlatforms();
@@ -64,6 +62,7 @@ private slots:
 
     void testImageFunctions();
 
+    void testDuplicateSelectedImages();
+
     void testIsAggregated();
 };
-

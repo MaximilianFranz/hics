@@ -37,12 +37,15 @@ typedef std::vector<std::pair<PlatformInfo*, float>> hostPlatformDistribution;
  */
 class PerformanceCalculator {
 public:
+    /**
+     * HostInfo is a wrapper that contains the json name, usage in the computation and computation time.
+     */
     struct HostInfo {
         std::string jsonName;
         float usage;
         int time;
 
-        HostInfo(std::string name, float usage, int time) : jsonName(name), usage(usage), time(time) {}
+        HostInfo(std::string name, float usage, int time) : jsonName(std::move(name)), usage(usage), time(time) {}
     };
 
     /**

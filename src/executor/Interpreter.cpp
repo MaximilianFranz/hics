@@ -35,33 +35,34 @@ Interpreter::Interpreter(std::map<int, std::string> &labelMap)
 
 }
 
-//TODO: Case for less then 5 elements in output
 ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *originalImage, PlatformPlacer* placer) {
     std::vector<float> sortOut = output->getData();
     std::sort(sortOut.begin(), sortOut.end(), compareDesc); //sort output in descending order
     std::vector<std::pair<std::string, float>> results; // ordered list of labels and their probabilities
     if (output->getNumElements() <= TOP_X) {
-        if (labelMap.size() > 0) {
+        if (!labelMap.empty()) {
             for (int i = 0; i < output->getNumElements(); i++) {
                 // insert only as many results as exist
-                results.push_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output->getData())),
+                results.emplace_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output->getData())),
                                                             sortOut[i]));
             }
         }
         else {
             for (int i = 0; i < output->getNumElements(); i++) {
-                // dont insert label, because non exist
-                results.push_back(std::pair<std::string, float>("", sortOut[i]));
+                // don't insert label, because not existing
+                results.emplace_back(std::pair<std::string, float>("", sortOut[i]));
             }
         }
     }
-
-    
-    for (int i = 0; i < TOP_X; i++) {
-        // Add Top 5 probabilities and their labels to the list.
-        results.push_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output->getData())),
-                                                        sortOut[i]));
+    else {
+        for (int i = 0; i < TOP_X; i++) {
+            // Add Top 5 probabilities and their labels to the list.
+            results.push_back(std::pair<std::string, float>(labelMap.at(getIndexOf(sortOut[i], output->getData())),
+                                                            sortOut[i]));
+        }
     }
+
+
 
     ImageResult *i = new ImageResult(results, placer->getCompDistribution(), *originalImage);
 
@@ -71,18 +72,15 @@ ImageResult * Interpreter::getResult(DataWrapper *output, ImageWrapper *original
     return i;
 }
 
-void Interpreter::setLabels(std::map<int, std::string> &labelMap) {
-    this->labelMap = labelMap;
-}
-
-
 int Interpreter::getIndexOf(float value, std::vector<float> output) {
-    for (int i = 0; i < output.size() ; i++) {
-        if(output[i] == value) {
-            return i;
-        }
+    auto index = distance(output.begin(), find(output.begin(), output.end(), value));
+    if(index >= output.size()) {
+        return -1; // value is not in vector
+    } else {
+        return static_cast<int>(index);
     }
     return 0;
+    //Unreachable in this usage, since method is private this case cannot be tested.
 }
 
 const bool Interpreter::compareDesc(float a, float b) {

@@ -34,7 +34,6 @@
  */
 class ConcatLayer : public NaiveLayer {
 protected:
-    //TODO: This needs to implement the previous layer functions differently!
     std::vector<std::vector<int>> inputLayersDimensions;
     std::vector<Layer*> previousLayerList;
 public:
@@ -44,7 +43,7 @@ public:
      *
      * @param inputLayersDimensions dimensions of all layers that are concatenated by this layer.
      */
-    ConcatLayer(std::vector<std::vector<int>> inputLayersDimensions);
+    explicit ConcatLayer(std::vector<std::vector<int>> &inputLayersDimensions);
 
     std::vector<int> calcOutputDimensions() override;
 
@@ -53,7 +52,6 @@ public:
     void setPreviousLayer(Layer *previousLayer) override;
 
     Layer *getPreviousLayer() const override;
-
 };
 
 

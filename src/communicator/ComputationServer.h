@@ -43,15 +43,42 @@ using grpc::Status;
 class ComputationServer : public Communicator::Service {
 private:
     ComputationHost* fpgaExecutor;
+
+    /**
+     * Parses the grpc message to c++ objects and calls the corresponding executor function
+     * @param context
+     * @param request
+     * @param response
+     * @return  status if the grpc call went successful
+     */
     Status classify(::grpc::ServerContext *context, const ::ClassifyRequest *request,
                            ::ClassifyReply *response);
+
+    /**
+     * Parses the grpc message to c++ objects and calls the corresponding executor function
+     * @param context
+     * @param request
+     * @param response
+     * @return  status if the grpc call went successful
+     */
     Status queryPlatforms(::grpc::ServerContext *context, const NullMessage *request, PlatformReply *reply);
+
+    /**
+     * Parses the grpc message to c++ objects and calls the corresponding executor function
+     * @param context
+     * @param request
+     * @param response
+     * @return  status if the grpc call went successful
+     */
     Status queryNets(grpc::ServerContext *context, const NullMessage *request, NetInfoReply *reply);
 
 public:
+
+    /**
+     * Initialises the server
+     */
     void init();
 
-    //Status Communicator::Service::classifyRequest(ClientContext* context, ClassifyRequest* request, ClassifyReply* reply) override ;
     Status queryPlatformsRequest(::grpc::ServerContext *context, const ::NullMessage *request,
                                  ::PlatformReply *reply) override;
     Status queryNetsRequest(::grpc::ServerContext *context, const ::NullMessage *request,

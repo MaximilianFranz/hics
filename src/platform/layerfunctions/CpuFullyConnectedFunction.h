@@ -31,6 +31,7 @@
 
 class CpuFullyConnectedFunction : public FullyConnectedFunction {
 public:
+
     void execute(const DataWrapper &input, DataWrapper &output, const WeightWrapper &weights) override;
 };
 

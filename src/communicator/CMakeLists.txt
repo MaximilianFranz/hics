@@ -11,9 +11,9 @@ add_library(communicator STATIC
         ${PROTO_SRCS} ${PROTO_HDRS}
         ${GRPC_SRCS} ${GRPC_HDRS})
 
-add_executable(server-exec serverMain.cpp)
-add_executable(client-exec clientMain.cpp)
+add_executable(hics-server serverMain.cpp)
 
 target_link_libraries(communicator ${Protobuf_LIBRARIES})
-target_link_libraries(server-exec communicator executor platform neuralnet netbuilder protobuf grpc grpc++)
-target_link_libraries(client-exec communicator executor platform neuralnet netbuilder protobuf grpc grpc++)
+target_link_libraries(hics-server communicator executor platform neuralnet netbuilder protobuf grpc grpc++)
+
+install(TARGETS hics-server DESTINATION ${CMAKE_INSTALL_BINDIR})

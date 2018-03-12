@@ -104,8 +104,6 @@ private:
 
     QString shortLink(const std::string &link);
 
-    std::vector<std::pair<std::string, float>> sortVector(std::vector<std::pair<std::string, float>> &vector);
-
     void clearLayout(QLayout *layout);
 
     void resize();
@@ -160,14 +158,11 @@ public:
     QGridLayout *getImagesQGridLayout();
 
     /**
-     * @brief getMainQHBoxLayout returns the main layout of ResultWidget
-     * @return mainQHBoxLayout
+     * @brief getResultDisplays returns the ResultDisplay structures for an easy access to the result layouts and their
+     *        content
+     * @return the ResultDisplays structures
      */
-    QHBoxLayout *getMainQHBoxLayout();
-
     const std::vector<ResultDisplay *> &getResultDisplays() const;
-
-    const std::vector<ImageDisplay *> &getImageDisplays() const;
 
 protected:
 

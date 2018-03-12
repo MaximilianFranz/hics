@@ -32,12 +32,15 @@ void CpuMaxPoolingFunction::execute(const DataWrapper &input,
                                     int filterSize,
                                     int zeroPadding) {
 
-    // TODO: check the following references if we can implement zeroPadding like this or need to change it
+    // We handle zeroPadding differently, instead of symbolic specifiers, we pass
+    // explicit values.
+
     // http://deeplearning.net/software/theano/tutorial/conv_arithmetic.html#full-padding
     // https://stackoverflow.com/questions/37674306/what-is-the-difference-between-same-and-valid-padding-in-tf-nn-max-pool-of-t/39371113#39371113
     // zeroPadding should probably be an enum: FULL, HALF(SAME), VALID (no padding),
     // the padding size is then determined automatically by the filter.
-    // TODO: can we assume that filterSize is always square or should it have an x,y dimension?
+
+    // We assume that filters are always square, so we don't have an x and y filterSize.
 
     int numPlanes = input.getDimensions()[0];
     int numRows = input.getDimensions()[1];

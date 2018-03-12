@@ -43,6 +43,7 @@
 #include <QtCore/QDir>
 #include <QTimer>
 #include <QtWidgets/QProgressBar>
+#include <QtWidgets/QErrorMessage>
 
 namespace Ui {
     class StartWidget;
@@ -71,12 +72,11 @@ private:
     QMap<QPair<QImage *, QString>, QHBoxLayout *> images; /*!< Maps all loaded images to its layout */
     std::map<QString, NetInfo *> neuralNetMap; /*!< used to return the selected neural net by using the displayed QString*/
     std::map<QString, PlatformInfo *> platformMap; /*!< used to return the selected platform by using the displayed QString */
-
     QString directoryPath = QDir::homePath(); /*!< The last opened directory path of the QFileDialog */
-
+    QProgressBar* progressBar = nullptr;
     const int OFFSET_FILEPATH_DISPLAY = 20;
 
-    QProgressBar* progressBar = nullptr;
+private:
 
     void addNeuralNets(std::vector<NetInfo *> &neuralNets);
 
@@ -90,7 +90,9 @@ private:
 
     void clearLayout(QLayout *layout);
 
-    void disableWidgets(bool disable);
+    void renumerateImages();
+
+    bool areAllSelected();
 
 public:
 
@@ -114,11 +116,24 @@ public:
     ~StartWidget();
 
     /**
+     * @brief disableWidgets disables or enables all widgets except for the images and scroll area
+     * @param disable, if true the widgets get disabled, if false they get enabled
+     */
+    void disableWidgets(bool disable);
+
+    /**
+    * @brief updatePlatforms refreshes the currently displayed platforms in the GUI
+    * @param platforms are the platforms that shall be displayed in the GUI
+    */
+    void updatePlatforms(std::vector<PlatformInfo *> platforms);
+
+    /**
      * @brief Displays a QErrorDialog with the given error message.
      *
      * @param message the to be displayed error message
+     * @return returns the opened QErrorMessage
      */
-    void displayErrorMessage(QString message);
+    QErrorMessage * displayErrorMessage(QString message);
 
     /**
      * @brief Removes the Classify and Select images button and displays a busy loading progress bar to indicate that a
@@ -230,5 +245,7 @@ protected:
 private slots:
 
     void widgetResized();
+
+    void checkImageSelection();
 
 };

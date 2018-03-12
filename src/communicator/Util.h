@@ -36,13 +36,68 @@
 
 
 namespace Util {
+
+    /**
+     * Parses an ImageWrapper to a protobuf ImageWrapper message
+     * @param img           ImageWrapper
+     * @param messagePtr    protobuf ImageWrapperMessage
+     */
     void imageWrapperToMessage(const ImageWrapper* img, ImageWrapperMessage *messagePtr);
+
+    /**
+     * Parses a NetInfo object to a protobuf NetInfo message
+     * @param net           NetInfo
+     * @param messagePtr    protobuf NetInfoMessage
+     */
     void netInfoToMessage(NetInfo *net, NetInfoMessage *messagePtr);
+
+    /**
+     * Parses a PlatformInfo object to a protobuf PlatformInfo message
+     * @param platform      PlatformInfo
+     * @param messagePtr    protobuf PlatformInfoMessage
+     */
     void platformInfoToMessage(const PlatformInfo* platform, PlatformInfoMessage* messagePtr);
+
+    /**
+     * Parses an ImageResult object to a protobuf ImageResult message
+     * @param result    ImageResult
+     * @param resultPtr protobuf ImageResultMessage
+     */
     void imageResultToMessage(const ImageResult* result, ImageResultMessage* resultPtr);
+
+    /**
+     * Parses a protobuf ImageWrapper message to an ImageWrapper object
+     * @param imgMes    protobuf ImageWrapperMessage
+     * @return          ImageWrapper
+     */
     ImageWrapper* messageToImageWrapper(const ImageWrapperMessage* imgMes);
+
+    /**
+     * Parses a protobuf PlatformInfoMessage to a PlatformInfo object
+     * @param platMes   protobuf PlatformInfoMessage
+     * @return          PlatformInfo
+     */
     PlatformInfo* messageToPlatformInfo(const PlatformInfoMessage* platMes);
+
+    /**
+     * Parses a protobuf ImageResultMessage to an ImageResult object
+     * @param imgMes    protobuf ImageResultMessage
+     * @return          ImageResult
+     */
     ImageResult* messageToImageResult(const ImageResultMessage* imgMes);
+
+    /**
+     * Parses a protobuf NetInfoMessage to a NetInfo object
+     * @param net   protobuf NetInfoMessage
+     * @return      NetInfo
+     */
     NetInfo* messageToNetInfo(const NetInfoMessage* net);
+
+    /**
+     * Since every image is sent as a single classification request, the computation distribution needs to be aggregated
+     * in the end
+     * @param results   results of all classifications
+     * @return          aggregated distribution
+     */
     std::vector<std::pair<PlatformInfo*, float>> aggregateReplyDistribution(std::vector<ImageResult*> results);
 };

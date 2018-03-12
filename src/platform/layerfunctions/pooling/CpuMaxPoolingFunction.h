@@ -30,6 +30,7 @@
 
 class CpuMaxPoolingFunction : public PoolingFunction {
 public:
+
     void execute(const DataWrapper &input,
                  DataWrapper &output,
                  int stride,

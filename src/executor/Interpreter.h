@@ -47,7 +47,12 @@ public:
      */
     static const int TOP_X = 5; //By convention from the ILSRVC we use 5
 
-    Interpreter(std::map<int, std::string> &labelMap);
+    /**
+     * Constructor passing the required labelMap
+     *
+     * @param labelMap containing labels used to interpret results
+     */
+    explicit Interpreter(std::map<int, std::string> &labelMap);
 
     /**
      * \brief maps the output of the network to the labels and returns an ImageResult
@@ -57,14 +62,6 @@ public:
      * @return ImageResult containing the top 5 labels and their probabilities.
      */
     ImageResult* getResult(DataWrapper *output, ImageWrapper *originalImage, PlatformPlacer* placer);
-
-    /**
-     * \brief sets the labels to map the number of an output neuron to its corresponding label
-     *
-     * @param labelMap Map of all labels the NeuralNet can classify
-     * @see NetBuilder
-     */
-    void setLabels(std::map<int, std::string> &labelMap);
 
     /**
      * Custom comparator for std::sort

@@ -1,10 +1,9 @@
-//#define TS 32
-
 // Tiled and coalesced version
-__kernel void myGEMM2(const int M, const int N, const int K,
-                  const __global float* A,
-                  const __global float* B,
-                  __global float* C) {
+__kernel void GEMM2(const int M, const int N, const int K,
+                    const __global float* A,
+                    const __global float* B,
+                    __global float* C,
+                    const __global float* D) {
 
     // Thread identifiers
     const int row = get_local_id(0); // Local row ID (max: TS)
@@ -40,6 +39,9 @@ __kernel void myGEMM2(const int M, const int N, const int K,
         // Synchronise before loading the next tile
         barrier(CLK_LOCAL_MEM_FENCE);
     }
+
+    // Add bias
+    acc += D[globalRow];
 
     // Store the final result in C
     C[globalCol*M + globalRow] = acc;

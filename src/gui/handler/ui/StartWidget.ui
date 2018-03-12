@@ -91,7 +91,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Deselect</string>
+            <string>Remove selected images</string>
            </property>
           </widget>
          </item>
@@ -104,7 +104,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Reset selection</string>
+            <string>Select all</string>
            </property>
           </widget>
          </item>

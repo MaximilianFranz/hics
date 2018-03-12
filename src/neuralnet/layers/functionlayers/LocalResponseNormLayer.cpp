@@ -27,19 +27,19 @@
 #include "LocalResponseNormLayer.h"
 
 
-LocalResponseNormLayer::LocalResponseNormLayer(std::vector<int> inputDimensions, float radius, float alpha, float beta,
+LocalResponseNormLayer::LocalResponseNormLayer(std::vector<int> &inputDimensions, float radius, float alpha, float beta,
                                                float bias)
 
         :
-          radius(radius),
-          alpha(alpha),
-          beta(beta),
-          bias(bias)
+          radius{radius},
+          alpha{alpha},
+          beta{beta},
+          bias{bias}
 {
     this->inputDimensions = inputDimensions;
     this->outputDimensions = calcOutputDimensions();
     this->type = LayerType::NORMALIZATION_LOCALRESPONSE;
-    this->init(); // TODO never call virtual functions in constructor
+    this->init();
 }
 
 std::vector<int> LocalResponseNormLayer::calcOutputDimensions() {
@@ -76,3 +76,11 @@ void LocalResponseNormLayer::setPlatform(Platform *platform) {
     this->functionSet = true;
 }
 
+int LocalResponseNormLayer::getDifficulty() {
+    inputWrapper = new DataWrapper(inputDimensions);
+    if (this->difficulty == 0) {
+        this->difficulty = 2*(int)radius*inputWrapper->getNumElements();
+    }
+    delete inputWrapper;
+    return this->difficulty;
+}

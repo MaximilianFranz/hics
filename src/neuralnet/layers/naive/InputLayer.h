@@ -43,18 +43,11 @@ public:
      *
      * @param inputDimensions
      */
-    InputLayer(std::vector<int> inputDimensions);
-
+    explicit InputLayer(std::vector<int> &inputDimensions);
 
     std::vector<int> calcOutputDimensions() override;
 
     void forward() override;
 
-    /**
-     * Explicitly returns true for InputLayer
-     *
-     * @return true
-     */
-    bool readyToCompute() override;
 };
 

@@ -25,6 +25,8 @@
  */
 
 #include <NotImplementedException.h>
+
+#include <utility>
 #include "ConcatLayer.h"
 
 
@@ -37,9 +39,8 @@ Layer *ConcatLayer::getPreviousLayer() const {
     return previousLayerList.at(0);
 }
 
-ConcatLayer::ConcatLayer(std::vector<std::vector<int>> inputLayersDimensions)
-{
-    this->inputLayersDimensions = inputLayersDimensions;
+ConcatLayer::ConcatLayer(std::vector<std::vector<int>> &inputLayersDimensions)
+        : inputLayersDimensions{inputLayersDimensions} {
     this->type = LayerType::CONCAT;
     this->outputDimensions = calcOutputDimensions();
 }
@@ -47,18 +48,20 @@ ConcatLayer::ConcatLayer(std::vector<std::vector<int>> inputLayersDimensions)
 // This concatenates multiple layer dimensions by putting them "behind" each other in z dimension
 std::vector<int> ConcatLayer::calcOutputDimensions() {
     std::vector<int> outDim(3,0);
-    for(Layer* l : previousLayerList) {
-        outDim[D3_Z_DIM] += l->getOutputDimensions().at(D3_Z_DIM);
+    for (auto inDim : inputLayersDimensions) {
+        outDim[D3_Z_DIM] += inDim[D3_Z_DIM];
+        outDim[D3_Y_DIM] = inDim[D3_Y_DIM];
+        outDim[D3_X_DIM] = inDim[D3_X_DIM];
     }
-    outDim[D3_Y_DIM] = getPreviousLayer()->getOutputDimensions().at(D3_Y_DIM);
-    outDim[D3_X_DIM] = getPreviousLayer()->getOutputDimensions().at(D3_Y_DIM);
     return outDim;
 }
 
-//TODO: Implement by iterating over previousLayerList an concatenating outputs.
+// TODO: Implement this in order to use GoogleNet.
+// forward() adds up the input into one DataWrapper
 void ConcatLayer::forward() {
     throw NotImplementedException();
 
 }
+
 
 

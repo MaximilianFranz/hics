@@ -37,7 +37,13 @@ class SimpleNetIterator : NetIterator {
 private:
     const NeuralNet *net; // Why does this not recognize NeuralNet????
 public:
-    SimpleNetIterator(const NeuralNet *net);
+
+    /**
+     * Constructor
+     *
+     * @param net   The neural network that the NetIterator should traverse.
+     */
+    explicit SimpleNetIterator(const NeuralNet *net);
 
     void first() override;
 

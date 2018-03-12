@@ -31,15 +31,36 @@
 
 
 /**
- * Provides an iterator interface that
+ * The NetIterator knows how to traverse a neural net.
+ * It provides an iterator interface to move on to the next layer after the computations of a layer are computed.
  */
 class NetIterator {
 protected:
-    int index;
+    int index{};
 public:
+
+    /**
+     * Sets the index to the index of the very first layer in the neural network.
+     */
     virtual void first() = 0;
+
+    /**
+     * Sets the index to the index of the layer subsequent the current layer.
+     */
     virtual void next() = 0;
+
+    /**
+     * Checks if the current layer has a subsequent layer.
+     *
+     * @return true if the current layer has a subsequent layer and false if it is the last layer in the neural network.
+     */
     virtual bool hasNext() = 0;
+
+    /**
+     * Returns the layer the NetIterator currently tracks.
+     *
+     * @return the layer with the index that the NetIterator currently tracks.
+     */
     virtual Layer* getElement() = 0;
 };
 

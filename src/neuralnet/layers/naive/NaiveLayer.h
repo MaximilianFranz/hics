@@ -24,9 +24,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-#ifndef HICS_NAIVELAYER_H
-#define HICS_NAIVELAYER_H
-
+#pragma once
 
 #include "layers/Layer.h"
 
@@ -36,8 +34,9 @@
  */
 class NaiveLayer : public Layer{
 public:
+
     void setPlatform(Platform *platform) override;
+
+    int getDifficulty() override;
 };
 
-
-#endif //HICS_NAIVELAYER_H

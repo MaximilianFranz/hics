@@ -24,8 +24,107 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <LayerMaker.h>
+#include <loader/JSONModelLoader.h>
+#include <NetBuilder.h>
+#include <NetInfo.h>
+#include <iostream>
+#include <layers/naive/ConcatLayer.h>
 #include "NeuralNetTest.h"
 
-TEST_CASE("Basic test") {
-    REQUIRE(11 == 11);
+SCENARIO("Testing Layer") {
+    LayerMaker l;
+    std::string path = RES_DIR "models/alexnet.json";
+    JSONModelLoader m(path);
+    std::vector<int> v{3, 227, 227};
+
+    LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(1);
+    ConvolutionLayer* conv = l.createConvLayer(lcp, v, NULL);
+
+    REQUIRE(conv->getNextLayer() == nullptr);
+    REQUIRE(conv->getPreviousLayer() == nullptr);
+
+    SECTION("Layer in full net") {
+        auto *builder = new NetBuilder();
+        std::vector<NetInfo*> nets = builder->queryAvailableNets();
+        NetInfo alexnetinfo = *nets.at(0); // AlexNet
+        NeuralNet* alexnet = builder->buildNeuralNet(alexnetinfo);
+
+        auto lastLayer = alexnet->getLastLayer();
+        auto secondLastLayer = lastLayer->getPreviousLayer();
+
+        delete builder;
+
+        REQUIRE(lastLayer->getPreviousLayer()->getType() == LayerType::FULLYCONNECTED);
+        REQUIRE(secondLastLayer->getNextLayer()->getType() == LayerType::LOSS_SOFTMAX);
+    }
+
+
 }
+
+TEST_CASE("Testing LayerType output") {
+    std::vector<std::string> names = {"ACTIVATION_RELU",
+                                      "NORMALIZATION_LOCALRESPONSE",
+                                      "LOSS_SOFTMAX",
+                                      "POOLING_MAX",
+                                      "CONVOLUTION",
+                                      "FULLYCONNECTED",
+                                      "INPUT",
+                                      "CONCAT",
+    };
+
+    for (int i = 0; i < 8; i++) {
+        std::stringstream buffer;
+        buffer << (LayerType)i;
+        REQUIRE(buffer.str() == names[i]);
+    }
+}
+
+TEST_CASE("Convolution with numGroup > 2 throws Exception") {
+    LayerMaker l;
+    std::string path = RES_DIR "models/alexnet.json";
+    JSONModelLoader m(path);
+    std::vector<int> v{3, 227, 227};
+
+    LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(1);
+    lcp.numGroups = 3;
+    ConvolutionLayer* conv = l.createConvLayer(lcp, v, NULL);
+
+    // numgroups = 3 is not implemented and thus an Exception is thrown
+    REQUIRE_THROWS(conv->forward());
+}
+
+TEST_CASE("Testing ConcatLayer seperately") {
+    // The ConcatLayer needs further consideration and implementation if
+    // other net should be used.
+
+    LayerMaker l;
+    std::string path = RES_DIR "models/alexnet.json";
+    JSONModelLoader m(path);
+    std::vector<int> v{3, 227, 227};
+
+    LayerConstructionParams lcp = m.getLayerConstructionParamsByIndex(1);
+    lcp.numGroups = 3;
+    ConvolutionLayer* conv = l.createConvLayer(lcp, v, NULL);
+
+    std::vector<int> v1{3, 227, 227};
+    std::vector<int> v2{3, 227, 227};
+    std::vector<int> v3{3, 227, 227};
+
+    std::vector<std::vector<int>> dims = {v1, v2, v3};
+
+    auto c = new ConcatLayer(dims);
+
+    c->setPreviousLayer(conv);
+
+
+    // Not Implemented Yet
+    REQUIRE_THROWS(c->forward());
+
+    REQUIRE(c->getOutputDimensions().at(0) == 9);
+    REQUIRE(c->getPreviousLayer()->getType() == LayerType::CONVOLUTION);
+
+}
+
+
+// For tests of getter, setter and constructors see NetBuilderTests

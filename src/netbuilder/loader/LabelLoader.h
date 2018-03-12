@@ -35,6 +35,7 @@
  */
 class LabelLoader {
 public:
+
     /**
      * Returns the labels listed in the file as a map of output number and label string.
      * File must be structured like:
@@ -43,8 +44,11 @@ public:
      * label3
      * where labels are split by newline char. Multiple descriptions for one label are possible!
      *
-     * @param path
-     * @return
+     * @param path where to find the labelMap
+     * @return the labelMap
+     *
+     * @throws ResourceException if file cannot be read or does not exist
+     * @throws ResourceException if file is empty and no labels are found
      */
     static std::map<int, std::string> getLabelMap(std::string path);
 

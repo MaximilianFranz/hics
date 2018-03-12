@@ -36,17 +36,45 @@ private:
     // Private constructor
     PlatformManager();
     std::vector<Platform*> platforms;
+    void init();
 
 public:
+
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
     PlatformManager(PlatformManager const&) = delete;
     PlatformManager& operator=(PlatformManager const &) = delete;
 
+    /**
+     * Return the Singleton instance of the PlatformManager.
+     *
+     * @return      The Singleton instance of the PlatformManager.
+     */
     static PlatformManager& getInstance();
 
+    /**
+     * Returns all available platforms.
+     *
+     * @return      The available platforms.
+     */
     std::vector<Platform*> getPlatforms();
 
+    /**
+     * Returns the PlatformInfos for every available platform.
+     *
+     * @return      A vector containing the PlatformInfo of every available platform
+     */
     std::vector<PlatformInfo*> getPlatformInfos();
 
+    /**
+     * Returns the platform with the ID @uuid.
+     *
+     * @param uuid  The ID of the requested platform
+     * @return      The platform with the ID @uuid if it can be found, elsewise a null pointer
+     */
     Platform* getPlatformById(std::string uuid);
+
+    /**
+     * Deletes all platforms and frees the memory.
+     */
+    void reset();
 };

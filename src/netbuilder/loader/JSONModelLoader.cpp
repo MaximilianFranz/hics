@@ -25,6 +25,7 @@
  */
 
 #include <fstream>
+#include <ResourceException.h>
 
 #include "JSONModelLoader.h"
 
@@ -34,9 +35,13 @@ JSONModelLoader::JSONModelLoader(string path) : ModelLoader(path){
 }
 
 void JSONModelLoader::init() {
-    std::ifstream i(this->pathToJSON);
-    i >> this->model;
-    this->layers = model["layers"];
+    try {
+        std::ifstream i(this->pathToJSON);
+        i >> this->model;
+        this->layers = model["layers"];
+    } catch (...) { // LCOV_EXCL_LINE
+        throw ResourceException("Model JSON could not be read, file corrupted"); // LCOV_EXCL_LINE
+    }
 }
 
 string JSONModelLoader::getNetWorkName() {
@@ -49,10 +54,6 @@ string JSONModelLoader::getNetWorkID() {
 
 int JSONModelLoader::getRequiredDimension() {
     return model["requiredDimension"][1];
-}
-
-string JSONModelLoader::getLayerTypeByIndex(int index) {
-    return layers[index]["layerType"];
 }
 
 /**
@@ -113,10 +114,5 @@ bool JSONModelLoader::isValid() {
     else if (model.count("requiredDimension") == 0) {
         return false;
     }
-    else if (model.count("layers") == 0) {
-        return false;
-    }
-    else {
-        return true;
-    }
+    else return model.count("layers") != 0;
 }

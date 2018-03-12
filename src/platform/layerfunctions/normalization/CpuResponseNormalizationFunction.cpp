@@ -46,7 +46,7 @@ void CpuResponseNormalizationFunction::execute(const DataWrapper &input,
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 float sum = 0;
-                float input = 0;
+                float inputValue = 0;
                 for (int r = -radius; r <= radius; r++) {
                     if (plane + r < 0 || plane + r >= numPlanes) {
                         // skip regions which are outside of the image, the values are 0 and don't change sum
@@ -58,10 +58,10 @@ void CpuResponseNormalizationFunction::execute(const DataWrapper &input,
                     sum += data*data;
                     // remember input value, so we don't have to compute the index again
                     if (r == 0) {
-                        input = in[index];
+                        inputValue = in[index];
                     }
                 }
-                float result = input / pow((bias + sum * alpha), beta);
+                float result = inputValue / pow((bias + sum * alpha), beta);
                 // store result and advance pointer
                 *out = result;
                 out++;

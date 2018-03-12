@@ -33,21 +33,6 @@ const int Z_DIM = 0;
 
 
 
-
-ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPadding, int stride, int numGroups,
-                                   std::vector<int> &inputDimensions)
-        : numFilters(numFilters),
-          filterSize(filterSize),
-          zeroPadding(zeroPadding),
-          stride(stride),
-          numGroups(numGroups)
-{
-    this->inputDimensions = inputDimensions;
-    this->type = LayerType::CONVOLUTION;
-    this->outputDimensions = calcOutputDimensions();
-    init(); // TODO never call virtual functions in constructor
-}
-
 ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPadding, int stride, int numGroups,
                                    std::vector<int> &inputDimensions, WeightWrapper *weights)
         : numFilters(numFilters),
@@ -60,7 +45,7 @@ ConvolutionLayer::ConvolutionLayer(int numFilters, int filterSize, int zeroPaddi
     this->inputDimensions = inputDimensions;
     this->type = LayerType::CONVOLUTION;
     this->outputDimensions = calcOutputDimensions();
-    init(); // TODO never call virtual functions in constructor
+    init();
 }
 
 std::vector<int> ConvolutionLayer::calcOutputDimensions() {
@@ -105,7 +90,6 @@ void ConvolutionLayer::forward() {
 
 // HELPER methods
 
-//TODO: Move this somewhere else
 std::vector<int> ConvolutionLayer::splitDim(std::vector<int> in, int factor, int index) {
     std::vector<int> out;
     for (int i = 0; i < in.size(); i++) {
@@ -220,14 +204,6 @@ int ConvolutionLayer::getStride() const {
     return stride;
 }
 
-void ConvolutionLayer::setFunction(ConvolutionFunction *function) {
-    this->function = function;
-    this->functionSet =true;
-}
-
-void ConvolutionLayer::setWeights(WeightWrapper* weights) {
-    this->weights = weights;
-}
 
 int ConvolutionLayer::getNumGroups() const {
     return numGroups;
@@ -236,6 +212,20 @@ int ConvolutionLayer::getNumGroups() const {
 void ConvolutionLayer::setPlatform(Platform *platform) {
     this->function = platform->createConvolutionFunction();
     this->functionSet = true;
+}
+
+// Workaround to get numElements of output
+// Foreach position in the output the whole filter has to be traversed in all dimensions of the input
+int ConvolutionLayer::getDifficulty() {
+    outputWrapper = new DataWrapper(outputDimensions);
+    if (this->difficulty == 0) {
+        this->difficulty = outputWrapper->getNumElements()
+                           * filterSize * filterSize
+                           * inputDimensions[Z_DIM];
+    }
+    delete outputWrapper;
+    return this->difficulty;
+
 }
 
 

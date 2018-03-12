@@ -52,7 +52,11 @@ StartWidget::StartWidget(std::vector<NetInfo *> &neuralNets, std::vector<Platfor
 
     progressBar = new QProgressBar(this);
     progressBar->hide();
-    ui->buttonsLayout->addWidget(progressBar);
+
+    auto layout = new QHBoxLayout();
+    layout->addWidget(progressBar);
+
+    ui->buttonsLayout->addLayout(layout);
 }
 
 StartWidget::~StartWidget() {
@@ -68,11 +72,27 @@ StartWidget::~StartWidget() {
     }
 }
 
+void StartWidget::updatePlatforms(std::vector<PlatformInfo *> platforms) {
+    std::map<QString, PlatformInfo *>::iterator it;
+
+    //Remove everything from the platformsMap to ensure that the map is empty
+    for(it = platformMap.begin(); it != platformMap.end(); ++it){
+        platformMap.erase(it);
+    }
+
+    //Delete the allocated QCheckBoxes and simultaneously remove them from being displayed
+    clearLayout(ui->platformsQVBoxLayout);
+
+    //Add the new platforms to the layout/and map
+    addPlatforms(platforms);
+}
+
 QHBoxLayout *StartWidget::addInputImage(QImage *image, const QString &filePath) {
     auto layout = new QHBoxLayout();
-    auto checkBox = new QCheckBox(this);
     auto label = new QLabel(this);
 
+    auto checkBox = new QCheckBox(this);
+    connect(checkBox, &QCheckBox::clicked, this, &StartWidget::checkImageSelection);
     layout->addWidget(checkBox, 0);
 
     //Paint the QImage into a QLabel so that it can be displayed
@@ -118,6 +138,9 @@ void StartWidget::processInputImageButton() {
             delete image;
         }
     }
+
+    //Refresh select all button to match the current state of the images (all checked/all unchecked etc.)
+    checkImageSelection();
 }
 
 QStringList StartWidget::removeDuplicateSelectedImages(const QStringList &filePaths) {
@@ -150,28 +173,86 @@ void StartWidget::processConfirmDeletionButton() {
     while (it.hasNext()) {
         it.next();
         QCheckBox *checkBox;
-        //TODO maybe check for it.value()->itemAt(0) if this is a valid pointer
-        if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
-            if (checkBox->isChecked()) {
-                clearLayout(it.value());
-                delete it.value();
-                delete it.key().first;
-                images.remove(it.key());
+        if(it.value()->itemAt(0)->widget()) {
+            if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
+                if (checkBox->isChecked()) {
+                    clearLayout(it.value());
+                    delete it.value();
+                    delete it.key().first;
+                    images.remove(it.key());
+                }
             }
         }
+    }
+
+    if (areAllSelected() && (!images.empty())) {
+        ui->abortDeletionQPushButton->setText("Deselect all");
+    } else  {
+        ui->abortDeletionQPushButton->setText("Select all");
+    }
+
+    renumerateImages();
+}
+
+void StartWidget::renumerateImages() {
+    for (int i = 0; i < ui->inputImagesQVBoxLayout->count(); ++i) {
+        ((QCheckBox *) (ui->inputImagesQVBoxLayout->itemAt(i)->layout()->itemAt(0)->widget()))->setText(
+            QString::number(i + 1));
+    }
+}
+
+bool StartWidget::areAllSelected() {
+    //Returns true if all image checkboxes are unselected, false if at least one is checked
+    bool result = true;
+    QMapIterator<QPair<QImage *, QString>, QHBoxLayout *> it(images);
+    while (it.hasNext()) {
+        it.next();
+        QCheckBox *checkBox;
+        if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
+            if (!checkBox->isChecked()) {
+                result = false;
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+void StartWidget::checkImageSelection() {
+    //Check the current state of the checkboxes. Always say "Select all" unless all boxes are checked
+    if (areAllSelected()) {
+        ui->abortDeletionQPushButton->setText("Deselect all");
+    } else {
+        ui->abortDeletionQPushButton->setText("Select all");
     }
 }
 
 void StartWidget::processAbortDeletionQPushButton() {
     QMapIterator<QPair<QImage *, QString>, QHBoxLayout *> it(images);
 
-    //Uncheck every image check box
-    while (it.hasNext()) {
-        it.next();
-        QCheckBox *checkBox;
-        if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
-            checkBox->setChecked(false);
+    //If all are selected we want to deselect all, else we want to select all
+    if (areAllSelected()) {
+        while (it.hasNext()) {
+            it.next();
+            QCheckBox *checkBox;
+            if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
+                if (checkBox->isChecked()) {
+                    checkBox->setChecked(false);
+                }
+            }
         }
+        if (!images.empty()) ui->abortDeletionQPushButton->setText("Select all");
+    } else {
+        while (it.hasNext()) {
+            it.next();
+            QCheckBox *checkBox;
+            if ((checkBox = (QCheckBox *) (it.value()->itemAt(0)->widget()))) {
+                if (!checkBox->isChecked()) {
+                    checkBox->setChecked(true);
+                }
+            }
+        }
+        if (!images.empty()) ui->abortDeletionQPushButton->setText("Deselect all");
     }
 }
 
@@ -220,10 +301,11 @@ void StartWidget::clearLayout(QLayout *layout) {
     }
 }
 
-void StartWidget::displayErrorMessage(const QString message) {
+QErrorMessage* StartWidget::displayErrorMessage(const QString message) {
     auto error = new QErrorMessage(this);
     error->setWindowTitle("Error");
     error->showMessage(message);
+    return error;
 }
 
 NetInfo StartWidget::getSelectedNeuralNet() {
@@ -231,14 +313,14 @@ NetInfo StartWidget::getSelectedNeuralNet() {
     auto it = neuralNetMap.find(name);
 
     if (it == neuralNetMap.end()) {
-        //TODO throw exception here
         displayErrorMessage(QString("Please select a neural net for the classification."));
+        return NetInfo("", 0, "NULL");
     }
 
     return *it->second;
 }
 
-void StartWidget::displayProgress(){
+void StartWidget::displayProgress() {
     ui->classificationQPushButton->hide();
     ui->selectInputImagesQPushButton->hide();
 
@@ -246,8 +328,6 @@ void StartWidget::displayProgress(){
     progressBar->show();
 
     disableWidgets(true);
-
-    //TODO add cancel button to the progressbar.
 }
 
 void StartWidget::resetProgressDisplay() {
@@ -270,9 +350,9 @@ void StartWidget::disableWidgets(bool disable) {
     ui->abortDeletionQPushButton->setDisabled(disable);
     ui->confirmDeletionQPushButton->setDisabled(disable);
 
-    for(unsigned int i = 0; i < ui->platformsQVBoxLayout->count(); ++i){
+    for (int i = 0; i < ui->platformsQVBoxLayout->count(); ++i) {
         QLayoutItem *item = ui->platformsQVBoxLayout->itemAt(i);
-        if(item->widget()){
+        if (item->widget()) {
             item->widget()->setDisabled(disable);
         }
     }
@@ -281,7 +361,7 @@ void StartWidget::disableWidgets(bool disable) {
     //Get every QImage's check box inside the layout and set the disabled state
     while (it.hasNext()) {
         it.next();
-        if(it.value()->itemAt(0)->widget()){
+        if (it.value()->itemAt(0)->widget()) {
             it.value()->itemAt(0)->widget()->setDisabled(disable);
         }
     }
@@ -331,7 +411,6 @@ void StartWidget::resizeEvent(QResizeEvent *event) {
 }
 
 void StartWidget::widgetResized() {
-    //TODO resize file labels
     QMapIterator<QPair<QImage *, QString>, QHBoxLayout *> it(images);
 
     while (it.hasNext()) {
@@ -385,5 +464,4 @@ QCheckBox *StartWidget::getAggregateResultsQCheckBox() {
 
 QMap<QPair<QImage *, QString>, QHBoxLayout *> *StartWidget::getImagesMap() {
     return &images;
-};
-
+}

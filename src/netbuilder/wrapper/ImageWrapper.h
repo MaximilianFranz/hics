@@ -42,7 +42,7 @@ public:
      * @param filepath
      * @see Wrapper
      */
-    ImageWrapper(std::vector<int> &dimensions, std::string filepath);
+    explicit ImageWrapper(std::vector<int> &dimensions, std::string filepath);
     /**
      * Create ImageWrapper from existing data vector
      *
@@ -51,7 +51,7 @@ public:
      * @param data
      * @param filepath
      */
-    ImageWrapper(std::vector<int> dimensions, std::vector<float> &data, std::string filepath);
+    explicit ImageWrapper(std::vector<int> dimensions, std::vector<float> &data, std::string filepath);
 
     /**
      * Get path to the original image this wrapper represents

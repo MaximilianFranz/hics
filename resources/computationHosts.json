@@ -2,19 +2,24 @@
 	"computationHosts": [
 		{
 			"name" : "local",
-			"power" : 1500,
-			"time" : 500
+			"power" : 24952,
+			"time" : 150
 		},
 		{
 			"name" : "fpga",
-			"power" : 500,
-			"time" : 1400,
+			"power" : 615,
+			"time" : 10974,
 			"host" : "localhost:50051"
 		},
 		{
 			"name" : "GPU",
-			"power" : 2000,
+			"power" : 17000,
 			"time" : 230
+		},
+		{
+			"name" : "test",
+			"power" : 24952,
+			"time" : 150
 		}
 	]
 }

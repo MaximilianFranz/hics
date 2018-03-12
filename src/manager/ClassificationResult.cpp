@@ -36,7 +36,7 @@ const std::vector<ImageResult> &ClassificationResult::getResults() const {
     return results;
 }
 
-const NetInfo &ClassificationResult::getUsedNeuralNet() const {
+NetInfo ClassificationResult::getUsedNeuralNet() const {
     return usedNet;
 }
 
@@ -48,11 +48,6 @@ const std::vector<std::pair<std::string, float>> &ClassificationResult::getAggre
     return aggregatedResult;
 }
 
-
-bool isEqual(const std::pair<std::string, float>& element1, const std::pair<std::string, float>& element2) {
-    return element1.first == element2.first;
-}
-
 void ClassificationResult::aggregateResults() {
 
     for (auto const &imageIt : results) {
@@ -60,7 +55,7 @@ void ClassificationResult::aggregateResults() {
         for (auto resultIt : imageIt.getResults()) {
             std::string label = resultIt.first;
 
-            //MAGIC  checks if a label is already added to the vector
+            //checks if a label is already added to the vector
             auto currentElement = std::find_if(aggregatedResult.begin(), aggregatedResult.end(),
                                                [&label](std::pair<std::string, float>& element){
                                                    return element.first == label;
@@ -73,16 +68,18 @@ void ClassificationResult::aggregateResults() {
             } else {
                 currentElement.operator*().second += resultIt.second;
             }
-
         }
     }
 
+    //divide by the number of results to get the relative probability
     for (auto aggIt = aggregatedResult.begin(); aggIt != aggregatedResult.end(); ++aggIt) {
         aggIt.operator*().second = aggIt.operator*().second/results.size();
     }
 
+    //remove everything over 5 labels
     aggregatedResult.erase(aggregatedResult.begin() + 5, aggregatedResult.end());
 
+    //sort according to new probability
     std::sort(aggregatedResult.begin(), aggregatedResult.end(), [](const std::pair<std::string, float> &left,
                                                                    const std::pair<std::string, float> &right) {
         return left.second > right.second;

@@ -43,7 +43,7 @@ protected:
     ResponseNormalizationFunction* function;
 
 public:
-    LocalResponseNormLayer(std::vector<int> inputDimensions, float radius, float alpha, float beta, float bias);
+    LocalResponseNormLayer(std::vector<int> &inputDimensions, float radius, float alpha, float beta, float bias);
 
     std::vector<int> calcOutputDimensions() override;
 
@@ -52,6 +52,8 @@ public:
     //GETTER and SETTER
 
     void setPlatform(Platform *platform) override;
+
+    int getDifficulty() override;
 
     float getRadius() const;
 

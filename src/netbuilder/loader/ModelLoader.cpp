@@ -26,8 +26,5 @@
 
 #include "ModelLoader.h"
 
-ModelLoader::ModelLoader(string path) {
-    this->pathToJSON = path;
-
-}
+ModelLoader::ModelLoader(string path) : pathToJSON{path} {}
 

@@ -2,7 +2,7 @@
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
- * files (the "Software"), to deal in the Software without
+ * files (the "Software"), to deal in the Software withoutresults.front()->getResults().front().first
  * restriction, including without limitation the rights to use,
  * copy, modify, merge, publish, distribute, sublicense, and/or
  * sell copies of the Software, and to permit persons to whom
@@ -25,7 +25,6 @@
  */
 
 #include <map>
-#include <wrapper/DataWrapper.h>
 #include <Interpreter.h>
 #include <Executor.h>
 #include <fstream>
@@ -36,100 +35,157 @@
 
 #include <QImage>
 
+#include <wrapper/DataWrapper.h>
+#include <FileHelper.h>
+
 
 #include "ExecutorTest.h"
 
-TEST_CASE("Testing Interpreter") {
-    //Create example labelMap
-    std::map<int, std::string> labelMap;
-    labelMap.emplace(0, "label 0");
-    labelMap.emplace(1, "label 1");
-    labelMap.emplace(2, "label 2");
-    labelMap.emplace(3, "label 3");
-    labelMap.emplace(4, "label 4");
-    labelMap.emplace(5, "label 5");
-
-    // Create example outputWrapper
-    std::vector<float> outputData = {1.0, 5.0, 3.0, 8.0, 2.0, 4.0};
-    std::vector<int> dim(1,6);
-    DataWrapper output(dim, outputData);
-
-    // Init Interpreter
-    Interpreter t(labelMap);
-    // Create facade ImageWrapper
-    ImageWrapper i(dim,outputData, "testpath");
-
-    //TODO: Mock computationDistribution or remove tests.
-//    ImageResult *r = t.getResult(&output, &i, nullptr); // Add & as a quickfix to get pointers.
-//
-//    auto mapresult = r->getResults().at(0);
-//    REQUIRE(mapresult.first == "label 3");
-//    REQUIRE(r->getImagePath() == "testpath");
-//    //Expected label 3, label 1, label 5, label 2,
-}
-
-
-template<typename T>
-std::vector<T> split(const std::string& line) {
-    std::istringstream is(line);
-    return std::vector<T>(std::istream_iterator<T>(is), std::istream_iterator<T>());
-}
-
-std::vector<float> getDataFromFile(std::string path) {
-    char* resolved_path;
-    // Getting the real path from execution dir.
-    // We pass NULL and let realpath allocate the string which means we have to free() it later.
-    resolved_path = realpath(path.c_str(), NULL);
-    // Open file
-    std::ifstream file(resolved_path);
-    std::string str;
-
-    file.seekg(0, std::ios::end);
-    str.reserve(static_cast<unsigned long>(file.tellg()));
-    file.seekg(0, std::ios::beg);
-
-    str.assign((std::istreambuf_iterator<char>(file)),
-               std::istreambuf_iterator<char>());
-
-    std::vector<float> data = split<float>(str);
-
-    free(resolved_path);
-    return data;
-}
+// HELPER METHODS for getting data from files
 
 SCENARIO("Testing Executor Module") {
 
+    SECTION("Testing Interpreter") {
+        //Create example labelMap
+        std::map<int, std::string> labelMap;
+        labelMap.emplace(0, "label 0");
+        labelMap.emplace(1, "label 1");
+        labelMap.emplace(2, "label 2");
+        labelMap.emplace(3, "label 3");
+        labelMap.emplace(4, "label 4");
+        labelMap.emplace(5, "label 5");
 
-    SECTION("Testing Placer") {
+        // Create example outputWrapper
+        std::vector<float> outputData = {1.0, 5.0, 3.0, 8.0, 2.0, 4.0};
+        std::vector<int> dim(1,6);
+        DataWrapper *output = new DataWrapper(dim, outputData);
+
+        // Init Interpreter
+        Interpreter t(labelMap);
+
+        // Create facade ImageWrapper
+        ImageWrapper i(dim, outputData, "testpath");
+
+        PlatformPlacer *mock = new PlatformPlacer();
+
+        // TODO: Mock computationDistribution or remove tests.
+        ImageResult *r = t.getResult(output, &i, mock ); // Add & as a quickfix to get pointers.
+
+        SECTION("Testing ImageResult methods") {
+            REQUIRE(r->getResults().at(0).first == "label 3");
+            REQUIRE(r->getResults().at(1).first == "label 1");
+            REQUIRE(r->getImagePath() == "testpath");
+
+            // Testing the Setter for compDistribution
+            auto distribution = r->getCompDistribution();
+            ImageResult newResult = ImageResult(r->getResults(), i);
+            newResult.setCompDistribution(distribution);
+
+            REQUIRE(newResult.getResults().at(0).first == "label 3");
+        }
+    }
+
+    SECTION("Testing Interpreter with incomplete data") {
+        //Create example labelMap
+        std::map<int, std::string> labelMap;
+        labelMap.emplace(0, "label 0");
+        labelMap.emplace(1, "label 1");
+
+        // Create example outputWrapper with only two entries
+        std::vector<float> outputData = {1.0, 5.0};
+        std::vector<int> dim(1,2);
+        DataWrapper *output = new DataWrapper(dim, outputData);
+
+        // Init Interpreter
+        Interpreter t(labelMap);
+
+        // Create facade ImageWrapper
+        ImageWrapper i(dim, outputData, "testpath_again");
+
+        auto *mock = new PlatformPlacer();
+
+        // TODO: Mock computationDistribution or remove tests.
+        ImageResult *r = t.getResult(output, &i, mock ); // Add & as a quickfix to get pointers.
+
+        REQUIRE(r->getResults().at(0).first == "label 1");
+        REQUIRE(r->getResults().at(1).first == "label 0");
+        REQUIRE(r->getImagePath() == "testpath_again");
+        //Expected label 3, label 1, label 5, label 2,
+    }
+
+    SECTION("Testing Interpreter with empty labelMap") {
+        //Create example labelMap
+        std::map<int, std::string> labelMap;
+
+        // Create example outputWrapper with only two entries
+        std::vector<float> outputData = {1.0, 5.0};
+        std::vector<int> dim(1,2);
+        DataWrapper *output = new DataWrapper(dim, outputData);
+
+        // Init Interpreter
+        Interpreter t(labelMap);
+
+        // Create facade ImageWrapper
+        ImageWrapper i(dim, outputData, "testpath_again");
+
+        auto *mock = new PlatformPlacer();
+
+        ImageResult *r = t.getResult(output, &i, mock ); // Add & as a quickfix to get pointers.
+
+        // Both labels are empty
+        REQUIRE(r->getResults().at(0).first == "");
+        REQUIRE(r->getResults().at(1).first == "");
+        REQUIRE(r->getImagePath() == "testpath_again");
+        //Expected label 3, label 1, label 5, label 2,
+    }
+
+    SECTION("Testing Placer on AlexNet") {
+        // Set up requirements
         PlatformPlacer p;
         Executor e;
-        NetBuilder *builder = new NetBuilder();
+        auto *builder = new NetBuilder();
         std::vector<NetInfo*> nets = builder->queryAvailableNets();
-        NetInfo alexnetinfo = *nets.at(0);
+        NetInfo alexnetinfo = *nets.at(0); // AlexNet
         NeuralNet* alexnet = builder->buildNeuralNet(alexnetinfo);
+
+        SECTION("Testing SimpleNetIterator on AlexNet") {
+            auto it = alexnet->createIterator();
+            it->first();
+            it->next();
+            REQUIRE(it->hasNext());
+            REQUIRE(it->getElement()->getType() == LayerType::CONVOLUTION);
+
+        }
 
         std::vector<PlatformInfo*> platforminfos = e.queryPlatform();
 
+        REQUIRE_FALSE(alexnet->isPlacementComplete());
+
         p.placeComputations(alexnet, OperationMode::EnergyEfficient, platforminfos);
         REQUIRE(alexnet->isPlacementComplete());
+        REQUIRE(alexnet->getLastLayer()->getType() == LayerType::LOSS_SOFTMAX);
 
     }
 
-    SECTION("Testing Complete execution of the net") {
+    SECTION("Testing Complete execution of the net with TF input") {
         Executor *executor = new Executor;
         std::vector<NetInfo*> nets = executor->queryNets();
         NetInfo alexnetinfo = *nets.at(0);
 
+        // Use preprocessed data exported from tensorflow python implementation
         std::string img_data_path = TEST_RES_DIR "img_data.txt";
 
-        std::vector<float> image = getDataFromFile(img_data_path);
+        std::vector<float> image = util::getDataFromFile(img_data_path);
 
         std::vector<int> imgDim = {3,227,227};
         ImageWrapper *img = new ImageWrapper(imgDim, image, "filepath");
 
-        std::vector<ImageResult*> results;
+
         std::vector<PlatformInfo*> info = executor->queryPlatform();
-        results = executor->classify({img}, alexnetinfo, OperationMode::EnergyEfficient, info);
+        std::vector<ImageResult*> results = executor->classify({img},
+                                                               alexnetinfo,
+                                                               OperationMode::EnergyEfficient,
+                                                               info);
 
         // Highest prob is weasel
         REQUIRE(results.front()->getResults().front().first == "weasel");
@@ -138,12 +194,12 @@ SCENARIO("Testing Executor Module") {
 
     }
 
-    SECTION("Testing PreProcessor and Execution") {
+    SECTION("Testing PreProcessor and Execution with real image") {
+        //
         PreProcessor p;
         p.setOutputSize(227,227);
 
         QImage img(TEST_RES_DIR "tf_data_script/laska.png");
-
         std::map<QString, QImage> map;
         map.insert(std::pair<QString, QImage>(QString("laska"), img));
         std::vector<ImageWrapper*> images = p.processImages(map);
@@ -151,13 +207,94 @@ SCENARIO("Testing Executor Module") {
         Executor executor;
         std::vector<NetInfo*> nets = executor.queryNets();
         NetInfo alexnetinfo = *nets.at(0);
-
-        std::vector<ImageResult*> results;
         std::vector<PlatformInfo*> infos = executor.queryPlatform();
-        results = executor.classify({images.front()}, alexnetinfo, OperationMode::EnergyEfficient, infos);
 
-        std::cout << results.front()->getResults().front().first << std::endl;
-        std::cout << results.front()->getResults().front().second << std::endl;
+        PlatformInfo* cpu = nullptr;
+        PlatformInfo* alt = nullptr;
+
+        // Specify CPU and FPGA or CL_CPU Platform out of the available platforms
+        for (auto p : infos) {
+            if (p->getType() == PlatformType::CPU )
+                cpu = p;
+#ifdef ALTERA
+            if (p->getType() == PlatformType::FPGA)
+                alt = p;
+#else
+            if (p->getType() == PlatformType::CL_CPU)
+                alt = p;
+#endif
+        }
+
+        REQUIRE(alt != nullptr );
+        REQUIRE(cpu != nullptr );
+
+        SECTION("EnergyEfficient Mode with all platforms") {
+            // Use all platforms
+            std::vector<ImageResult*> results = executor.classify({images.front()},
+                                                                  alexnetinfo,
+                                                                  OperationMode::EnergyEfficient,
+                                                                  infos);
+
+            REQUIRE(results.front()->getResults().front().first == "weasel");
+
+            if (results.front()->getCompDistribution().front().first->getType() == PlatformType::CPU){
+                REQUIRE(results.front()->getCompDistribution().front().second > 0.5);
+            }
+        }
+
+        SECTION("EnergyEfficient Mode with one non-CPU platforms") {
+            // Use all platforms
+            std::vector<ImageResult*> results = executor.classify({images.front()},
+                                                                  alexnetinfo,
+                                                                  OperationMode::EnergyEfficient,
+                                                                  {alt});
+
+            // Distribution to only one platform
+            REQUIRE(results.front()->getResults().front().first == "weasel");
+            REQUIRE(results.front()->getCompDistribution().front().second == 1);
+
+            if (results.front()->getCompDistribution().front().first->getType() == PlatformType::CPU){
+                REQUIRE(results.front()->getCompDistribution().front().second > 0.5);
+            }
+        }
+
+        SECTION("HighPower Mode with all platforms") {
+            // Use all platforms
+            std::vector<ImageResult*> results = executor.classify({images.front()},
+                                                                  alexnetinfo,
+                                                                  OperationMode::HighPower,
+                                                                  infos);
+
+            REQUIRE(results.front()->getResults().front().first == "weasel");
+
+            if (results.front()->getCompDistribution().front().first->getType() == PlatformType::CPU){
+                REQUIRE(results.front()->getCompDistribution().front().second > 0.5);
+            }
+        }
+
+        SECTION("LowPower Mode with all platforms") {
+            // Use all platforms
+            std::vector<ImageResult*> results = executor.classify({images.front()},
+                                                                  alexnetinfo,
+                                                                  OperationMode::LowPower,
+                                                                  infos);
+
+            REQUIRE(results.front()->getResults().front().first == "weasel");
+
+            if (results.front()->getCompDistribution().front().first->getType() == PlatformType::CPU){
+                REQUIRE(results.front()->getCompDistribution().front().second > 0.9);
+            }
+        }
+
+        SECTION("Test exception when no platform is inserted") {
+            // Use all platforms
+            infos.clear();
+            REQUIRE_THROWS(executor.classify({images.front()},
+                                             alexnetinfo,
+                                             OperationMode::LowPower,
+                                             infos));
+        }
+
 
     }
 }

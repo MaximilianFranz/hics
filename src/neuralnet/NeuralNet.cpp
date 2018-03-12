@@ -24,6 +24,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include <iostream>
 #include "NeuralNet.h"
 
 // Include SimpleIterator only here in cpp to avoid build errors due to cyclic dependencies
@@ -44,16 +45,6 @@ NetInfo NeuralNet::getInfo() {
     return info;
 }
 
-bool NeuralNet::isComputationComplete() {
-    for (Layer* l : layers) {
-        if (!l->isComputed())
-            return false;
-    }
-    return true;
-    // Alternatively: return (layers[last].isComputed())
-    // Can we guarantee consistency?
-}
-
 bool NeuralNet::isPlacementComplete() {
     for (Layer* l : layers) {
         if (!l->isPlatformSet()) {
@@ -63,18 +54,7 @@ bool NeuralNet::isPlacementComplete() {
     return true;
 }
 
-bool NeuralNet::verifyConsistency() {
-    SimpleNetIterator it(this);
-    while (it.hasNext()) {
-        if (it.getElement()->getOutputDimensions() != it.getElement()->getNextLayer()->getInputDimensions())
-            return false;
-
-        it.next();
-    }
-    return true;
-}
-
-NeuralNet::NeuralNet(InputLayer *input, NetInfo info) : info(info) {
+NeuralNet::NeuralNet(InputLayer *input, NetInfo info) : info{info} {
     layers.push_back(input);
 }
 
@@ -94,4 +74,16 @@ void NeuralNet::reset() {
         l->reset();
     }
 
+}
+
+long long NeuralNet::getTotalDifficulty() {
+    long long total = 0;
+    for (auto l : layers) {
+        total += l->getDifficulty();
+    }
+    return total;
+}
+
+const int NeuralNet::getNumLayers() const {
+    return (int)layers.size(); // number of layers are reasonably small
 }

@@ -28,6 +28,7 @@
 
 
 #include <Executor.h>
+#include <spdlog/logger.h>
 #include "ManagerObserver.h"
 #include "handler/MainWindowHandler.h"
 
@@ -45,7 +46,12 @@ private:
 
 public:
 
+    /**
+     * Creates a new manager
+     */
     Manager();
+
+    virtual ~Manager();
 
     /**
      * called by GUI to update the Manager when the classify is pressed
@@ -54,8 +60,16 @@ public:
      */
     virtual ClassificationResult* update();
 
+    /**
+     * Queries info from the computation hosts and initialises the GUi with the gathered data
+     */
     void initGUI();
 
+    /**
+     * Compares managerObservers by reference
+     * @param managerObserver
+     * @return true if the object is the same
+     */
     bool operator==(const ManagerObserver &managerObserver) override;
 
     /**

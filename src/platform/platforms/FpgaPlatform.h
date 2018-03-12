@@ -27,9 +27,7 @@
 #pragma once
 
 #ifdef __APPLE__
-
 #include <OpenCL/opencl.h>
-
 #else
 #include "CL/opencl.h"
 #endif
@@ -59,9 +57,7 @@ public:
 
     PlatformInfo &getPlatformInfo() override;
 
-    FpgaPlatform();
-
-    FpgaPlatform(PlatformInfo &info);
+    explicit FpgaPlatform(PlatformInfo &info);
 
     ~FpgaPlatform();
 };

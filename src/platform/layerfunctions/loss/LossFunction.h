@@ -30,6 +30,13 @@
 
 class LossFunction {
 public:
+
+    /**
+     * Performs the computations of a loss layer. Takes the @input and saves the results as @output.
+     *
+     * @param input     The input of the loss layer
+     * @param output    The output of the loss layer
+     */
     virtual void execute(const DataWrapper &input, DataWrapper &output) = 0;
 };
 

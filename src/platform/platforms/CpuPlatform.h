@@ -30,6 +30,7 @@
 
 class CpuPlatform : public Platform {
 public:
+
     ActivationFunction *createActivationFunction(LayerType type) override;
 
     ConvolutionFunction *createConvolutionFunction() override;
@@ -44,7 +45,5 @@ public:
 
     PlatformInfo &getPlatformInfo() override;
 
-    CpuPlatform();
-
-    CpuPlatform(PlatformInfo &info);
+    explicit CpuPlatform(PlatformInfo &info);
 };

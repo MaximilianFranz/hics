@@ -38,7 +38,6 @@ protected:
     FullyConnectedFunction* function;
     WeightWrapper* weights;
 
-    // TODO: Move to a util class (and make it modular?)
     /**
      * Stretches out the given input in the format the
      * AlexNet requires as input to FullyConnected layers.
@@ -47,17 +46,9 @@ protected:
      * @return
      */
     DataWrapper* stretchInput(DataWrapper* input);
+    //Move to a util class (and make it more modular -- see TensorFlow)
 
 public:
-
-    /**
-     * Constructor for a FullyConnectedLayer without weights.
-     *
-     * Weights can be set afterwards.
-     *
-     * @param inputDimensions inputDimensions to this
-     */
-    explicit FullyConnectedLayer(std::vector<int> inputDimensions);
 
     /**
      * Constructor for a FullyConnectedLayer with weights
@@ -66,7 +57,7 @@ public:
      * @param weights
      * @param bias
      */
-    FullyConnectedLayer(std::vector<int> inputDimensions, WeightWrapper *weights);
+    FullyConnectedLayer(std::vector<int> &inputDimensions, WeightWrapper *weights);
 
     std::vector<int> calcOutputDimensions() override;
 
@@ -74,10 +65,7 @@ public:
 
     void setPlatform(Platform *platform) override;
 
-    void setWeights(WeightWrapper* weights);
-
-
-    void setFunction(FullyConnectedFunction* function);
+    int getDifficulty() override;
 
 };
 

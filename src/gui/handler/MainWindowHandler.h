@@ -26,8 +26,9 @@
 
 #pragma once
 
-#include <list>
 #include <QObject>
+#include <list>
+#include <memory>
 #include <NetInfo.h>
 #include <PlatformInfo.h>
 #include <OperationMode.h>
@@ -35,10 +36,13 @@
 #include <ClassificationResult.h>
 
 #include "MainWindowSubject.h"
+#include "WorkerThread.h"
 #include "ui/MainWindow.h"
 #include "ui/StartWidget.h"
 #include "ui/ResultWidget.h"
 #include "ui/DetailDialog.h"
+
+class WorkerThread; /*!< Forward declaration for WorkerThread */
 
 /**
  * @class   MainWindowHandler
@@ -72,9 +76,18 @@ private:
 
     ClassificationRequest *classificationRequestState = nullptr;
 
+    WorkerThread *workerThread = nullptr;
+
+    std::exception_ptr exceptionptr = nullptr;
+    std::shared_ptr<std::vector<PlatformInfo *>> updatedPlatforms = nullptr;
+
+private:
+
     void connectAll();
 
     void disconnectAll();
+
+    void checkExceptionPtr();
 
 public:
 
@@ -82,17 +95,32 @@ public:
     * @brief This constructor initializes the GUI with the needed information on available data.
     *
     * The constructor gets the available neural nets, platforms and operation modes which will be displayed after
-    * the GUI is constructed.
-    * TODO more info
+    * the GUI is constructed. It creates a StartWidget with these objects and then a ResultWidget and DetailDialog.
+    * They all get added to the created mainWindow's QStackedWidget and initialy the StartWidgete is displayed. The
+    * necessary buttons get connected to their methods in connectAll() and then the GUI is shown via the constructor
+    * of mainWIndow.
     *
     * @param neuralNets the available neural nets in the software
     * @param platforms the available platforms in the software
     * @param operationModes the available operation modes in the software
     */
-    MainWindowHandler(std::vector<NetInfo*> &neuralNets, std::vector<PlatformInfo*> &platforms,
+    MainWindowHandler(std::vector<NetInfo *> &neuralNets, std::vector<PlatformInfo *> &platforms,
                       std::vector<OperationMode> &operationModes);
 
     ~MainWindowHandler();
+
+    /**
+     * @brief init will start the displaying of the GUI
+     *
+     * When calling init the mainWindow's init method will be called and the GUI gets started.
+     */
+    void init();
+
+    /**
+    * @brief updatePlatforms refreshes the currently displayed platforms in the GUI
+    * @param platforms are the platforms that shall be displayed in the GUI
+    */
+    void updatePlatforms(std::shared_ptr<std::vector<PlatformInfo *>> &platforms);
 
     /**
      * @brief getClassificationRequestState returns the classificationRequest state attribute.
@@ -105,8 +133,6 @@ public:
      * @param classificationResult contains the classification result and details which shall be displayed
      */
     void processClassificationResult(ClassificationResult *classificationResult);
-
-    //TODO here could be the displayErrorMessage(Exception e) method
 
     /**
      * @brief getStartWidget returns the startWidget which represents the starting page of the GUI.
@@ -131,6 +157,12 @@ public:
      * @return detailDialog
      */
     DetailDialog *getDetailDialog() const;
+
+    /**
+     * @brief setExceptionptr sets the exception pointer to a given exception which was thrown
+     * @param exceptionptr is the thrown exception
+     */
+    void setExceptionptr(const std::exception_ptr &exceptionptr);
 
 public slots:
 
@@ -158,8 +190,10 @@ public slots:
      */
     void processDetailQPushButton();
 
-signals:
-
-    void startNotifying();
-
+    /**
+     * @brief displayErrorMessage will send the error message to the startWidget's respective method to display it.
+     * @param errorMessage the to be displayed error message
+     * @param close defines whether to close the GUI or not, default is false
+     */
+    void displayErrorMessage(const std::string &errorMessage, bool close = false);
 };

@@ -59,23 +59,6 @@ protected:
 public:
 
     /**
-     * Constructor without weights, since computation cannot be done immediately anyways and weights could be set
-     * afterwards.
-     *
-     * @param numFilters
-     * @param filterSize
-     * @param zeroPadding
-     * @param stride
-     * @param inputDimensions
-     */
-    ConvolutionLayer(int numFilters,
-                     int filterSize,
-                     int zeroPadding,
-                     int stride,
-                     int numGroups,
-                     std::vector<int> &inputDimensions);
-
-    /**
      * Constructor with weights - preferred!
      *
      * @param numFilters
@@ -100,9 +83,7 @@ public:
 
     void setPlatform(Platform *platform) override;
 
-    void setWeights(WeightWrapper* weights);
-
-    void setFunction(ConvolutionFunction* function);
+    int getDifficulty() override;
 
     // GETTER
 

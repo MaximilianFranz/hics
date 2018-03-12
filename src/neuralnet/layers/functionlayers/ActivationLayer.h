@@ -30,15 +30,12 @@
 #include "layers/Layer.h"
 
 /**
- * A super class for activation layers implementing the forward() method and the logic for calculating
- * output dimensions.
- *
+ * A super class for activation layers implementing the forward() method and the logic for calculating output dimensions.
  */
 class ActivationLayer : public Layer {
 protected:
     ActivationFunction* function = nullptr;
 public:
-    // TODO: This is not technically correct, because ActivationsLayer should not be instantiated.
     explicit ActivationLayer(std::vector<int> &inputDimensions);
 
     std::vector<int> calcOutputDimensions() override;
@@ -46,6 +43,8 @@ public:
     void forward() override;
 
     void setPlatform(Platform *platform) override;
+
+    int getDifficulty() override;
 
 };
 

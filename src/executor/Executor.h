@@ -49,8 +49,6 @@ private:
     PlatformPlacer *placer = nullptr;
     Interpreter *interpreter = nullptr;
 
-    std::string name;
-
     /**
      * Ensures that required settings are met and satisfies missing settings by building or configuring them.
      *
@@ -101,7 +99,7 @@ public:
      *
      * @param name of this Executor
      */
-    Executor(std::string name);
+    explicit Executor(std::string name);
 
     /**
      * Default constructor ensuring that PlatformPlacer and NetBuilder are available
@@ -138,9 +136,16 @@ public:
      */
     std::vector<NetInfo*> queryNets() override;
 
-    std::string getName() {
-        return name;
-    }
+    /**
+     *  Getter for the name attribute
+     *
+     * @return name of this computation host / executor
+     */
+    std::string getName() override;
 
+    /**
+     * Destructor to free memory when deleted
+     *
+     */
     virtual ~Executor();
 };

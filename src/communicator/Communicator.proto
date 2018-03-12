@@ -23,6 +23,7 @@ message PlatformInfoMessage {
         CPU = 0;
         FPGA = 1;
         GPU = 2;
+        CL_CPU = 3;
     }
     platformType type = 2;
     string platformId = 3;

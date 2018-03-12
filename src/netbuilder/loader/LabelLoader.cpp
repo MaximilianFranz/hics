@@ -25,26 +25,39 @@
  */
 
 #include <fstream>
+#include <ResourceException.h>
 #include "LabelLoader.h"
 
 std::map<int, std::string> LabelLoader::getLabelMap(std::string path) {
 
     std::map<int, std::string> labelMap;
+    std::ifstream file;
 
-    char *resolved_path = realpath(path.c_str(), NULL);
-    // TODO: check if resolved_path is NULL
-    std::ifstream file(resolved_path);
+    char *resolved_path = realpath(path.c_str(), nullptr);
+    if (resolved_path == nullptr) {
+        throw ResourceException("Path to labels could not be resolved. Given relative path: " + path); // LCOV_EXCL_LINE
+    }
+
+    try {
+        file.open(resolved_path);
+    }
+    catch (...) { // LCOV_EXCL_LINE
+        throw ResourceException("Could not read label file at: " + path); // LCOV_EXCL_LINE
+    }
 
     std::string line;
-
     int index = 0;
 
+    // Place labels into map line by line
     while (std::getline(file, line)) {
         labelMap.emplace(std::pair<int, std::string>(index, line));
         index++;
     }
 
-    free(resolved_path);
+    if (labelMap.empty()) {
+        throw ResourceException("No labels found in file: " + path); // LCOV_EXCL_LINE
+    }
 
+    free(resolved_path);
     return labelMap;
 }

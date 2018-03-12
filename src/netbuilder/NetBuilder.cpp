@@ -42,7 +42,7 @@ NeuralNet* NetBuilder::buildNeuralNet(NetInfo netInfo) {
     LayerConstructionParams lcp = modelLoader.getLayerConstructionParamsByIndex(0);
     InputLayer* inputLayer = layerMaker.createInputLayer(lcp);
     // Use static path for now
-    AlexNetWeightLoader loader(RES_DIR "weights/alexnet_weights.h5");
+    AlexNetWeightLoader loader(RES_DIR "weights/" + netInfo.getIdentifier() + "_weights.h5");
     NeuralNet* alexNet = new NeuralNet(inputLayer, netInfo);
     Layer* layer;
     int weightIndex = 0;
@@ -82,7 +82,7 @@ NeuralNet* NetBuilder::buildNeuralNet(NetInfo netInfo) {
     return alexNet;
 }
 
-std::vector<NetInfo *> NetBuilder::queryAvailableNets() {
+std::vector<NetInfo*> NetBuilder::queryAvailableNets() {
     return ModelCrawler::getValidNets(MODEL_DIR);
 }
 

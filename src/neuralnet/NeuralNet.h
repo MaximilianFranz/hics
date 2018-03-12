@@ -54,16 +54,13 @@ public:
 
     /**
      * Currently naive implementation to link the added layer to last layer in the net
-     * TODO: To support multiple preceeding layers, this has to be changed and layer dependencies have
-     * to be defined in the model and set by an advances NetBuilder.
+     * TODO: To support multiple preceeding layers, this has to be changed and layer dependencies have to be defined in the model and set by an advances NetBuilder.
      * @param layer
      */
     void addLayer(Layer* layer);
 
 
     NetInfo getInfo();
-
-    bool isComputationComplete();
 
     bool isPlacementComplete();
 
@@ -73,26 +70,30 @@ public:
     void reset();
 
     /**
-     * TODO: Replace with NetIterator and get proper inheritance to work!
      *
      * @return an iterator
      */
     SimpleNetIterator* createIterator() const;
 
     /**
-     * Iterates over the network and verifies that input and output dimensions of connected layers match.
+     * Calculate the totalized difficulty of all layer in a network to get a more accurate distribution of computations.
      *
-     * The network may not be computed, if this returns false.
-     *
-     * @return true if the dimensions match, false otherwise.
+     * @return the total difficulty of the neural net
      */
-    bool verifyConsistency();
+    long long getTotalDifficulty();
 
     /**
      *
      * @return last Layer of the network, which is the output.
      */
     const Layer *getLastLayer() const;
+
+    /**
+     * Returns the number of layer in this neural net
+     *
+     * @return int number of layers
+     */
+    const int getNumLayers() const;
 
     /**
      * Desctructs this instance of NeuralNet an all layers in it.

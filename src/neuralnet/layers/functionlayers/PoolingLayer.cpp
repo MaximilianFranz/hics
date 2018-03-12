@@ -58,3 +58,14 @@ void PoolingLayer::setPlatform(Platform *platform) {
     this->function = platform->createPoolingFunction(this->type);
     this->functionSet = true;
 }
+
+// For each element in the output, all elements within the filter have to be traversed
+// Thus we have filterSize ^ 2 * numElements
+int PoolingLayer::getDifficulty() {
+    outputWrapper = new DataWrapper(outputDimensions);
+    if (this->difficulty == 0) {
+        this->difficulty = filterSize * filterSize * outputWrapper->getNumElements();
+    }
+    delete outputWrapper;
+    return this->difficulty;
+}
