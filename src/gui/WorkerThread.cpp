@@ -8,4 +8,5 @@ void WorkerThread::run() {
     }
 }
 
-WorkerThread::WorkerThread(MainWindowHandler *mWH) : mWH(mWH) {};
+WorkerThread::WorkerThread(MainWindowHandler *mWH) : mWH(mWH) {}
+
