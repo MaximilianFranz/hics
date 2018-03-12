@@ -48,14 +48,14 @@ FpgaConvolutionFunction::FpgaConvolutionFunction(cl_context c, cl_device_id d)
 
     cl_int status = 0;
     queue = clCreateCommandQueue(context, device, 0, &status);
-    helper::CheckError<ResourceException>(status, "Failed to create command queue.");
+    helper::checkError<ResourceException>(status, "Failed to create command queue.");
 
     std::string binary_file = helper::getBoardBinaryFile(RES_DIR "kernels/gemm4_fpga", device);
     program = helper::createProgramFromBinary(context, binary_file.c_str(), &device, 1);
 
     // We can't pass runtime parameters to the kernel, so just pass ""
     status = clBuildProgram(program, 0, NULL, "", NULL, NULL);
-    helper::CheckError<ResourceException>(status, "Failed to build program.");
+    helper::checkError<ResourceException>(status, "Failed to build program.");
 
     // Check for compilation errors
     size_t logSize;
@@ -167,7 +167,7 @@ void FpgaConvolutionFunction::execute(const DataWrapper &input,
     const size_t global[2] = { M/WIDTH, N };
     cl_event event;
     cl_int result = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, global, local, 0, NULL, &event);
-    helper::CheckError<ResultException>(result, "Failed to enqueue kernel.");
+    helper::checkError<ResultException>(result, "Failed to enqueue kernel.");
 
     // Wait for calculations to be finished
     clWaitForEvents(1, &event);

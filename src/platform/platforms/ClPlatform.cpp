@@ -99,7 +99,7 @@ void ClPlatform::init() {
     cl_platform_id platform = 0;
 
     status = clGetPlatformIDs(1, &platform, NULL);
-    helper::CheckError<ResourceException>(status, "Query for platform ids failed.");
+    helper::checkError<ResourceException>(status, "Query for platform ids failed.");
 
     device = 0;
     if(platformInfo.getType() == PlatformType::GPU) {
@@ -107,10 +107,10 @@ void ClPlatform::init() {
     } else if (platformInfo.getType() == PlatformType::CL_CPU) {
         status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, NULL);
     }
-    helper::CheckError<ResourceException>(status, "Query for device ids failed.");
+    helper::checkError<ResourceException>(status, "Query for device ids failed.");
 
     context = clCreateContext(NULL, 1, &device, NULL, NULL, &status);
-    helper::CheckError<ResourceException>(status, "Failed to create context.");
+    helper::checkError<ResourceException>(status, "Failed to create context.");
 }
 
 ClPlatform::~ClPlatform() {

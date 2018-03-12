@@ -48,15 +48,15 @@ ClConvolutionFunction::ClConvolutionFunction(cl_context c, cl_device_id d)
 
     cl_int status = 0;
     queue = clCreateCommandQueue(context, device, 0, &status);
-    helper::CheckError<ResourceException>(status, "Failed to create command queue.");
+    helper::checkError<ResourceException>(status, "Failed to create command queue.");
 
-    program = helper::CreateProgram(helper::LoadKernel(RES_DIR "kernels/gemm3.cl"), context);
+    program = helper::createProgramFromSource(context, helper::loadKernel(RES_DIR "kernels/gemm3.cl"));
 
     char cmdline[1024];
     snprintf(cmdline, 1024, "-DTS=%d -DWPT=%d -DRTS=%d", TS, WPT, TS/WPT);
     clBuildProgram(program, 0, NULL, cmdline, NULL, NULL);
 //    status = clBuildProgram(program, 0, NULL, "", NULL, NULL);
-    helper::CheckError<ResourceException>(status, "Failed to build program.");
+    helper::checkError<ResourceException>(status, "Failed to build program.");
 
     // Check for compilation errors
     size_t logSize;
@@ -167,7 +167,7 @@ void ClConvolutionFunction::execute(const DataWrapper &input,
     const size_t global[2] = { M, N/WPT };
     cl_event event;
     cl_int result = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, global, local, 0, NULL, &event);
-    helper::CheckError<ResultException>(result, "Failed to enqueue kernel.");
+    helper::checkError<ResultException>(result, "Failed to enqueue kernel.");
 
     // Wait for calculations to be finished
     clWaitForEvents(1, &event);

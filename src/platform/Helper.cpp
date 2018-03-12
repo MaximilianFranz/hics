@@ -366,7 +366,7 @@ namespace helper {
     // LCOV_EXCL_STOP
 
     template<typename T>
-    void CheckError(cl_int error, const std::string &message) {
+    void checkError(cl_int error, const std::string &message) {
         if (error != CL_SUCCESS) {
             throw T(message + " OpenCL message: " + getErrorString(error)); // LCOV_EXCL_LINE
         }
@@ -374,25 +374,25 @@ namespace helper {
 
     // Explicit instantiation
     template void
-    CheckError<ResultException>(cl_int error, const std::string &message);
+    checkError<ResultException>(cl_int error, const std::string &message);
 
     template void
-    CheckError<ResourceException>(cl_int error, const std::string &message);
+    checkError<ResourceException>(cl_int error, const std::string &message);
 
-    std::string LoadKernel(const char *name) {
+    std::string loadKernel(const char *name) {
         std::ifstream in(name);
         std::string result((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
         return result;
     }
 
-    cl_program CreateProgram (const std::string& source, cl_context context) {
+    cl_program createProgramFromSource(cl_context context, const std::string &source) {
         // http://www.khronos.org/registry/cl/sdk/1.1/docs/man/xhtml/clCreateProgramWithSource.html
         size_t lengths [1] = { source.size () };
         const char* sources [1] = { source.data () };
 
         cl_int error = 0;
         cl_program program = clCreateProgramWithSource (context, 1, sources, lengths, &error);
-        helper::CheckError<ResourceException>(error, "Failed to create program.");
+        helper::checkError<ResourceException>(error, "Failed to create program.");
 
         return program;
     }
@@ -438,11 +438,11 @@ namespace helper {
 
         size_t sz;
         status = clGetDeviceInfo(did, CL_DEVICE_NAME, 0, NULL, &sz);
-        helper::CheckError<ResourceException>(status, "Failed to get device name size.");
+        helper::checkError<ResourceException>(status, "Failed to get device name size.");
 
         char *name = new char[sz];
         status = clGetDeviceInfo(did, CL_DEVICE_NAME, sz, name, NULL);
-        helper::CheckError<ResourceException>(status, "Failed to get device name.");
+        helper::checkError<ResourceException>(status, "Failed to get device name.");
 
         return std::string(name);
     }
@@ -484,14 +484,14 @@ namespace helper {
                                        unsigned num_devices) {
         // Early exit for potentially the most common way to fail: AOCX does not exist.
         if (!fileExists(binary_file_name)) {
-            helper::CheckError<ResourceException>(CL_INVALID_PROGRAM, "Failed to load binary file, AOCX file does not exist.");
+            helper::checkError<ResourceException>(CL_INVALID_PROGRAM, "Failed to load binary file, AOCX file does not exist.");
         }
 
         // Load the binary.
         size_t binary_size;
         unsigned char *binary = loadBinaryFile(binary_file_name, &binary_size);
         if (binary == NULL) {
-            helper::CheckError<ResourceException>(CL_INVALID_PROGRAM, "Failed to load binary file.");
+            helper::checkError<ResourceException>(CL_INVALID_PROGRAM, "Failed to load binary file.");
         }
 
         size_t binary_lengths[num_devices];
@@ -506,9 +506,9 @@ namespace helper {
 
         cl_program program = clCreateProgramWithBinary(context, num_devices, devices, binary_lengths,
                                                        (const unsigned char **) binaries, binary_status, &status);
-        helper::CheckError<ResourceException>(status, "Failed to create program with binary.");
+        helper::checkError<ResourceException>(status, "Failed to create program with binary.");
         for (unsigned i = 0; i < num_devices; ++i) {
-            helper::CheckError<ResourceException>(binary_status[i], "Failed to load binary for device.");
+            helper::checkError<ResourceException>(binary_status[i], "Failed to load binary for device.");
         }
 
         delete [] binary;

@@ -99,17 +99,17 @@ void FpgaPlatform::init() {
     cl_platform_id platform = 0;
 
     status = clGetPlatformIDs(1, &platform, NULL);
-    helper::CheckError<ResourceException>(status, "Query for platform ids failed.");
+    helper::checkError<ResourceException>(status, "Query for platform ids failed.");
 
     device = 0;
     // We could filter for the platform name, but since the FpgaPlatform
     // is only available on the board, this is not strictly necessary, so we
     // just query for all available platforms.
     status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 1, &device, NULL);
-    helper::CheckError<ResourceException>(status, "Query for device ids failed.");
+    helper::checkError<ResourceException>(status, "Query for device ids failed.");
 
     context = clCreateContext(NULL, 1, &device, NULL, NULL, &status);
-    helper::CheckError<ResourceException>(status, "Failed to create context.");
+    helper::checkError<ResourceException>(status, "Failed to create context.");
 }
 
 FpgaPlatform::~FpgaPlatform() {

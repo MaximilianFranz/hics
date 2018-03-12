@@ -27,9 +27,7 @@
 #pragma once
 
 #ifdef __APPLE__
-
 #include <OpenCL/opencl.h>
-
 #else
 #include <CL/opencl.h>
 #endif
@@ -149,24 +147,24 @@ namespace helper {
      * @param message   A user-defined descriptive error message that will be the exception message.
      */
     template<typename T>
-    void CheckError(cl_int error, const std::string &message);
+    void checkError(cl_int error, const std::string &message);
 
     /**
-     * Loads the OpenCL kernel.
+     * Loads an OpenCL kernel source file.
      *
      * @param name
-     * @return
+     * @return a string representing the OpenCL kernel sources
      */
-    std::string LoadKernel (const char* name);
+    std::string loadKernel(const char *name);
 
     /**
-     * Creates the OpenCL program.
+     * Creates a OpenCL program from a source file.
      *
      * @param source
      * @param context
      * @return
      */
-    cl_program CreateProgram (const std::string& source, cl_context context);
+    cl_program createProgramFromSource(cl_context context, const std::string &source);
 
     /*
      * Create a OpenCL program from a binary file.
