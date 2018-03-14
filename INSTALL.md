@@ -47,9 +47,9 @@ which made it unusable:
 - https://bugs.launchpad.net/ubuntu/+source/grpc/+bug/1748586
 - https://bugs.launchpad.net/ubuntu/+source/grpc/+bug/1727528
 
-We thus provide fixed backports in a separate repository. To enable that repository add the following line to `/etc/apt/sources.list`:
+We thus provide fixed backports in a separate repository. To enable that repository run the following command:
 
-    deb [trusted=yes] https://people.debian.org/~biebl/hics/debs-amd64 ./
+    # apt-add-repository ppa:mbiebl/hics
 
 Hopefully, in future versions of Ubuntu, those packages are fixed, so this separate repository is no longer needed.
 
