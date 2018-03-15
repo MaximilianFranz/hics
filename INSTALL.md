@@ -19,13 +19,13 @@ Some of the dependencies have been bundled and don't need to be installed explic
 
 ## Getting the sources
 
-You can download a release tarball from the [GitHub release page](https://github.com/MaximilianFranz/hics/releases). The tarballs named
+You can download a release tarball from the [GitHub release page](https://github.com/hics-project/hics/releases). The tarballs named
 hics-$(ver).tar.gz include the AlexNet weights file which is needed for the
 software to function properly.
 
 The alternative is to use git and clone the repository:
 
-    # git clone https://github.com/MaximilianFranz/hics.git
+    # git clone https://github.com/hics-project/hics.git
 
 As the weights file is rather large, GitHubs bandwith limitations forced us to
 exclude the file from the repository, so it was moved into a git submodule
