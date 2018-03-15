@@ -58,7 +58,7 @@ Hopefully, in future versions of Ubuntu, those packages are fixed, so this separ
 After those preparatory steps, the build dependencies can be installed via:
 
     # apt-get update
-    # apt-get install cmake qtbase5-dev libprotobuf-dev libgrpc-dev libgrpc++-dev protobuf-compiler-grpc libhdf5-dev ocl-icd-opencl-dev build-essential --no-install-recommends
+    # apt-get install cmake qtbase5-dev libprotobuf-dev protobuf-compiler libgrpc-dev libgrpc++-dev protobuf-compiler-grpc libhdf5-dev ocl-icd-opencl-dev build-essential --no-install-recommends
 
 ### Compiling and installing hics
 
@@ -125,7 +125,7 @@ We now switch into the chroot
 We assume here, that there is a setup.sh script which set's up the user environment variables, so `aocl` is functional at this point.
 In our next step we install the build dependencies:
 
-    chroot# apt-get install cmake qtbase5-dev libprotobuf-dev libgrpc-dev libgrpc++-dev protobuf-compiler-grpc libhdf5-dev ocl-icd-opencl-dev build-essential --no-install-recommends
+    chroot# apt-get install cmake qtbase5-dev libprotobuf-dev protobuf-compiler libgrpc-dev libgrpc++-dev protobuf-compiler-grpc libhdf5-dev ocl-icd-opencl-dev build-essential --no-install-recommends
 
 
 ### Compiling and installing hics-server
