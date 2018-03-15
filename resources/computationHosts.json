@@ -12,12 +12,12 @@
 			"host" : "localhost:50051"
 		},
 		{
-			"name" : "GPU",
+			"name" : "remote worker 1",
 			"power" : 17000,
 			"time" : 230
 		},
 		{
-			"name" : "test",
+			"name" : "remote worker 2",
 			"power" : 24952,
 			"time" : 150
 		}
