@@ -1,12 +1,15 @@
 # Configuration for JSON files
 
 ## Introduction
-This file covers the configuration of the `platforms.json` and the `computationHosts.json`. Given you installed **HICS** following to the [INSTALL](INSTALL.md) manual, those to files should be located in the `/etc/hics/` directory. This guide will assume all files are located accordingly to the [INSTALL](INSTALL.md) manual, so if you changed flags or paths during installation please check where those files are.
+This file covers the configuration of the `platforms.json` and the `computationHosts.json`. Given you installed **HICS** following to the [INSTALL](INSTALL.md) manual, those two files should be located in the `/etc/hics/` directory. This guide will assume all files are located accordingly to the [INSTALL](INSTALL.md) manual, so if you changed flags or paths during installation please check where those files are.
 
 In the following, performance data (power consumption, time consumption, flops) is used. For this application to work, the performance of different hosts and platforms only needs to be in relative relation to each other because it is used by the placing algorithms. However, using the real performance data is advised if it can be obtained. In the details window of a classification, the estimated consumed power is displayed. This value is calculated according to the power consumption of the computation hosts specified in the `computationHosts.json` (See example below). So in order to have a real estimation of power consumption you need to put in the correct power consumption values in the JSON file.
 
 ## Use Case 1: Only local computations
 If you only want your local system to run classifications, you need to specify one host. Open or create the `computationHosts.json` (by default there is only an example file which can be used as reference). The `name` of the host needs to be `"local"` to be recognized by the application. `power` needs to set to the power a host needs in milliwatts. `time` is set to the time a host needs to classify an image in milliseconds. 
+
+Power and time within a host can vary depending on the selected platforms of a classification. This is an issue in our current software design that may be fixed in the future. For now you should try to approximate the performance data of a host as close as possible.
+
 ### Example:
 ```json
 {
@@ -20,7 +23,7 @@ If you only want your local system to run classifications, you need to specify o
 }
 ```
 
-The platforms specified in the `platforms.json` depend on your system. There are four supported platform types: `CPU, GPU, CL_CPU, FPGA`. GPU and CL_CPU platforms are implemented via OpenCL. To check availability run the `clinfo` command. The FPGA obviously needs to run on an FPGA board. But except for the type the configuration of a platform is the same. 
+The platforms specified in the `platforms.json` depend on your system. There are four supported platform types: `CPU, GPU, CL_CPU, FPGA`. GPU and CL_CPU platforms are implemented via OpenCL. To check availability run the `clinfo` command (run `apt-get install clinfo` if the command is not available). The FPGA obviously needs to run on an FPGA board. But except for the type the configuration of a platform is the same. 
 
 ### Attributes:
  - type: 				as described above
@@ -29,7 +32,13 @@ The platforms specified in the `platforms.json` depend on your system. There are
  - power_consumption: 	power consumption of the platform in milliwatts
  - flops:				measurement for computational power of a platform
 
- The flops and power only need to be in relative relation to each other in order for the placement algorithms to work correctly.
+The absolute values of flops and power consumption are not as important as their relativity to each other in order for the placement algorithms to work correctly. For example if your GPU classifies an image two times faster than your CPU but uses three times the power you could set 
+ - GPU:
+   - flops = 2
+   - power_consumption = 3
+ - CPU:  
+   - flops = 1
+   - power_consumption = 1
 
 ### Example for CPU, CL_CPU and GPU:
 ```json
