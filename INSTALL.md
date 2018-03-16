@@ -76,8 +76,8 @@ If you want to run hics directly from the build directory, remove the `-DINSTALL
 
 ### Configuration
 
-Please keep in mind that hics needs be configured first, before it can be run system-wide. You will need to setup `/etc/hics/platforms.json` and `/etc/hics/computationHosts.json` describing the details of your hardware setup.
-We ship example files which you can use as a template for your own configuration.
+Please keep in mind that hics needs be configured first, before it can be run system-wide. You will need to setup `/etc/hics/platforms.json` and `/etc/hics/computationHosts.json` describing the details of your hardware setup. Please see [CONFIGURE](CONFIGURE.md) for more details.
+We also ship example files which you can use as a template for your own configuration.
 
 
 ## FPGA / Altera de1soc board
