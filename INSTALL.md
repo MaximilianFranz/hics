@@ -25,16 +25,16 @@ software to function properly.
 
 The alternative is to use git and clone the repository:
 
-    # git clone https://github.com/hics-project/hics.git
+    $ git clone https://github.com/hics-project/hics.git
 
 As the weights file is rather large, GitHubs bandwith limitations forced us to
 exclude the file from the repository, so it was moved into a git submodule
 which is hosted on a different server.
 To get the weights file via the git submodule, run:
 
-    # cd hics
-    # git submodule init
-    # git submodule update
+    $ cd hics
+    $ git submodule init
+    $ git submodule update
 
 This will pull the file `resources/weights/alexnet_weights.h5`.
 
@@ -49,7 +49,7 @@ which made it unusable:
 
 We thus provide fixed backports in a separate repository. To enable that repository run the following command:
 
-    # apt-add-repository ppa:mbiebl/hics
+    $ sudo apt-add-repository ppa:mbiebl/hics
 
 Hopefully, in future versions of Ubuntu, those packages are fixed, so this separate repository is no longer needed.
 
@@ -57,18 +57,18 @@ Hopefully, in future versions of Ubuntu, those packages are fixed, so this separ
 
 After those preparatory steps, the build dependencies can be installed via:
 
-    # apt-get update
-    # apt-get install cmake qtbase5-dev libprotobuf-dev protobuf-compiler libgrpc-dev libgrpc++-dev protobuf-compiler-grpc libhdf5-dev ocl-icd-opencl-dev build-essential --no-install-recommends
+    $ sudo apt-get update
+    $ sudo apt-get install cmake qtbase5-dev libprotobuf-dev protobuf-compiler libgrpc-dev libgrpc++-dev protobuf-compiler-grpc libhdf5-dev ocl-icd-opencl-dev build-essential --no-install-recommends
 
 ### Compiling and installing hics
 
 Now, we go on compiling and installing the software. Assuming you already have the sources, we create a build directory inside the source directory, then run the configure, make and make install steps like this:
 
-    # mkdir build
-    # cd build
-    # cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_SYSCONFDIR=/etc -DINSTALL=ON
-    # make
-    # sudo make install
+    $ mkdir build
+    $ cd build
+    $ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_SYSCONFDIR=/etc -DINSTALL=ON
+    $ make
+    $ sudo make install
 
 This will make an optimized release build which is suitable for being installed system-wide. It will install the binaries to `/usr/bin` and the resource files to `/etc/hics`. In addition, it provides a desktop menu entry, so hics can be started directly from your desktop launcher. Alternatively it can be started from the command line via the `hics` command.
 
@@ -85,11 +85,11 @@ We also ship example files which you can use as a template for your own configur
 Getting the software to run on the Atera de1soc FPGA board, requires a few more steps. To build the host program, we will use an armhf chroot and qemu emulation on the Ubuntu PC.
 We will also have to compile the OpenCL kernel. For that we use `aoc` from the Intel FPGA SDK.
 Finally, we will setup another chroot on the board to run the `hics-server` binary.
-To make it clearer where a command is executed, we will introduce the following prefixes:
+To make it clearer where a command is executed, we will use the following prefixes:
 
-    ubuntu# <command is executed on the Ubuntu PC>
-    chroot# <command is executed in the armhf chroot>
-    board# <command is executed the remote FPGA board>
+    $        command is executed on the Ubuntu PC in a user shell
+    chroot#  command is executed inside the armhf chroot in a root shell
+    board#   command is executed on the remote FPGA board in a root shell
 
 For the purpose of this document we assume that the remote FPGA board is accessible via SSH under the name `board`.
 
@@ -99,15 +99,15 @@ For the purpose of this document we assume that the remote FPGA board is accessi
 In our first step, we will create a barebones Debian buster armhf chroot on the Ubuntu PC. We chose Debian buster, as it provides solid support for armhf and provides all the necessary libraries which we need to compile the software.
 We will create the chroot under `/srv/chroot/buster-armhf` with the following commands:
 
-    ubuntu# sudo apt-get install qemu binfmt-support qemu-user-static debootstrap
-    ubuntu# sudo debootstrap --arch=armhf --foreign buster /srv/chroot/buster-armhf
-    ubuntu# sudo cp /usr/bin/qemu-arm-static /srv/chroot/buster-armhf/usr/bin/
-    ubuntu# sudo chroot /srv/chroot/buster-armhf /bin/bash /debootstrap/debootstrap --second-stage
+    $ sudo apt-get install qemu binfmt-support qemu-user-static debootstrap
+    $ sudo debootstrap --arch=armhf --foreign buster /srv/chroot/buster-armhf
+    ubuntu$ sudo cp /usr/bin/qemu-arm-static /srv/chroot/buster-armhf/usr/bin/
+    $ sudo chroot /srv/chroot/buster-armhf /bin/bash /debootstrap/debootstrap --second-stage
 
 We will reuse this minimal chroot on the FPGA board, so let's make a copy at this point. For that we create a tarball:
 
-    ubuntu# cd /srv/chroot
-    ubuntu# sudo tar czf buster-armhf.tar.gz buster-armhf
+    $ cd /srv/chroot
+    $ sudo tar czf buster-armhf.tar.gz buster-armhf
 
 ### Setting up the build chroot
 
@@ -115,11 +115,11 @@ We will need the OpenCL library provided by the Intel FPGA SDK inside the build 
 
 The easiest way to make the FPGA SDK available in the chroot is via a bind mount:
 
-    ubuntu# sudo mount -o bind /home/ /srv/chroot/buster-armhf/home/
+    $ sudo mount -o bind /home/ /srv/chroot/buster-armhf/home/
 
 We now switch into the chroot
 
-    ubuntu# sudo chroot -i /srv/chroot/buster-armhf
+    $ sudo chroot -i /srv/chroot/buster-armhf
     chroot# source /home/user/setup.sh
 
 We assume here, that there is a setup.sh script which set's up the user environment variables, so `aocl` is functional at this point.
@@ -130,8 +130,8 @@ In our next step we install the build dependencies:
 
 ### Compiling and installing hics-server
 
-We are now ready to build build `hics-server`. Assuming you already have the source inside the build chroot (if not, see [how to get the sources](#getting-the-sources))
-The build dependencies are the same as for [hics](#installing-the-build-dependencies)
+We are now ready to build build `hics-server`. Make sure you already have the source inside the build chroot (if not, see [how to get the sources](#getting-the-sources)).
+The build dependencies are the same as for [hics](#installing-the-build-dependencies):
 
     chroot# apt-get install cmake qtbase5-dev libprotobuf-dev libgrpc-dev libgrpc++-dev protobuf-compiler-grpc libhdf5-dev ocl-icd-opencl-dev build-essential --no-install-recommends
 
@@ -145,9 +145,9 @@ We are done in the build chroot, so we `exit` at this point. Our next step is to
 
 ### Compiling the OpenCL kernel
 
-We are back as regular user and now proceed with compiling the OpenCL kernel for the FPGA board. Switch to the `resources/kernels` directory inside the hics source, then run the following command:
+We are back as regular user and now proceed with compiling the OpenCL kernel for the FPGA board. Switch to `resources/kernels` inside the hics source directory, then run the following command:
 
-    ubuntu# aoc gemm4_fpga.cl --board de1soc_sharedonly
+    $ aoc gemm4_fpga.cl --board de1soc_sharedonly
 
 This command will take a while and produce `gemm4_fpga.aocx` if successful.
 
@@ -182,9 +182,9 @@ We then can finally install the runtime dependencies in the chroot:
 
 We return to to Ubuntu system and copy the hics-server binary, the resource files including the gemm4_fpga.aocx kernel to the board
 
-    ubuntu# scp -r /srv/chroot/buster-armhf/etc/hics board:/srv/chroot/buster-armhf/etc
-    ubuntu# scp gemm4_fpga.aocx board:/srv/chroot/buster-armhf/etc/hics/kernels/
-    ubuntu# scp /srv/chroot/buster-armhf/usr/bin/hics-server board:/srv/chroot/buster-armhf/usr/bin/
+    $ scp -r /srv/chroot/buster-armhf/etc/hics board:/srv/chroot/buster-armhf/etc
+    $ scp gemm4_fpga.aocx board:/srv/chroot/buster-armhf/etc/hics/kernels/
+    $ scp /srv/chroot/buster-armhf/usr/bin/hics-server board:/srv/chroot/buster-armhf/usr/bin/
 
 ### Configuring and running hics-server
 
