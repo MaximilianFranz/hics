@@ -190,15 +190,6 @@ void StartWidget::processConfirmDeletionButton() {
     } else  {
         ui->abortDeletionQPushButton->setText("Select all");
     }
-
-    renumerateImages();
-}
-
-void StartWidget::renumerateImages() {
-    for (int i = 0; i < ui->inputImagesQVBoxLayout->count(); ++i) {
-        ((QCheckBox *) (ui->inputImagesQVBoxLayout->itemAt(i)->layout()->itemAt(0)->widget()))->setText(
-            QString::number(i + 1));
-    }
 }
 
 bool StartWidget::areAllSelected() {
