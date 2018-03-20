@@ -295,6 +295,7 @@ void StartWidget::clearLayout(QLayout *layout) {
 QErrorMessage* StartWidget::displayErrorMessage(const QString message) {
     auto error = new QErrorMessage(this);
     error->setWindowTitle("Error");
+    error->setModal(true);
     error->showMessage(message);
     return error;
 }
