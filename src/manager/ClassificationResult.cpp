@@ -76,14 +76,14 @@ void ClassificationResult::aggregateResults() {
         aggIt.operator*().second = aggIt.operator*().second/results.size();
     }
 
-    //remove everything over 5 labels
-    aggregatedResult.erase(aggregatedResult.begin() + 5, aggregatedResult.end());
-
     //sort according to new probability
     std::sort(aggregatedResult.begin(), aggregatedResult.end(), [](const std::pair<std::string, float> &left,
                                                                    const std::pair<std::string, float> &right) {
         return left.second > right.second;
     });
+
+    //remove everything over 5 labels
+    aggregatedResult.erase(aggregatedResult.begin() + 5, aggregatedResult.end());
 }
 
 

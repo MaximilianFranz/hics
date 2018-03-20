@@ -31,7 +31,7 @@ SCENARIO("Read values from JSON") {
 
     ComputationHost* localHost = new Executor("local");
     ComputationHost* fpgaHost = new Executor("fpga");
-    ComputationHost *gpuHost = new Executor("GPU");
+    ComputationHost *gpuHost = new Executor("remote worker 1");
     ComputationHost *failHost = new Executor("fail");
 
     REQUIRE(localHost->getName() == "local");
@@ -63,7 +63,7 @@ SCENARIO("Read values from JSON") {
 
     SECTION("Test placeLowPower with hosts with equal power consumption") {
         std::vector<ComputationHost*> hosts;
-        ComputationHost* test = new Executor("test");
+        ComputationHost* test = new Executor("remote worker 2");
         hosts.push_back(localHost);
         hosts.push_back(fpgaHost);
         hosts.push_back(test);
@@ -75,7 +75,7 @@ SCENARIO("Read values from JSON") {
         REQUIRE(distribution.begin().operator*().second == 6);
         REQUIRE((distribution.begin()+1).operator*().first->getName() == "fpga");
         REQUIRE((distribution.begin()+1).operator*().second == 0);
-        REQUIRE((distribution.begin()+2).operator*().first->getName() == "test");
+        REQUIRE((distribution.begin()+2).operator*().first->getName() == "remote worker 2");
         REQUIRE((distribution.begin()+2).operator*().second == 5);
     }
 
@@ -106,7 +106,7 @@ SCENARIO("Read values from JSON") {
         REQUIRE(distribution.begin().operator*().second == 3);
         REQUIRE((distribution.begin() + 1).operator*().first->getName() == "fpga");
         REQUIRE((distribution.begin() + 1).operator*().second == 0);
-        REQUIRE((distribution.begin() + 2).operator*().first->getName() == "GPU");
+        REQUIRE((distribution.begin() + 2).operator*().first->getName() == "remote worker 1");
         REQUIRE((distribution.begin() + 2).operator*().second == 2);
     }
 
@@ -123,7 +123,7 @@ SCENARIO("Read values from JSON") {
         REQUIRE(distribution.begin().operator*().second == 4);
         REQUIRE((distribution.begin() + 1).operator*().first->getName() == "fpga");
         REQUIRE((distribution.begin() + 1).operator*().second == 0);
-        REQUIRE((distribution.begin() + 2).operator*().first->getName() == "GPU");
+        REQUIRE((distribution.begin() + 2).operator*().first->getName() == "remote worker 1");
         REQUIRE((distribution.begin() + 2).operator*().second == 0);
     }
 

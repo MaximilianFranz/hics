@@ -90,8 +90,6 @@ private:
 
     void clearLayout(QLayout *layout);
 
-    void renumerateImages();
-
     bool areAllSelected();
 
 public:
