@@ -30,6 +30,7 @@
 #include <handler/ui/StartWidgetTest.h>
 #include <handler/ui/ResultWidgetTest.h>
 #include <handler/ui/DetailDialogTest.h>
+#include "WorkerThreadTest.h"
 
 int main(int argc, char *argv[])
 {
@@ -39,11 +40,13 @@ int main(int argc, char *argv[])
     StartWidgetTest test2;
     ResultWidgetTest test3;
     DetailDialogTest test4;
+    WorkerThreadTest test5;
 
     QTest::qExec(&test1, argc, argv);
     QTest::qExec(&test2, argc, argv);
     QTest::qExec(&test3, argc, argv);
     QTest::qExec(&test4, argc, argv);
+    QTest::qExec(&test5, argc, argv);
 
     return 0;
 }

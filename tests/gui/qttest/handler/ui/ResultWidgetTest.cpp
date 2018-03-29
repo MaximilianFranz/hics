@@ -41,7 +41,7 @@ void ResultWidgetTest::initTestCase() {
     results.push_back(pair4);
 
     std::vector<int> dimensions{100, 100};
-    ImageWrapper imageWrapper(dimensions, "/home/pselab/Dokumente/repo/hics/tests/resources/tf_data_script/dog.png");
+    ImageWrapper imageWrapper(dimensions, TEST_RES_DIR "tf_data_script/dog.png");
     std::vector<std::pair<PlatformInfo*, float>> plat;
     PlatformInfo* info1 = new PlatformInfo("CPU", PlatformType::CPU, "cpu", 100, 4);
     PlatformInfo* info2 = new PlatformInfo("FPGA1", PlatformType::FPGA, "fpga1", 50, 3);
