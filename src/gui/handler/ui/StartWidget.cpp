@@ -374,7 +374,16 @@ std::vector<PlatformInfo> StartWidget::getSelectedPlatforms() {
                         PlatformInfo *platform = platformMap.at(checkBox->text());
                         selectedPlatforms.push_back(*platform);
                     } catch (std::out_of_range &e) {
-                        e.what();
+                        //Remove invisible ampersand added by Qt when running in KDE to select an accelerator
+                        //(possible keyboard shortcut). With the ampersand the PlatformInfo cannot be found
+                        if(checkBox->text().at(0) == '&') {
+                            try {
+                                PlatformInfo *platform = platformMap.at(checkBox->text().remove(0, 1));
+                                selectedPlatforms.push_back(*platform);
+                            } catch (std::out_of_range &e) {
+                                displayErrorMessage("The loaded platforms are corrupt. Please restart.");
+                            }
+                        }
                     }
                 }
             }
